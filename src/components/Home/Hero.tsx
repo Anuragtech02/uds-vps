@@ -2,6 +2,9 @@ import Button from '../commons/Button';
 import { FaArrowRightLong } from 'react-icons/fa6';
 import Ellipse from '../commons/Ellipse';
 import { IoIosSearch } from 'react-icons/io';
+import Image from 'next/image';
+import heroImage from '@/assets/img/heroStock.jpg';
+import TypewritterText from '../utils/TypewritterText';
 
 const stats = [
    {
@@ -31,10 +34,10 @@ const Hero = () => {
       <section className='relative bg-white md:pt-20'>
          <div className='container'>
             <div className='flex items-center gap-6 py-16 md:py-32'>
-               <div className='w-1/2'>
+               <div className='md:w-[60%]'>
                   <h1>
-                     Unlock <span className='capitalize'>Enegery market</span>{' '}
-                     Insights with Comprehensive Research
+                     Unlock <TypewritterText /> <br /> Insights with
+                     Comprehensive Research
                   </h1>
 
                   <div className='mt-6 flex w-2/3 items-center gap-3 rounded-full border border-blue-2 px-6 py-3'>
@@ -63,6 +66,16 @@ const Hero = () => {
                      >
                         Request a Demo
                      </Button>
+                  </div>
+               </div>
+               <div className='md:w-[40%]'>
+                  <div className='relative ml-auto aspect-square w-2/3'>
+                     <Image
+                        src={heroImage}
+                        className='rounded-xl'
+                        alt='hero'
+                        fill
+                     />
                   </div>
                </div>
             </div>

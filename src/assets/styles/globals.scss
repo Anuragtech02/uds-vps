@@ -36,3 +36,14 @@ h2 {
       @apply font-bold text-blue-4;
    }
 }
+
+span.caret {
+   border-right: 0.1em solid;
+   animation: caret 1s steps(1) infinite;
+}
+
+@keyframes caret {
+   50% {
+      border-color: transparent;
+   }
+}
