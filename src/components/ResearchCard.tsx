@@ -2,33 +2,7 @@ import Image, { StaticImageData } from 'next/image';
 import { FC } from 'react';
 import Button from './commons/Button';
 import { BsArrowRight } from 'react-icons/bs';
-
-const CalendarSvg = () => (
-   <svg
-      width='14'
-      height='16'
-      viewBox='0 0 14 16'
-      fill='none'
-      xmlns='http://www.w3.org/2000/svg'
-   >
-      <g clip-path='url(#clip0_335_2319)'>
-         <path
-            opacity='0.4'
-            d='M0 6H14V14.5C14 15.3281 13.3281 16 12.5 16H1.5C0.671875 16 0 15.3281 0 14.5V6Z'
-            fill='#009090'
-         />
-         <path
-            d='M5 1C5 0.446875 4.55312 0 4 0C3.44688 0 3 0.446875 3 1V2H1.5C0.671875 2 0 2.67188 0 3.5V6H14V3.5C14 2.67188 13.3281 2 12.5 2H11V1C11 0.446875 10.5531 0 10 0C9.44687 0 9 0.446875 9 1V2H5V1Z'
-            fill='#009090'
-         />
-      </g>
-      <defs>
-         <clipPath id='clip0_335_2319'>
-            <rect width='14' height='16' fill='white' />
-         </clipPath>
-      </defs>
-   </svg>
-);
+import { CalendarSvg } from './commons/Icons';
 
 interface ResearchCardProps {
    type: string;
