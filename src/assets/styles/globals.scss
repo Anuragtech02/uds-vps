@@ -5,18 +5,27 @@
 body {
    font-family: 'Manrope', sans-serif;
    font-optical-sizing: auto;
+   @apply bg-s-100;
 }
 
 section {
-   @apply flex items-center justify-center md:min-h-screen;
+   @apply flex items-center justify-center py-10 md:min-h-screen;
 }
 
 .container {
    @apply mx-auto px-6 md:px-12;
+   z-index: 1;
 }
 
 h1 {
    font-size: 3.5rem;
    line-height: 4.46rem;
    font-family: 'Bricolage Grotesque', sans-serif;
+}
+
+h1,
+h2 {
+   span {
+      @apply font-bold text-blue-4;
+   }
 }
