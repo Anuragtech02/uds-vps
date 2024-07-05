@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useRef } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 
 const markets = [
    'Energy Market',
@@ -10,44 +10,48 @@ const markets = [
    'Manufacturing Market',
 ];
 
-const TypewritterText = () => {
-   const spanRef = useRef<HTMLSpanElement | null>(null);
-   useEffect(() => {
-      startTextAnimation(0);
-   }, []);
+const TypewriterText = () => {
+   const [text, setText] = useState('');
+   const [marketIndex, setMarketIndex] = useState(0);
+   const [isDeleting, setIsDeleting] = useState(false);
 
-   function typeWriter(text: string, i: number, fnCallback: () => void) {
-      if (i < text.length) {
-         spanRef.current!.innerHTML = text.substring(0, i + 1);
+   const typeSpeed = 100;
+   const deleteSpeed = 50;
+   const pauseBeforeDelete = 2000;
+   const pauseBeforeNextWord = 500;
 
-         setTimeout(function () {
-            typeWriter(text, i + 1, fnCallback);
-         }, 100);
-      } else if (typeof fnCallback == 'function') {
-         setTimeout(fnCallback, 700);
-      }
-   }
+   const typeEffect = useCallback(() => {
+      const currentMarket = markets[marketIndex];
 
-   function startTextAnimation(i: number) {
-      if (typeof markets[i] == 'undefined') {
-         startTextAnimation(0);
-      }
-
-      if (i < markets[i]?.length) {
-         typeWriter(markets[i], 0, function () {
-            startTextAnimation(i + 1);
-         });
+      if (isDeleting) {
+         setText(currentMarket.substring(0, text.length - 1));
       } else {
-         startTextAnimation(0);
+         setText(currentMarket.substring(0, text.length + 1));
       }
-   }
+
+      if (!isDeleting && text === currentMarket) {
+         setTimeout(() => setIsDeleting(true), pauseBeforeDelete);
+      } else if (isDeleting && text === '') {
+         setIsDeleting(false);
+         setMarketIndex((prevIndex) => (prevIndex + 1) % markets.length);
+         setTimeout(() => {}, pauseBeforeNextWord);
+      }
+   }, [text, marketIndex, isDeleting]);
+
+   useEffect(() => {
+      const timer = setTimeout(
+         typeEffect,
+         isDeleting ? deleteSpeed : typeSpeed,
+      );
+      return () => clearTimeout(timer);
+   }, [typeEffect, isDeleting]);
 
    return (
       <>
-         <span ref={spanRef}>Energey Market</span>
+         <span>{text}</span>
          <span className='caret'></span>
       </>
    );
 };
 
-export default TypewritterText;
+export default TypewriterText;
