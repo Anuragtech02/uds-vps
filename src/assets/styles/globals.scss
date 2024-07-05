@@ -42,15 +42,6 @@ span.caret {
    animation: caret 1s steps(1) infinite;
 }
 
-.bg-gradient-radial {
-   background-image: radial-gradient(
-      91.42% 91.42% at 7.44% 38.32%,
-      #003366 0%,
-      #005a73 56.34%,
-      #008080 100%
-   );
-}
-
 @keyframes caret {
    50% {
       border-color: transparent;
