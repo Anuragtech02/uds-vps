@@ -3,11 +3,11 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 
 const markets = [
    'Energy Market',
-   'Healthcare Market',
-   'Retail Market',
-   'Finance Market',
-   'Education Market',
-   'Manufacturing Market',
+   'Aerospace Market',
+   'Automotive Market',
+   'Agriculture Market',
+   'Telecom & IT Market',
+   'Chemical Market',
 ];
 
 const TypewriterText = () => {
