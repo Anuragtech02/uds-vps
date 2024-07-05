@@ -4,7 +4,7 @@ import Ellipse from '../commons/Ellipse';
 import { IoIosSearch } from 'react-icons/io';
 import Image from 'next/image';
 import heroImage from '@/assets/img/heroStock.jpg';
-import TypewritterText from '../utils/TypewritterText';
+import TypewritterText from '../TypewritterText';
 
 const stats = [
    {

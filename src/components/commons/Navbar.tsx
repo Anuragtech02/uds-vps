@@ -5,7 +5,7 @@ import Button from './Button';
 const Navbar = () => {
    return (
       <div className='container'>
-         <nav className='flex items-center justify-between rounded-xl bg-[#1D2C60] px-8 py-3'>
+         <nav className='flex items-center justify-between rounded-xl bg-blue-2 px-8 py-3'>
             <div>
                <Image src={logo} alt='logo' width={120} height={80} />
             </div>
