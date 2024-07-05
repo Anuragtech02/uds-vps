@@ -1,0 +1,48 @@
+import { FC } from 'react';
+
+const variantStyles = {
+   primary: 'bg-white text-blue-2',
+   secondary: 'bg-blue-1 text-white',
+   light: 'bg-white border border-blue-1 text-blue-1 ',
+   danger: 'bg-red-500 hover:bg-red-600 text-white',
+   success: 'bg-green-500 hover:bg-green-600 text-white',
+};
+
+const sizeStyles = {
+   small: 'px-2 py-1 text-sm',
+   medium: 'px-4 py-2',
+   large: 'px-6 py-3 text-lg',
+};
+
+interface ButtonProps {
+   children: React.ReactNode;
+   variant?: 'primary' | 'secondary' | 'danger' | 'success' | 'light';
+   size?: 'small' | 'medium' | 'large';
+   icon?: React.ReactNode;
+   className?: string;
+}
+
+const Button: FC<ButtonProps> = ({
+   children,
+   variant = 'primary',
+   size = 'medium',
+   icon,
+   className,
+   ...props
+}) => {
+   return (
+      <button
+         className={`rounded-xl font-semibold transition-colors duration-200 ${
+            variantStyles[variant]
+         } ${sizeStyles[size]} ${className}`}
+         {...props}
+      >
+         <span className='flex items-center justify-center'>
+            {children}
+            {icon && <span className='ml-4'>{icon}</span>}
+         </span>
+      </button>
+   );
+};
+
+export default Button;

@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import '@/styles/style.scss';
+import '@/assets/styles/style.scss';
 import Appwrapper from '@/components/Appwrapper';
 
 export const metadata: Metadata = {

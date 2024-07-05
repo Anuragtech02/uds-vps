@@ -1,46 +1,38 @@
-"use client";
-import { FC } from "react";
-import { AnimatePresence, motion } from "framer-motion";
-import { ReactLenis } from "@studio-freight/react-lenis";
+import { FC } from 'react';
+
+import Navbar from './commons/Navbar';
+import Topbar from './commons/Topbar';
+import Header from './commons/Header';
 
 interface AppwrapperProps {
-  children: React.ReactNode;
+   children: React.ReactNode;
 }
 
 export const variants = {
-  out: {
-    opacity: 0,
-    transition: {
-      duration: 0.333,
-    },
-  },
-  in: {
-    opacity: 1,
-    scale: 1,
+   out: {
+      opacity: 0,
+      transition: {
+         duration: 0.333,
+      },
+   },
+   in: {
+      opacity: 1,
+      scale: 1,
 
-    transition: {
-      duration: 0.2,
-      delay: 0.05,
-    },
-  },
+      transition: {
+         duration: 0.2,
+         delay: 0.05,
+      },
+   },
 };
 
 const Appwrapper: FC<AppwrapperProps> = ({ children }) => {
-  return (
-    <ReactLenis root>
-      <AnimatePresence mode="wait">
-        <motion.main
-          key="main"
-          variants={variants}
-          animate="in"
-          initial="out"
-          exit="out"
-        >
-          {children}
-        </motion.main>
-      </AnimatePresence>
-    </ReactLenis>
-  );
+   return (
+      <>
+         <Header key='header' />
+         <main key='main'>{children}</main>
+      </>
+   );
 };
 
 export default Appwrapper;
