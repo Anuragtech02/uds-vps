@@ -2,7 +2,9 @@ const Testimonials = () => {
    return (
       <section>
          <div className='container'>
-            <h1>Brands that trust us!</h1>
+            <h2>
+               Brands that <span>trust us!</span>
+            </h2>
          </div>
       </section>
    );

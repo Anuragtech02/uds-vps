@@ -2,7 +2,9 @@ const UpcomingReports = () => {
    return (
       <section>
          <div className='container'>
-            <h1>Upcoming reports</h1>
+            <h2>
+               <span>Upcoming</span> reports
+            </h2>
          </div>
       </section>
    );

@@ -2,7 +2,7 @@ const NewsRoom = () => {
    return (
       <section>
          <div className='container'>
-            <h1>News Room</h1>
+            <h2>News Room</h2>
          </div>
       </section>
    );

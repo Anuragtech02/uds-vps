@@ -2,7 +2,9 @@ const LatestResearch = () => {
    return (
       <section>
          <div className='container'>
-            <h1>Our lastest research</h1>
+            <h2>
+               Our <span>lastest</span> research
+            </h2>
          </div>
       </section>
    );
