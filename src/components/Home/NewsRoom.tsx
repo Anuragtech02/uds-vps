@@ -33,7 +33,7 @@ const NewsRoom = () => {
    return (
       <section>
          <div className='container'>
-            <h2>News Room</h2>
+            {/* <h2>News Room</h2> */}
 
             <div className='my-6 flex gap-4 md:my-10'>
                <div className='md:w-1/2'>

@@ -50,6 +50,33 @@ span.caret {
    animation: caret 1s steps(1) infinite;
 }
 
+.slick-list {
+   ul {
+      li {
+         width: 10px;
+         height: 2px;
+         background: #848484;
+      }
+   }
+}
+.slick-dots {
+   bottom: -60px !important;
+   li {
+      width: 30px !important;
+      height: 6px !important;
+      background: #848484;
+      button {
+         &::before {
+            display: none;
+         }
+      }
+
+      &.slick-active {
+         background: #ffffff;
+      }
+   }
+}
+
 @keyframes caret {
    50% {
       border-color: transparent;

@@ -63,7 +63,7 @@ const LatestResearch = () => {
       arrows: false,
    };
    return (
-      <section>
+      <section className='min-h-full py-10 md:py-20'>
          <div className='container'>
             <h2>
                Our <span>lastest</span> research
