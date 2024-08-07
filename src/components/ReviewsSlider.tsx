@@ -2,6 +2,7 @@
 import { FC } from 'react';
 // @ts-ignore
 import Slider from 'react-slick';
+import { QuoteLeft, QuoteRight } from './commons/Icons';
 
 interface ReviewsSliderProps {
    data: {
@@ -24,11 +25,17 @@ const ReviewsSlider: FC<ReviewsSliderProps> = ({ data }) => {
    };
 
    return (
-      <div className='mx-auto w-2/3 py-10 pb-20'>
+      <div className='relative mx-auto w-2/3 py-10 pb-20'>
+         <div className='absolute -left-10 bottom-5 z-[5]'>
+            <QuoteLeft />
+         </div>
+         <div className='absolute -right-10 top-0 z-[5]'>
+            <QuoteRight />
+         </div>
          <Slider {...settings}>
             {data.map((data, index) => (
                <div key={index} className='pr-4'>
-                  <div className='rounded-lg bg-blue-2 px-10 py-8 text-white'>
+                  <div className='rounded-lg bg-blue-2 px-10 py-8 text-white md:px-16'>
                      <p className='text-xl'>{data.review}</p>
 
                      <div className='mt-6'>

@@ -98,7 +98,7 @@ const UpcomingReports = () => {
                <span>Upcoming</span> reports
             </h2>
 
-            <div className='my-8 md:my-16'>
+            <div className='my-8 md:my-16 md:mt-10'>
                <Slider {...settings}>
                   {sampleData.map((data, index) => (
                      <div key={index} className='pr-4'>

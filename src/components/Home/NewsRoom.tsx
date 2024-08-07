@@ -33,9 +33,7 @@ const NewsRoom = () => {
    return (
       <section>
          <div className='container'>
-            {/* <h2>News Room</h2> */}
-
-            <div className='my-6 flex gap-4 md:my-10'>
+            <div className='my-6 flex gap-4 md:my-10 md:mt-0'>
                <div className='md:w-1/2'>
                   <h3 className='mb-6 text-blue-2'>Our Blogs</h3>
                   {blogs.map((blog, index) => (

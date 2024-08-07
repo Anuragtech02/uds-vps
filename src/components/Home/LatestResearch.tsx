@@ -68,7 +68,7 @@ const LatestResearch = () => {
             <h2>
                Our <span>lastest</span> research
             </h2>
-            <div className='my-8 md:my-16'>
+            <div className='my-8 md:my-10'>
                <Slider {...settings}>
                   {sampleData.map((data, index) => (
                      <div key={index} className='pr-4'>
