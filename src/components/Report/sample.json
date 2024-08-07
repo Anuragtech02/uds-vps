@@ -1,0 +1,65 @@
+{
+   "reportTitle": "US Suncare and Skin Protection Market Report 2024",
+   "description": "Unlock the potential for sustained growth with Univdatos's US Suncare and Skin Protection Market Report 2024. Our comprehensive report is designed to provide you with unparalleled insights and strategic guidance to navigate the dynamic landscape of the suncare industry.",
+   "keyIssuesCovered": [
+      "Current trends shaping the US suncare and skin protection market",
+      "Major challenges and opportunities facing stakeholders in the suncare and skin protection industry",
+      "How consumers interact with and respond to suncare and skin protection products",
+      "The prevailing attitudes and behaviors regarding suncare and skin protection"
+   ],
+   "marketOverview": {
+      "currentLandscape": [
+         "Overall, there is a growing trend among US consumers towards increased use of sun care and skin protection products",
+         "A survey revealed that 44% of consumers reported applying skin protection more frequently than they did a year ago",
+         "Additionally, more than three-quarters of consumers now use some form of skin protection, with a majority wearing it year-round",
+         "This trend is largely attributed to the convenience of products that contain SPF"
+      ],
+      "marketGrowth": {
+         "estimatedGrowth": "7.4%",
+         "year": "2023"
+      }
+   },
+   "tableOfContents": [
+      {
+         "title": "Market Introduction",
+         "subsections": [
+            "Market Definition",
+            "Main Objectives",
+            "Stakeholders",
+            "Limitations"
+         ]
+      },
+      {
+         "title": "Research Methodology or Assumption",
+         "subsections": ["Research Methodology", "Assumptions"]
+      },
+      {
+         "title": "Market Dynamics",
+         "subsections": [
+            "Market Drivers",
+            "Market Restraints",
+            "Market Opportunities",
+            "Market Trends"
+         ]
+      },
+      {
+         "title": "Pricing",
+         "subsections": ["Price Analysis", "Pricing Model"]
+      }
+   ],
+   "expertAnalysis": {
+      "description": "This report, written by Joan Li, a leading BPC analyst, delivers in-depth commentary and  analysis to highlight current trends in the US sun care products market and add expert context to  the numbers.",
+      "analyst": {
+         "name": "Joan Li",
+         "position": "Senior Analyst, Beauty & Personal Care",
+         "quote": "Consumer engagement with the category beyond functional need expands usage occasions and resonant claims.",
+         "imageUrl": "/path/to/analyst/image.jpg"
+      }
+   },
+   "reportSegments": [
+      "Sunscreen",
+      "Sunless tanners",
+      "Suntan lotion and oil (includes lotions/oils for indoor tanning beds)"
+   ],
+   "includedBrands": ["Banana Boat", "Hawaiian Tropic"]
+}
