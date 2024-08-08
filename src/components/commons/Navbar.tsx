@@ -11,7 +11,9 @@ const Navbar = () => {
                <Image src={logo} alt='logo' width={120} height={80} />
             </Link>
             <ul className='flex items-center gap-4 text-white'>
-               <li>About Us</li>
+               <Link href='/about'>
+                  <li>About Us</li>
+               </Link>
                <li>Industry</li>
                <li>Custom research</li>
                <li>Company profiles</li>

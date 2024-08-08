@@ -33,7 +33,7 @@ const Button: FC<ButtonProps> = ({
 }) => {
    return (
       <button
-         className={`rounded-md font-semibold transition-colors duration-200 ${
+         className={`rounded-md font-medium transition-colors duration-200 ${
             variantStyles[variant]
          } ${sizeStyles[size]} ${className}`}
          {...props}

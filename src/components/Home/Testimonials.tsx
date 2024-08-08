@@ -12,19 +12,19 @@ const testimonials = [
    {
       review:
          'Vorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.',
-      name: 'John Doe',
+      name: 'Doe',
       designation: 'CEO, Company',
    },
    {
       review:
          'Vorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.',
-      name: 'John Doe',
+      name: 'John',
       designation: 'CEO, Company',
    },
    {
       review:
          'Vorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.',
-      name: 'John Doe',
+      name: 'Anurag',
       designation: 'CEO, Company',
    },
 ];

@@ -8,7 +8,7 @@ const MediaCitation = () => {
                <h2>
                   Media <span>Citations</span>
                </h2>
-               <p className='mx-auto md:w-2/3 md:text-2xl'>
+               <p className='mx-auto md:w-2/3 md:text-2xl mt-2'>
                   Contemplate and gaze at our reports cited by the
                   inquisitors/specialists of leading media/publishing houses.
                </p>
