@@ -52,7 +52,7 @@ const ResearchCard: FC<ResearchCardProps> = ({
                </p>
                <p className='font-semibold text-s-700'>SKU: {sku}</p>
 
-               <Link href={`/report/${id}`}>
+               <Link href={`/report-store/${sku || 1254}`}>
                   <Button
                      onClick={cta}
                      size='small'
@@ -66,7 +66,7 @@ const ResearchCard: FC<ResearchCardProps> = ({
          )}
          {type === 'latest' && (
             <p className='mt-2 flex items-center gap-2 text-xs uppercase'>
-               <a href=''>View Report </a>{' '}
+               <Link href={`/report-store/${sku || 1254}`}>View Report </Link>{' '}
                <span>
                   <BsArrowRight />
                </span>
