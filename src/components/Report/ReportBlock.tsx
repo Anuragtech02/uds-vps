@@ -76,9 +76,14 @@ const ReportBlock = () => {
                      ))}
                   </ul>
                </div>
-               <Button className='w-full py-3' variant='secondary'>
-                  Buy Now
-               </Button>
+               <div className='relative mt-4'>
+                  <div className='width-[max-content] absolute -top-4 left-0 rounded-md bg-red-500 px-2 py-1 text-xs font-medium text-white'>
+                     Upto 20% off
+                  </div>
+                  <Button className='w-full py-3' variant='secondary'>
+                     Buy Now
+                  </Button>
+               </div>
                <Button className='w-full py-3' variant='light'>
                   Enquire Before Buying
                </Button>
