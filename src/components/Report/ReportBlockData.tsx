@@ -10,11 +10,6 @@ const ReportBlockData = () => {
    return (
       <div className='space-y-6 px-4 text-s-700'>
          <div>
-            <p className={styles.title}>Description</p>
-            <p className='text-gray-700'>{reportData.description}</p>
-         </div>
-
-         <div>
             <div>
                <p className={styles.title}>Key Issues Covered in this Report</p>
             </div>

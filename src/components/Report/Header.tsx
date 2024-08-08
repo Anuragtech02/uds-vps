@@ -5,10 +5,10 @@ const Header = () => {
    return (
       <div className='w-full bg-white py-4'>
          <div className='container'>
-            <div className='flex gap-4'>
-               <div className='rounded-md'>
+            <div className='flex gap-8'>
+               <div className='aspect-square h-[200px] rounded-md border border-s-300'>
                   <img
-                     className='h-[200px] w-full object-cover'
+                     className='h-full w-full rounded-md object-cover'
                      src={placeholderImage.src}
                      alt='report'
                   />
@@ -23,12 +23,19 @@ const Header = () => {
                         <p className='text-blue-3'>$3999-$5999</p>
                      </div>
                   </div>
-                  <div className='flex items-center gap-2'>
-                     <p className='text-lg text-s-500'>Categories:</p>
-                     <p className='text-xl text-blue-4'>
-                        Energy and Power, Industry Reports
-                     </p>
-                  </div>
+                  <p className='font-medium text-s-700'>
+                     Unlock the potential for sustained growth with Univdatos’s
+                     US Suncare and Skin Protection Market Report 2024. Our
+                     comprehensive report is designed to provide you with
+                     unparalleled insights and strategic guidance to navigate
+                     the dynamic landscape of the suncare industry. Gain a
+                     competitive edge with in-depth analysis of market trends,
+                     consumer behavior, and key challenges and opportunities
+                     facing the industry. Stay ahead of the curve and make
+                     informed decisions with our 360° view of the market,
+                     including a five-year forecast.
+                  </p>
+
                   <div className='flex items-end justify-between'>
                      <div className='flex flex-col gap-4'>
                         <div className='flex items-center gap-4'>
@@ -49,17 +56,26 @@ const Header = () => {
                            <p className='text-lg text-s-500'>Geography:</p>
                            <p className='text-xl text-blue-4'>Asia-Pacific</p>
                         </div>
+                     </div>
+
+                     <div className='flex flex-col gap-4'>
                         <div className='flex items-center gap-2'>
                            <p className='text-lg text-s-500'>
                               Report ID & SKU:
                            </p>
                            <p className='text-xl text-blue-4'>UMEP212790</p>
                         </div>
+                        <div className='flex items-center gap-2'>
+                           <p className='text-lg text-s-500'>Categories:</p>
+                           <p className='text-xl text-blue-4'>
+                              Energy and Power, Industry Reports
+                           </p>
+                        </div>
                      </div>
-                     <div className='flex items-center gap-2'>
-                        <Button variant='light'>Download Report</Button>
-                        <Button variant='secondary'>Buy Now</Button>
-                     </div>
+                  </div>
+                  <div className='flex items-center justify-end gap-2 py-4'>
+                     <Button variant='light'>Download Report</Button>
+                     <Button variant='secondary'>Buy Now</Button>
                   </div>
                </div>
             </div>

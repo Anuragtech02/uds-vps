@@ -3,6 +3,7 @@ import { FC } from 'react';
 import Button from './commons/Button';
 import { BsArrowRight } from 'react-icons/bs';
 import { CalendarSvg } from './commons/Icons';
+import Link from 'next/link';
 
 interface ResearchCardProps {
    type: string;
@@ -51,14 +52,16 @@ const ResearchCard: FC<ResearchCardProps> = ({
                </p>
                <p className='font-semibold text-s-700'>SKU: {sku}</p>
 
-               <Button
-                  onClick={cta}
-                  size='small'
-                  variant='secondary'
-                  className='mt-2'
-               >
-                  Select options
-               </Button>
+               <Link href={`/report/${id}`}>
+                  <Button
+                     onClick={cta}
+                     size='small'
+                     variant='secondary'
+                     className='mt-2 w-full'
+                  >
+                     Select options
+                  </Button>
+               </Link>
             </div>
          )}
          {type === 'latest' && (

@@ -5,6 +5,7 @@ import { FaArrowRightLong } from 'react-icons/fa6';
 // @ts-ignore
 import Slider from 'react-slick';
 import Button from '../commons/Button';
+import PreBookCTA from '../commons/PreBookCTA';
 
 const sampleData = [
    {
@@ -84,22 +85,7 @@ const LatestResearch = () => {
                </Slider>
             </div>
             <div className='h-8'></div>
-            <div className='rounded-xl bg-gradient-to-r from-[#415496] via-[#1D63BE] to-[#2C8DBF] p-8 text-white'>
-               <div className='mx-auto flex w-3/4 items-center gap-6'>
-                  <h2 className='text-white'>
-                     <span className='text-white'>Pre book</span> this report
-                     and get huge discounts!
-                  </h2>
-                  <Button
-                     size='large'
-                     variant='light'
-                     className='shrink-0 grow-0'
-                     icon={<FaArrowRightLong />}
-                  >
-                     Get in touch
-                  </Button>
-               </div>
-            </div>
+            <PreBookCTA />
          </div>
       </section>
    );

@@ -3,6 +3,7 @@ import { FC } from 'react';
 import Navbar from './commons/Navbar';
 import Topbar from './commons/Topbar';
 import Header from './commons/Header';
+import Footer from './commons/Footer';
 
 interface AppwrapperProps {
    children: React.ReactNode;
@@ -31,6 +32,7 @@ const Appwrapper: FC<AppwrapperProps> = ({ children }) => {
       <>
          <Header key='header' />
          <main key='main'>{children}</main>
+         <Footer key='footer' />
       </>
    );
 };
