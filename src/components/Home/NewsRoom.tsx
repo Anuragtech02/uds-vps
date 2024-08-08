@@ -33,7 +33,7 @@ const NewsRoom = () => {
    return (
       <section>
          <div className='container'>
-            <div className='my-6 flex gap-4 md:my-10 md:mt-0'>
+            <div className='my-6 flex flex-col gap-4 md:my-10 md:mt-0 md:flex-row'>
                <div className='md:w-1/2'>
                   <h3 className='mb-6 text-blue-2'>Our Blogs</h3>
                   {blogs.map((blog, index) => (
@@ -70,9 +70,9 @@ const NewsRoom = () => {
                      {newsItems.map((news, index) => (
                         <div
                            key={index}
-                           className='flex gap-4 rounded-xl bg-white p-6'
+                           className='flex flex-col gap-4 rounded-xl bg-white p-6 md:flex-row'
                         >
-                           <div className='relative aspect-video w-1/3 rounded-md'>
+                           <div className='relative aspect-video rounded-md md:w-1/3'>
                               <Image
                                  src={newPlaceHolder}
                                  alt='news'
@@ -80,7 +80,7 @@ const NewsRoom = () => {
                                  className='rounded-xl'
                               />
                            </div>
-                           <div className='w-2/3'>
+                           <div className='md:w-2/3'>
                               <div className='my-2 flex items-center'>
                                  <p className='font-medium'>Univdatos</p>
                               </div>

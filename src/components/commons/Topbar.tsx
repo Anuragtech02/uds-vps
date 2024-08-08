@@ -7,7 +7,7 @@ const Topbar = () => {
    return (
       <div className='container pb-4'>
          <div className='flex items-center justify-between text-[#1D2C60]'>
-            <div className='flex items-center gap-4'>
+            <div className='flex flex-col gap-2 text-xs md:flex-row md:items-center md:gap-4 md:text-base'>
                <p className='flex items-center gap-2'>
                   <FaPhoneAlt />
                   <span>+1 9782263411</span>
@@ -22,7 +22,7 @@ const Topbar = () => {
                </p>
             </div>
             <div className='flex items-center gap-4'>
-               <select name='' id=''>
+               <select name='' id='' className='hidden md:block'>
                   <option value=''>Energy Market</option>
                </select>
 

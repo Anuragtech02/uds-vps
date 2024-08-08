@@ -9,9 +9,9 @@ const variantStyles = {
 };
 
 const sizeStyles = {
-   small: 'px-3 py-2 text-sm',
-   medium: 'px-4 py-2 text-lg',
-   large: 'px-6 py-3 text-lg',
+   small: 'px-3 py-2 text-xs md:text-sm ',
+   medium: 'px-4 py-2  md:text-lg',
+   large: 'px-6 py-3 md:text-lg',
 };
 
 interface ButtonProps {

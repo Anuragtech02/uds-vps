@@ -27,21 +27,21 @@ const ReviewsSlider: FC<ReviewsSliderProps> = ({ data }) => {
    };
 
    return (
-      <div className='relative mx-auto w-2/3 py-10 pb-20'>
-         <div className='absolute -left-10 bottom-5 z-[5]'>
+      <div className='relative mx-auto py-10 pb-20 md:w-2/3'>
+         <div className='absolute -left-5 bottom-5 z-[5] md:-left-10'>
             <QuoteLeft />
          </div>
-         <div className='absolute -right-10 top-0 z-[5]'>
+         <div className='absolute -right-5 top-0 z-[5] md:-right-10'>
             <QuoteRight />
          </div>
          <Slider {...settings}>
             {data.map((data, index) => (
                <div key={index} className='pr-4'>
                   <div className='rounded-lg bg-blue-2 px-10 py-8 text-white md:px-16'>
-                     <p className='text-xl'>{data.review}</p>
+                     <p className='md:text-xl'>{data.review}</p>
 
                      <div className='mt-6'>
-                        <h3 className='text-xl font-semibold text-white'>
+                        <h3 className='font-semibold text-white md:text-xl'>
                            {data.name}
                         </h3>
                         <p className='uppercase'>{data.designation}</p>

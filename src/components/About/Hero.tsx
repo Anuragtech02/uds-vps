@@ -2,13 +2,11 @@ import Button from '../commons/Button';
 
 const Hero = () => {
    return (
-      <section className='relative min-h-max flex-col bg-white md:pt-40'>
+      <section className='relative min-h-max flex-col bg-white pt-40'>
          <div className='container relative overflow-hidden rounded-lg border border-[#E2EDFA] py-10 md:py-16'>
             <div className='absolute inset-0 z-[1] mx-auto'>
                <svg
-                  className='mx-auto'
-                  width='1183'
-                  height='283'
+                  className='mx-auto h-full w-full'
                   viewBox='0 0 1183 283'
                   fill='none'
                   xmlns='http://www.w3.org/2000/svg'

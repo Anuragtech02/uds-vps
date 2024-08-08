@@ -34,14 +34,14 @@ const stats = [
 
 const Stats = () => {
    return (
-      <div className='mt-8 grid grid-cols-5 gap-4'>
+      <div className='mt-8 grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-5'>
          {stats.map((stat) => (
             <div
                key={stat.title}
                className='relative flex flex-col justify-between rounded-md border border-s-200 bg-white p-4'
             >
                <p>{stat.title}</p>
-               <h3 className='mt-6 font-bricolage text-6xl font-bold text-blue-4'>
+               <h3 className='mt-6 font-bricolage text-4xl font-bold text-blue-4 md:text-6xl'>
                   {stat.count}+
                </h3>
                <img

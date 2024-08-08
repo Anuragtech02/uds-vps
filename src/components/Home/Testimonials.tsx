@@ -38,7 +38,7 @@ const Testimonials = () => {
                   Brands that <span>trust us!</span>
                </h2>
             </div>
-            <div className='my-10 bg-white py-10'>
+            <div className='my-4 bg-white py-6 md:my-10 md:py-10'>
                <BrandsMarquee />
             </div>
          </div>

@@ -17,17 +17,19 @@ const brandImages = [
 
 const BrandsMarquee = () => {
    return (
-      <Marquee gradient={false} speed={50} className='space-x-6'>
-         {brandImages.map((brand, index) => (
-            <div key={index} className='mx-10 grid place-items-center'>
-               <img
-                  src={brand.src.src}
-                  alt={brand.alt}
-                  className='h-auto w-full object-contain object-center'
-               />
-            </div>
-         ))}
-      </Marquee>
+      <div className='w-full max-w-[100vw]'>
+         <Marquee gradient={false} speed={50} className='space-x-6'>
+            {brandImages.map((brand, index) => (
+               <div key={index} className='mx-10 grid place-items-center'>
+                  <img
+                     src={brand.src.src}
+                     alt={brand.alt}
+                     className='h-auto w-full object-contain object-center'
+                  />
+               </div>
+            ))}
+         </Marquee>
+      </div>
    );
 };
 

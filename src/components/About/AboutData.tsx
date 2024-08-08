@@ -85,7 +85,7 @@ const AboutData = () => {
          </div>
          <div className='py-10 md:py-16'>
             <div className='container'>
-               <div className='grid grid-cols-1 md:grid-cols-2 md:gap-8'>
+               <div className='grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-8'>
                   <div>
                      <h2>
                         Our <span>Research</span>, Your <span>Solutions</span>
@@ -98,7 +98,7 @@ const AboutData = () => {
                   </div>
                   {missionVisionGoalsData.map((item, index) => (
                      <div
-                        className='flex items-start gap-4 rounded-md border border-s-300 bg-white p-8'
+                        className='flex flex-col items-start gap-4 rounded-md border border-s-300 bg-white p-8 md:flex-row'
                         key={index}
                      >
                         <p>{item.icon && <item.icon />}</p>

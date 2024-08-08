@@ -6,11 +6,15 @@ import Link from 'next/link';
 const Navbar = () => {
    return (
       <div className='container'>
-         <nav className='flex items-center justify-between rounded-xl bg-blue-2 px-8 py-3'>
+         <nav className='flex items-center justify-between rounded-xl bg-blue-2 px-6 py-3 md:px-8'>
             <Link href='/'>
-               <Image src={logo} alt='logo' width={120} height={80} />
+               <img
+                  src={logo.src}
+                  alt='logo'
+                  className='h-10 w-24 object-contain md:h-16 md:w-32'
+               />
             </Link>
-            <ul className='flex items-center gap-4 text-white'>
+            <ul className='hidden items-center gap-4 text-white md:flex'>
                <Link href='/about'>
                   <li>About Us</li>
                </Link>

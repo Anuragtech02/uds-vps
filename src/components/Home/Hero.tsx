@@ -7,19 +7,18 @@ import heroImage from '@/assets/img/heroStock.jpg';
 import TypewritterText from '../TypewritterText';
 import Stats from '../commons/Stats';
 
-
 const Hero = () => {
    return (
-      <section className='relative bg-white md:pt-20'>
+      <section className='relative bg-white pt-16 md:pt-20'>
          <div className='container'>
-            <div className='flex items-center gap-6 py-16 md:py-32'>
+            <div className='flex flex-col-reverse items-center gap-6 py-16 md:flex-row md:py-32'>
                <div className='md:w-[60%]'>
                   <h1>
                      Unlock <TypewritterText /> <br /> Insights with
                      Comprehensive Research
                   </h1>
 
-                  <div className='mt-6 flex w-2/3 items-center gap-3 rounded-full border border-blue-2 px-6 py-3'>
+                  <div className='mt-6 flex items-center gap-3 rounded-full border border-blue-2 px-6 py-3 md:w-2/3'>
                      <span className='text-2xl'>
                         <IoIosSearch />
                      </span>
@@ -30,7 +29,7 @@ const Hero = () => {
                      />
                   </div>
 
-                  <div className='mt-10 flex items-center gap-2 py-4'>
+                  <div className='mt-4 flex flex-col gap-2 py-4 md:mt-10 md:flex-row md:items-center'>
                      <Button
                         size='large'
                         variant='secondary'
@@ -47,18 +46,18 @@ const Hero = () => {
                      </Button>
                   </div>
                </div>
-               <div className='md:w-[40%]'>
-                  <div className='relative ml-auto aspect-square w-2/3'>
+               <div className='w-full md:w-[40%]'>
+                  <div className='relative ml-auto aspect-square w-full md:w-2/3'>
                      <Image
                         src={heroImage}
-                        className='rounded-xl'
+                        className='h-auto w-full rounded-xl'
                         alt='hero'
                         fill
                      />
                   </div>
                </div>
             </div>
-           <Stats />
+            <Stats />
          </div>
          <Ellipse />
       </section>
