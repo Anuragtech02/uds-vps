@@ -14,14 +14,16 @@ interface ReviewsSliderProps {
 
 const ReviewsSlider: FC<ReviewsSliderProps> = ({ data }) => {
    const settings = {
-      autoPlay: true,
       dots: true,
-      infinite: false,
-      speed: 500,
+      infinite: true,
+      autoplay: true,
+      autoplaySpeed: 2000,
+      pauseOnHover: true,
       slidesToShow: 1,
       slidesToScroll: 1,
       arrows: false,
-      easing: 'ease-in-out',
+      fade: true,
+      cssEase: 'ease-in-out',
    };
 
    return (
