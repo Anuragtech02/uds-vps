@@ -62,7 +62,7 @@ const ReportBlock = () => {
    return (
       <div className='container py-10 md:py-16'>
          <div className='flex items-start gap-4'>
-            <div className='flex flex-[0.2] flex-col gap-6'>
+            <div className='sticky top-[280px] flex flex-[0.2] flex-col gap-6'>
                <div className='w-full rounded-md border border-s-400 bg-white'>
                   <ul className='list-none p-0'>
                      {reportIndex.map((item, index) => (
@@ -91,7 +91,7 @@ const ReportBlock = () => {
             <div className='flex-[0.6]'>
                <ReportBlockData />
             </div>
-            <div className='flex flex-[0.2] flex-col gap-6'>
+            <div className='sticky top-[280px] flex flex-[0.2] flex-col gap-6'>
                <div className='w-full rounded-md border border-s-400 bg-white px-4 py-6'>
                   <p className='capitalise text-center text-lg font-semibold'>
                      Choose your License
