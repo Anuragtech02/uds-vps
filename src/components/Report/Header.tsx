@@ -117,7 +117,7 @@ const Header = () => {
          </div>
          {showSecondHeader && (
             <div
-               className={`sticky left-0 right-0 top-36 z-20 bg-white py-4 transition-all duration-300`}
+               className={`sticky left-0 right-0 top-[136px] z-20 bg-white py-4 transition-all duration-300`}
                ref={headerRef2}
             >
                <div className='container'>

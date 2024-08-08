@@ -5,29 +5,8 @@ import { IoIosSearch } from 'react-icons/io';
 import Image from 'next/image';
 import heroImage from '@/assets/img/heroStock.jpg';
 import TypewritterText from '../TypewritterText';
+import Stats from '../commons/Stats';
 
-const stats = [
-   {
-      title: 'Fortune 500 companies work with us',
-      count: 15,
-   },
-   {
-      title: 'Technologies Covered',
-      count: 200,
-   },
-   {
-      title: 'Countries covered',
-      count: 100,
-   },
-   {
-      title: 'Projects Completed',
-      count: 1500,
-   },
-   {
-      title: 'Delighted Customers',
-      count: 1250,
-   },
-];
 
 const Hero = () => {
    return (
@@ -79,19 +58,7 @@ const Hero = () => {
                   </div>
                </div>
             </div>
-            <div className='mt-12 grid grid-cols-5 gap-4'>
-               {stats.map((stat) => (
-                  <div
-                     key={stat.title}
-                     className='flex flex-col justify-between rounded-md border border-s-200 bg-white p-4'
-                  >
-                     <p>{stat.title}</p>
-                     <h3 className='font-bricolage mt-6 text-6xl font-bold text-blue-4'>
-                        {stat.count}+
-                     </h3>
-                  </div>
-               ))}
-            </div>
+           <Stats />
          </div>
          <Ellipse />
       </section>

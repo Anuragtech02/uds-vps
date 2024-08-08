@@ -32,13 +32,15 @@ const testimonials = [
 const Testimonials = () => {
    return (
       <section className='min-h-full flex-col'>
-         <div className='container py-10'>
-            <h2>
-               Brands that <span>trust us!</span>
-            </h2>
-         </div>
-         <div className='my-10 bg-white py-10'>
-            <BrandsMarquee />
+         <div className='bg-s-50'>
+            <div className='container py-10'>
+               <h2>
+                  Brands that <span>trust us!</span>
+               </h2>
+            </div>
+            <div className='my-10 bg-white py-10'>
+               <BrandsMarquee />
+            </div>
          </div>
          <div className='relative z-[1] w-full bg-blue-1 py-10'>
             <div className='container'>
