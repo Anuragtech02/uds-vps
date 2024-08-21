@@ -3,16 +3,15 @@ import newPlaceHolder from '@/assets/img/newPlaceholder.jpg';
 import { CalendarSvg } from '../commons/Icons';
 import { FC } from 'react';
 
-interface BlogItemProps {
+interface NewsItemProps {
    title: string;
    date: string;
-   description: string;
 }
 
-const BlogItem: FC<BlogItemProps> = ({ title, date, description }) => {
+const NewsItem: FC<NewsItemProps> = ({ title, date }) => {
    return (
-      <div className='flex flex-col gap-4 rounded-xl bg-white p-6 md:flex-row'>
-         <div className='relative aspect-video rounded-md md:w-1/3'>
+      <div className='flex flex-col gap-4 rounded-xl border border-s-300 bg-white p-6'>
+         <div className='relative aspect-video rounded-md'>
             <Image
                src={newPlaceHolder}
                alt='news'
@@ -20,18 +19,14 @@ const BlogItem: FC<BlogItemProps> = ({ title, date, description }) => {
                className='rounded-xl'
             />
          </div>
-         <div className='md:w-2/3'>
+         <div className=''>
             <div className='my-2 flex items-center'>
                <p className='font-medium'>Univdatos</p>
             </div>
             <h4 className='mb-2 text-xl font-semibold'>
                {title.length > 60 ? title.substring(0, 60) + '...' : title}
             </h4>
-            <p className='text-gray-600'>
-               {description.length > 100
-                  ? description.substring(0, 100) + '...'
-                  : description}
-            </p>
+
             <p className='my-2 flex items-center gap-2'>
                <CalendarSvg />
                {date}
@@ -41,4 +36,4 @@ const BlogItem: FC<BlogItemProps> = ({ title, date, description }) => {
    );
 };
 
-export default BlogItem;
+export default NewsItem;

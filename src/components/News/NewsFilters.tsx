@@ -1,9 +1,9 @@
 import industries from '@/utils/industries.json';
 
-const BlogFilters = () => {
+const NewsFilters = () => {
    return (
       <div className='sticky top-48 flex-[0.3] rounded-xl bg-white p-6'>
-         <h2 className='text-[1.625rem] font-medium'>Blogs by industry</h2>
+         <h2 className='text-[1.625rem] font-medium'>News by industry</h2>
          <div className='mt-2 space-y-4'>
             {industries.map((industry) => (
                <div className='flex items-center gap-4' key={industry}>
@@ -22,4 +22,4 @@ const BlogFilters = () => {
    );
 };
 
-export default BlogFilters;
+export default NewsFilters;
