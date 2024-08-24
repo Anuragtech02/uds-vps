@@ -1,6 +1,7 @@
 import CartItem from '@/components/Cart/CartItem';
 import CostCalculations from '@/components/Cart/CostCalculations';
 import Button from '@/components/commons/Button';
+import Link from 'next/link';
 
 const sampleCartItems = [
    {
@@ -78,7 +79,9 @@ const Cart = () => {
                <CostCalculations cost={totalCost} city='Mumbai' />
             </div>
             <div className='w-full text-right'>
-               <Button variant='secondary'>Proceed to Checkout</Button>
+               <Link href='/checkout'>
+                  <Button variant='secondary'>Proceed to Checkout</Button>
+               </Link>
             </div>
          </div>
       </div>
