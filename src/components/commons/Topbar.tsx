@@ -2,6 +2,7 @@ import { FaPhoneAlt } from 'react-icons/fa';
 import { FaCircleUser } from 'react-icons/fa6';
 import { IoIosSearch, IoMdCart } from 'react-icons/io';
 import { IoMail } from 'react-icons/io5';
+import industries from '@/utils/industries.json';
 
 const Topbar = () => {
    return (
@@ -23,7 +24,11 @@ const Topbar = () => {
             </div>
             <div className='flex items-center gap-4'>
                <select name='' id='' className='hidden md:block'>
-                  <option value=''>Energy Market</option>
+                  {industries.map((industry) => (
+                     <option key={industry} value={industry}>
+                        {industry}
+                     </option>
+                  ))}
                </select>
 
                <span className='cursor-pointer text-xl'>
