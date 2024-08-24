@@ -11,7 +11,7 @@ const Checkout = () => {
                <div className='flex items-stretch gap-4'>
                   <input
                      type='text'
-                     className='bg-gray-50 px-6'
+                     className='bg-gray-50 px-6 text-sm'
                      placeholder='Coupon Code'
                   />
 
