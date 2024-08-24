@@ -4,7 +4,6 @@ import ContactForm from '@/components/Contact/ContactForm';
 const Contact = () => {
    return (
       <div className='container pt-40'>
-         <h1 className='mt-5 text-center'>Contact</h1>
          <div className='my-10 flex flex-col-reverse items-start gap-6 md:flex-row md:gap-10'>
             <div className='flex-[0.4]'>
                <ContactDetails />
