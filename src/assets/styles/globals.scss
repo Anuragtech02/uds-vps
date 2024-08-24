@@ -76,6 +76,7 @@ span.caret {
       }
    }
 }
+
 .slick-dots {
    bottom: -60px !important;
    li {
@@ -91,6 +92,25 @@ span.caret {
       &.slick-active {
          background: #ffffff;
       }
+   }
+}
+
+.tile-white {
+   @apply bg-s-100;
+   animation: alternate 1s infinite;
+}
+
+.tile-gray {
+   @apply bg-white;
+   animation: alternate 1s infinite;
+}
+
+@keyframes fadeIn {
+   0% {
+      opacity: 0;
+   }
+   100% {
+      opacity: 1;
    }
 }
 

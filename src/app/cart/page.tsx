@@ -28,6 +28,7 @@ const Cart = () => {
    const totalCost = sampleCartItems.reduce((acc, item) => {
       return acc + item.price * item.quantity;
    }, 0);
+
    return (
       <div className='container pt-40'>
          <div className='mt-5 w-full space-y-4 rounded-xl bg-white p-6 md:space-y-6'>
