@@ -10,7 +10,7 @@ interface ReportStoreItemProps {
    description: string;
    priceRange: string;
    sku: string;
-   showPrice: boolean;
+   showPrice?: boolean;
 }
 
 const ReportStoreItem: FC<ReportStoreItemProps> = ({
