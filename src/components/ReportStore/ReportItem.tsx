@@ -10,6 +10,7 @@ interface ReportStoreItemProps {
    description: string;
    priceRange: string;
    sku: string;
+   showPrice: boolean;
 }
 
 const ReportStoreItem: FC<ReportStoreItemProps> = ({
@@ -18,6 +19,7 @@ const ReportStoreItem: FC<ReportStoreItemProps> = ({
    description,
    priceRange,
    sku,
+   showPrice = true,
 }) => {
    return (
       <div className='flex flex-col gap-4 rounded-xl bg-white p-6 md:flex-row'>
@@ -38,9 +40,11 @@ const ReportStoreItem: FC<ReportStoreItemProps> = ({
                   ? description.substring(0, 100) + '...'
                   : description}
             </p>
-            <div className='inline-block rounded-full bg-blue-9 px-4 py-2 text-lg font-medium text-blue-1'>
-               <p>{priceRange}</p>
-            </div>
+            {showPrice && (
+               <div className='inline-block rounded-full bg-blue-9 px-4 py-2 text-lg font-medium text-blue-1'>
+                  <p>{priceRange}</p>
+               </div>
+            )}
             <div className='flex w-full items-end justify-between'>
                <div className='space-y-3'>
                   <p className='flex items-center gap-2 text-sm font-semibold'>
