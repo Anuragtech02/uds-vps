@@ -25,8 +25,8 @@ const Footer = () => {
                <CustomResearchCTA />
             </div>
          )}
-         <footer className='bg-blue-1 py-12 text-white'>
-            <div className='relative border-b border-blue-4 pb-12 text-center'>
+         <footer className='bg-blue-1 pb-12 text-white'>
+            <div className='relative border-b border-blue-4 py-12 text-center'>
                <img
                   src={earth.src}
                   className='absolute inset-0 z-[1] h-full w-full object-cover'
