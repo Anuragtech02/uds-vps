@@ -29,7 +29,7 @@ const testimonials = [
    },
 ];
 
-const Testimonials = () => {
+const Testimonials: React.FC<{ data: any }> = ({ data }) => {
    return (
       <section className='min-h-full flex-col'>
          <div className='bg-s-50'>

@@ -1,11 +1,13 @@
-// utils/api/services.ts
+import { cookies } from 'next/headers';
 
-import type { NextConfig } from 'next';
 import API from './config';
+import { buildPopulateQuery } from '../generic-methods';
+import fetchClient from './config';
 
-function getAuthHeaders(context: NextConfig) {
-   if (context?.req?.headers) {
-      const authHeader = context.req.headers.authorization;
+function getAuthHeaders() {
+   const cookieStore = cookies();
+   if (cookieStore.get('authorization')) {
+      const authHeader = cookieStore.get('authorization')?.value;
       return {
          Authorization: `Bearer ${authHeader}`,
       };
@@ -13,12 +15,19 @@ function getAuthHeaders(context: NextConfig) {
    return undefined;
 }
 
-export const getProducts = async (context: NextConfig) => {
+export const getHomePage = async () => {
    try {
-      const response = await API.get('/home-page', {
-         headers: getAuthHeaders(context),
+      const populateQuery = buildPopulateQuery([
+         'heroPrimaryCTA.link',
+         'heroSecondaryCTA.link',
+         'heroImage.url',
+         'animationIndustriesList.name',
+         'statisticsCards.icon.url',
+      ]);
+      const response = await fetchClient('/home-page' + populateQuery, {
+         headers: getAuthHeaders(),
       });
-      return response.data;
+      return await response;
    } catch (error) {
       console.error('Error fetching products:', error);
       throw error;

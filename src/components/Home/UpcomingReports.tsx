@@ -83,7 +83,7 @@ const sampleData = [
    },
 ];
 
-const UpcomingReports = () => {
+const UpcomingReports: React.FC<{ data: any }> = ({ data }) => {
    const settings = {
       dots: false,
       infinite: false,
