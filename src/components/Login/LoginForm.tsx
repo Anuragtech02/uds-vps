@@ -6,7 +6,7 @@ import { useState } from 'react';
 const LoginForm = () => {
    const [showPassword, setShowPassword] = useState(false);
    return (
-      <div className='rounded-xl border border-s-500 p-4 md:p-6'>
+      <div className='rounded-xl border border-s-300 p-4 md:p-6'>
          <p className='text-[1.75rem] font-semibold text-s-800'>Login</p>
          <form className='mt-4 space-y-4'>
             <div className='flex flex-col gap-1'>

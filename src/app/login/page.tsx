@@ -1,5 +1,6 @@
 import LoginForm from '@/components/Login/LoginForm';
 import LoginSidebar from '@/components/Login/LoginSidebar';
+import { IoIosSearch } from 'react-icons/io';
 import { IoSearch } from 'react-icons/io5';
 
 const Login = () => {
@@ -15,15 +16,15 @@ const Login = () => {
                </div>
 
                <div className='flex-[0.4] space-y-4 md:space-y-6'>
-                  <div className='flex w-full items-stretch rounded-l-md'>
+                  <div className='flex items-center gap-3 rounded-full border border-blue-2 px-6 py-3'>
+                     <span className='text-2xl'>
+                        <IoIosSearch />
+                     </span>
                      <input
                         type='text'
-                        placeholder='Aerospace'
-                        className='grow rounded-l-md border border-gray-300 bg-gray-50 px-6 py-2'
+                        placeholder='Search for reports, industries and more...'
+                        className='w-full bg-transparent text-[1.125rem] outline-none'
                      />
-                     <div className='grid aspect-square w-10 cursor-pointer place-items-center bg-blue-3 text-2xl'>
-                        <IoSearch color='white' />
-                     </div>
                   </div>
                   <LoginSidebar />
                </div>
