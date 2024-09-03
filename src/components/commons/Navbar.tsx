@@ -23,8 +23,11 @@ const Navbar = () => {
                <li className='dropdown-menu relative flex cursor-pointer items-center'>
                   Industry <BiChevronDown className='inline text-xl' />
                   <ul className='border-top absolute top-[100%] w-[320px] rounded-b-xl border border-s-400 bg-white font-medium text-s-800'>
-                     {industries.map((industry) => (
-                        <li className='cursor-pointer border-t border-s-400 px-6 py-2 font-medium hover:font-bold'>
+                     {industries.map((industry, key) => (
+                        <li
+                           className='cursor-pointer border-t border-s-400 px-6 py-2 font-medium hover:font-bold'
+                           key={key}
+                        >
                            {industry}
                         </li>
                      ))}
