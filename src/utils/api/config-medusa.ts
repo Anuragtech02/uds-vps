@@ -1,10 +1,9 @@
-const baseURL = process.env.API_URL || 'http://127.0.0.1:1337';
+const baseURL = process.env.NEXT_PUBLIC_MEDUSA_API || 'http://127.0.0.1:1337';
+const medusaToken = process.env.NEXT_PUBLIC_MEDUSA_TOKEN;
 const timeout = 10000;
 
-const fetchClient = async (url: string, options: any = {}) => {
+const fetchClientMedusa = async (url: string, options: any = {}) => {
    const fullUrl = `${baseURL}${url}`;
-
-   console.log(fullUrl);
 
    const defaultHeaders = {
       'Content-Type': 'application/json',
@@ -15,6 +14,7 @@ const fetchClient = async (url: string, options: any = {}) => {
       headers: {
          ...defaultHeaders,
          ...options.headers,
+         'x-publishable-api-key': `${medusaToken}`,
       },
    };
 
@@ -43,4 +43,4 @@ const fetchClient = async (url: string, options: any = {}) => {
    }
 };
 
-export default fetchClient;
+export default fetchClientMedusa;

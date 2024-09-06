@@ -1,17 +1,15 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Button from '../commons/Button';
 import sampleReport from './sample.json';
 import ReportBlockData from './ReportBlockData';
+import Link from 'next/link';
+// import fetchClientMedusa from '@/utils/api/config-medusa';
 
 const reportIndex = [
-   'About this report',
-   'Table of contents',
-   'List of figures',
-   'List of tables',
-   'Research methodology',
-   'Request sample',
-   'Request customization',
+   { title: 'About this report', id: 'about-report' },
+   { title: 'Table of content', id: 'table-of-content' },
+   { title: 'Report Data', id: 'report-data' },
 ];
 
 const licenseOptions = [
@@ -55,9 +53,49 @@ const licenseOptions = [
    },
 ];
 
-const ReportBlock = () => {
+const ReportBlock: React.FC<{ data: any }> = ({ data }) => {
+   const reportData = {
+      aboutReport: data.attributes.aboutReport,
+      tableOfContent: data.attributes.tableOfContent,
+      description: data.attributes.description,
+      faqSectionHeading: data.attributes.faqSectionHeading,
+      faqList: data.attributes.faqList,
+      relatedReportsSectionHeading:
+         data.attributes.relatedReportsSectionHeading,
+      relatedReportsSectionReportsCount:
+         data.attributes.relatedReportsSectionReportsCount,
+      relatedReportsSectionSubheading:
+         data.attributes.relatedReportsSectionSubheading,
+      clientsSectionHeading: data.attributes.clientsSectionHeading,
+      ctaBanner: data.attributes.ctaBanner,
+      leftSectionPrimaryCTAButton: data.attributes.leftSectionPrimaryCTAButton,
+      leftSectionSecondaryCTAButton:
+         data.attributes.leftSectionSecondaryCTAButton,
+      rightSectionHeading: data.attributes.rightSectionHeading,
+   };
    const [selectedIndex, setSelectedIndex] = useState(0);
    const [selectedLicense, setSelectedLicense] = useState(0);
+   const [medusaReport, setMedusaReport] = useState({});
+
+   // useEffect(() => {
+   //    async function fetchProduct(){
+   //       const res = await fetchClientMedusa(`/products/${data.attributes.medusaID}`);
+   //       setMedusaReport(res.product);
+   //    }
+   //    fetchProduct();
+   // }, []);
+
+   function scrollIntoView(id: string) {
+      // add 200px of top padding
+      const element = document.getElementById(id);
+      if (element) {
+         element.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start',
+            inline: 'nearest',
+         });
+      }
+   }
 
    return (
       <div className='container py-10 md:py-16'>
@@ -69,9 +107,12 @@ const ReportBlock = () => {
                         <li
                            key={index}
                            className={`cursor-pointer px-4 py-3 transition-all duration-150 ${selectedIndex === index && 'border-y border-s-300 bg-blue-2 font-semibold text-white'} `}
-                           onClick={() => setSelectedIndex(index)}
+                           onClick={() => {
+                              setSelectedIndex(index);
+                              scrollIntoView(item.id);
+                           }}
                         >
-                           {item}
+                           {item.title}
                         </li>
                      ))}
                   </ul>
@@ -80,24 +121,28 @@ const ReportBlock = () => {
                   <div className='width-[max-content] absolute -top-4 left-0 rounded-md bg-red-500 px-2 py-1 text-xs font-medium text-white'>
                      Upto 20% off
                   </div>
-                  <Button className='w-full py-3' variant='secondary'>
-                     Buy Now
-                  </Button>
+                  <Link href={reportData.leftSectionPrimaryCTAButton.link}>
+                     <Button className='w-full py-3' variant='secondary'>
+                        {reportData.leftSectionPrimaryCTAButton.title}
+                     </Button>
+                  </Link>
                </div>
-               <Button className='w-full py-3' variant='light'>
-                  Enquire Before Buying
-               </Button>
+               <Link href={reportData.leftSectionSecondaryCTAButton.link}>
+                  <Button className='w-full py-3' variant='light'>
+                     {reportData.leftSectionSecondaryCTAButton.title}
+                  </Button>
+               </Link>
             </div>
             <div className='flex-[0.6]'>
-               <ReportBlockData />
+               <ReportBlockData data={reportData} />
             </div>
             <div className='sticky top-[280px] flex flex-[0.2] flex-col gap-6'>
                <div className='w-full rounded-md border border-s-400 bg-white px-4 py-6'>
                   <p className='capitalise text-center text-lg font-semibold'>
-                     Choose your License
+                     {reportData.rightSectionHeading}
                   </p>
                   <div className='mt-4 flex flex-col gap-2'>
-                     {licenseOptions.map((license, index) => (
+                     {medusaReport?.variants?.map((license: any, index: number) => (
                         <div
                            key={index}
                            className={`cursor-pointer rounded-md border border-s-300 p-4 transition-all duration-150 ${
@@ -113,15 +158,15 @@ const ReportBlock = () => {
                                     checked={selectedLicense === index}
                                  />
                                  <p className='w-2/3 font-semibold'>
-                                    {license.title}
+                                    {license.options[0].value}
                                  </p>
                               </div>
                               <div className='shrink-0'>
                                  <p className='text-[0.625rem] text-sm line-through'>
-                                    {license.price}
+                                    {license.prices[0].amount}
                                  </p>
                                  <p className='font-semibold text-green-1'>
-                                    {license.discountedPrice}
+                                    {license.prices[0].amount}
                                  </p>
                               </div>
                            </div>
@@ -129,7 +174,7 @@ const ReportBlock = () => {
                            <ul
                               className={`list-disc pl-4 transition-all duration-150 ${selectedLicense === index ? 'mt-4 h-auto overflow-visible' : 'h-0 overflow-hidden'} `}
                            >
-                              {license.perks.map((perk, index) => (
+                              {license.metadata?.description?.split(",")?.map((perk, index) => (
                                  <li
                                     key={index}
                                     className='py-1 text-sm text-s-800'

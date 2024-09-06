@@ -8,5 +8,5 @@ export const buildPopulateQuery = (fields: string[]): string => {
       .map((field, i) => `populate[${i}]=${field}`)
       .join('&');
 
-   return `?${populateString}`;
+   return populateString;
 };

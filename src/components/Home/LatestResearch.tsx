@@ -94,6 +94,12 @@ const LatestResearch: React.FC<{ data: any }> = ({ data }) => {
          data.data.attributes.latestResearchSectionTitle,
       latestResearchSectionReportsCount:
          data.data.attributes.latestResearchSectionReportsCount,
+      latestResearchSectionCTABanner: {
+         title: data.data.attributes.latestResearchSectionCTABanner.title,
+         type: data.data.attributes.latestResearchSectionCTABanner.type,
+         ctaButton:
+            data.data.attributes.latestResearchSectionCTABanner.ctaButton,
+      },
    };
 
    return (
@@ -120,7 +126,14 @@ const LatestResearch: React.FC<{ data: any }> = ({ data }) => {
                </Slider>
             </div>
             <div className='h-8'></div>
-            <PreBookCTA />
+            <PreBookCTA
+               title={
+                  latestResearchSection.latestResearchSectionCTABanner.title
+               }
+               ctaButton={
+                  latestResearchSection.latestResearchSectionCTABanner.ctaButton
+               }
+            />
          </div>
       </section>
    );

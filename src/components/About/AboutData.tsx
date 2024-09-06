@@ -43,7 +43,7 @@ const AboutData = () => {
                </div>
                <div>
                   <div className='py-6 text-left'>
-                     <Stats />
+                     {/* <Stats /> */}
                   </div>
                   <div className='flex flex-col-reverse items-center gap-8 pt-8 md:flex-row md:pt-12'>
                      <div className='space-y-4 md:w-1/2'>

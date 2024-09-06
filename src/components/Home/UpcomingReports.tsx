@@ -4,8 +4,6 @@ import sampleImage from '@/assets/img/sampleResearch.png';
 
 // @ts-ignore
 import Slider from 'react-slick';
-import Button from '../commons/Button';
-import { FaArrowRightLong } from 'react-icons/fa6';
 import CustomResearchCTA from '../commons/CustomResearchCTA';
 
 const sampleData = [

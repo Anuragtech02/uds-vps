@@ -6,50 +6,23 @@ const styles = {
    subTitle: 'text-lg font-semibold text-blue-2 mb-2 mt-4',
 };
 
-const ReportBlockData = () => {
+const ReportBlockData: React.FC<{ data: any }> = ({ data }) => {
    return (
       <div className='space-y-6 px-4 text-s-700'>
-         <div>
-            <div>
-               <p className={styles.title}>Key Issues Covered in this Report</p>
-            </div>
-            <div>
-               <ul className='list-disc space-y-2 pl-5'>
-                  {reportData.keyIssuesCovered.map((issue, index) => (
-                     <li key={index}>{issue}</li>
-                  ))}
-               </ul>
-            </div>
-         </div>
-
-         <div>
-            <div>
-               <p className={styles.title}>Market Overview</p>
-            </div>
-            <div>
-               <p className={styles.subTitle}>Current Landscape</p>
-               <ul className='list-disc space-y-2 pl-5'>
-                  {reportData.marketOverview.currentLandscape.map(
-                     (point, index) => (
-                        <li key={index}>{point}</li>
-                     ),
-                  )}
-               </ul>
-               <h3 className={styles.subTitle}>Market Growth</h3>
-               <p>
-                  The market increased by an estimated{' '}
-                  {reportData.marketOverview.marketGrowth.estimatedGrowth} in{' '}
-                  {reportData.marketOverview.marketGrowth.year}.
-               </p>
-            </div>
-         </div>
+         <div
+            id='about-report'
+            dangerouslySetInnerHTML={{
+               __html: data.aboutReport,
+            }}
+            className='report-content'
+         ></div>
 
          <div>
             <div>
                <h2 className={styles.title}>Table of Contents</h2>
             </div>
-            <ol>
-               {reportData.tableOfContents.map((section, index) => (
+            <ol id='table-of-content'>
+               {data.tableOfContent.map((section: any, index: number) => (
                   <TableOfContentItem
                      {...section}
                      number={index + 1}
@@ -59,7 +32,7 @@ const ReportBlockData = () => {
             </ol>
          </div>
 
-         <div className='space-y-4'>
+         {/* <div className='space-y-4'>
             <div>
                <h2 className={styles.title}>Expert Analysis</h2>
                <p>{reportData.expertAnalysis.description}</p>
@@ -82,9 +55,9 @@ const ReportBlockData = () => {
                   </p>
                </div>
             </div>
-         </div>
+         </div> */}
 
-         <div>
+         {/* <div>
             <div>
                <h2 className={styles.title}>More About this Report</h2>
             </div>
@@ -108,7 +81,15 @@ const ReportBlockData = () => {
                   ))}
                </ul>
             </div>
-         </div>
+         </div> */}
+
+         <div
+            id='report-data'
+            className='report-content'
+            dangerouslySetInnerHTML={{
+               __html: data.description,
+            }}
+         ></div>
       </div>
    );
 };
