@@ -28,6 +28,7 @@ export const variants = {
 };
 
 const Appwrapper: FC<AppwrapperProps> = ({ children }) => {
+   
    return (
       <>
          <Header key='header' />

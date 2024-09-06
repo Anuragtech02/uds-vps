@@ -2,7 +2,7 @@
 import { allCitations } from '@/assets/img/citations';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
-const MediaCitation = () => {
+const MediaCitation: React.FC<{ data: any }> = ({ data }) => {
    const [shuffleAlternator, setShuffleAlternator] = useState<boolean>(false);
 
    const shuffleCitations = useCallback(() => {

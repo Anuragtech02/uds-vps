@@ -5,7 +5,7 @@ import { BiPlusCircle } from 'react-icons/bi';
 
 const TableOfContentItem = (data: {
    title: string;
-   subsections: any;
+   description: any;
    number: number;
 }) => {
    const [isOpen, setIsOpen] = useState(false);
@@ -28,11 +28,15 @@ const TableOfContentItem = (data: {
          <div
             className={`transition-all duration-200 ${isOpen ? 'h-auto overflow-visible border-t border-s-300 py-4 pl-6' : 'h-0 overflow-hidden'}`}
          >
-            <ol className='list-decimal' start={1}>
+            {/* <ol className='list-decimal' start={1}>
                {data.subsections.map((item: string, index: number) => (
                   <li key={index}>{item}</li>
                ))}
-            </ol>
+            </ol> */}
+            <div
+               dangerouslySetInnerHTML={{ __html: data.description }}
+               className='pl-2 [&>ol]:list-decimal'
+            ></div>
          </div>
       </li>
    );

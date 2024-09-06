@@ -1,7 +1,7 @@
 'use client';
 import { useState, useEffect, useCallback, useRef } from 'react';
 
-const markets = [
+const DUMMY_MARKETS = [
    'Energy Market',
    'Aerospace Market',
    'Automotive Market',
@@ -10,7 +10,9 @@ const markets = [
    'Chemical Market',
 ];
 
-const TypewriterText = () => {
+const TypewriterText: React.FC<{
+   markets: string[];
+}> = ({ markets = DUMMY_MARKETS }) => {
    const [text, setText] = useState('');
    const [marketIndex, setMarketIndex] = useState(0);
    const [isDeleting, setIsDeleting] = useState(false);

@@ -29,7 +29,7 @@ const blogs = [
    },
 ];
 
-const NewsRoom = () => {
+const NewsRoom: React.FC<{ data: any }> = ({ data }) => {
    return (
       <section>
          <div className='container'>

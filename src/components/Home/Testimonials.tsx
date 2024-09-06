@@ -1,35 +1,19 @@
-import Marquee from 'react-fast-marquee';
 import ReviewsSlider from '../ReviewsSlider';
 import BrandsMarquee from '../commons/BrandsMarquee';
 
-const testimonials = [
-   {
-      review:
-         'Vorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.',
-      name: 'John Doe',
-      designation: 'CEO, Company',
-   },
-   {
-      review:
-         'Vorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.',
-      name: 'Doe',
-      designation: 'CEO, Company',
-   },
-   {
-      review:
-         'Vorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.',
-      name: 'John',
-      designation: 'CEO, Company',
-   },
-   {
-      review:
-         'Vorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.',
-      name: 'Anurag',
-      designation: 'CEO, Company',
-   },
-];
+const Testimonials: React.FC<{ data: any }> = ({ data }) => {
+   const testimonialsList =
+      data.data.attributes.testimonialSectionTestimonials.data.map(
+         (testimonial: any) => ({
+            review: testimonial.attributes.description,
+            name: testimonial.attributes.name,
+            designation: testimonial.attributes.designation,
+         }),
+      );
 
-const Testimonials = () => {
+   const bankLogos = data.data.attributes.brandsSecetionBankLogos.data;
+   console.log(bankLogos);
+
    return (
       <section className='min-h-full flex-col'>
          <div className='bg-s-50'>
@@ -39,7 +23,7 @@ const Testimonials = () => {
                </h2>
             </div>
             <div className='my-4 bg-white py-6 md:my-10 md:py-10'>
-               <BrandsMarquee />
+               <BrandsMarquee logos={bankLogos} />
             </div>
          </div>
          <div className='relative z-[1] w-full bg-blue-1 py-10'>
@@ -49,7 +33,7 @@ const Testimonials = () => {
                   <span className='text-white'>customers</span> say
                </h2>
                <div>
-                  <ReviewsSlider data={testimonials} />
+                  <ReviewsSlider data={testimonialsList} />
                </div>
             </div>
          </div>

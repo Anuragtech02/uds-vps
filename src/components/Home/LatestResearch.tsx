@@ -55,7 +55,7 @@ const sampleData = [
    },
 ];
 
-const LatestResearch = () => {
+const LatestResearch: React.FC<{ data: any }> = ({ data }) => {
    const settings = {
       dots: false,
       infinite: false,
@@ -88,12 +88,28 @@ const LatestResearch = () => {
          },
       ],
    };
+
+   const latestResearchSection = {
+      latestResearchSectionTitle:
+         data.data.attributes.latestResearchSectionTitle,
+      latestResearchSectionReportsCount:
+         data.data.attributes.latestResearchSectionReportsCount,
+      latestResearchSectionCTABanner: {
+         title: data.data.attributes.latestResearchSectionCTABanner.title,
+         type: data.data.attributes.latestResearchSectionCTABanner.type,
+         ctaButton:
+            data.data.attributes.latestResearchSectionCTABanner.ctaButton,
+      },
+   };
+
    return (
       <section className='min-h-full py-10 md:py-20'>
          <div className='container'>
-            <h2>
-               Our <span>lastest</span> research
-            </h2>
+            <h2
+               dangerouslySetInnerHTML={{
+                  __html: latestResearchSection.latestResearchSectionTitle,
+               }}
+            />
             <div className='my-8 md:my-10'>
                <Slider {...settings}>
                   {sampleData.map((data, index) => (
@@ -110,7 +126,14 @@ const LatestResearch = () => {
                </Slider>
             </div>
             <div className='h-8'></div>
-            <PreBookCTA />
+            <PreBookCTA
+               title={
+                  latestResearchSection.latestResearchSectionCTABanner.title
+               }
+               ctaButton={
+                  latestResearchSection.latestResearchSectionCTABanner.ctaButton
+               }
+            />
          </div>
       </section>
    );

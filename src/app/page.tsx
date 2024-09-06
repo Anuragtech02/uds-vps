@@ -6,15 +6,20 @@ import NewsRoom from '@/components/Home/NewsRoom';
 import Testimonials from '@/components/Home/Testimonials';
 import UpcomingReports from '@/components/Home/UpcomingReports';
 
-export default function Home() {
+import { getHomePage } from '../utils/api/services';
+import type { NextConfig } from 'next';
+
+export default async function Home() {
+   const homePage = await getHomePage();
+
    return (
       <>
-         <Hero />
-         <LatestResearch />
-         <Testimonials />
-         <UpcomingReports />
-         <MediaCitation />
-         <NewsRoom />
+         <Hero data={homePage} />
+         <LatestResearch data={homePage} />
+         <Testimonials data={homePage} />
+         <UpcomingReports data={homePage} />
+         <MediaCitation data={homePage} />
+         <NewsRoom data={homePage} />
       </>
    );
 }

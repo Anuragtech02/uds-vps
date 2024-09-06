@@ -10,7 +10,6 @@ const About = () => {
          <Hero />
          <AboutData />
          <MediaCitation />
-         {/* <OrderProcess /> */}
          <AboutCta />
       </>
    );

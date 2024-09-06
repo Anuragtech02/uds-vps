@@ -3,3 +3,132 @@
 @import 'slick-carousel/slick/slick-theme.css';
 
 @import './globals.scss';
+
+/* Report Content Styles */
+.report-content {
+   font-family: 'Manrope', sans-serif !important;
+   color: #1a202c !important; /* text-s-800 replacement */
+   line-height: 1.6 !important;
+   margin-bottom: 2rem !important;
+}
+
+.report-content span {
+   font-family: 'Manrope', sans-serif !important;
+}
+
+/* Headings */
+.report-content h1 span,
+.report-content h2 span,
+.report-content h3 span,
+.report-content h4 span {
+   font-family: 'Bricolage Grotesque', sans-serif !important;
+   font-weight: 600 !important;
+   margin-top: 1rem !important;
+   margin-bottom: 0.5rem !important;
+   color: #09184c !important;
+}
+
+.report-content h1 span {
+   font-size: 3.5rem !important;
+   line-height: 4.46rem !important;
+   @media screen and (max-width: 768px) {
+      font-size: 2.25rem !important;
+      line-height: 2.8rem !important;
+   }
+}
+
+.report-content h2 span {
+   font-size: 2.5rem !important;
+   line-height: 2.87rem !important;
+   @media screen and (max-width: 768px) {
+      font-size: 1.5rem !important;
+      line-height: 1.8rem !important;
+   }
+}
+
+.report-content h3 span {
+   font-size: 2rem !important;
+   line-height: 2.4rem !important;
+   font-weight: 500 !important;
+   @media screen and (max-width: 768px) {
+      font-size: 1.25rem !important;
+      line-height: 1.6rem !important;
+   }
+}
+
+/* Paragraph styling */
+.report-content p {
+   margin-bottom: 1.5rem !important;
+   line-height: 1.8 !important;
+}
+
+/* Image styling */
+.report-content img {
+   max-width: 100% !important;
+   height: auto !important;
+   display: block !important;
+   margin: 0 auto 20px !important;
+}
+
+/* List styling */
+.report-content ul,
+.report-content ol {
+   padding-left: 1.5rem !important;
+   margin-bottom: 1.5rem !important;
+}
+
+.report-content li {
+   margin-bottom: 0.5rem !important;
+}
+
+/* Table styling */
+.report-content table {
+   width: 100% !important;
+   border-collapse: collapse !important;
+   margin-bottom: 1.5rem !important;
+}
+
+.report-content table,
+.report-content th,
+.report-content td {
+   border: 1px solid #ddd !important;
+   padding: 10px !important;
+   text-align: left !important;
+}
+
+.report-content th {
+   background-color: #f4f4f4 !important;
+}
+
+/* Blockquote styling */
+.report-content blockquote {
+   border-left: 4px solid #1a202c !important;
+   padding-left: 15px !important;
+   color: #555 !important;
+   font-style: italic !important;
+   margin: 20px 0 !important;
+}
+
+.report-content iframe{
+   max-width: 100% !important;
+   width: 100% !important;
+   height: 500px !important;
+}
+
+/* Responsive Typography Adjustments */
+@media screen and (max-width: 768px) {
+   .report-content h1 {
+      font-size: 2.25rem !important;
+      line-height: 2.8rem !important;
+   }
+
+   .report-content h2 {
+      font-size: 1.5rem !important;
+      line-height: 1.8rem !important;
+   }
+
+   .report-content h3 {
+      font-size: 1.25rem !important;
+      line-height: 1.6rem !important;
+   }
+}

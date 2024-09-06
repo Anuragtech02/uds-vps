@@ -1,10 +1,37 @@
 'use client';
-import placeholderImage from '@/assets/img/sampleResearch.png';
 import Button from '../commons/Button';
 import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
+import StrapiImage from '../StrapiImage/StrapiImage';
 
-const Header = () => {
+const Header: React.FC<{ data: any }> = ({ data }) => {
+   const reportHeaderData = {
+      title: data.attributes.title,
+      shortDescription: data.attributes.shortDescription,
+      medusaID: data.attributes.medusaID,
+      reportID: data.attributes.reportID,
+      geography: {
+         name: data.attributes.geography.data.attributes.name,
+         slug: data.attributes.geography.data.attributes.slug,
+      },
+      industry: {
+         name: data.attributes.industry.data.attributes.name,
+         slug: data.attributes.industry.data.attributes.slug,
+      },
+      heroSectionPrimaryCTA: {
+         title: data.attributes.heroSectionPrimaryCTA.title,
+         link: data.attributes.heroSectionPrimaryCTA.link,
+      },
+      heroSectionSecondaryCTA: {
+         title: data.attributes.heroSectionSecondaryCTA.title,
+         link: data.attributes.heroSectionSecondaryCTA.link,
+      },
+      totalPagesCount: data.attributes.totalPagesCount,
+      tablesCount: data.attributes.tablesCount,
+      figuresCount: data.attributes.figuresCount,
+      highlightImage: data.attributes.highlightImage,
+   };
+
    const headerRef1 = useRef<HTMLDivElement>(null);
    const headerRef2 = useRef<HTMLDivElement>(null);
    const [showSecondHeader, setShowSecondHeader] = useState(false);
@@ -39,33 +66,21 @@ const Header = () => {
             <div className='container'>
                <div className='flex gap-8'>
                   <div className='aspect-square h-[200px] rounded-md border border-s-300'>
-                     <img
-                        className='h-full w-full rounded-md object-cover'
-                        src={placeholderImage.src}
-                        alt='report'
+                     <StrapiImage
+                        media={reportHeaderData.highlightImage.data.attributes}
                      />
                   </div>
                   <div className='flex flex-col justify-center gap-4 font-semibold'>
                      <div className='flex items-start justify-between gap-6'>
                         <h3 className='w-2/3 font-bold'>
-                           Asia Pacific Battery Recycling Market: Current
-                           Analysis and Forecast (2024-2032)
+                           {reportHeaderData.title}
                         </h3>
                         <div className='rounded-full bg-s-200 px-8 py-4 md:text-2xl'>
                            <p className='text-blue-3'>$3999-$5999</p>
                         </div>
                      </div>
                      <p className='font-medium text-s-700'>
-                        Unlock the potential for sustained growth with
-                        Univdatos’s US Suncare and Skin Protection Market Report
-                        2024. Our comprehensive report is designed to provide
-                        you with unparalleled insights and strategic guidance to
-                        navigate the dynamic landscape of the suncare industry.
-                        Gain a competitive edge with in-depth analysis of market
-                        trends, consumer behavior, and key challenges and
-                        opportunities facing the industry. Stay ahead of the
-                        curve and make informed decisions with our 360° view of
-                        the market, including a five-year forecast.
+                        {reportHeaderData.shortDescription}
                      </p>
 
                      <div className='flex items-end justify-between'>
@@ -73,21 +88,27 @@ const Header = () => {
                            <div className='flex items-center gap-4'>
                               <div className='flex items-center gap-2'>
                                  <p className='text-lg text-s-500'>Page:</p>
-                                 <p className='text-xl text-blue-4'>65</p>
+                                 <p className='text-xl text-blue-4'>
+                                    {reportHeaderData.totalPagesCount}
+                                 </p>
                               </div>
                               <div className='flex items-center gap-2'>
                                  <p className='text-lg text-s-500'>Table:</p>
-                                 <p className='text-xl text-blue-4'>65</p>
+                                 <p className='text-xl text-blue-4'>
+                                    {reportHeaderData.tablesCount}
+                                 </p>
                               </div>
                               <div className='flex items-center gap-2'>
                                  <p className='text-lg text-s-500'>Figure:</p>
-                                 <p className='text-xl text-blue-4'>65</p>
+                                 <p className='text-xl text-blue-4'>
+                                    {reportHeaderData.figuresCount}
+                                 </p>
                               </div>
                            </div>
                            <div className='flex items-center gap-2'>
                               <p className='text-lg text-s-500'>Geography:</p>
                               <p className='text-xl text-blue-4'>
-                                 Asia-Pacific
+                                 {reportHeaderData.geography.name}
                               </p>
                            </div>
                         </div>
@@ -100,16 +121,20 @@ const Header = () => {
                               <p className='text-xl text-blue-4'>UMEP212790</p>
                            </div>
                            <div className='flex items-center gap-2'>
-                              <p className='text-lg text-s-500'>Categories:</p>
+                              <p className='text-lg text-s-500'>Industry:</p>
                               <p className='text-xl text-blue-4'>
-                                 Energy and Power, Industry Reports
+                                 {reportHeaderData.industry.name}
                               </p>
                            </div>
                         </div>
                      </div>
                      <div className='flex items-center justify-end gap-2 py-4'>
-                        <Button variant='light'>Download Report</Button>
-                        <Button variant='secondary'>Buy Now</Button>
+                        <Button variant='light'>
+                           {reportHeaderData.heroSectionPrimaryCTA.title}
+                        </Button>
+                        <Button variant='secondary'>
+                           {reportHeaderData.heroSectionSecondaryCTA.title}
+                        </Button>
                      </div>
                   </div>
                </div>
@@ -117,18 +142,21 @@ const Header = () => {
          </div>
          {showSecondHeader && (
             <div
-               className={`sticky left-0 right-0 top-[155px] z-20 border-b border-s-300 bg-white py-4 transition-all duration-300`}
+               className={`sticky left-0 right-0 top-[130px] z-20 border-b border-s-300 bg-white py-4 transition-all duration-300`}
                ref={headerRef2}
             >
                <div className='container'>
                   <div className='flex items-start justify-between gap-6'>
                      <h3 className='w-2/3 font-bold'>
-                        Asia Pacific Battery Recycling Market: Current Analysis
-                        and Forecast (2024-2032)
+                        {reportHeaderData.title}
                      </h3>
                      <div className='flex items-center justify-end gap-2 py-4'>
-                        <Button variant='light'>Download Report</Button>
-                        <Button variant='secondary'>Buy Now</Button>
+                        <Button variant='light'>
+                           {reportHeaderData.heroSectionPrimaryCTA.title}
+                        </Button>
+                        <Button variant='secondary'>
+                           {reportHeaderData.heroSectionSecondaryCTA.title}
+                        </Button>
                      </div>
                   </div>
                </div>
