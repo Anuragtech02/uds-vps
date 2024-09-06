@@ -79,6 +79,18 @@ export const getNewsListingPage = async () => {
       throw error;
    }
 };
+
+export const getBlogsListingPage = async () => {
+   try {
+      const response = await fetchClient('/blogs', {
+         headers: getAuthHeaders(),
+      });
+      return await response;
+   } catch (error) {
+      console.error('Error fetching News:', error);
+      throw error;
+   }
+};
 export const getIndustries = async () => {
    try {
       const response = await fetchClient('/industries', {
