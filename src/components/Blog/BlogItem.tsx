@@ -25,12 +25,14 @@ const BlogItem: FC<BlogItemProps> = ({ title, date, description }) => {
                <p className='font-medium'>Univdatos</p>
             </div>
             <h4 className='mb-2 text-xl font-semibold'>
-               {title.length > 60 ? title.substring(0, 60) + '...' : title}
+               {title}
+               {/* {title.length > 60 ? title.substring(0, 60) + '...' : title} */}
             </h4>
             <p className='text-gray-600'>
-               {description.length > 100
+               {/* {description.length > 100
                   ? description.substring(0, 100) + '...'
-                  : description}
+                  : description} */}
+               {description}
             </p>
             <p className='my-2 flex items-center gap-2'>
                <CalendarSvg />

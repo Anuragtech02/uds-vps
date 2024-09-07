@@ -1,5 +1,10 @@
-const BlogBody = () => {
-   return <div className='report-content'>BlogBody</div>;
+const BlogBody = ({ blog }: any) => {
+   return (
+      <div
+         className='report-content'
+         dangerouslySetInnerHTML={{ __html: blog?.description }}
+      ></div>
+   );
 };
 
 export default BlogBody;

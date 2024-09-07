@@ -1,6 +1,7 @@
 import NewsFilters from '@/components/News/NewsFilters';
 import NewsItem from '@/components/News/NewsItem';
 import { getIndustries, getNewsListingPage } from '@/utils/api/services';
+import Link from 'next/link';
 
 interface newsItem {
    id: number;
@@ -10,6 +11,7 @@ interface newsItem {
    createdAt: string;
    publishedAt: string;
    locale: string;
+   slug: string;
 }
 
 interface industryItem {
@@ -42,9 +44,9 @@ const News = async () => {
          createdAt: news?.attributes?.createdAt ?? '',
          publishedAt: news?.attributes?.publishedAt ?? '',
          locale: news?.attributes?.locale ?? '',
+         slug: news?.attributes?.slug ?? '',
       }),
    );
-
    const industries = industriesData?.data?.map(
       (
          industry: { attributes: industryItem; id: number },
@@ -72,15 +74,17 @@ const News = async () => {
             <NewsFilters industries={industries} />
             <div className='grid flex-[0.7] gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-3'>
                {newsList?.map((news: newsItem, i: number) => (
-                  <NewsItem
-                     key={i}
-                     title={news?.title}
-                     date={new Intl.DateTimeFormat('en-GB', {
-                        day: '2-digit',
-                        month: 'long',
-                        year: 'numeric',
-                     }).format(new Date(news?.publishedAt))}
-                  />
+                  <Link href={`/news/${news?.slug}`} key={i}>
+                     <NewsItem
+                        key={i}
+                        title={news?.title}
+                        date={new Intl.DateTimeFormat('en-GB', {
+                           day: '2-digit',
+                           month: 'long',
+                           year: 'numeric',
+                        }).format(new Date(news?.publishedAt))}
+                     />
+                  </Link>
                ))}
             </div>
          </div>

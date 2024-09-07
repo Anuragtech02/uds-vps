@@ -5,7 +5,7 @@ import Link from 'next/link';
 interface blogsItem {
    id: number;
    title: string;
-   shortDescrption: string;
+   shortDescription: string;
    description: string;
    createdAt: string;
    publishedAt: string;
@@ -46,7 +46,7 @@ const Blog = async (): Promise<JSX.Element> => {
       ): blogsItem => ({
          id: blog?.id ?? idx,
          title: blog?.attributes?.title ?? '',
-         shortDescrption: blog?.attributes?.shortDescrption ?? '',
+         shortDescription: blog?.attributes?.shortDescription ?? '',
          description: blog?.attributes?.description ?? '',
          createdAt: blog?.attributes?.createdAt ?? '',
          publishedAt: blog?.attributes?.publishedAt ?? '',
@@ -74,6 +74,7 @@ const Blog = async (): Promise<JSX.Element> => {
       );
       return <div>Error fetching data</div>;
    }
+   console.log({ shortDescription: blogList[0]?.shortDescription });
 
    return (
       <div className='container pt-40'>
@@ -85,13 +86,13 @@ const Blog = async (): Promise<JSX.Element> => {
                   <Link href={`/blogs/${blog?.slug}`} key={i}>
                      <BlogItem
                         key={i}
-                        title={blog.title}
-                        description={blog.description}
+                        title={blog?.title}
+                        description={blog?.shortDescription}
                         date={new Intl.DateTimeFormat('en-GB', {
                            day: '2-digit',
                            month: 'long',
                            year: 'numeric',
-                        }).format(new Date(blog.publishedAt))}
+                        }).format(new Date(blog?.publishedAt))}
                      />
                   </Link>
                ))}

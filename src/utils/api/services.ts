@@ -5,11 +5,9 @@ import { buildPopulateQuery } from '../generic-methods';
 import fetchClient from './config';
 
 function getAuthHeaders() {
-   const cookieStore = cookies();
-   if (cookieStore.get('authorization')) {
-      const authHeader = cookieStore.get('authorization')?.value;
+   if (process.env.API_TOKEN) {
       return {
-         Authorization: `Bearer ${authHeader}`,
+         Authorization: `Bearer ${process.env.API_TOKEN}`,
       };
    }
    return undefined;
@@ -205,6 +203,7 @@ export const getBlogDetails = async (slug: string) => {
          'thumbnailImage',
          'industries',
          'author',
+         'author.profilePicture',
       ]);
       const response = await fetchClient(
          `/blogs?filters[slug][$eq]=${slug}&` + populateQuery,
