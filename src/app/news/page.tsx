@@ -21,44 +21,50 @@ interface industryItem {
 }
 
 const News = async () => {
-   const newsListData = await getNewsListingPage();
+   let newsListData: Awaited<ReturnType<typeof getNewsListingPage>>;
+   let industriesData: Awaited<ReturnType<typeof getIndustries>>;
+
+   try {
+      [newsListData, industriesData] = await Promise.all([
+         getNewsListingPage(),
+         getIndustries(),
+      ]);
+   } catch (error) {
+      console.error('Error fetching blogs or industries:', error);
+   }
+
    const newsList = newsListData?.data?.map(
-      (
-         news: {
-            attributes: newsItem;
-            id: number;
-         },
-         idx: number,
-      ) => {
-         return {
-            id: news?.id ?? idx,
-            title: news?.attributes?.title ?? '',
-            shortDescrption: news?.attributes?.shortDescrption ?? '',
-            description: news?.attributes?.description ?? '',
-            createdAt: news?.attributes?.createdAt ?? '',
-            publishedAt: news?.attributes?.publishedAt ?? '',
-            locale: news?.attributes?.locale ?? '',
-         };
-      },
+      (news: { attributes: newsItem; id: number }, idx: number): newsItem => ({
+         id: news?.id ?? idx,
+         title: news?.attributes?.title ?? '',
+         shortDescrption: news?.attributes?.shortDescrption ?? '',
+         description: news?.attributes?.description ?? '',
+         createdAt: news?.attributes?.createdAt ?? '',
+         publishedAt: news?.attributes?.publishedAt ?? '',
+         locale: news?.attributes?.locale ?? '',
+      }),
    );
-   const industriesData = await getIndustries();
+
    const industries = industriesData?.data?.map(
       (
-         industry: {
-            attributes: industryItem;
-            id: number;
-         },
+         industry: { attributes: industryItem; id: number },
          idx: number,
-      ) => {
-         return {
-            id: industry?.id ?? idx,
-            name: industry?.attributes?.name ?? '',
-            createdAt: industry?.attributes?.createdAt ?? '',
-            publishedAt: industry?.attributes?.publishedAt ?? '',
-            slug: industry?.attributes?.slug ?? '',
-         };
-      },
+      ): industryItem => ({
+         id: industry?.id ?? idx,
+         name: industry?.attributes?.name ?? '',
+         createdAt: industry?.attributes?.createdAt ?? '',
+         publishedAt: industry?.attributes?.publishedAt ?? '',
+         slug: industry?.attributes?.slug ?? '',
+      }),
    );
+
+   if (!newsList || !industries) {
+      console.error(
+         'Error fetching blogs or industries: Data is null or undefined',
+      );
+      return <div>Error fetching data</div>;
+   }
+
    return (
       <div className='container pt-40'>
          <h1 className='mt-5 text-center font-bold'>News</h1>

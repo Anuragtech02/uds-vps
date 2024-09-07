@@ -18,29 +18,48 @@ interface heroItem {
    };
 }
 const About = async () => {
-   const res = await getAboutPage();
+   let data: Awaited<ReturnType<typeof getAboutPage>>;
+
+   try {
+      data = await getAboutPage();
+   } catch (error) {
+      console.error('Error fetching about page:', error);
+   }
+
+   if (!data) {
+      console.error('Error fetching about page: Data is null or undefined');
+      return <div>Error fetching data</div>;
+   }
+
    const hero: heroItem = {
-      heroHeading: res?.data?.attributes?.heroHeading,
-      heroPrimaryCTAButton: res?.data?.attributes?.heroPrimaryCTAButton,
-      heroSecondaryCTAButton: res?.data?.attributes?.heroSecondaryCTAButton,
+      heroHeading: data.data?.attributes?.heroHeading ?? '',
+      heroPrimaryCTAButton: data.data?.attributes?.heroPrimaryCTAButton ?? {},
+      heroSecondaryCTAButton:
+         data.data?.attributes?.heroSecondaryCTAButton ?? {},
    };
    const about = {
-      researchSectionTitle: res?.data?.attributes?.researchSectionTitle,
-      researchSectionSubtitle: res?.data?.attributes?.researchSectionSubtitle,
+      researchSectionTitle: data.data?.attributes?.researchSectionTitle ?? '',
+      researchSectionSubtitle:
+         data.data?.attributes?.researchSectionSubtitle ?? '',
       researchSectionDescription:
-         res?.data?.attributes?.researchSectionDescription,
+         data.data?.attributes?.researchSectionDescription ?? '',
       researchSectionImage:
-         res?.data?.attributes?.researchSectionImage?.data?.attributes,
-      visionMissionCards: res?.data?.attributes?.visionMissionCards,
-      visionMissionDescription: res?.data?.attributes?.visionMissionDescription,
+         data.data?.attributes?.researchSectionImage?.data?.attributes ?? {},
+      visionMissionCards: data.data?.attributes?.visionMissionCards ?? [],
+      visionMissionDescription:
+         data.data?.attributes?.visionMissionDescription ?? '',
    };
-   const ctaBanner = res?.data?.attributes?.ctaBanner;
+   const ctaBanner = data.data?.attributes?.ctaBanner ?? {};
+
    const mediaCitation = {
-      mediaSectionTitle: res?.data?.attributes?.mediaSectionTitle,
-      mediaSectionDescription: res?.data?.attributes?.mediaSectionDescription,
-      mediaSecrtionLogos: res?.data?.attributes?.mediaSecrtionLogos?.data?.map(
-         (logo: any) => ({ id: logo?.id, ...logo?.attributes }),
-      ),
+      mediaSectionTitle: data.data?.attributes?.mediaSectionTitle ?? '',
+      mediaSectionDescription:
+         data.data?.attributes?.mediaSectionDescription ?? '',
+      mediaSecrtionLogos:
+         data.data?.attributes?.mediaSecrtionLogos?.data?.map((logo: any) => ({
+            id: logo?.id,
+            ...logo?.attributes,
+         })) ?? [],
    };
 
    return (
