@@ -5,13 +5,24 @@ import Link from 'next/link';
 import industries from '@/utils/industries.json';
 import { BiChevronDown } from 'react-icons/bi';
 
-const Navbar = () => {
+interface INavbarProps {
+   header: {
+      phoneNumber: string;
+      email: string;
+      createdAt: string;
+      updatedAt: string;
+      publishedAt: string;
+      logo?: { data: { attributes: { url?: string } } };
+      ctaButton: { id: number; title: string; link: string };
+   };
+}
+const Navbar = ({ header }: INavbarProps) => {
    return (
       <div className='container'>
          <nav className='flex items-stretch justify-between rounded-xl bg-blue-2 px-6 py-0 md:px-8'>
             <Link href='/'>
                <img
-                  src={logo.src}
+                  src={logo}
                   alt='logo'
                   className='h-10 w-24 object-contain md:h-16 md:w-32'
                />
@@ -41,7 +52,9 @@ const Navbar = () => {
                </Link>
             </ul>
             <div className='flex items-center'>
-               <Button>Become our client</Button>
+               <Link href={header?.ctaButton?.link ?? ''}>
+                  <Button>{header?.ctaButton?.title}</Button>
+               </Link>
             </div>
          </nav>
       </div>

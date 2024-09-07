@@ -16,7 +16,7 @@ import CustomResearchCTA from './CustomResearchCTA';
 const socials = [];
 const invalidRoutes = ['/', '/about'];
 
-const Footer = () => {
+const Footer = ({ footer, industries }: any) => {
    const pathname = usePathname();
    return (
       <>
@@ -33,18 +33,22 @@ const Footer = () => {
                   alt=''
                />
                <div className='container relative z-[3]'>
-                  <h1>
-                     Order your <span className='text-white'>tailored</span>{' '}
-                     research report now!
+                  <h1
+                     dangerouslySetInnerHTML={{
+                        __html: footer?.footerCTA?.title,
+                     }}
+                  >
+                     {/* Order your <span className='text-white'>tailored</span>{' '}
+                     research report now! */}
                   </h1>
                   <p className='mx-auto mt-4 text-s-300 md:w-2/3 md:text-2xl'>
-                     Rorem ipsum dolor sit amet, consectetur adipiscing elit.
-                     Nunc vulputate libero et velit interdum, ac aliquet odio
-                     mattis.
+                     {footer?.footerCTA?.description}
                   </p>
-                  <Button variant='primary' className='mx-auto mt-10'>
-                     Become our client
-                  </Button>
+                  <Link href={footer?.footerCTA?.ctaButton?.link ?? ''}>
+                     <Button variant='primary' className='mx-auto mt-10'>
+                        {footer?.footerCTA?.ctaButton?.title}
+                     </Button>
+                  </Link>
                </div>
             </div>
             <div className='container mx-auto px-4'>
@@ -52,16 +56,13 @@ const Footer = () => {
                   {/* Company Info */}
                   <div className='col-span-1 md:col-span-2'>
                      <Image
-                        src={logo}
+                        src={footer?.companyInfo?.logo?.data?.attributes?.url}
                         alt='UnivDatos'
                         width={150}
                         height={50}
                      />
                      <p className='mt-4 text-blue-9 md:w-2/3'>
-                        UnivDatos Market Insights (UMI), a subsidiary of
-                        Universal Data Solutions is a rapidly growing dynamic
-                        market research firm led by a core of dedicated
-                        professionals.
+                        {footer?.companyInfo?.companyDescription}
                      </p>
                   </div>
 
@@ -96,21 +97,13 @@ const Footer = () => {
                         INDUSTRY VERTICALS
                      </p>
                      <ul className='space-y-2'>
-                        {[
-                           'Automotive',
-                           'Electrics & Semiconductor',
-                           'Healthcare',
-                           'Media & Entertainment',
-                           'Telecom & IT',
-                           'Consumer Goods',
-                           'View All',
-                        ].map((item) => (
-                           <li key={item}>
+                        {industries?.map((item: any) => (
+                           <li key={item?.slug}>
                               <Link
-                                 href={`/industry/${item.toLowerCase().replace(' & ', '-').replace(' ', '-')}`}
+                                 href={`/industry/${item?.slug}`}
                                  className='hover:text-gray-300'
                               >
-                                 {item}
+                                 {item?.name}
                               </Link>
                            </li>
                         ))}
@@ -120,8 +113,8 @@ const Footer = () => {
                   {/* Contact */}
                   <div>
                      <p className='mb-4 text-lg text-white'>CONTACT</p>
-                     <p className='mb-2'>+1 9782263411</p>
-                     <p className='mb-4'>contact@univdatos.com</p>
+                     <p className='mb-2'>{footer?.phoneNumber}</p>
+                     <p className='mb-4'>{footer?.email}</p>
                      <Button
                         variant='light'
                         className='border border-blue-9 !bg-blue-1 text-blue-9'
@@ -133,7 +126,7 @@ const Footer = () => {
 
                {/* Copyright and Social Icons */}
                <div className='mt-12 flex flex-col items-center justify-between border-t border-gray-700 pt-8 md:flex-row'>
-                  <p>© Univdatos</p>
+                  <p>{footer?.copyRightText}</p>
                   <div className='mt-4 flex space-x-4 md:mt-0'>
                      <a
                         href={`https://facebook.com`}

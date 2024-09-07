@@ -2,8 +2,22 @@
 import { useEffect, useRef, useState } from 'react';
 import Navbar from './Navbar';
 import Topbar from './Topbar';
-
-const Header = () => {
+interface IHeader {
+   phoneNumber: string;
+   email: string;
+   createdAt: string;
+   updatedAt: string;
+   publishedAt: string;
+   logo?: { data: { attributes: { url?: string } } };
+   ctaButton: { id: number; title: string; link: string };
+}
+const Header = ({
+   header,
+   industries,
+}: {
+   header: IHeader;
+   industries: any;
+}) => {
    const [isSticky, setSticky] = useState(false);
    const navRef = useRef<HTMLDivElement | null>(null);
 
@@ -26,8 +40,8 @@ const Header = () => {
          className={`${!isSticky ? 'fixed' : 'sticky'} left-0 top-0 z-50 w-full border-b border-s-300 bg-white py-4`}
          key='header'
       >
-         <Topbar />
-         <Navbar />
+         <Topbar header={header} industries={industries} />
+         <Navbar header={header} />
       </div>
    );
 };

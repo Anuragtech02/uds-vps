@@ -125,3 +125,34 @@ export const getAboutPage = async () => {
       throw error;
    }
 };
+
+export const getHeader = async () => {
+   try {
+      const populateQuery = buildPopulateQuery(['logo', 'ctaButton']);
+      const response = await fetchClient('/header?' + populateQuery, {
+         headers: getAuthHeaders(),
+      });
+      return await response;
+   } catch (error) {
+      console.error('Error fetching News:', error);
+      throw error;
+   }
+};
+
+export const getFooter = async () => {
+   try {
+      const populateQuery = buildPopulateQuery([
+         'footerCTA',
+         'footerCTA.ctaButton',
+         'companyInfo',
+         'companyInfo.logo',
+      ]);
+      const response = await fetchClient('/footer?' + populateQuery, {
+         headers: getAuthHeaders(),
+      });
+      return await response;
+   } catch (error) {
+      console.error('Error fetching News:', error);
+      throw error;
+   }
+};
