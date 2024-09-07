@@ -7,7 +7,7 @@ const Login = () => {
    return (
       <div className='container pt-40'>
          <div className='mt-10 rounded-xl bg-white p-6'>
-            <div className='flex flex-col-reverse items-start gap-6 md:flex-row md:gap-10'>
+            <div className='flex flex-col items-start gap-6 md:flex-row md:gap-10'>
                <div className='flex-[0.6] space-y-4 md:space-y-6'>
                   <p className='text-[2rem] font-semibold text-s-500'>
                      My account
