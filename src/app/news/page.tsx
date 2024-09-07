@@ -22,7 +22,6 @@ interface industryItem {
 
 const News = async () => {
    const newsListData = await getNewsListingPage();
-   console.log({ newsListData: newsListData.data[0] });
    const newsList = newsListData?.data?.map(
       (
          news: {
@@ -42,9 +41,7 @@ const News = async () => {
          };
       },
    );
-   console.log({ newsList });
    const industriesData = await getIndustries();
-   console.log({ industries: industriesData?.data?.[0] });
    const industries = industriesData?.data?.map(
       (
          industry: {

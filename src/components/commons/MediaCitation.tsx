@@ -2,7 +2,7 @@
 import { allCitations } from '@/assets/img/citations';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
-const MediaCitation: React.FC<{ data: any }> = ({ data }) => {
+const MediaCitation: React.FC<{ mediaCitation: any }> = ({ mediaCitation }) => {
    const [shuffleAlternator, setShuffleAlternator] = useState<boolean>(false);
 
    const shuffleCitations = useCallback(() => {
@@ -22,27 +22,30 @@ const MediaCitation: React.FC<{ data: any }> = ({ data }) => {
       <section className='bg-s-50 py-20 md:min-h-max'>
          <div className='container'>
             <div className='pb-10 text-center md:pb-16'>
-               <h2>
-                  Media <span>Citations</span>
-               </h2>
+               <h2
+                  dangerouslySetInnerHTML={{
+                     __html: mediaCitation?.mediaSectionTitle,
+                  }}
+               ></h2>
                <p className='mx-auto mt-2 md:w-2/3 md:text-2xl'>
-                  Contemplate and gaze at our reports cited by the
-                  inquisitors/specialists of leading media/publishing houses.
+                  {mediaCitation?.mediaSectionDescription}
                </p>
             </div>
             <div className='grid grid-cols-3 lg:grid-cols-5'>
-               {allCitations.map((img: any, index: number) => (
-                  <div
-                     key={index}
-                     className={`grid place-items-center px-4 py-5 md:px-10 ${index % 2 === 0 ? `${shuffleAlternator ? 'tile-white' : 'tile-gray'} ` : `${!shuffleAlternator ? 'tile-white' : 'tile-gray'} `}`}
-                  >
-                     <img
-                        className='h-full w-full object-contain md:h-[80px]'
-                        src={img.src}
-                        alt={`Citation ${index + 1}`}
-                     />
-                  </div>
-               ))}
+               {mediaCitation?.mediaSecrtionLogos?.map(
+                  (img: any, index: number) => (
+                     <div
+                        key={index}
+                        className={`grid place-items-center px-4 py-5 md:px-10 ${index % 2 === 0 ? `${shuffleAlternator ? 'tile-white' : 'tile-gray'} ` : `${!shuffleAlternator ? 'tile-white' : 'tile-gray'} `}`}
+                     >
+                        <img
+                           className='h-full w-full object-contain md:h-[80px]'
+                           src={img.url}
+                           alt={`Citation ${index + 1}`}
+                        />
+                     </div>
+                  ),
+               )}
             </div>
          </div>
       </section>

@@ -1,6 +1,18 @@
 import Button from '../commons/Button';
-
-const Hero = () => {
+interface heroItem {
+   heroHeading: string;
+   heroPrimaryCTAButton: {
+      title: string;
+      link: string;
+      id: number;
+   };
+   heroSecondaryCTAButton: {
+      title: string;
+      link: string;
+      id: number;
+   };
+}
+const Hero = ({ hero }: { hero: heroItem }) => {
    return (
       <section className='relative min-h-max flex-col bg-white pt-40'>
          <div className='container relative overflow-hidden rounded-lg border border-[#E2EDFA] py-10 md:py-16'>
@@ -36,12 +48,22 @@ const Hero = () => {
             </div>
             <div className='relative z-[2] mx-auto w-[90%] text-center'>
                <h1>
-                  UMI Helps <span>Achieving</span> Your Strategic{' '}
-                  <span>Goals</span>
+                  {/* UMI Helps <span>Achieving</span> Your Strategic{' '}
+                  <span>Goals</span> */}
+                  <div
+                     dangerouslySetInnerHTML={{
+                        __html: hero?.heroHeading || '',
+                     }}
+                  />
+                  {/* {hero?.heroHeading} */}
                </h1>
                <div className='flex items-center justify-center gap-4 pt-6 md:pt-10'>
-                  <Button variant='secondary'>Our Services</Button>
-                  <Button variant='light'>Contact Us</Button>
+                  <Button variant='secondary'>
+                     {hero?.heroPrimaryCTAButton?.title}
+                  </Button>
+                  <Button variant='light'>
+                     {hero?.heroSecondaryCTAButton?.title}
+                  </Button>
                </div>
             </div>
          </div>

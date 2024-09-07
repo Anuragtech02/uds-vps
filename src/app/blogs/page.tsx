@@ -20,7 +20,6 @@ interface industryItem {
 
 const Blog = async () => {
    const blogListData = await getBlogsListingPage();
-   console.log({ blogListData: blogListData.data[0] });
    const blogList = blogListData?.data?.map(
       (
          blog: {
@@ -40,9 +39,7 @@ const Blog = async () => {
          };
       },
    );
-   console.log({ blogList });
    const industriesData = await getIndustries();
-   console.log({ industries: industriesData?.data?.[0] });
    const industries = industriesData?.data?.map(
       (
          industry: {

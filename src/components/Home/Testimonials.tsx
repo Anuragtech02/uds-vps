@@ -12,7 +12,6 @@ const Testimonials: React.FC<{ data: any }> = ({ data }) => {
       );
 
    const bankLogos = data.data.attributes.brandsSecetionBankLogos.data;
-   console.log(bankLogos);
 
    return (
       <section className='min-h-full flex-col'>

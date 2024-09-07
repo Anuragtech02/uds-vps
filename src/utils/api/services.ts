@@ -8,7 +8,6 @@ function getAuthHeaders() {
    const cookieStore = cookies();
    if (cookieStore.get('authorization')) {
       const authHeader = cookieStore.get('authorization')?.value;
-      console.log('authHeader', authHeader);
       return {
          Authorization: `Bearer ${authHeader}`,
       };
@@ -94,6 +93,30 @@ export const getBlogsListingPage = async () => {
 export const getIndustries = async () => {
    try {
       const response = await fetchClient('/industries', {
+         headers: getAuthHeaders(),
+      });
+      return await response;
+   } catch (error) {
+      console.error('Error fetching News:', error);
+      throw error;
+   }
+};
+
+export const getAboutPage = async () => {
+   try {
+      const populateQuery = buildPopulateQuery([
+         'heroPrimaryCTAButton',
+         'heroSecondaryCTAButton',
+         'statisticsCards',
+         'researchSectionImage',
+         'visionMissionCards',
+         'visionMissionCards.image',
+         'mediaSecrtionLogos',
+         'ctaBanner',
+         'ctaBanner.ctaButton',
+         'mediaSecrtionLogos',
+      ]);
+      const response = await fetchClient('/about-page?' + populateQuery, {
          headers: getAuthHeaders(),
       });
       return await response;
