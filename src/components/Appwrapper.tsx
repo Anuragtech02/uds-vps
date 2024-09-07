@@ -4,7 +4,13 @@ import Navbar from './commons/Navbar';
 import Topbar from './commons/Topbar';
 import Header from './commons/Header';
 import Footer from './commons/Footer';
-import { getFooter, getHeader, getIndustries } from '@/utils/api/services';
+import {
+   getFooter,
+   getFooterQuickLinks,
+   getHeader,
+   getHeaderMainMenu,
+   getIndustries,
+} from '@/utils/api/services';
 
 interface AppwrapperProps {
    children: React.ReactNode;
@@ -29,12 +35,24 @@ export const variants = {
 };
 
 const Appwrapper: FC<AppwrapperProps> = async ({ children }) => {
-   let footerData, headerData, industriesData;
+   let footerData,
+      headerData,
+      industriesData,
+      headerMainMenuData,
+      footerQuickLinksData;
    try {
-      [headerData, footerData, industriesData] = await Promise.all([
+      [
+         headerData,
+         footerData,
+         industriesData,
+         headerMainMenuData,
+         footerQuickLinksData,
+      ] = await Promise.all([
          getHeader(),
          getFooter(),
          getIndustries(),
+         getHeaderMainMenu(),
+         getFooterQuickLinks(),
       ]);
    } catch (err) {
       console.error(err);
@@ -44,12 +62,38 @@ const Appwrapper: FC<AppwrapperProps> = async ({ children }) => {
    let industries = industriesData?.data?.map(
       (industry: any) => industry.attributes,
    );
+   let headerMainMenu = headerMainMenuData?.data?.attributes?.items?.data?.map(
+      (item: any) => ({
+         id: item?.id,
+         ...item?.attributes,
+         children: item?.attributes?.children?.data?.map((child: any) => ({
+            id: child?.id,
+            ...child?.attributes,
+         })),
+      }),
+   );
+   let footerQuickLinks =
+      footerQuickLinksData?.data?.attributes?.items?.data?.map((item: any) => ({
+         id: item?.id,
+         ...item?.attributes,
+      }));
+   console.log({ headerMainMenu: JSON.stringify(footerQuickLinks) });
 
    return (
       <>
-         <Header key='header' header={header} industries={industries} />
+         <Header
+            key='header'
+            header={header}
+            industries={industries}
+            mainMenu={headerMainMenu}
+         />
          <main key='main'>{children}</main>
-         <Footer key='footer' footer={footer} industries={industries} />
+         <Footer
+            key='footer'
+            footer={footer}
+            industries={industries}
+            quickLinks={footerQuickLinks}
+         />
       </>
    );
 };

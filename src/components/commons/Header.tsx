@@ -14,9 +14,11 @@ interface IHeader {
 const Header = ({
    header,
    industries,
+   mainMenu,
 }: {
    header: IHeader;
    industries: any;
+   mainMenu: any;
 }) => {
    const [isSticky, setSticky] = useState(false);
    const navRef = useRef<HTMLDivElement | null>(null);
@@ -41,7 +43,7 @@ const Header = ({
          key='header'
       >
          <Topbar header={header} industries={industries} />
-         <Navbar header={header} />
+         <Navbar header={header} mainMenu={mainMenu} />
       </div>
    );
 };

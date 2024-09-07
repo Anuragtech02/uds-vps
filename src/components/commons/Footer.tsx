@@ -16,7 +16,7 @@ import CustomResearchCTA from './CustomResearchCTA';
 const socials = [];
 const invalidRoutes = ['/', '/about'];
 
-const Footer = ({ footer, industries }: any) => {
+const Footer = ({ footer, industries, quickLinks }: any) => {
    const pathname = usePathname();
    return (
       <>
@@ -70,21 +70,13 @@ const Footer = ({ footer, industries }: any) => {
                   <div>
                      <p className='mb-4 text-lg text-white'>QUICK LINKS</p>
                      <ul className='space-y-2'>
-                        {[
-                           'Home',
-                           'About',
-                           'Report Store',
-                           'Custom Research',
-                           'Reading',
-                           'Careers',
-                           'Contact',
-                        ].map((item) => (
+                        {quickLinks?.map((item: any) => (
                            <li key={item}>
                               <Link
-                                 href={`/${item.toLowerCase().replace(' ', '-')}`}
+                                 href={item?.url ?? ''}
                                  className='hover:text-gray-300'
                               >
-                                 {item}
+                                 {item?.title}
                               </Link>
                            </li>
                         ))}

@@ -156,3 +156,26 @@ export const getFooter = async () => {
       throw error;
    }
 };
+
+export const getHeaderMainMenu = async () => {
+   try {
+      const response = await fetchClient('/menus/1?nested&populate=*', {
+         headers: getAuthHeaders(),
+      });
+      return await response;
+   } catch (error) {
+      console.error('Error fetching main menu:', error);
+      throw error;
+   }
+};
+export const getFooterQuickLinks = async () => {
+   try {
+      const response = await fetchClient('/menus/2?nested&populate=*', {
+         headers: getAuthHeaders(),
+      });
+      return await response;
+   } catch (error) {
+      console.error('Error fetching main menu:', error);
+      throw error;
+   }
+};
