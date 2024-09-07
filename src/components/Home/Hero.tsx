@@ -8,6 +8,7 @@ import TypewritterText from '../TypewritterText';
 import Stats from '../commons/Stats';
 import Link from 'next/link';
 import StrapiImage from '../StrapiImage/StrapiImage';
+import reportIllustration from '@/assets/img/report.svg';
 
 const Hero: React.FC<{ data: any }> = ({ data }) => {
    const heroSection = {
@@ -88,8 +89,14 @@ const Hero: React.FC<{ data: any }> = ({ data }) => {
                      </Link>
                   </div>
                </div>
-               <div className='w-full md:w-[40%]'>
-                  <div className='relative ml-auto aspect-square w-full md:w-2/3'>
+               <div className='relative w-full md:w-[40%]'>
+                  <img
+                     src={reportIllustration.src}
+                     className='absolute -bottom-20 right-[70%] z-[5] hidden aspect-[2/3] w-[240px] lg:block'
+                     alt=''
+                  />
+
+                  <div className='relative ml-auto aspect-square w-full md:w-[80%]'>
                      <StrapiImage media={heroSection.heroImage} />
                   </div>
                </div>
