@@ -75,57 +75,24 @@ const Header: React.FC<{ data: any }> = ({ data }) => {
                         <h3 className='w-2/3 font-bold'>
                            {reportHeaderData.title}
                         </h3>
-                        <div className='rounded-full bg-s-200 px-8 py-4 md:text-2xl'>
-                           <p className='text-blue-3'>$3999-$5999</p>
-                        </div>
                      </div>
                      <p className='font-medium text-s-700'>
                         {reportHeaderData.shortDescription}
                      </p>
 
-                     <div className='flex items-end justify-between'>
-                        <div className='flex flex-col gap-4'>
-                           <div className='flex items-center gap-4'>
-                              <div className='flex items-center gap-2'>
-                                 <p className='text-lg text-s-500'>Page:</p>
-                                 <p className='text-xl text-blue-4'>
-                                    {reportHeaderData.totalPagesCount}
-                                 </p>
-                              </div>
-                              <div className='flex items-center gap-2'>
-                                 <p className='text-lg text-s-500'>Table:</p>
-                                 <p className='text-xl text-blue-4'>
-                                    {reportHeaderData.tablesCount}
-                                 </p>
-                              </div>
-                              <div className='flex items-center gap-2'>
-                                 <p className='text-lg text-s-500'>Figure:</p>
-                                 <p className='text-xl text-blue-4'>
-                                    {reportHeaderData.figuresCount}
-                                 </p>
-                              </div>
-                           </div>
-                           <div className='flex items-center gap-2'>
-                              <p className='text-lg text-s-500'>Geography:</p>
-                              <p className='text-xl text-blue-4'>
-                                 {reportHeaderData.geography.name}
-                              </p>
-                           </div>
+                     <div className='flex items-center gap-4'>
+                        <div className='flex items-center gap-2'>
+                           <p className='text-lg text-s-500'>Geography:</p>
+                           <p className='text-xl text-blue-4'>
+                              {reportHeaderData.geography.name}
+                           </p>
                         </div>
 
-                        <div className='flex flex-col gap-4'>
-                           <div className='flex items-center gap-2'>
-                              <p className='text-lg text-s-500'>
-                                 Report ID & SKU:
-                              </p>
-                              <p className='text-xl text-blue-4'>UMEP212790</p>
-                           </div>
-                           <div className='flex items-center gap-2'>
-                              <p className='text-lg text-s-500'>Industry:</p>
-                              <p className='text-xl text-blue-4'>
-                                 {reportHeaderData.industry.name}
-                              </p>
-                           </div>
+                        <div className='flex items-center gap-2'>
+                           <p className='text-lg text-s-500'>Industry:</p>
+                           <p className='text-xl text-blue-4'>
+                              {reportHeaderData.industry.name}
+                           </p>
                         </div>
                      </div>
                      <div className='flex items-center justify-end gap-2 py-4'>
