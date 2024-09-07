@@ -77,7 +77,6 @@ const Appwrapper: FC<AppwrapperProps> = async ({ children }) => {
          id: item?.id,
          ...item?.attributes,
       }));
-   console.log({ headerMainMenu: JSON.stringify(footerQuickLinks) });
 
    return (
       <>

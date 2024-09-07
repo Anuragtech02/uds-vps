@@ -1,12 +1,41 @@
 import ContactDetails from '@/components/Contact/ContactDetails';
 import ContactForm from '@/components/Contact/ContactForm';
+import { getContagePageData } from '@/utils/api/services';
 
-const Contact = () => {
+const Contact = async () => {
+   let contactPageData: Awaited<ReturnType<typeof getContagePageData>>;
+
+   try {
+      contactPageData = await getContagePageData();
+   } catch (error) {
+      console.error('Error fetching main menu:', error);
+   }
+
+   if (!contactPageData) {
+      return <div>Error fetching contact page data</div>;
+   }
+   let contactDetails = {
+      contactSectionTitle:
+         contactPageData?.data?.attributes?.contactSectionTitle,
+      locationSectionTitle:
+         contactPageData?.data?.attributes?.locationSectionTitle,
+      locationSectionDescription:
+         contactPageData?.data?.attributes?.locationSectionDescription,
+      socialMediaSectionTitle:
+         contactPageData?.data?.attributes?.socialMediaSectionTitle,
+      contactFormTitle: contactPageData?.data?.attributes?.contactFormTitle,
+      contactFormSubmitText:
+         contactPageData?.data?.attributes?.contactFormSubmitText,
+      contactDetailsList: contactPageData?.data?.attributes?.contactDetailsList,
+      socialMediaSectionIconsList:
+         contactPageData?.data?.attributes?.socialMediaSectionIconsList,
+      contactFormFields: contactPageData?.data?.attributes?.contactFormFields,
+   };
    return (
       <div className='container pt-40'>
          <div className='my-10 flex flex-col-reverse items-start gap-6 md:flex-row md:gap-10'>
             <div className='flex-[0.4]'>
-               <ContactDetails />
+               <ContactDetails contactDetails={contactDetails} />
             </div>
 
             <div className='flex-[0.6]'>

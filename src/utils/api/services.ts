@@ -179,3 +179,42 @@ export const getFooterQuickLinks = async () => {
       throw error;
    }
 };
+
+export const getContagePageData = async () => {
+   try {
+      const populateQuery = buildPopulateQuery([
+         'contactDetailsList',
+         'contactDetailsList.icon',
+         'socialMediaSectionIconsList',
+         'socialMediaSectionIconsList.icon',
+         'contactFormFields',
+      ]);
+      const response = await fetchClient('/contact-page?' + populateQuery, {
+         headers: getAuthHeaders(),
+      });
+      return await response;
+   } catch (error) {
+      console.error('Error fetching main menu:', error);
+      throw error;
+   }
+};
+
+export const getBlogDetails = async (slug: string) => {
+   try {
+      const populateQuery = buildPopulateQuery([
+         'thumbnailImage',
+         'industries',
+         'author',
+      ]);
+      const response = await fetchClient(
+         `/blogs?filters[slug][$eq]=${slug}&` + populateQuery,
+         {
+            headers: getAuthHeaders(),
+         },
+      );
+      return await response;
+   } catch (error) {
+      console.error('Error fetching main menu:', error);
+      throw error;
+   }
+};

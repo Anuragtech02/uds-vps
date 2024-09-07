@@ -11,7 +11,7 @@ const industries = [
    'AI in genomics',
 ];
 
-const Header: React.FC<{}> = () => {
+const Header: React.FC<{ blog: any }> = ({ blog }) => {
    const headerRef1 = useRef<HTMLDivElement>(null);
    const headerRef2 = useRef<HTMLDivElement>(null);
    const [showSecondHeader, setShowSecondHeader] = useState(false);
@@ -47,8 +47,7 @@ const Header: React.FC<{}> = () => {
                <div className='flex gap-8'>
                   <div className='mx-auto w-full space-y-4 font-semibold md:w-2/3 md:space-y-6'>
                      <h2 className='mx-auto text-center font-bold'>
-                        Artificial Intelligence the Future of Drug Discovery in
-                        the United States
+                        {blog?.title}
                      </h2>
                      <div className='mx-auto flex flex-wrap justify-center gap-3'>
                         {industries.map((industry, index) => (

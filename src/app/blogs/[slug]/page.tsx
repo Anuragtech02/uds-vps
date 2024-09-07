@@ -1,13 +1,28 @@
 import BlogBody from '@/components/Blog/BlogBody';
 import BlogSidebar from '@/components/Blog/BlogSidebar';
 import Header from '@/components/Blog/Header';
+import { getBlogDetails } from '@/utils/api/services';
 import { IoIosSearch } from 'react-icons/io';
 
-const Blog = () => {
+const Blog = async (data: any) => {
+   const { slug } = data?.params;
+   console.log(slug, 'here');
+   let blogDetails: Awaited<ReturnType<typeof getBlogDetails>>;
+
+   try {
+      blogDetails = await getBlogDetails(slug);
+   } catch (error) {
+      console.error('Error fetching blog details:', error);
+   }
+
+   if (!blogDetails?.data?.length) {
+      return <p>Not found</p>;
+   }
+   let blog = blogDetails?.data?.[0]?.attributes;
    return (
       <div className='bg-s-50'>
          <div className='mt-40' />
-         <Header />
+         <Header blog={blog} />
          <div className='container'>
             <div className='flex flex-col gap-6 py-12 md:flex-row md:gap-10 md:py-20'>
                <div className='flex-[0.7]'>

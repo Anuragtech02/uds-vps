@@ -1,6 +1,7 @@
 import BlogFilters from '@/components/Blog/BlogFilters';
 import BlogItem from '@/components/Blog/BlogItem';
 import { getBlogsListingPage, getIndustries } from '@/utils/api/services';
+import Link from 'next/link';
 interface blogsItem {
    id: number;
    title: string;
@@ -9,6 +10,7 @@ interface blogsItem {
    createdAt: string;
    publishedAt: string;
    locale: string;
+   slug: string;
 }
 
 interface industryItem {
@@ -49,6 +51,7 @@ const Blog = async (): Promise<JSX.Element> => {
          createdAt: blog?.attributes?.createdAt ?? '',
          publishedAt: blog?.attributes?.publishedAt ?? '',
          locale: blog?.attributes?.locale ?? '',
+         slug: blog?.attributes?.slug ?? '',
       }),
    );
 
@@ -79,16 +82,18 @@ const Blog = async (): Promise<JSX.Element> => {
             <BlogFilters industries={industries} />
             <div className='flex-[0.7] space-y-6'>
                {blogList!.map((blog: blogsItem, i: number) => (
-                  <BlogItem
-                     key={i}
-                     title={blog.title}
-                     description={blog.description}
-                     date={new Intl.DateTimeFormat('en-GB', {
-                        day: '2-digit',
-                        month: 'long',
-                        year: 'numeric',
-                     }).format(new Date(blog.publishedAt))}
-                  />
+                  <Link href={`/blogs/${blog?.slug}`} key={i}>
+                     <BlogItem
+                        key={i}
+                        title={blog.title}
+                        description={blog.description}
+                        date={new Intl.DateTimeFormat('en-GB', {
+                           day: '2-digit',
+                           month: 'long',
+                           year: 'numeric',
+                        }).format(new Date(blog.publishedAt))}
+                     />
+                  </Link>
                ))}
             </div>
          </div>
