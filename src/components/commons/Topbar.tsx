@@ -1,3 +1,4 @@
+import { useSearchStore } from '@/stores/search.store';
 import { FaPhoneAlt } from 'react-icons/fa';
 import { FaCircleUser } from 'react-icons/fa6';
 import { IoIosSearch, IoMdCart } from 'react-icons/io';
@@ -15,6 +16,7 @@ interface ITopbarProps {
    industries: any[];
 }
 const Topbar = ({ header, industries }: ITopbarProps) => {
+   const searchStore = useSearchStore();
    return (
       <div className='container pb-4'>
          <div className='flex items-center justify-between text-[#1D2C60]'>
@@ -41,7 +43,12 @@ const Topbar = ({ header, industries }: ITopbarProps) => {
                   ))}
                </select>
 
-               <span className='cursor-pointer text-xl'>
+               <span
+                  className='cursor-pointer text-xl'
+                  onClick={() => {
+                     searchStore?.toggleGlobalSearch();
+                  }}
+               >
                   <IoIosSearch />
                </span>
                <span className='cursor-pointer text-xl'>

@@ -2,15 +2,18 @@
 
 import React, { useState } from 'react';
 import AdvancedSearch from './AdvancedSearch';
+import { useSearchStore } from '@/stores/search.store';
 
 const SearchWrapper = () => {
-  const [isSearchOpen, setIsSearchOpen] = useState(true);
+   const searchStore = useSearchStore();
+   const closeSearch = () => searchStore?.toggleGlobalSearch();
 
-  const closeSearch = () => setIsSearchOpen(false);
-
-  return (
-      <AdvancedSearch isOpen={isSearchOpen} onClose={closeSearch} />
-  );
+   return (
+      <AdvancedSearch
+         isOpen={searchStore?.isGlobalSearchVisible}
+         onClose={closeSearch}
+      />
+   );
 };
 
 export default SearchWrapper;

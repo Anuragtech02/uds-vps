@@ -20,7 +20,6 @@ export default async function Home() {
          <UpcomingReports data={homePage} />
          <MediaCitation data={homePage} />
          <NewsRoom data={homePage} />
-         <SearchWrapper />
       </>
    );
 }

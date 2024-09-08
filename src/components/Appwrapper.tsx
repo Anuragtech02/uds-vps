@@ -11,6 +11,7 @@ import {
    getHeaderMainMenu,
    getIndustries,
 } from '@/utils/api/services';
+import SearchWrapper from './Search/SearchWrapper';
 
 interface AppwrapperProps {
    children: React.ReactNode;
@@ -104,6 +105,7 @@ const Appwrapper: FC<AppwrapperProps> = async ({ children }) => {
             mainMenu={headerMainMenu}
          />
          <main key='main'>{children}</main>
+         <SearchWrapper />
          <Footer
             key='footer'
             footer={footer}
