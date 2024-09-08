@@ -217,3 +217,36 @@ export const getBlogDetails = async (slug: string) => {
       throw error;
    }
 };
+
+export const getServicesPage = async () => {
+   try {
+      const populateQuery = buildPopulateQuery([
+         'mediaSecrtionLogos',
+         'ctaBanner',
+         'ctaBanner.ctaButton',
+         'mediaSecrtionLogos',
+      ]);
+      const response = await fetchClient('/services-page?' + populateQuery, {
+         headers: getAuthHeaders(),
+      });
+      return await response;
+   } catch (error) {
+      console.error('Error fetching service page:', error);
+      throw error;
+   }
+};
+
+export const getAllServices = async () => {
+   try {
+      const populateQuery = buildPopulateQuery([
+         'highlightImage.url',
+      ]);
+      const response = await fetchClient('/services?' + populateQuery, {
+         headers: getAuthHeaders(),
+      });
+      return await response;
+   } catch (error) {
+      console.error('Error fetching all services:', error);
+      throw error;
+   }
+};
