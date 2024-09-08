@@ -218,6 +218,27 @@ export const getBlogDetails = async (slug: string) => {
    }
 };
 
+export const getNewsBySlug = async (slug: string) => {
+   try {
+      const populateQuery = buildPopulateQuery([
+         'thumbnailImage',
+         'industries',
+         'author',
+         'author.profilePicture',
+      ]);
+      const response = await fetchClient(
+         `/news-articles?filters[slug][$eq]=${slug}&` + populateQuery,
+         {
+            headers: getAuthHeaders(),
+         },
+      );
+      return await response;
+   } catch (error) {
+      console.error('Error fetching news article by slug:', error);
+      throw error;
+   }
+};
+
 export const getServicesPage = async () => {
    try {
       const populateQuery = buildPopulateQuery([

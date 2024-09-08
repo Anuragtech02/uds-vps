@@ -15,6 +15,7 @@ const NewsResults = ({ news }) => {
                </Link>
             );
          })}
+         {news.length === 0 && <p>No news articles found</p>}
       </div>
    );
 };

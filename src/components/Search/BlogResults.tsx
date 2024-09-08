@@ -14,6 +14,7 @@ const BlogResults = ({ blogs }) => {
                />
             </Link>
          ))}
+         {blogs?.length === 0 && <p>No blogs found</p>}
       </div>
    );
 };

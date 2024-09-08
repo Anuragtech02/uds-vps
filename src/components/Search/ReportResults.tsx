@@ -16,6 +16,7 @@ const ReportResults = ({ reports }) => {
                />
             </Link>
          ))}
+         {reports?.length === 0 && <p>No reports found</p>}
       </div>
    );
 };

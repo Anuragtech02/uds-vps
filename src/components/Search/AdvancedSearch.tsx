@@ -3,8 +3,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { IoIosClock, IoIosClose, IoIosSearch } from 'react-icons/io';
 import { BiLoaderCircle } from 'react-icons/bi';
+import { FaTrash } from 'react-icons/fa';
 import { useSearchStore } from '@/stores/search.store';
-import fetchClientCSR from '@/utils/api/csr-config';
 import { searchContent } from '@/utils/api/csr-services';
 
 const RECENT_SEARCHES_KEY = 'recentSearches';
@@ -38,10 +38,7 @@ const AdvancedSearch: React.FC<AdvancedSearchProps> = ({ isOpen, onClose }) => {
    useEffect(() => {
       if (isOpen) {
          inputRef.current?.focus();
-         const storedSearches = localStorage.getItem(RECENT_SEARCHES_KEY);
-         if (storedSearches) {
-            setRecentSearches(JSON.parse(storedSearches));
-         }
+         loadRecentSearches();
       }
    }, [isOpen]);
 
@@ -57,6 +54,18 @@ const AdvancedSearch: React.FC<AdvancedSearchProps> = ({ isOpen, onClose }) => {
 
       return () => clearTimeout(debounceTimer);
    }, [query]);
+
+   const loadRecentSearches = () => {
+      const storedSearches = localStorage.getItem(RECENT_SEARCHES_KEY);
+      if (storedSearches) {
+         setRecentSearches(JSON.parse(storedSearches));
+      }
+   };
+
+   const saveRecentSearches = (searches: string[]) => {
+      localStorage.setItem(RECENT_SEARCHES_KEY, JSON.stringify(searches));
+      setRecentSearches(searches);
+   };
 
    const fetchSuggestions = async (searchQuery: string) => {
       setIsLoading(true);
@@ -78,10 +87,7 @@ const AdvancedSearch: React.FC<AdvancedSearchProps> = ({ isOpen, onClose }) => {
          searchQuery,
          ...recentSearches.filter((s) => s !== searchQuery),
       ].slice(0, MAX_RECENT_SEARCHES);
-      localStorage.setItem(
-         RECENT_SEARCHES_KEY,
-         JSON.stringify(updatedSearches),
-      );
+      saveRecentSearches(updatedSearches);
 
       router.push(`/search?q=${encodeURIComponent(searchQuery)}`);
       onClose();
@@ -95,6 +101,13 @@ const AdvancedSearch: React.FC<AdvancedSearchProps> = ({ isOpen, onClose }) => {
       }
    };
 
+   const handleDeleteRecentSearch = (searchToDelete: string) => {
+      const updatedSearches = recentSearches.filter(
+         (search) => search !== searchToDelete
+      );
+      saveRecentSearches(updatedSearches);
+   };
+
    const renderContent = () => {
       if (query === '' && recentSearches.length > 0) {
          return (
@@ -105,11 +118,22 @@ const AdvancedSearch: React.FC<AdvancedSearchProps> = ({ isOpen, onClose }) => {
                {recentSearches.map((search, index) => (
                   <div
                      key={index}
-                     className='flex cursor-pointer items-center rounded px-3 py-2 hover:bg-gray-100'
-                     onClick={() => handleSearch(search)}
+                     className='flex items-center justify-between rounded px-3 py-2 hover:bg-gray-100'
                   >
-                     <IoIosClock className='mr-2 h-4 w-4 text-gray-400' />
-                     {search}
+                     <div
+                        className='flex cursor-pointer items-center'
+                        onClick={() => handleSearch(search)}
+                     >
+                        <IoIosClock className='mr-2 h-4 w-4 text-gray-400' />
+                        {search}
+                     </div>
+                     <button
+                        onClick={() => handleDeleteRecentSearch(search)}
+                        className='text-gray-400 hover:text-red-400'
+                        title='Delete recent search'
+                     >
+                        <FaTrash className='h-3 w-3' />
+                     </button>
                   </div>
                ))}
             </div>

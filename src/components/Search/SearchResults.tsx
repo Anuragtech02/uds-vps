@@ -21,7 +21,13 @@ const SearchResults = () => {
       try {
          const data = await searchContent(encodeURIComponent(searchQuery));
          setData(data.results);
-         console.log(data.results);
+         if(data.results?.report?.length > 0) {
+            setActiveTab('reports');
+         } else if(data.results?.['news-article']?.length > 0) {
+            setActiveTab('news');
+         } else if(data.results?.blog?.length > 0) {
+            setActiveTab('blogs');
+         }
       } catch (error) {
          console.error('Error fetching suggestions:', error);
          setData({});
