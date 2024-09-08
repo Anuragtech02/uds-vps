@@ -7,9 +7,9 @@ const AllServices = ({services}) => {
   return (
     <div className='container grid grid-cols-2 gap-4 py-8'>
         {services?.map((service: any, index: number) => (
-          <Link href={`/services/${service?.slug}`}>
+          <Link href={`/services/${service?.slug}`} className='h-full'>
                <div
-               className='flex flex-col items-start gap-4 rounded-md border border-s-300 bg-white p-8 md:flex-row'
+               className='flex flex-col items-start h-full gap-4 rounded-md border border-s-300 transition-all duration-200 ease-in-out bg-white hover:bg-blue-8 p-8 md:flex-row'
                key={index}
             >
                <div className='space-y-2'>

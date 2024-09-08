@@ -35,6 +35,36 @@ export const variants = {
    },
 };
 
+export interface MenuItemData {
+   id: number | string;
+   attributes: {
+     [key: string]: any;
+     children?: {
+       data: MenuItemData[];
+     };
+   };
+ }
+ 
+ export interface MenuItem {
+   id: number | string;
+   [key: string]: any;
+   children?: MenuItem[];
+ }
+
+const mapMenuItem = (item: MenuItemData): MenuItem => ({
+   id: item.id,
+   ...item.attributes,
+   children: item.attributes.children?.data?.map(mapMenuItem) || []
+ });
+ 
+ export const mapHeaderMainMenu = (headerMainMenuData: any): MenuItem[] => {
+   return headerMainMenuData?.data?.attributes?.items?.data?.map(mapMenuItem) || [];
+ };
+ 
+ export const mapFooterQuickLinks = (footerQuickLinksData: any): MenuItem[] => {
+   return footerQuickLinksData?.data?.attributes?.items?.data?.map(mapMenuItem) || [];
+ };
+
 const Appwrapper: FC<AppwrapperProps> = async ({ children }) => {
    let footerData,
       headerData,
@@ -63,21 +93,8 @@ const Appwrapper: FC<AppwrapperProps> = async ({ children }) => {
    let industries = industriesData?.data?.map(
       (industry: any) => industry.attributes,
    );
-   let headerMainMenu = headerMainMenuData?.data?.attributes?.items?.data?.map(
-      (item: any) => ({
-         id: item?.id,
-         ...item?.attributes,
-         children: item?.attributes?.children?.data?.map((child: any) => ({
-            id: child?.id,
-            ...child?.attributes,
-         })),
-      }),
-   );
-   let footerQuickLinks =
-      footerQuickLinksData?.data?.attributes?.items?.data?.map((item: any) => ({
-         id: item?.id,
-         ...item?.attributes,
-      }));
+   let headerMainMenu = mapHeaderMainMenu(headerMainMenuData);
+   let footerQuickLinks = mapFooterQuickLinks(footerQuickLinksData);
 
    return (
       <>

@@ -250,3 +250,21 @@ export const getAllServices = async () => {
       throw error;
    }
 };
+
+export const getServiceBySlug = async (slug: string) => {
+   try {
+      const populateQuery = buildPopulateQuery([
+         'highlightImage.url'
+      ]);
+      const response = await fetchClient(
+         `/services?filters[slug][$eq]=${slug}&` + populateQuery,
+         {
+            headers: getAuthHeaders(),
+         },
+      );
+      return await response;
+   } catch (error) {
+      console.error('Error fetching main menu:', error);
+      throw error;
+   }
+};
