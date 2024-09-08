@@ -8,7 +8,7 @@ import TypewritterText from '../TypewritterText';
 import Stats from '../commons/Stats';
 import Link from 'next/link';
 import StrapiImage from '../StrapiImage/StrapiImage';
-
+import { useSearchStore } from '@/stores/search.store';
 const Hero: React.FC<{ data: any }> = ({ data }) => {
    const heroSection = {
       heroMainHeading: data.data.attributes.heroMainHeading,
