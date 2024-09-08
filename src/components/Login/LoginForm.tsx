@@ -4,8 +4,10 @@ import Button from '../commons/Button';
 import { useState } from 'react';
 import { login } from '@/utils/api/csr-services';
 import { BiLoader } from 'react-icons/bi';
+import { useRouter } from 'next/navigation';
 
 const LoginForm = () => {
+   const router = useRouter();
    const [email, setEmail] = useState('');
    const [password, setPassword] = useState('');
    const [showPassword, setShowPassword] = useState(false);
@@ -15,12 +17,21 @@ const LoginForm = () => {
 
    const handleSubmit = async (e) => {
       e.preventDefault();
+      if (!email || !password) {
+         setError('* Please fill all the fields');
+         return;
+      }
       setLoading(true);
       try {
          const res = await login({ identifier: email, password });
          setError(null);
-         console.log(res);
-         window.location.href = '/';
+         Cookies.set('authorization', `Bearer ${res.jwt}`, {
+            maxAge: 60 * 60 * 24 * 30, // 30 days
+            path: '/',
+            sameSite: 'strict',
+            secure: process.env.NODE_ENV === 'production',
+         });
+         router.push('/');
       } catch (error) {
          console.log(error);
          setError('* ' + error?.response?.data?.error?.message);

@@ -2,11 +2,13 @@
 import Button from '@/components/commons/Button';
 import { signup } from '@/utils/api/csr-services';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { BiLoader } from 'react-icons/bi';
 import { BsEyeFill, BsEyeSlashFill } from 'react-icons/bs';
 
 const SignUp = () => {
+   const router = useRouter();
    const [showPassword, setShowPassword] = useState(false);
    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
    const [email, setEmail] = useState('');
@@ -19,6 +21,10 @@ const SignUp = () => {
       e.preventDefault();
       if (password !== confirmPassword) {
          setErr('* Passwords do not match');
+         return;
+      }
+      if (!email || !password || !confirmPassword) {
+         setErr('* Please fill all the fields');
          return;
       }
       setErr(null);
@@ -35,6 +41,7 @@ const SignUp = () => {
          });
          console.log(res);
          setSuccessMessage('* Signup Successfull! Please Login');
+         router.push('/login');
       } catch (err) {
          console.log(err?.response?.data?.error?.message);
          setErr('* ' + err?.response?.data?.error?.message);
