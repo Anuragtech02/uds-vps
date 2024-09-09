@@ -64,15 +64,17 @@ const Header: React.FC<{ data: any }> = ({ data }) => {
             ref={headerRef1}
          >
             <div className='container'>
-               <div className='flex gap-8'>
-                  <div className='aspect-square h-[200px] rounded-md border border-s-300'>
+               <div className='flex flex-col gap-8 md:flex-row'>
+                  <div className='h-[200px] rounded-md border border-s-300 md:aspect-square'>
                      <StrapiImage
                         media={reportHeaderData.highlightImage.data.attributes}
+                        objectFit='contain'
+                        className='!h-[200px] !object-contain'
                      />
                   </div>
                   <div className='flex flex-col justify-center gap-4 font-semibold'>
                      <div className='flex items-start justify-between gap-6'>
-                        <h3 className='w-2/3 font-bold'>
+                        <h3 className='font-bold lg:w-2/3'>
                            {reportHeaderData.title}
                         </h3>
                      </div>
@@ -109,7 +111,7 @@ const Header: React.FC<{ data: any }> = ({ data }) => {
          </div>
          {showSecondHeader && (
             <div
-               className={`sticky left-0 right-0 top-[130px] z-20 border-b border-s-300 bg-white py-4 transition-all duration-300`}
+               className={`sticky left-0 right-0 top-[140px] z-20 border-b border-s-300 bg-white py-4 transition-all duration-300`}
                ref={headerRef2}
             >
                <div className='container'>
