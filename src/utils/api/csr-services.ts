@@ -1,7 +1,7 @@
 import fetchClientCSR from './csr-config';
 
-function getAuthHeaders(type: 'get' | 'search' = 'get') {
-    const token = type === 'search' ? process.env.NEXT_PUBLIC_SEARCH_TOKEN : process.env.NEXT_PUBLIC_API_TOKEN;
+function getAuthHeaders(type: 'get' | 'search' | 'post' = 'get') {
+    const token = type === 'search' ? process.env.NEXT_PUBLIC_SEARCH_TOKEN : type === 'post'? process.env.NEXT_PUBLIC_POST_TOKEN :process.env.NEXT_PUBLIC_API_TOKEN;
     if (token) {
        return {
           Authorization: `Bearer ${token}`,
@@ -47,6 +47,7 @@ export const signup = async (data: any) => {
       throw error;
    }
 };
+
 export const login = async (data: any) => {
    try {
       const response = await fetchClientCSR('/auth/local', {
@@ -62,3 +63,37 @@ export const login = async (data: any) => {
       throw error;
    }
 };
+
+export const submitContactForm = async (data: any) => {
+   try {
+      const response = await fetchClientCSR('/contact-form-submissions', {
+         method: 'POST',
+         body: JSON.stringify({data}),
+         headers: {
+            'Content-Type': 'application/json',
+            ...getAuthHeaders('post'),
+         },
+      });
+      return response.data;
+   } catch (error) {
+      console.error('Error submitting contact form:', error);
+      throw error;
+   }
+}
+
+export const submitEnquiryForm = async (data: any) => {
+   try {
+      const response = await fetchClientCSR('/enquiry-form-submissions', {
+         method: 'POST',
+         body: JSON.stringify(data),
+         headers: {
+            'Content-Type': 'application/json',
+            ...getAuthHeaders('post'),
+         },
+      });
+      return response.data;
+   } catch (error) {
+      console.error('Error submitting contact form:', error);
+      throw error;
+   }
+}

@@ -5,13 +5,13 @@ import {
   GoogleReCaptchaProvider,
   GoogleReCaptcha
 } from 'react-google-recaptcha-v3';
+import { submitContactForm } from '@/utils/api/csr-services';
 
 const DemoRequestForm = () => {
    const [formFields, setFormFields] = useState({
-      name: '',
-      email: '',
+      fullName: '',
+      businessEmail: '',
       company: '',
-      jobTitle: '',
       message: '',
    });
    const [phone, setPhone] = useState('');
@@ -49,12 +49,10 @@ const DemoRequestForm = () => {
 
       try {
          // Replace this with your actual API call
-         const response = await fetch('/api/demo-request', {
-            method: 'POST',
-            headers: {
-               'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ ...formFields, phone, captchaToken }),
+         const response = await submitContactForm({
+            ...formFields,
+            mobileNumber: phone,
+            captchaToken,
          });
 
          if (!response.ok) {
@@ -64,10 +62,9 @@ const DemoRequestForm = () => {
          setSubmitSuccess(true);
          // Reset form fields
          setFormFields({
-            name: '',
-            email: '',
+            fullName: '',
+            businessEmail: '',
             company: '',
-            jobTitle: '',
             message: '',
          });
          setPhone('');
@@ -89,10 +86,10 @@ const DemoRequestForm = () => {
                      <label htmlFor='name'>Full Name*</label>
                      <input
                         type='text'
-                        id='name'
-                        name='name'
+                        id='fullName'
+                        name='fullName'
                         required
-                        value={formFields.name}
+                        value={formFields.fullName}
                         onChange={handleInputChange}
                         placeholder='Enter your full name'
                         className='w-full rounded-md border border-s-300 p-3'
@@ -107,10 +104,10 @@ const DemoRequestForm = () => {
                      <label htmlFor='email'>Business Email*</label>
                      <input
                         type='email'
-                        id='email'
-                        name='email'
+                        id='businessEmail'
+                        name='businessEmail'
                         required
-                        value={formFields.email}
+                        value={formFields.businessEmail}
                         onChange={handleInputChange}
                         placeholder='Enter your email'
                         className='w-full rounded-md border border-s-300 p-3'
@@ -141,7 +138,7 @@ const DemoRequestForm = () => {
                      className='min-h-32 w-full rounded-md border border-s-300 p-3'
                   ></textarea>
                </div>
-               <GoogleReCaptcha onVerify={handleVerify} />
+               <GoogleReCaptcha onVerify={handleVerify} refreshReCaptcha />
                {submitError && <p className="text-red-500">{submitError}</p>}
                {submitSuccess && <p className="text-green-500">Thank you for your demo request. We&apos;ll get back to you soon!</p>}
                <div>
