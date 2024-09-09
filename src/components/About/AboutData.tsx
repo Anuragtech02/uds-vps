@@ -2,52 +2,41 @@ import { GoalIcon, RocketIcon, VisionIcon } from '../commons/Icons';
 import Stats from '../commons/Stats';
 import aboutImg from '@/assets/img/aboutStock.jpg';
 
-const missionVisionGoalsData = [
-   {
-      title: 'Vision',
-      icon: VisionIcon,
-      description:
-         "We have the vision to become the 'most preferred' knowledge service provider in the industry, and to fulfill that vision, we ensure that we continue to walk that extra mile for our clients.",
-   },
-   {
-      title: 'Mission',
-      icon: RocketIcon,
-      description:
-         'By catering to all-encompassing research needs of our clients with the utmost quality and precision, we are on a mission to multiply our expertise and capabilities by 10 times in the next five years.',
-   },
-
-   {
-      title: 'Goals',
-      icon: GoalIcon,
-      description:
-         'Our goal is to become one of the world’s leading market intelligence company by leveraging our expertise to cater to your business solutions and empowering you to take your business beyond the four walls.',
-   },
-];
-
-const AboutData = () => {
+const AboutData = ({ about }) => {
+   const {
+      researchSectionTitle,
+      researchSectionSubtitle,
+      researchSectionDescription,
+      researchSectionImage,
+      visionMissionCards,
+      visionMissionDescription,
+   } = about;
    return (
       <>
          <div className='bg-s-50 py-10 md:py-16'>
             <div className='container'>
                <div className='text-center'>
                   <h2>
-                     Our <span>Research</span>, Your <span>Solutions</span>
+                     <div
+                        dangerouslySetInnerHTML={{
+                           __html: researchSectionTitle,
+                        }}
+                     />
                   </h2>
                   <div className='mt-5 inline-block rounded-md bg-[#E6EBFF] p-3 px-6'>
-                     <p className='font-bold'>
-                        If You are an Ambitious Leader Planning to Build an
-                        Organization Tomorrow, Our Research can lead You to
-                        Success
-                     </p>
+                     <p className='font-bold'>{researchSectionSubtitle}</p>
                   </div>
                </div>
                <div>
-                  <div className='py-6 text-left'>
-                     {/* <Stats /> */}
-                  </div>
+                  <div className='py-6 text-left'>{/* <Stats /> */}</div>
                   <div className='flex flex-col-reverse items-center gap-8 pt-8 md:flex-row md:pt-12'>
-                     <div className='space-y-4 md:w-1/2'>
-                        <p className='font-bold text-s-800'>
+                     <div
+                        className='space-y-4 md:w-1/2'
+                        dangerouslySetInnerHTML={{
+                           __html: researchSectionDescription,
+                        }}
+                     >
+                        {/* <p className='font-bold text-s-800'>
                            UnivDatos Market Insights (UMI), a subsidiary of
                            Universal Data Solutions is a rapidly growing dynamic
                            market research firm led by a core of dedicated
@@ -70,11 +59,11 @@ const AboutData = () => {
                            we have expertise in doing extensive and exhaustive
                            research on niche sectors by embracing new and
                            advanced technologies.
-                        </p>
+                        </p> */}
                      </div>
                      <div className='md:w-1/2'>
                         <img
-                           src={aboutImg.src}
+                           src={researchSectionImage?.url}
                            className='h-auto w-full object-contain'
                            alt=''
                         />
@@ -88,20 +77,30 @@ const AboutData = () => {
                <div className='grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-8'>
                   <div>
                      <h2>
-                        Our <span>Research</span>, Your <span>Solutions</span>
+                        <div
+                           dangerouslySetInnerHTML={{
+                              __html: researchSectionTitle,
+                           }}
+                        />
                      </h2>
                      <p className='mt-2 text-lg font-bold text-s-800'>
-                        At UnivDatos, We are guided by our core values and
-                        beliefs. Our values enable us to serve our customers
-                        diligently and deliver quality on time.
+                        {visionMissionDescription}
                      </p>
                   </div>
-                  {missionVisionGoalsData.map((item, index) => (
+                  {visionMissionCards.map((item, index) => (
                      <div
                         className='flex flex-col items-start gap-4 rounded-md border border-s-300 bg-white p-8 md:flex-row'
                         key={index}
                      >
-                        <p>{item.icon && <item.icon />}</p>
+                        <p>
+                           {/* <RocketIcon /> */}
+                           {item?.image?.data?.attributes?.url && (
+                              <img
+                                 className='h-10 w-10 max-w-10'
+                                 src={item?.image?.data?.attributes?.url}
+                              />
+                           )}
+                        </p>
                         <div className='space-y-2'>
                            <p className='text-2xl font-bold md:text-[2rem]'>
                               {item.title}

@@ -8,6 +8,9 @@ import TypewritterText from '../TypewritterText';
 import Stats from '../commons/Stats';
 import Link from 'next/link';
 import StrapiImage from '../StrapiImage/StrapiImage';
+import ClientSearchHero from './ClientSearchHero';
+import Popup from '../Popup';
+import DemoRequestForm from './DemoRequestForm';
 import reportIllustration from '@/assets/img/report.svg';
 
 const Hero: React.FC<{ data: any }> = ({ data }) => {
@@ -56,17 +59,7 @@ const Hero: React.FC<{ data: any }> = ({ data }) => {
                      />{' '}
                      <br /> {getHeadingTextSplit().second}
                   </h1>
-
-                  <div className='mt-6 flex items-center gap-3 rounded-full border border-blue-2 px-6 py-3 md:w-2/3'>
-                     <span className='text-2xl'>
-                        <IoIosSearch />
-                     </span>
-                     <input
-                        type='text'
-                        placeholder={heroSection.heroSearchPlaceholder}
-                        className='w-full bg-transparent text-[1.125rem] outline-none'
-                     />
-                  </div>
+                  <ClientSearchHero />
 
                   <div className='mt-4 flex flex-col gap-2 py-4 md:mt-10 md:flex-row md:items-center'>
                      <Link href={heroSection.heroPrimaryCTA.link}>
@@ -104,6 +97,9 @@ const Hero: React.FC<{ data: any }> = ({ data }) => {
             <Stats data={stats} />
          </div>
          <Ellipse />
+         <Popup paramName='popup-form' title="Request a Demo">
+            <DemoRequestForm />
+         </Popup>
       </section>
    );
 };

@@ -1,38 +1,46 @@
-// utils/api/csr-config.ts
+const baseURL = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:1337';
+const timeout = 10000;
 
-import axios from 'axios';
-import Cookies from 'js-cookie';
+const fetchClientCSR = async (url: string, options: any = {}) => {
+   const fullUrl = `${baseURL}${url}`;
 
-const API = axios.create({
-   baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:1337',
-   timeout: 10000,
-});
+   console.log(fullUrl);
 
-// Request interceptor to append headers (e.g., authorization tokens)
-API.interceptors.request.use(
-   (config) => {
-      // Extract the token from cookies during CSR
-      const token = Cookies.get('token');
-      if (token) {
-         config.headers.Authorization = `Bearer ${token}`;
+   const defaultHeaders = {
+      'Content-Type': 'application/json',
+   };
+
+   const config = {
+      ...options,
+      headers: {
+         ...defaultHeaders,
+         ...options.headers,
+      },
+   };
+
+   // Timeout promise
+   const timeoutPromise = new Promise((_, reject) =>
+      setTimeout(() => reject(new Error('Request timed out')), timeout),
+   );
+
+   // Fetch request promise
+   const fetchPromise = fetch(fullUrl, config).then(async (response) => {
+      if (!response.ok) {
+         if (response.status === 401) {
+            console.error('Unauthorized access - maybe redirect to login?');
+         }
+         throw new Error(`HTTP error! status: ${response.status}`);
       }
-      return config;
-   },
-   (error) => {
-      return Promise.reject(error);
-   },
-);
+      return response.json();
+   });
 
-// Response interceptor to handle errors
-API.interceptors.response.use(
-   (response) => response,
-   (error) => {
-      if (error.response?.status === 401) {
-         // Handle unauthorized access
-         console.error('Unauthorized access - maybe redirect to login?');
-      }
-      return Promise.reject(error);
-   },
-);
+   // Use Promise.race to handle timeout
+   try {
+      return await Promise.race([fetchPromise, timeoutPromise]);
+   } catch (error) {
+      console.error('Fetch error:', error);
+      throw error;
+   }
+};
 
-export default API;
+export default fetchClientCSR;

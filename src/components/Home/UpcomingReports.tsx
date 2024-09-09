@@ -82,6 +82,7 @@ const sampleData = [
 ];
 
 const UpcomingReports: React.FC<{ data: any }> = ({ data }) => {
+
    const settings = {
       dots: false,
       infinite: false,
@@ -124,14 +125,15 @@ const UpcomingReports: React.FC<{ data: any }> = ({ data }) => {
 
             <div className='my-8 md:my-16 md:mt-10'>
                <Slider {...settings}>
-                  {sampleData.map((data, index) => (
+                  {data?.upcomingReports?.map((data: any, index: number) => (
                      <div key={index} className='pr-4'>
                         <ResearchCard
                            type='upcoming'
                            title={data.title}
+                           slug={data.slug}
                            year={data.year}
                            description={data.description}
-                           date={data.date}
+                           date={new Date(data.publishedAt).toLocaleDateString()}
                            sku={data.sku}
                            image={data?.image || sampleImage}
                         />
@@ -140,7 +142,7 @@ const UpcomingReports: React.FC<{ data: any }> = ({ data }) => {
                </Slider>
             </div>
 
-            <CustomResearchCTA />
+            <CustomResearchCTA ctaBanner={data.homePage?.data.attributes?.latestResearchSectionCTABanner} />
          </div>
       </section>
    );

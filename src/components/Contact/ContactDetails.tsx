@@ -6,53 +6,54 @@ import {
    BsYoutube,
 } from 'react-icons/bs';
 import { FaEnvelope, FaPhone } from 'react-icons/fa6';
+import StrapiImage from '../StrapiImage/StrapiImage';
 
-const ContactDetails = () => {
+const ContactDetails = ({ contactDetails }: any) => {
+   const contacts = contactDetails?.contactDetailsList?.map((contact: any) => ({
+      ...contact,
+      icon: contact?.icon?.data?.attributes,
+   }));
+   console.log(JSON.stringify(contacts));
    return (
       <div className='rounded-xl bg-white p-4 font-medium text-blue-2 md:p-6'>
          <div className='space-y-6 md:space-y-8'>
             <div>
-               <p className='mb-2 text-[1.625rem] text-blue-1'>Contact Info</p>
-               <div className='flex items-center gap-4'>
-                  <div className='flex items-center gap-2'>
-                     <FaPhone />
-                     <p>1234567890</p>
-                  </div>
-                  <div className='flex items-center gap-2'>
-                     <FaPhone />
-                     <p>1234567890</p>
-                  </div>
-               </div>
-               <div className='mt-1 flex items-center gap-2'>
-                  <FaEnvelope />
-                  <p>sales@univdatos.com</p>
-               </div>
-            </div>
-            <div>
-               <p className='mb-2 text-[1.625rem] text-blue-1'>Visit Us</p>
-               <p>
-                  4th & 5th Floor, C80B, Sector 8, Noida, Uttar Pradesh- 201301,
-                  India
+               <p className='mb-2 text-[1.625rem] text-blue-1'>
+                  {contactDetails?.contactSectionTitle}
                </p>
+               <div className='flex items-center gap-4'>
+                  {contacts?.map((contact: any) => {
+                     return (
+                        <div className='flex items-center gap-2'>
+                           <StrapiImage media={contact?.icon} />
+                           <p>{contact?.title}</p>
+                        </div>
+                     );
+                  })}
+               </div>
             </div>
             <div>
-               <p className='mb-2 text-[1.625rem] text-blue-1'>Follow Us</p>
+               <p className='mb-2 text-[1.625rem] text-blue-1'>
+                  {contactDetails?.locationSectionTitle}
+               </p>
+               <p>{contactDetails?.locationSectionDescription}</p>
+            </div>
+            <div>
+               <p className='mb-2 text-[1.625rem] text-blue-1'>
+                  {contactDetails?.socialMediaSectionTitle}
+               </p>
                <div className='flex items-center gap-4'>
-                  <a href='#'>
-                     <BsFacebook />
-                  </a>
-                  <a href='#'>
-                     <BsYoutube />
-                  </a>
-                  <a href='#'>
-                     <BsTwitterX />
-                  </a>
-                  <a href='#'>
-                     <BsInstagram />
-                  </a>
-                  <a href='#'>
-                     <BsLinkedin />
-                  </a>
+                  {contactDetails?.socialMediaSectionIconsList?.map(
+                     (socialMedia: any) => {
+                        return (
+                           <a href={socialMedia?.link}>
+                              <StrapiImage
+                                 media={socialMedia?.icon?.data?.attributes}
+                              />
+                           </a>
+                        );
+                     },
+                  )}
                </div>
             </div>
          </div>

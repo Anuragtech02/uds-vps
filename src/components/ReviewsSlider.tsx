@@ -22,7 +22,6 @@ const ReviewsSlider: FC<ReviewsSliderProps> = ({ data }) => {
       slidesToShow: 1,
       slidesToScroll: 1,
       arrows: false,
-      fade: true,
       cssEase: 'ease-in-out',
    };
 
