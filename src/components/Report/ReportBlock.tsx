@@ -142,7 +142,7 @@ const ReportBlock: React.FC<{ data: any }> = ({ data }) => {
                      {reportData.rightSectionHeading}
                   </p>
                   <div className='mt-4 flex flex-col gap-2'>
-                     {medusaReport?.variants?.map((license: any, index: number) => (
+                     {/* {medusaReport?.variants?.map((license: any, index: number) => (
                         <div
                            key={index}
                            className={`cursor-pointer rounded-md border border-s-300 p-4 transition-all duration-150 ${
@@ -184,7 +184,7 @@ const ReportBlock: React.FC<{ data: any }> = ({ data }) => {
                               ))}
                            </ul>
                         </div>
-                     ))}
+                     ))} */}
                   </div>
                </div>
                <Button className='w-full py-3' variant='secondary'>

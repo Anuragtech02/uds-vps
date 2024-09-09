@@ -43,7 +43,9 @@ const SignUp = () => {
          setSuccessMessage('* Signup Successfull! Please Login');
          router.push('/login');
       } catch (err) {
+         // @ts-ignore
          console.log(err?.response?.data?.error?.message);
+         // @ts-ignore
          setErr('* ' + err?.response?.data?.error?.message);
       }
       setLoading(false);

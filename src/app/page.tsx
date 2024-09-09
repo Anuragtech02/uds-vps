@@ -50,8 +50,8 @@ export default async function Home() {
          <UpcomingReports data={{upcomingReports: upcomingReportList, homePage}} />
          <MediaCitation mediaCitation={mediaCitation} />
          <NewsRoom data={{
-            blogs: latestBlogs?.data?.map((blog) => blog.attributes),
-            newsArticles: latestNewsArticles?.data?.map((newsArticle) => newsArticle.attributes),
+            blogs: latestBlogs?.data?.map((blog: any) => blog.attributes),
+            newsArticles: latestNewsArticles?.data?.map((newsArticle: any) => newsArticle.attributes),
          }} />
       </>
    );

@@ -1,8 +1,9 @@
 import { GoalIcon, RocketIcon, VisionIcon } from '../commons/Icons';
 import Stats from '../commons/Stats';
 import aboutImg from '@/assets/img/aboutStock.jpg';
+import StrapiImage from '../StrapiImage/StrapiImage';
 
-const AboutData = ({ about }) => {
+const AboutData = ({ about }: any) => {
    const {
       researchSectionTitle,
       researchSectionSubtitle,
@@ -87,7 +88,7 @@ const AboutData = ({ about }) => {
                         {visionMissionDescription}
                      </p>
                   </div>
-                  {visionMissionCards.map((item, index) => (
+                  {visionMissionCards.map((item: any, index: number) => (
                      <div
                         className='flex flex-col items-start gap-4 rounded-md border border-s-300 bg-white p-8 md:flex-row'
                         key={index}
@@ -95,9 +96,10 @@ const AboutData = ({ about }) => {
                         <p>
                            {/* <RocketIcon /> */}
                            {item?.image?.data?.attributes?.url && (
-                              <img
-                                 className='h-10 w-10 max-w-10'
-                                 src={item?.image?.data?.attributes?.url}
+                              <StrapiImage
+                                 className='!w-10 max-w-10'
+                                 media={item?.image?.data?.attributes}
+                                 objectFit='contain'
                               />
                            )}
                         </p>

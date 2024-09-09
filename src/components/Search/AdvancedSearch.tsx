@@ -154,7 +154,7 @@ const AdvancedSearch: React.FC<AdvancedSearchProps> = ({ isOpen, onClose }) => {
       ) {
          return (
             <div className='py-8 text-center text-gray-500'>
-               No results found for "{query}". Please try a different search
+               No results found for &quot;{query}&quot;. Please try a different search
                term.
             </div>
          );

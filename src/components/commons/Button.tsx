@@ -20,6 +20,8 @@ interface ButtonProps {
    size?: 'small' | 'medium' | 'large';
    icon?: React.ReactNode;
    className?: string;
+   disabled?: boolean;
+   type?: 'button' | 'submit' | 'reset';
    onClick?: () => void;
 }
 
@@ -28,6 +30,8 @@ const Button: FC<ButtonProps> = ({
    variant = 'primary',
    size = 'medium',
    icon,
+   disabled,
+   type = 'button',
    className,
    ...props
 }) => {
@@ -36,6 +40,8 @@ const Button: FC<ButtonProps> = ({
          className={`rounded-md font-medium transition-colors duration-200 ${
             variantStyles[variant]
          } ${sizeStyles[size]} ${className}`}
+         disabled={disabled}
+         type={type}
          {...props}
       >
          <span className='flex items-center justify-center'>

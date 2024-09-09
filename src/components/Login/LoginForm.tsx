@@ -5,17 +5,18 @@ import { useState } from 'react';
 import { login } from '@/utils/api/csr-services';
 import { BiLoader } from 'react-icons/bi';
 import { useRouter } from 'next/navigation';
+import Cookies from 'js-cookie';
 
 const LoginForm = () => {
    const router = useRouter();
    const [email, setEmail] = useState('');
    const [password, setPassword] = useState('');
    const [showPassword, setShowPassword] = useState(false);
-   const [error, setError] = useState(null);
+   const [error, setError] = useState<string | null>(null);
 
    const [loading, setLoading] = useState(false);
 
-   const handleSubmit = async (e) => {
+   const handleSubmit = async (e: any) => {
       e.preventDefault();
       if (!email || !password) {
          setError('* Please fill all the fields');
@@ -32,7 +33,7 @@ const LoginForm = () => {
             secure: process.env.NODE_ENV === 'production',
          });
          router.push('/');
-      } catch (error) {
+      } catch (error: any) {
          console.log(error);
          setError('* ' + error?.response?.data?.error?.message);
       }

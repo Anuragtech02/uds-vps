@@ -143,7 +143,7 @@ const DemoRequestForm = () => {
                </div>
                <GoogleReCaptcha onVerify={handleVerify} />
                {submitError && <p className="text-red-500">{submitError}</p>}
-               {submitSuccess && <p className="text-green-500">Thank you for your demo request. We'll get back to you soon!</p>}
+               {submitSuccess && <p className="text-green-500">Thank you for your demo request. We&apos;ll get back to you soon!</p>}
                <div>
                   <button className='bg-blue-2 px-4 py-2 text-white rounded-md' type="submit" disabled={isSubmitting}>
                      {isSubmitting ? 'Submitting...' : 'Request Demo'}

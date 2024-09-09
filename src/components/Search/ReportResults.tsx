@@ -1,10 +1,10 @@
 import Link from 'next/link';
 import ReportStoreItem from '../ReportStore/ReportItem';
 
-const ReportResults = ({ reports }) => {
+const ReportResults = ({ reports }: any) => {
    return (
       <div>
-         {reports?.map((report) => (
+         {reports?.map((report: any) => (
             <Link href={`/reports/${report?.slug}`} key={report?.id}>
                <ReportStoreItem
                   date={new Date(report?.createdAt).toDateString()}

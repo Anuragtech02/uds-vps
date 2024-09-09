@@ -34,7 +34,13 @@ export const searchContent = async (query: string, page: number, limit = 10) => 
 
 export const signup = async (data: any) => {
    try {
-      const response = await API.post('/auth/local/register', data);
+      const response = await fetchClientCSR('/auth/local/register', {
+         method: 'POST',
+         body: JSON.stringify(data),
+         headers: {
+            'Content-Type': 'application/json',
+         },
+      });
       return response.data;
    } catch (error) {
       console.error('Error fetching products:', error);
@@ -43,7 +49,13 @@ export const signup = async (data: any) => {
 };
 export const login = async (data: any) => {
    try {
-      const response = await API.post('/auth/local', data);
+      const response = await fetchClientCSR('/auth/local', {
+         method: 'POST',
+         body: JSON.stringify(data),
+         headers: {
+            'Content-Type': 'application/json',
+         },
+      });
       return response.data;
    } catch (error) {
       console.error('Error fetching products:', error);

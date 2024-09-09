@@ -46,6 +46,7 @@ const News = async () => {
          id: news?.id ?? idx,
          title: news?.attributes?.title ?? '',
          shortDescrption: news?.attributes?.shortDescrption ?? '',
+         // @ts-ignore
          thumbnailImage: news?.attributes?.thumbnailImage?.data?.attributes ?? '',
          description: news?.attributes?.description ?? '',
          createdAt: news?.attributes?.createdAt ?? '',

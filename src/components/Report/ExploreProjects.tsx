@@ -113,7 +113,7 @@ const ExploreProjects = () => {
                            year={data.year}
                            description={data.description}
                            date={data.date}
-                           sku={data.sku}
+                           slug=''
                            image={data?.image || sampleImage}
                         />
                      </div>
@@ -127,10 +127,10 @@ const ExploreProjects = () => {
                <span className='font-bold'>Big and Small.</span>
             </p>
             <div className='py-6 md:py-10'>
-               <BrandsMarquee />
+               <BrandsMarquee logos={[]} />
             </div>
             <div className='container py-10 md:py-16'>
-               <PreBookCTA />
+               {/* <PreBookCTA ctaButton={{}} /> */}
             </div>
          </div>
       </section>

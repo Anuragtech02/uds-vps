@@ -1,10 +1,10 @@
 import Link from 'next/link';
 import BlogItem from '../Blog/BlogItem';
 
-const BlogResults = ({ blogs }) => {
+const BlogResults = ({ blogs }: {blogs: Array<any>}) => {
    return (
       <div>
-         {blogs?.map((blog) => (
+         {blogs?.map((blog: any) => (
             <Link href={`/blogs/${blog?.slug}`} key={blog?.id}>
                <BlogItem
                   key={blog.id}

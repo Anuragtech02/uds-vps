@@ -53,6 +53,7 @@ const Blog = async (): Promise<JSX.Element> => {
          id: blog?.id ?? idx,
          title: blog?.attributes?.title ?? '',
          shortDescription: blog?.attributes?.shortDescription ?? '',
+         // @ts-expect-error ts-migrate(2531) FIXME: Object is possibly 'null'.
          thumbnailImage: blog?.attributes?.thumbnailImage?.data?.attributes ?? '',
          description: blog?.attributes?.description ?? '',
          createdAt: blog?.attributes?.createdAt ?? '',

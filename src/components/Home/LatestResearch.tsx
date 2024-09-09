@@ -118,6 +118,7 @@ const LatestResearch: React.FC<{ data: any }> = ({ data }) => {
                            key={index}
                            type='latest'
                            title={data.title}
+                           slug={""}
                            year={data.year}
                            image={data?.image || sampleImage}
                         />

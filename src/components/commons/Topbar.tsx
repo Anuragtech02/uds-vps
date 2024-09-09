@@ -36,7 +36,7 @@ const Topbar = ({ header, industries }: ITopbarProps) => {
                </p>
             </div>
             <div className='flex items-center gap-4'>
-               <select name='' id='' className='hidden md:block'>
+               <select title='Industry' id='' className='hidden md:block'>
                   {industries?.map((industry) => (
                      <option key={industry?.slug} value={industry?.slug}>
                         {industry?.name}

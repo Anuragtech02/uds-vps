@@ -1,10 +1,10 @@
 import Link from 'next/link';
 import NewsItem from '../News/NewsItem';
 
-const NewsResults = ({ news }) => {
+const NewsResults = ({ news }: any) => {
    return (
       <div>
-         {news.map((item) => {
+         {news.map((item: any) => {
             return (
                <Link href={`/news/${item?.slug}`} key={item.id}>
                   <NewsItem

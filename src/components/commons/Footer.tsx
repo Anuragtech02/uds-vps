@@ -14,17 +14,17 @@ import { usePathname } from 'next/navigation';
 import CustomResearchCTA from './CustomResearchCTA';
 
 const socials = [];
-const invalidRoutes = ['/', '/about', '/contact', '/login', '/signup'];
+const invalidRoutes = ['/', '/about', '/contact', '/login', '/signup', '/search'];
 
 const Footer = ({ footer, industries, quickLinks }: any) => {
    const pathname = usePathname();
    return (
       <>
-         {invalidRoutes.includes(pathname) ? null : (
+         {/* {invalidRoutes.includes(pathname) ? null : (
             <div className='container py-10 md:py-16 md:pb-20'>
-               <CustomResearchCTA />
+               <CustomResearchCTA  />
             </div>
-         )}
+         )} */}
          <footer className='bg-blue-1 pb-12 text-white'>
             <div className='relative border-b border-blue-4 py-12 text-center'>
                <img

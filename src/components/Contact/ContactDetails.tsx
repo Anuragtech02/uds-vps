@@ -1,11 +1,3 @@
-import {
-   BsFacebook,
-   BsInstagram,
-   BsLinkedin,
-   BsTwitterX,
-   BsYoutube,
-} from 'react-icons/bs';
-import { FaEnvelope, FaPhone } from 'react-icons/fa6';
 import StrapiImage from '../StrapiImage/StrapiImage';
 
 const ContactDetails = ({ contactDetails }: any) => {
@@ -24,7 +16,7 @@ const ContactDetails = ({ contactDetails }: any) => {
                <div className='flex items-center gap-4'>
                   {contacts?.map((contact: any) => {
                      return (
-                        <div className='flex items-center gap-2'>
+                        <div key={contact?.title} className='flex items-center gap-2'>
                            <StrapiImage media={contact?.icon} />
                            <p>{contact?.title}</p>
                         </div>
@@ -46,7 +38,7 @@ const ContactDetails = ({ contactDetails }: any) => {
                   {contactDetails?.socialMediaSectionIconsList?.map(
                      (socialMedia: any) => {
                         return (
-                           <a href={socialMedia?.link}>
+                           <a target='_blank' rel='noreferrer' key={socialMedia?.link} href={socialMedia?.link}>
                               <StrapiImage
                                  media={socialMedia?.icon?.data?.attributes}
                               />
