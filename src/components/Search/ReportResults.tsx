@@ -10,8 +10,6 @@ const ReportResults = ({ reports }: any) => {
                   date={new Date(report?.createdAt).toDateString()}
                   title={report?.title}
                   description={report?.shortDescription}
-                  priceRange={''}
-                  sku={''}
                   key={report?.id}
                />
             </Link>
