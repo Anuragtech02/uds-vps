@@ -16,6 +16,9 @@ const fetchClient = async (url: string, options: any = {}) => {
          ...defaultHeaders,
          ...options.headers,
       },
+      next: {
+         revalidate: 0,
+      }
    };
 
    // Timeout promise

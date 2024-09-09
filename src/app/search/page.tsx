@@ -3,7 +3,6 @@ import ClientSearchHero from '@/components/Home/ClientSearchHero';
 import SearchResults from '@/components/Search/SearchResults';
 import { Suspense } from 'react';
 import { BiLoaderCircle } from 'react-icons/bi';
-import { IoIosSearch } from 'react-icons/io';
 
 const Search = (props: {
    searchParams: {
