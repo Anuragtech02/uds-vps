@@ -1,6 +1,7 @@
 import BlogBody from '@/components/Blog/BlogBody';
 import BlogSidebar from '@/components/Blog/BlogSidebar';
 import Header from '@/components/Blog/Header';
+import ClientSearchHero from '@/components/Home/ClientSearchHero';
 import { getBlogDetails } from '@/utils/api/services';
 import { IoIosSearch } from 'react-icons/io';
 
@@ -29,15 +30,8 @@ const Blog = async (data: any) => {
                   <BlogBody blog={blog} />
                </div>
                <div className='flex-[0.3] space-y-4 md:space-y-6'>
-                  <div className='flex items-center gap-3 rounded-full border border-blue-2 px-6 py-3'>
-                     <span className='text-2xl'>
-                        <IoIosSearch />
-                     </span>
-                     <input
-                        type='text'
-                        placeholder='Search for reports, industries and more...'
-                        className='w-full bg-transparent text-[1.125rem] outline-none'
-                     />
+                  <div className='w-full [&>div]:w-full'>
+                     <ClientSearchHero />
                   </div>
                   <BlogSidebar />
                </div>

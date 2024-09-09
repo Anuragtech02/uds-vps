@@ -67,7 +67,10 @@ export const getReportsPageBySlug = async (slug: string) => {
 
 export const getNewsListingPage = async () => {
    try {
-      const response = await fetchClient('/news-articles', {
+      const populateQuery = buildPopulateQuery([
+         'thumbnailImage.url',
+      ]);
+      const response = await fetchClient('/news-articles?'+populateQuery, {
          headers: getAuthHeaders(),
       });
       return await response;
@@ -79,7 +82,10 @@ export const getNewsListingPage = async () => {
 
 export const getBlogsListingPage = async () => {
    try {
-      const response = await fetchClient('/blogs', {
+      const populateQuery = buildPopulateQuery([
+         'thumbnailImage.url',
+      ]);
+      const response = await fetchClient('/blogs?'+populateQuery, {
          headers: getAuthHeaders(),
       });
       return await response;

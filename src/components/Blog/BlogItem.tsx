@@ -1,24 +1,24 @@
-import Image from 'next/image';
-import newPlaceHolder from '@/assets/img/newPlaceholder.jpg';
 import { CalendarSvg } from '../commons/Icons';
 import { FC } from 'react';
+import StrapiImage from '../StrapiImage/StrapiImage';
 
 interface BlogItemProps {
    title: string;
    date: string;
-   description: string;
+   shortDescription: string;
+   thumbnailImage: {
+      url: string;
+      altContent: string;
+      width: number;
+      height: number;
+   }
 }
 
-const BlogItem: FC<BlogItemProps> = ({ title, date, description }) => {
+const BlogItem: FC<BlogItemProps> = ({ title, date, shortDescription, thumbnailImage }) => {
    return (
       <div className='flex flex-col gap-4 rounded-xl bg-white p-6 md:flex-row'>
          <div className='relative aspect-video rounded-md md:w-1/3'>
-            <Image
-               src={newPlaceHolder}
-               alt='news'
-               fill
-               className='rounded-xl'
-            />
+         <StrapiImage media={thumbnailImage} objectFit='cover' className='rounded-md' />
          </div>
          <div className='md:w-2/3'>
             <div className='my-2 flex items-center'>
@@ -29,10 +29,7 @@ const BlogItem: FC<BlogItemProps> = ({ title, date, description }) => {
                {/* {title.length > 60 ? title.substring(0, 60) + '...' : title} */}
             </h4>
             <p className='text-gray-600'>
-               {/* {description.length > 100
-                  ? description.substring(0, 100) + '...'
-                  : description} */}
-               {description}
+               {shortDescription}
             </p>
             <p className='my-2 flex items-center gap-2'>
                <CalendarSvg />

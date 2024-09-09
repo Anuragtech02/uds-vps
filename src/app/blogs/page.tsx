@@ -6,6 +6,12 @@ interface blogsItem {
    id: number;
    title: string;
    shortDescription: string;
+   thumbnailImage: {
+      url: string;
+      altContent: string;
+      width: number;
+      height: number;
+   };
    description: string;
    createdAt: string;
    publishedAt: string;
@@ -47,6 +53,7 @@ const Blog = async (): Promise<JSX.Element> => {
          id: blog?.id ?? idx,
          title: blog?.attributes?.title ?? '',
          shortDescription: blog?.attributes?.shortDescription ?? '',
+         thumbnailImage: blog?.attributes?.thumbnailImage?.data?.attributes ?? '',
          description: blog?.attributes?.description ?? '',
          createdAt: blog?.attributes?.createdAt ?? '',
          publishedAt: blog?.attributes?.publishedAt ?? '',
@@ -74,7 +81,6 @@ const Blog = async (): Promise<JSX.Element> => {
       );
       return <div>Error fetching data</div>;
    }
-   console.log({ shortDescription: blogList[0]?.shortDescription });
 
    return (
       <div className='container pt-40'>
@@ -87,7 +93,8 @@ const Blog = async (): Promise<JSX.Element> => {
                      <BlogItem
                         key={i}
                         title={blog?.title}
-                        description={blog?.shortDescription}
+                        thumbnailImage={blog?.thumbnailImage}
+                        shortDescription={blog?.shortDescription}
                         date={new Intl.DateTimeFormat('en-GB', {
                            day: '2-digit',
                            month: 'long',

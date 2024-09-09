@@ -7,6 +7,12 @@ interface newsItem {
    id: number;
    title: string;
    shortDescrption: string;
+   thumbnailImage: {
+      url: string;
+      altContent: string;
+      width: number;
+      height: number;
+   }
    description: string;
    createdAt: string;
    publishedAt: string;
@@ -40,6 +46,7 @@ const News = async () => {
          id: news?.id ?? idx,
          title: news?.attributes?.title ?? '',
          shortDescrption: news?.attributes?.shortDescrption ?? '',
+         thumbnailImage: news?.attributes?.thumbnailImage?.data?.attributes ?? '',
          description: news?.attributes?.description ?? '',
          createdAt: news?.attributes?.createdAt ?? '',
          publishedAt: news?.attributes?.publishedAt ?? '',
@@ -78,6 +85,7 @@ const News = async () => {
                      <NewsItem
                         key={i}
                         title={news?.title}
+                        thumbnailImage={news?.thumbnailImage}
                         date={new Intl.DateTimeFormat('en-GB', {
                            day: '2-digit',
                            month: 'long',
