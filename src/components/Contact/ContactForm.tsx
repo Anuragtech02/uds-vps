@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import Button from '../commons/Button';
 import CustomPhoneInput from '../CustomPhoneInput';
+import countryList from '@/assets/utils/countries.json';
 
 const ContactForm = () => {
 
@@ -52,7 +53,7 @@ const ContactForm = () => {
             </div>
             <div className='flex flex-col items-center gap-4 md:flex-row'>
                <div className='shrink grow basis-0 space-y-1'>
-                  <label htmlFor='email'>Email*</label>
+                  <label htmlFor='email'>Business Email*</label>
                   <input
                      type='email'
                      id='email'
@@ -70,9 +71,9 @@ const ContactForm = () => {
                      <option className='opacity-50' value=''>
                         Select your country
                      </option>
-                     <option value='India'>India</option>
-                     <option value='USA'>USA</option>
-                     <option value='UK'>UK</option>
+                     {countryList?.map((country) => (
+                        <option key={country.code} value={country.name}>{country.name}</option>
+                     ))}
                   </select>
                </div>
             </div>
