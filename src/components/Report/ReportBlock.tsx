@@ -4,6 +4,7 @@ import Button from '../commons/Button';
 import sampleReport from './sample.json';
 import ReportBlockData from './ReportBlockData';
 import Link from 'next/link';
+import { BiChevronRight } from 'react-icons/bi';
 // import fetchClientMedusa from '@/utils/api/config-medusa';
 
 const reportIndex = [
@@ -59,6 +60,10 @@ const ReportBlock: React.FC<{ data: any }> = ({ data }) => {
       tableOfContent: data.attributes.tableOfContent,
       description: data.attributes.description,
       faqSectionHeading: data.attributes.faqSectionHeading,
+      industry: {
+         name: data.attributes.industry.data.attributes.name,
+         slug: data.attributes.industry.data.attributes.slug,
+      },
       faqList: data.attributes.faqList,
       relatedReportsSectionHeading:
          data.attributes.relatedReportsSectionHeading,
@@ -99,8 +104,28 @@ const ReportBlock: React.FC<{ data: any }> = ({ data }) => {
 
    return (
       <div className='container py-10 md:py-16'>
-         <div className='flex items-start gap-4'>
-            <div className='sticky top-[280px] flex flex-[0.2] flex-col gap-6'>
+         <div className='flex items-center gap-2 pb-10 md:text-lg'>
+            <Link href='/'>
+               <p>Home</p>
+            </Link>
+            <span>
+               <BiChevronRight />
+            </span>
+            <Link href='/report-store'>
+               <p>Report Store</p>
+            </Link>
+            <span>
+               <BiChevronRight />
+            </span>
+
+            <p>{reportData?.industry?.name}</p>
+            <span>
+               <BiChevronRight />
+            </span>
+            <p></p>
+         </div>
+         <div className='flex flex-col items-start gap-4 lg:flex-row'>
+            <div className='sticky top-[280px] hidden flex-[0.2] flex-col gap-6 lg:flex'>
                <div className='w-full rounded-md border border-s-400 bg-white'>
                   <ul className='list-none p-0'>
                      {reportIndex.map((item, index) => (
