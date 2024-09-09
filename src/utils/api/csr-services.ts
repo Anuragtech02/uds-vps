@@ -10,7 +10,7 @@ function getAuthHeaders(type: 'get' | 'search' = 'get') {
     return undefined;
  }
 
-export const searchContent = async (query: string) => {
+export const searchContent = async (query: string, page: number, limit = 10) => {
     try {
        const response = await fetchClientCSR('/search?q='+query, {
           headers: getAuthHeaders('search'),

@@ -71,7 +71,7 @@ const AdvancedSearch: React.FC<AdvancedSearchProps> = ({ isOpen, onClose }) => {
       setIsLoading(true);
       setHasSearched(true);
       try {
-         const data = await searchContent(encodeURIComponent(searchQuery));
+         const data = await searchContent(encodeURIComponent(searchQuery), 1, 10);
          setSuggestions(data.results);
       } catch (error) {
          console.error('Error fetching suggestions:', error);

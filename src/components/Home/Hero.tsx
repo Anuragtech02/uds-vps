@@ -10,6 +10,8 @@ import Link from 'next/link';
 import StrapiImage from '../StrapiImage/StrapiImage';
 import { useSearchStore } from '@/stores/search.store';
 import ClientSearchHero from './ClientSearchHero';
+import Popup from '../Popup';
+import DemoRequestForm from './DemoRequestForm';
 
 const Hero: React.FC<{ data: any }> = ({ data }) => {
    const heroSection = {
@@ -89,6 +91,9 @@ const Hero: React.FC<{ data: any }> = ({ data }) => {
             <Stats data={stats} />
          </div>
          <Ellipse />
+         <Popup paramName='popup-form' title="Request a Demo">
+            <DemoRequestForm />
+         </Popup>
       </section>
    );
 };

@@ -23,7 +23,7 @@ const ReportStoreItem: FC<ReportStoreItemProps> = ({
 }) => {
    return (
       <div className='flex flex-col gap-4 rounded-xl bg-white p-6 md:flex-row'>
-         <div className='relative aspect-square h-auto w-[250px] rounded-xl border border-s-300'>
+         <div className='relative aspect-square h-auto w-[180px] rounded-xl border border-s-300'>
             <Image
                src={newPlaceHolder}
                alt='news'
@@ -40,22 +40,22 @@ const ReportStoreItem: FC<ReportStoreItemProps> = ({
                   ? description.substring(0, 100) + '...'
                   : description}
             </p>
-            {showPrice && (
+            {/* {showPrice && (
                <div className='inline-block rounded-full bg-blue-9 px-4 py-2 text-lg font-medium text-blue-1'>
                   <p>{priceRange}</p>
                </div>
-            )}
+            )} */}
             <div className='flex w-full items-end justify-between'>
                <div className='space-y-3'>
                   <p className='flex items-center gap-2 text-sm font-semibold'>
                      <CalendarSvg />
                      {date}
                   </p>
-                  <p className='text-sm font-semibold'>SKU: {sku}</p>
+                  {/* <p className='text-sm font-semibold'>SKU: {sku}</p> */}
                </div>
-               <Button variant='secondary' size='small'>
+               {/* <Button variant='secondary' size='small'>
                   Select Options
-               </Button>
+               </Button> */}
             </div>
          </div>
       </div>

@@ -4,23 +4,37 @@ import ReportResults from './ReportResults';
 import NewsResults from './NewsResults';
 import BlogResults from './BlogResults';
 import { searchContent } from '@/utils/api/csr-services';
-import { useParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
+
+const ITEMS_PER_PAGE = 10;
+
+const SkeletonLoader = () => (
+  <div className="animate-pulse space-y-4">
+    {[...Array(5)].map((_, index) => (
+      <div key={index} className="bg-gray-200 h-24 rounded-md"></div>
+    ))}
+  </div>
+);
 
 const SearchResults = () => {
-   const [activeTab, setActiveTab] = useState<'reports' | 'news' | 'blogs'>(
-      'reports',
-   );
+   const [activeTab, setActiveTab] = useState<'reports' | 'news' | 'blogs'>('reports');
    const [isLoading, setIsLoading] = useState(false);
    const [hasSearched, setHasSearched] = useState(false);
    const [data, setData] = useState<any>({});
-   const fetchSuggestions = async () => {
+   const [currentPage, setCurrentPage] = useState(1);
+   const [totalItems, setTotalItems] = useState(0);
+
+   const router = useRouter();
+   const searchParams = useSearchParams();
+
+   const fetchResults = async (page: number) => {
       setIsLoading(true);
       setHasSearched(true);
-      const url = new URL(window.location.href);
-      const searchQuery = url.searchParams.get('q') || '';
+      const searchQuery = searchParams.get('q') || '';
       try {
-         const data = await searchContent(encodeURIComponent(searchQuery));
+         const data = await searchContent(encodeURIComponent(searchQuery), page, ITEMS_PER_PAGE);
          setData(data.results);
+         setTotalItems(data.total);
          if(data.results?.report?.length > 0) {
             setActiveTab('reports');
          } else if(data.results?.['news-article']?.length > 0) {
@@ -29,15 +43,27 @@ const SearchResults = () => {
             setActiveTab('blogs');
          }
       } catch (error) {
-         console.error('Error fetching suggestions:', error);
+         console.error('Error fetching results:', error);
          setData({});
       } finally {
          setIsLoading(false);
       }
    };
+
    useEffect(() => {
-      fetchSuggestions();
-   }, []);
+      const page = parseInt(searchParams.get('page') || '1', 10);
+      setCurrentPage(page);
+      fetchResults(page);
+   }, [searchParams]);
+
+   const handlePageChange = (newPage: number) => {
+      const currentParams = new URLSearchParams(searchParams.toString());
+      currentParams.set('page', newPage.toString());
+      router.push(`?${currentParams.toString()}`);
+   };
+
+   const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
+
    return (
       <div className='space-y-4 md:space-y-6'>
          <div className='flex items-center gap-4'>
@@ -67,14 +93,39 @@ const SearchResults = () => {
             </div>
          </div>
          <div>
-            {activeTab === 'reports' && (
-               <ReportResults reports={data?.report} />
+            {isLoading ? (
+               <SkeletonLoader />
+            ) : (
+               <>
+                  {activeTab === 'reports' && (
+                     <ReportResults reports={data?.report} />
+                  )}
+                  {activeTab === 'news' && (
+                     <NewsResults news={data?.['news-article']} />
+                  )}
+                  {activeTab === 'blogs' && <BlogResults blogs={data?.blog} />}
+               </>
             )}
-            {activeTab === 'news' && (
-               <NewsResults news={data?.['news-article']} />
-            )}
-            {activeTab === 'blogs' && <BlogResults blogs={data?.blog} />}
          </div>
+         {!isLoading && totalPages > 1 && (
+            <div className="flex justify-center items-center space-x-2 mt-4">
+               <button
+                  onClick={() => handlePageChange(currentPage - 1)}
+                  disabled={currentPage === 1}
+                  className="px-4 py-2 border rounded-md disabled:opacity-50"
+               >
+                  Previous
+               </button>
+               <span>{currentPage} of {totalPages}</span>
+               <button
+                  onClick={() => handlePageChange(currentPage + 1)}
+                  disabled={currentPage === totalPages}
+                  className="px-4 py-2 border rounded-md disabled:opacity-50"
+               >
+                  Next
+               </button>
+            </div>
+         )}
       </div>
    );
 };

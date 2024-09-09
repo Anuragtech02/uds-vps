@@ -1,6 +1,28 @@
+"use client";
+import { useState } from 'react';
 import Button from '../commons/Button';
+import CustomPhoneInput from '../CustomPhoneInput';
 
 const ContactForm = () => {
+
+   const [formFields, setFormFields] = useState({
+      name: '',
+      email: '',
+      message: '',
+   });
+   const [phone, setPhone] = useState('');
+
+   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      setFormFields({
+         ...formFields,
+         [e.target.name]: e.target.value,
+      });
+   };
+
+   const handlePhoneChange = (phone: string) => {
+      setPhone(phone);
+   };
+
    return (
       <div className='rounded-xl bg-white p-4 font-medium text-[#020D19] md:p-6'>
          <form action='' className='space-y-6 text-sm md:space-y-8'>
@@ -17,14 +39,15 @@ const ContactForm = () => {
                   />
                </div>
                <div className='shrink grow basis-0 space-y-1'>
-                  <label htmlFor='mobile-number'>Mobile Number*</label>
+                  {/* <label htmlFor='mobile-number'>Mobile Number*</label>
                   <input
                      type='text'
                      required
                      placeholder='Enter your mobile number'
                      id='mobile-number'
                      className='w-full rounded-md border border-s-300 p-3'
-                  />
+                  /> */}
+                  <CustomPhoneInput value={phone} onChange={handlePhoneChange} />
                </div>
             </div>
             <div className='flex flex-col items-center gap-4 md:flex-row'>
@@ -54,11 +77,11 @@ const ContactForm = () => {
                </div>
             </div>
             <div className='space-y-1'>
-               <label htmlFor='name'>Subject</label>
+               <label htmlFor='name'>Message</label>
                <textarea
                   name='message'
                   id='message'
-                  placeholder='Enter Subject'
+                  placeholder='Enter your message'
                   className='min-h-32 w-full rounded-md border border-s-300 p-3'
                ></textarea>
             </div>

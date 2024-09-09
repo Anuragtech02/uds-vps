@@ -13,6 +13,17 @@ function getAuthHeaders() {
    return undefined;
 }
 
+const getPaginationQuery = (page: number = 1, limit: number = 10) => {
+   return `pagination[page]=${page}&pagination[pageSize]=${limit}`;
+};
+
+const getFilterQuery = (filters: Record<string, string | number | boolean> = {}) => {
+   return Object.entries(filters)
+      .map(([key, value]) => `filters[${key}]=${encodeURIComponent(String(value))}`)
+      .join('&');
+};
+
+
 export const getHomePage = async () => {
    try {
       const populateQuery = buildPopulateQuery([
@@ -65,12 +76,36 @@ export const getReportsPageBySlug = async (slug: string) => {
    }
 };
 
-export const getNewsListingPage = async () => {
+export const getAllReports = async (page = 1, limit = 10, filters = {}) => {
+   try {
+      const populateQuery = buildPopulateQuery([
+         'industry.name',
+         'geography.name',
+         'highlightImage.url',
+      ]);
+      const paginationQuery = getPaginationQuery(page, limit);
+      const filterQuery = getFilterQuery(filters);
+      const query = `${populateQuery}&${paginationQuery}&${filterQuery}`;
+      const response = await fetchClient('/reports?' + query, {
+         headers: getAuthHeaders(),
+      });
+      return await response;
+   } catch (error) {
+      console.error('Error fetching products:', error);
+      throw error;
+   }
+}
+
+export const getNewsListingPage = async (page = 1, limit = 10, filters = {}) => {
    try {
       const populateQuery = buildPopulateQuery([
          'thumbnailImage.url',
+         'author.name',
       ]);
-      const response = await fetchClient('/news-articles?'+populateQuery, {
+      const paginationQuery = getPaginationQuery(page, limit);
+      const filterQuery = getFilterQuery(filters);
+      const query = `${populateQuery}&${paginationQuery}&${filterQuery}`;
+      const response = await fetchClient('/news-articles?' + query, {
          headers: getAuthHeaders(),
       });
       return await response;
@@ -80,28 +115,34 @@ export const getNewsListingPage = async () => {
    }
 };
 
-export const getBlogsListingPage = async () => {
+export const getBlogsListingPage = async (page = 1, limit = 10, filters = {}) => {
    try {
       const populateQuery = buildPopulateQuery([
          'thumbnailImage.url',
+         'author.name',
       ]);
-      const response = await fetchClient('/blogs?'+populateQuery, {
+      const paginationQuery = getPaginationQuery(page, limit);
+      const filterQuery = getFilterQuery(filters);
+      const query = `${populateQuery}&${paginationQuery}&${filterQuery}`;
+      const response = await fetchClient('/blogs?' + query, {
          headers: getAuthHeaders(),
       });
       return await response;
    } catch (error) {
-      console.error('Error fetching News:', error);
+      console.error('Error fetching Blogs:', error);
       throw error;
    }
 };
-export const getIndustries = async () => {
+
+export const getIndustries = async (page = 1, limit = 100) => {
    try {
-      const response = await fetchClient('/industries', {
+      const paginationQuery = getPaginationQuery(page, limit);
+      const response = await fetchClient('/industries?' + paginationQuery, {
          headers: getAuthHeaders(),
       });
       return await response;
    } catch (error) {
-      console.error('Error fetching News:', error);
+      console.error('Error fetching Industries:', error);
       throw error;
    }
 };
@@ -263,12 +304,15 @@ export const getServicesPage = async () => {
    }
 };
 
-export const getAllServices = async () => {
+export const getAllServices = async (page = 1, limit = 10, filters = {}) => {
    try {
       const populateQuery = buildPopulateQuery([
          'highlightImage.url',
       ]);
-      const response = await fetchClient('/services?' + populateQuery, {
+      const paginationQuery = getPaginationQuery(page, limit);
+      const filterQuery = getFilterQuery(filters);
+      const query = `${populateQuery}&${paginationQuery}&${filterQuery}`;
+      const response = await fetchClient('/services?' + query, {
          headers: getAuthHeaders(),
       });
       return await response;
@@ -277,7 +321,6 @@ export const getAllServices = async () => {
       throw error;
    }
 };
-
 export const getServiceBySlug = async (slug: string) => {
    try {
       const populateQuery = buildPopulateQuery([

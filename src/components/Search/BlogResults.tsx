@@ -8,9 +8,10 @@ const BlogResults = ({ blogs }) => {
             <Link href={`/blogs/${blog?.slug}`} key={blog?.id}>
                <BlogItem
                   key={blog.id}
+                  thumbnailImage={blog?.thumbnailImage}
                   date={new Date(blog?.publishedAt).toDateString()}
                   title={blog?.title}
-                  description={blog?.shortDescription}
+                  shortDescription={blog?.shortDescription}
                />
             </Link>
          ))}

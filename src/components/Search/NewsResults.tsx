@@ -9,6 +9,7 @@ const NewsResults = ({ news }) => {
                <Link href={`/news/${item?.slug}`} key={item.id}>
                   <NewsItem
                      key={item.id}
+                     thumbnailImage={item?.thumbnailImage}
                      title={item?.title}
                      date={new Date(item?.publishedAt).toDateString()}
                   />

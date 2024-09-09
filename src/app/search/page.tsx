@@ -1,4 +1,5 @@
 import GetCallBackForm from '@/components/commons/GetCallBackForm';
+import ClientSearchHero from '@/components/Home/ClientSearchHero';
 import SearchResults from '@/components/Search/SearchResults';
 import { IoIosSearch } from 'react-icons/io';
 
@@ -20,16 +21,9 @@ const Search = (props: {
                   <SearchResults />
                </div>
                <div className='flex-[0.4] space-y-4 md:space-y-6'>
-                  <div className='flex items-center gap-3 rounded-full border border-blue-2 px-6 py-3'>
-                     <span className='text-2xl'>
-                        <IoIosSearch />
-                     </span>
-                     <input
-                        type='text'
-                        placeholder='Search for reports, industries and more...'
-                        className='w-full bg-transparent text-[1.125rem] outline-none'
-                     />
-                  </div>
+                  <div className='w-full [&>div]:w-full'>
+                     <ClientSearchHero />
+                  </div>   
                   <div className='bg-white'>
                      <GetCallBackForm />
                   </div>
