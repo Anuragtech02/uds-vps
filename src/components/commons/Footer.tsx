@@ -14,7 +14,7 @@ import { usePathname } from 'next/navigation';
 import CustomResearchCTA from './CustomResearchCTA';
 
 const socials = [];
-const invalidRoutes = ['/', '/about'];
+const invalidRoutes = ['/', '/about', '/contact', '/login', '/signup'];
 
 const Footer = ({ footer, industries, quickLinks }: any) => {
    const pathname = usePathname();

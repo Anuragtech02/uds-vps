@@ -132,12 +132,8 @@ const SignUp = () => {
                            )}
                         </div>
                      </div>
-                     <div className='flex items-center gap-2 py-4'>
-                        <input type='checkbox' id='remember' />
-                        <label htmlFor='remember'>Remember me</label>
-                     </div>
                      {err && (
-                        <p className='1s animate-bounce text-sm font-semibold text-red-500'>
+                        <p className='1s animate-bounce text-sm font-semibold text-red-500 mt-2'>
                            {err}
                         </p>
                      )}

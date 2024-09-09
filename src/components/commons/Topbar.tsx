@@ -1,4 +1,5 @@
 import { useSearchStore } from '@/stores/search.store';
+import Link from 'next/link';
 import { FaPhoneAlt } from 'react-icons/fa';
 import { FaCircleUser } from 'react-icons/fa6';
 import { IoIosSearch, IoMdCart } from 'react-icons/io';
@@ -51,9 +52,11 @@ const Topbar = ({ header, industries }: ITopbarProps) => {
                >
                   <IoIosSearch />
                </span>
-               <span className='cursor-pointer text-xl'>
-                  <FaCircleUser />
-               </span>
+               <Link href="/login">
+                  <span className='text-xl'>
+                     <FaCircleUser />
+                  </span>
+               </Link>
                <span className='cursor-pointer text-xl'>
                   <IoMdCart />
                </span>
