@@ -5,6 +5,7 @@ import sampleImage from '@/assets/img/sampleResearch.png';
 // @ts-ignore
 import Slider from 'react-slick';
 import CustomResearchCTA from '../commons/CustomResearchCTA';
+import dynamic from 'next/dynamic';
 
 const sampleData = [
    {
@@ -82,13 +83,13 @@ const sampleData = [
 ];
 
 const UpcomingReports: React.FC<{ data: any }> = ({ data }) => {
-
    const settings = {
       dots: false,
       infinite: false,
       speed: 500,
       slidesToShow: 4.2,
       arrows: false,
+      dynamicHeight: false,
       responsive: [
          {
             breakpoint: 1024,
@@ -117,7 +118,7 @@ const UpcomingReports: React.FC<{ data: any }> = ({ data }) => {
    };
 
    return (
-      <section className='block'>
+      <section className='block min-h-max pb-12 md:pb-20'>
          <div className='container'>
             <h2>
                <span>Upcoming</span> reports
@@ -126,14 +127,16 @@ const UpcomingReports: React.FC<{ data: any }> = ({ data }) => {
             <div className='my-8 md:my-16 md:mt-10'>
                <Slider {...settings}>
                   {data?.upcomingReports?.map((data: any, index: number) => (
-                     <div key={index} className='pr-4'>
+                     <div key={index} className='h-full pr-4'>
                         <ResearchCard
                            type='upcoming'
                            title={data.title}
                            slug={data.slug}
                            year={data.year}
                            description={data.description}
-                           date={new Date(data.publishedAt).toLocaleDateString()}
+                           date={new Date(
+                              data.publishedAt,
+                           ).toLocaleDateString()}
                            sku={data.sku}
                            image={data?.image || sampleImage}
                         />
@@ -142,7 +145,11 @@ const UpcomingReports: React.FC<{ data: any }> = ({ data }) => {
                </Slider>
             </div>
 
-            <CustomResearchCTA ctaBanner={data.homePage?.data.attributes?.latestResearchSectionCTABanner} />
+            <CustomResearchCTA
+               ctaBanner={
+                  data.homePage?.data.attributes?.latestResearchSectionCTABanner
+               }
+            />
          </div>
       </section>
    );

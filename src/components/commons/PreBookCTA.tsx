@@ -19,7 +19,7 @@ const PreBookCTA: React.FC<{
          />
          <div className='relative z-[2] mx-auto flex w-[95%] flex-col items-center justify-between gap-6 text-center md:flex-row md:text-left'>
             <h2
-               className='text-white [&>span]:text-white'
+               className='text-white md:max-w-[60%] [&>span]:text-white'
                dangerouslySetInnerHTML={{
                   __html: title,
                }}

@@ -29,12 +29,14 @@ import logo from '@/assets/img/logo.png';
 //    },
 // ];
 
-const NewsRoom: React.FC<{ data: {
-   blogs: Array<any>
-   newsArticles: Array<any>
-} }> = ({ data }) => {
+const NewsRoom: React.FC<{
+   data: {
+      blogs: Array<any>;
+      newsArticles: Array<any>;
+   };
+}> = ({ data }) => {
    return (
-      <section>
+      <section className='min-h-max py-12 md:py-20'>
          <div className='container'>
             <div className='my-6 flex flex-col gap-4 md:my-10 md:mt-0 md:flex-row'>
                <div className='md:w-1/2'>
@@ -58,7 +60,8 @@ const NewsRoom: React.FC<{ data: {
                         <p className='text-sm text-s-800'>{blog.descrption}</p>
                         <div className='mt-4 flex items-center gap-6'>
                            <p className='flex items-center gap-2'>
-                              <CalendarSvg />  {new Date(blog.publishedAt).toLocaleDateString()}
+                              <CalendarSvg />{' '}
+                              {new Date(blog.publishedAt).toLocaleDateString()}
                            </p>
                            <p className='flex items-center gap-2'>
                               <UserSvg /> {blog.author?.data?.attributes?.name}
@@ -94,7 +97,9 @@ const NewsRoom: React.FC<{ data: {
                               </h4>
                               <p className='my-2 flex items-center gap-2'>
                                  <CalendarSvg />
-                                 {new Date(news.publishedAt).toLocaleDateString()}
+                                 {new Date(
+                                    news.publishedAt,
+                                 ).toLocaleDateString()}
                               </p>
                            </div>
                         </div>

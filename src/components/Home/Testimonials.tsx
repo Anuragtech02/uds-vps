@@ -14,7 +14,7 @@ const Testimonials: React.FC<{ data: any }> = ({ data }) => {
    const bankLogos = data.data.attributes.brandsSecetionBankLogos.data;
 
    return (
-      <section className='min-h-full flex-col'>
+      <section className='min-h-full flex-col overflow-x-hidden'>
          <div className='bg-s-50'>
             <div className='container py-10'>
                <h2>
