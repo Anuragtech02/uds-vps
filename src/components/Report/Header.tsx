@@ -30,6 +30,7 @@ const Header: React.FC<{ data: any }> = ({ data }) => {
       tablesCount: data.attributes.tablesCount,
       figuresCount: data.attributes.figuresCount,
       highlightImage: data.attributes.highlightImage,
+      updatedAt: data.attributes.updatedAt,
    };
 
    const headerRef1 = useRef<HTMLDivElement>(null);
@@ -94,6 +95,17 @@ const Header: React.FC<{ data: any }> = ({ data }) => {
                            <p className='text-lg text-s-500'>Industry:</p>
                            <p className='text-xl text-blue-4'>
                               {reportHeaderData.industry.name}
+                           </p>
+                        </div>
+                        <div className='flex items-center gap-2'>
+                           <p className='text-lg text-s-500'>Last updated:</p>
+                           <p
+                              className='text-xl text-blue-4'
+                              suppressHydrationWarning
+                           >
+                              {new Date(
+                                 reportHeaderData?.updatedAt,
+                              )?.toLocaleDateString()}
                            </p>
                         </div>
                      </div>
