@@ -12,6 +12,8 @@ import ClientSearchHero from './ClientSearchHero';
 import Popup from '../Popup';
 import DemoRequestForm from './DemoRequestForm';
 import reportIllustration from '@/assets/img/report.svg';
+import { Suspense } from 'react';
+import { BiLoaderCircle } from 'react-icons/bi';
 
 const Hero: React.FC<{ data: any }> = ({ data }) => {
    const heroSection = {
@@ -97,9 +99,14 @@ const Hero: React.FC<{ data: any }> = ({ data }) => {
             <Stats data={stats} />
          </div>
          <Ellipse />
-         <Popup paramName='popup-form' title="Request a Demo">
-            <DemoRequestForm />
-         </Popup>
+         <Suspense fallback={
+            <div className='flex h-32 items-center justify-center'>
+               <BiLoaderCircle className='h-8 w-8 animate-spin text-gray-400' />
+            </div>}>
+            <Popup paramName='popup-form' title="Request a Demo">
+               <DemoRequestForm />
+            </Popup>
+         </Suspense>
       </section>
    );
 };

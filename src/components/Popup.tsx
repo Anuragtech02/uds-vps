@@ -3,15 +3,15 @@ import React, { useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 
 interface PopupProps {
-  paramName: string; // The name of the URL parameter that controls this popup
+  paramName: string; 
   children: React.ReactNode;
   title: string;
   onClose?: () => void;
 }
-
-const Popup: React.FC<PopupProps> = ({ paramName,title, children, onClose }) => {
-  const router = useRouter();
+const Popup: React.FC<PopupProps> = (props) => {
+  const { paramName,title, children, onClose } = props;
   const searchParams = useSearchParams();
+  const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
