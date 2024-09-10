@@ -112,13 +112,13 @@ const Header: React.FC<{ data: any }> = ({ data }) => {
                      <div className='flex items-center justify-end gap-2 py-4'>
                         <Button
                            variant='light'
-                           className='shrink grow basis-0 md:shrink-0 md:grow-0'
+                           className='shrink grow basis-0 md:shrink-0 md:grow-0 md:basis-[unset]'
                         >
                            {reportHeaderData.heroSectionPrimaryCTA.title}
                         </Button>
                         <Button
                            variant='secondary'
-                           className='shrink grow basis-0 md:shrink-0 md:grow-0'
+                           className='shrink grow basis-0 md:shrink-0 md:grow-0 md:basis-[unset]'
                         >
                            {reportHeaderData.heroSectionSecondaryCTA.title}
                         </Button>
