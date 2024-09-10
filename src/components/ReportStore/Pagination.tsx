@@ -1,52 +1,56 @@
 'use client';
 
+import React from 'react';
 import { useRouter } from 'next/navigation';
+import { BiChevronLeft, BiChevronRight } from 'react-icons/bi';
 
 interface PaginationProps {
-   filters: string[];
-   currentPage: number;
-   totalPages: number;
+  filters: string[];
+  currentPage: number;
+  totalPages: number;
 }
 
-const ReportsPagination: React.FC<PaginationProps> = ({
-   filters,
-   currentPage,
-   totalPages,
+const Pagination: React.FC<PaginationProps> = ({
+  filters,
+  currentPage,
+  totalPages,
 }) => {
-   let pageNumber;
-   const router = useRouter();
-   const handlePageChange = (add: number) => {
-      router.push(
-         `/report-store?filter=${filters?.join(',')}&page=${parseInt(pageNumber) + add}`,
-      );
-   };
-   try {
-      pageNumber = parseInt(currentPage);
-   } catch (e) {
-      console.log(e);
-      router.push(`/report-store?filter=${filters?.join(',')}&page=1`);
-   }
-   return (
-      <div className='my-4 flex items-center justify-center space-x-2'>
-         <button
-            onClick={() => handlePageChange(-1)}
-            disabled={pageNumber === 1}
-            className='rounded-md border px-4 py-2 disabled:opacity-50'
-         >
-            Previous
-         </button>
-         <span>
-            {pageNumber} of {totalPages}
-         </span>
-         <button
-            onClick={() => handlePageChange(+1)}
-            disabled={pageNumber === totalPages}
-            className='rounded-md border px-4 py-2 disabled:opacity-50'
-         >
-            Next
-         </button>
-      </div>
-   );
+  const router = useRouter();
+
+  const handlePageChange = (newPage: number) => {
+    const filterParam = filters.length > 0 ? `filter=${filters.join(',')}&` : '';
+    router.push(`/report-store?${filterParam}page=${newPage}`);
+  };
+
+  if (totalPages <= 1) {
+    return null;
+  }
+
+  return (
+    <div className="my-6 flex items-center justify-center space-x-4">
+      <button
+        onClick={() => handlePageChange(currentPage - 1)}
+        disabled={currentPage === 1}
+        className="flex items-center justify-center rounded-md border border-gray-300 bg-white px-3 py-2 text-sm font-medium text-gray-700 shadow-sm transition-colors hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+        aria-label="Previous page"
+      >
+        <BiChevronLeft className="h-5 w-5 mr-1" />
+        Previous
+      </button>
+      <span className="text-sm font-medium text-gray-700">
+        Page <span className="font-bold">{currentPage}</span> of <span className="font-bold">{totalPages}</span>
+      </span>
+      <button
+        onClick={() => handlePageChange(currentPage + 1)}
+        disabled={currentPage === totalPages}
+        className="flex items-center justify-center rounded-md border border-gray-300 bg-white px-3 py-2 text-sm font-medium text-gray-700 shadow-sm transition-colors hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+        aria-label="Next page"
+      >
+        Next
+        <BiChevronRight className="h-5 w-5 ml-1" />
+      </button>
+    </div>
+  );
 };
 
-export default ReportsPagination;
+export default Pagination;
