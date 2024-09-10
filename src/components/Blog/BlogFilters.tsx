@@ -14,7 +14,7 @@ interface industryItem {
 const BlogFilters = ({ industries }: { industries: industryItem[] }) => {
    const [expanded, setExpanded] = useState(false);
    return (
-      <div className='relative w-full flex-[0.3] rounded-xl bg-white p-4 md:p-6 lg:sticky lg:top-48 lg:w-max'>
+      <div className='relative w-full flex-[0.3] rounded-xl bg-white p-4 md:px-6 lg:sticky lg:top-48 lg:w-max lg:p-6'>
          <h2 className='hidden text-[1.625rem] font-medium lg:block'>
             Blogs by industry
          </h2>

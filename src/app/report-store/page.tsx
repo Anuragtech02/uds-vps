@@ -58,7 +58,7 @@ const ReportStore: FC<ReportStoreProps> = async ({ searchParams }) => {
       <div className='container pt-40'>
          <h1 className='mt-5 text-center text-3xl font-bold'>Report Store</h1>
 
-         <div className='my-10 flex min-h-[50vh] flex-col items-start gap-6 lg:flex-row'>
+         <div className='my-10 flex flex-col items-start gap-6 lg:min-h-[50vh] lg:flex-row'>
             <Suspense fallback={<div>Loading filters...</div>}>
                <ReportStoreFilters
                   filters={filters}

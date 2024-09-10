@@ -105,7 +105,7 @@ const Header: React.FC<{ blog: any }> = ({ blog }) => {
             >
                <div className='container'>
                   <div className='flex items-start justify-between gap-6'>
-                     <h3 className='w-2/3 font-bold'>{blog?.title}</h3>
+                     <h3 className='font-bold md:w-2/3'>{blog?.title}</h3>
                      <div className='flex items-center justify-end gap-2 py-4'></div>
                   </div>
                </div>

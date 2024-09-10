@@ -25,7 +25,7 @@ const Blog = async (data: any) => {
          <div className='mt-40' />
          <Header blog={blog} />
          <div className='container'>
-            <div className='flex flex-col gap-6 py-12 md:flex-row md:gap-10 md:py-20'>
+            <div className='flex flex-col gap-6 py-12 md:gap-10 md:py-20 lg:flex-row'>
                <div className='flex-[0.7]'>
                   <BlogBody blog={blog} />
                </div>
