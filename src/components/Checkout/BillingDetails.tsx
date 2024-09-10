@@ -5,7 +5,7 @@ const BillingDetails = () => {
       <div>
          <form action='' className='space-y-6 text-sm md:space-y-8'>
             <p className='text-2xl font-bold text-s-600'>Billing Details</p>
-            <div className='flex flex-col items-center gap-4 md:flex-row'>
+            <div className='flex flex-col gap-4 md:flex-row lg:items-center'>
                <div className='shrink grow basis-0 space-y-1'>
                   <label htmlFor='last-name'>First Name*</label>
                   <input
@@ -27,7 +27,7 @@ const BillingDetails = () => {
                   />
                </div>
             </div>
-            <div className='flex flex-col items-center gap-4 md:flex-row'>
+            <div className='flex flex-col gap-4 md:flex-row lg:items-center'>
                <div className='shrink grow basis-0 space-y-1'>
                   <label htmlFor='mobile-number'>Mobile Number*</label>
                   <input
@@ -49,7 +49,7 @@ const BillingDetails = () => {
                   />
                </div>
             </div>
-            <div className='flex flex-col items-center gap-4 md:flex-row'>
+            <div className='flex flex-col gap-4 md:flex-row lg:items-center'>
                <div className='shrink grow basis-0 space-y-1'>
                   <label htmlFor='country'>Country/Region</label>
                   <select
@@ -75,7 +75,7 @@ const BillingDetails = () => {
                   />
                </div>
             </div>
-            <div className='flex flex-col items-center gap-4 md:flex-row'>
+            <div className='flex flex-col gap-4 md:flex-row lg:items-center'>
                <div className='shrink grow basis-0 space-y-1'>
                   <label htmlFor='state'>State</label>
                   <select
@@ -105,7 +105,7 @@ const BillingDetails = () => {
                   </select>
                </div>
             </div>
-            <div className='flex flex-col items-center gap-4 md:flex-row'>
+            <div className='flex flex-col gap-4 md:flex-row lg:items-center'>
                <div className='shrink grow basis-0 space-y-1'>
                   <label htmlFor='address'>Street Address*</label>
                   <input

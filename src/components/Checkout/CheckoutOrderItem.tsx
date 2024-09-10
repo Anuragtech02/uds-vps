@@ -29,7 +29,7 @@ const CheckoutOrderItem: FC<CheckoutOrderItemProps> = ({
             />
             <p className='font-semibold text-blue-3'>{name}</p>
          </div>
-         <div className='flex items-center justify-between'>
+         <div className='flex items-center justify-between pt-2'>
             <div className='flex gap-4 rounded-md border border-s-300 px-4 py-2'>
                <button
                   className='text-xl text-blue-2 disabled:text-gray-300'
