@@ -161,7 +161,7 @@ const ReportBlock: React.FC<{ data: any }> = ({ data }) => {
             <div className='flex-[0.6]'>
                <ReportBlockData data={reportData} />
             </div>
-            <div className='sticky top-[280px] flex flex-[0.2] flex-col gap-6'>
+            <div className='sticky top-[280px] flex w-full flex-col gap-6 lg:w-max lg:flex-[0.2]'>
                <div className='w-full rounded-md border border-s-400 bg-white px-4 py-6'>
                   <p className='capitalise text-center text-lg font-semibold'>
                      {reportData.rightSectionHeading}

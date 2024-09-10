@@ -8,7 +8,7 @@ const styles = {
 
 const ReportBlockData: React.FC<{ data: any }> = ({ data }) => {
    return (
-      <div className='space-y-6 px-4 text-s-700'>
+      <div className='space-y-6 text-s-700 md:px-4'>
          <div
             id='about-report'
             dangerouslySetInnerHTML={{

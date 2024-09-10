@@ -83,7 +83,7 @@ const Header: React.FC<{ data: any }> = ({ data }) => {
                         {reportHeaderData.shortDescription}
                      </p>
 
-                     <div className='flex items-center gap-4'>
+                     <div className='flex flex-wrap items-center gap-4'>
                         <div className='flex items-center gap-2'>
                            <p className='text-lg text-s-500'>Geography:</p>
                            <p className='text-xl text-blue-4'>
@@ -110,10 +110,16 @@ const Header: React.FC<{ data: any }> = ({ data }) => {
                         </div>
                      </div>
                      <div className='flex items-center justify-end gap-2 py-4'>
-                        <Button variant='light'>
+                        <Button
+                           variant='light'
+                           className='shrink grow basis-0 md:shrink-0 md:grow-0'
+                        >
                            {reportHeaderData.heroSectionPrimaryCTA.title}
                         </Button>
-                        <Button variant='secondary'>
+                        <Button
+                           variant='secondary'
+                           className='shrink grow basis-0 md:shrink-0 md:grow-0'
+                        >
                            {reportHeaderData.heroSectionSecondaryCTA.title}
                         </Button>
                      </div>
@@ -127,15 +133,21 @@ const Header: React.FC<{ data: any }> = ({ data }) => {
                ref={headerRef2}
             >
                <div className='container'>
-                  <div className='flex items-start justify-between gap-6'>
-                     <h3 className='w-2/3 font-bold'>
+                  <div className='flex flex-col items-start justify-between gap-4 md:flex-row md:gap-6'>
+                     <h3 className='font-bold lg:w-2/3'>
                         {reportHeaderData.title}
                      </h3>
-                     <div className='flex items-center justify-end gap-2 py-4'>
-                        <Button variant='light'>
+                     <div className='flex w-full items-center justify-end gap-2 py-4 md:w-max'>
+                        <Button
+                           variant='light'
+                           className='shrink grow basis-0 md:shrink-0 md:grow-0'
+                        >
                            {reportHeaderData.heroSectionPrimaryCTA.title}
                         </Button>
-                        <Button variant='secondary'>
+                        <Button
+                           variant='secondary'
+                           className='shrink grow basis-0 md:shrink-0 md:grow-0'
+                        >
                            {reportHeaderData.heroSectionSecondaryCTA.title}
                         </Button>
                      </div>

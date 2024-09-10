@@ -53,8 +53,9 @@ const Blog = async (): Promise<JSX.Element> => {
          id: blog?.id ?? idx,
          title: blog?.attributes?.title ?? '',
          shortDescription: blog?.attributes?.shortDescription ?? '',
-         // @ts-expect-error ts-migrate(2531) FIXME: Object is possibly 'null'.
-         thumbnailImage: blog?.attributes?.thumbnailImage?.data?.attributes ?? '',
+         thumbnailImage:
+            // @ts-expect-error ts-migrate(2531) FIXME: Object is possibly 'null'.
+            blog?.attributes?.thumbnailImage?.data?.attributes ?? '',
          description: blog?.attributes?.description ?? '',
          createdAt: blog?.attributes?.createdAt ?? '',
          publishedAt: blog?.attributes?.publishedAt ?? '',
@@ -86,9 +87,9 @@ const Blog = async (): Promise<JSX.Element> => {
    return (
       <div className='container pt-40'>
          <h1 className='mt-5 text-center font-bold'>Blogs</h1>
-         <div className='my-10 flex items-start gap-6'>
+         <div className='my-10 flex flex-col items-start gap-6 lg:flex-row'>
             <BlogFilters industries={industries} />
-            <div className='flex-[0.7] space-y-6'>
+            <div className='flex flex-[0.7] flex-col gap-4 md:gap-6'>
                {blogList!.map((blog: blogsItem, i: number) => (
                   <Link href={`/blogs/${blog?.slug}`} key={i}>
                      <BlogItem
