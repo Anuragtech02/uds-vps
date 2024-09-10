@@ -41,8 +41,10 @@ const LoginForm = () => {
    };
 
    return (
-      <div className='rounded-xl border border-s-300 p-4 md:p-6 max-w-[500px]'>
-         <p className='text-[1.75rem] font-semibold text-s-800'>Login</p>
+      <div className='rounded-xl border border-s-300 p-4 md:p-6'>
+         <p className='text-[1.25rem] font-semibold text-s-800 md:text-[1.75rem]'>
+            Login
+         </p>
          <form className='mt-4 space-y-4' onSubmit={handleSubmit}>
             <div className='flex flex-col gap-1'>
                <label htmlFor='email' className='text-sm font-semibold'>
@@ -54,7 +56,7 @@ const LoginForm = () => {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder='Enter your username or email'
-                  className='rounded-md border border-s-300 p-2'
+                  className='rounded-md border border-s-300 p-2 text-sm md:text-base'
                />
             </div>
             <div className='flex flex-col gap-1'>
@@ -68,7 +70,7 @@ const LoginForm = () => {
                      value={password}
                      onChange={(e) => setPassword(e.target.value)}
                      placeholder='Enter your password'
-                     className='w-full rounded-md border border-s-300 p-2'
+                     className='w-full rounded-md border border-s-300 p-2 text-sm md:text-base'
                   />
                   <div
                      className='absolute right-3 top-1/2 -translate-y-1/2'

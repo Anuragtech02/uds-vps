@@ -15,7 +15,7 @@ const GetCallBackForm = () => {
                   type='text'
                   id='name'
                   placeholder='Enter your name'
-                  className='rounded-md border border-s-300 p-2'
+                  className='rounded-md border border-s-300 p-2 text-sm md:text-base'
                />
             </div>
             <div className='flex flex-col gap-1'>
@@ -26,7 +26,7 @@ const GetCallBackForm = () => {
                   type='tel'
                   id='phone'
                   placeholder='Enter your phone number'
-                  className='rounded-md border border-s-300 p-2'
+                  className='rounded-md border border-s-300 p-2 text-sm md:text-base'
                />
             </div>
             <div className='flex flex-col gap-1'>
@@ -37,7 +37,7 @@ const GetCallBackForm = () => {
                   type='email'
                   id='email'
                   placeholder='Enter your email'
-                  className='rounded-md border border-s-300 p-2'
+                  className='rounded-md border border-s-300 p-2 text-sm md:text-base'
                />
             </div>
             <div className='flex flex-col gap-1'>
@@ -47,7 +47,7 @@ const GetCallBackForm = () => {
                <textarea
                   id='message'
                   placeholder='Enter your message'
-                  className='rounded-md border border-s-300 p-2'
+                  className='rounded-md border border-s-300 p-2 text-sm md:text-base'
                />
             </div>
             <div>
