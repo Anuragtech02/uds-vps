@@ -24,7 +24,7 @@ const News = async (props: any) => {
          <div className='mt-40' />
          <Header newsArticle={newsArticleData} />
          <div className='container'>
-            <div className='flex flex-col gap-6 py-12 md:flex-row md:gap-10 md:py-20'>
+            <div className='flex flex-col gap-6 py-12 md:gap-10 md:py-20 lg:flex-row'>
                <div className='flex-[0.7]'>
                   <NewsBody newsArticle={newsArticleData} />
                </div>
