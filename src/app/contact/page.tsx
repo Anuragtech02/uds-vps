@@ -33,12 +33,12 @@ const Contact = async () => {
    };
    return (
       <div className='container pt-40'>
-         <div className='my-10 flex flex-col-reverse items-start gap-6 md:flex-row md:gap-10'>
-            <div className='flex-[0.4]'>
+         <div className='my-10 flex flex-col-reverse items-start gap-6 md:gap-10 lg:flex-row'>
+            <div className='w-full lg:w-max lg:flex-[0.4]'>
                <ContactDetails contactDetails={contactDetails} />
             </div>
 
-            <div className='flex-[0.6]'>
+            <div className='w-full lg:w-max lg:flex-[0.6]'>
                <ContactForm />
             </div>
          </div>

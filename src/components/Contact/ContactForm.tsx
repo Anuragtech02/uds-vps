@@ -1,11 +1,10 @@
-"use client";
+'use client';
 import { useState } from 'react';
 import Button from '../commons/Button';
 import CustomPhoneInput from '../CustomPhoneInput';
 import countryList from '@/assets/utils/countries.json';
 
 const ContactForm = () => {
-
    const [formFields, setFormFields] = useState({
       name: '',
       email: '',
@@ -25,10 +24,10 @@ const ContactForm = () => {
    };
 
    return (
-      <div className='rounded-xl bg-white p-4 font-medium text-[#020D19] md:p-6'>
+      <div className='w-full rounded-xl bg-white p-4 font-medium text-[#020D19] md:p-6'>
          <form action='' className='space-y-6 text-sm md:space-y-8'>
             <p className='text-[1.625rem] text-blue-1'>Get in Touch</p>
-            <div className='flex flex-col items-center gap-4 md:flex-row'>
+            <div className='flex flex-col gap-4 md:flex-row md:items-center'>
                <div className='shrink grow basis-0 space-y-1'>
                   <label htmlFor='name'>Full Name*</label>
                   <input
@@ -48,10 +47,13 @@ const ContactForm = () => {
                      id='mobile-number'
                      className='w-full rounded-md border border-s-300 p-3'
                   /> */}
-                  <CustomPhoneInput value={phone} onChange={handlePhoneChange} />
+                  <CustomPhoneInput
+                     value={phone}
+                     onChange={handlePhoneChange}
+                  />
                </div>
             </div>
-            <div className='flex flex-col items-center gap-4 md:flex-row'>
+            <div className='flex flex-col gap-4 md:flex-row md:items-center'>
                <div className='shrink grow basis-0 space-y-1'>
                   <label htmlFor='email'>Business Email*</label>
                   <input
@@ -72,7 +74,9 @@ const ContactForm = () => {
                         Select your country
                      </option>
                      {countryList?.map((country) => (
-                        <option key={country.code} value={country.name}>{country.name}</option>
+                        <option key={country.code} value={country.name}>
+                           {country.name}
+                        </option>
                      ))}
                   </select>
                </div>

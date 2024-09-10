@@ -7,7 +7,7 @@ const ContactDetails = ({ contactDetails }: any) => {
    }));
    console.log(JSON.stringify(contacts));
    return (
-      <div className='rounded-xl bg-white p-4 font-medium text-blue-2 md:p-6'>
+      <div className='w-full rounded-xl bg-white p-4 font-medium text-blue-2 md:p-6'>
          <div className='space-y-6 md:space-y-8'>
             <div>
                <p className='mb-2 text-[1.625rem] text-blue-1'>
@@ -16,7 +16,10 @@ const ContactDetails = ({ contactDetails }: any) => {
                <div className='flex items-center gap-4'>
                   {contacts?.map((contact: any) => {
                      return (
-                        <div key={contact?.title} className='flex items-center gap-2'>
+                        <div
+                           key={contact?.title}
+                           className='flex items-center gap-2'
+                        >
                            <StrapiImage media={contact?.icon} />
                            <p>{contact?.title}</p>
                         </div>
@@ -38,7 +41,12 @@ const ContactDetails = ({ contactDetails }: any) => {
                   {contactDetails?.socialMediaSectionIconsList?.map(
                      (socialMedia: any) => {
                         return (
-                           <a target='_blank' rel='noreferrer' key={socialMedia?.link} href={socialMedia?.link}>
+                           <a
+                              target='_blank'
+                              rel='noreferrer'
+                              key={socialMedia?.link}
+                              href={socialMedia?.link}
+                           >
                               <StrapiImage
                                  media={socialMedia?.icon?.data?.attributes}
                               />
