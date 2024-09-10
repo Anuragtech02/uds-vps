@@ -8,18 +8,12 @@ interface ReportStoreItemProps {
    title: string;
    date: string;
    description: string;
-   priceRange: string;
-   sku: string;
-   showPrice?: boolean;
 }
 
 const ReportStoreItem: FC<ReportStoreItemProps> = ({
    title,
    date,
    description,
-   priceRange,
-   sku,
-   showPrice = true,
 }) => {
    return (
       <div className='flex flex-col gap-4 rounded-xl bg-white p-6 md:flex-row'>

@@ -9,15 +9,17 @@ import { useRouter, useSearchParams } from 'next/navigation';
 const ITEMS_PER_PAGE = 10;
 
 const SkeletonLoader = () => (
-  <div className="animate-pulse space-y-4">
-    {[...Array(5)].map((_, index) => (
-      <div key={index} className="bg-gray-200 h-24 rounded-md"></div>
-    ))}
-  </div>
+   <div className='animate-pulse space-y-4'>
+      {[...Array(5)].map((_, index) => (
+         <div key={index} className='h-24 rounded-md bg-gray-200'></div>
+      ))}
+   </div>
 );
 
 const SearchResults = () => {
-   const [activeTab, setActiveTab] = useState<'reports' | 'news' | 'blogs'>('reports');
+   const [activeTab, setActiveTab] = useState<'reports' | 'news' | 'blogs'>(
+      'reports',
+   );
    const [isLoading, setIsLoading] = useState(false);
    const [hasSearched, setHasSearched] = useState(false);
    const [data, setData] = useState<any>({});
@@ -32,14 +34,18 @@ const SearchResults = () => {
       setHasSearched(true);
       const searchQuery = searchParams.get('q') || '';
       try {
-         const data = await searchContent(encodeURIComponent(searchQuery), page, ITEMS_PER_PAGE);
+         const data = await searchContent(
+            encodeURIComponent(searchQuery),
+            page,
+            ITEMS_PER_PAGE,
+         );
          setData(data.results);
          setTotalItems(data.total);
-         if(data.results?.report?.length > 0) {
+         if (data.results?.report?.length > 0) {
             setActiveTab('reports');
-         } else if(data.results?.['news-article']?.length > 0) {
+         } else if (data.results?.['news-article']?.length > 0) {
             setActiveTab('news');
-         } else if(data.results?.blog?.length > 0) {
+         } else if (data.results?.blog?.length > 0) {
             setActiveTab('blogs');
          }
       } catch (error) {
@@ -108,19 +114,21 @@ const SearchResults = () => {
             )}
          </div>
          {!isLoading && totalPages > 1 && (
-            <div className="flex justify-center items-center space-x-2 mt-4">
+            <div className='mt-4 flex items-center justify-center space-x-2'>
                <button
                   onClick={() => handlePageChange(currentPage - 1)}
                   disabled={currentPage === 1}
-                  className="px-4 py-2 border rounded-md disabled:opacity-50"
+                  className='rounded-md border px-4 py-2 disabled:opacity-50'
                >
                   Previous
                </button>
-               <span>{currentPage} of {totalPages}</span>
+               <span>
+                  {currentPage} of {totalPages}
+               </span>
                <button
                   onClick={() => handlePageChange(currentPage + 1)}
                   disabled={currentPage === totalPages}
-                  className="px-4 py-2 border rounded-md disabled:opacity-50"
+                  className='rounded-md border px-4 py-2 disabled:opacity-50'
                >
                   Next
                </button>

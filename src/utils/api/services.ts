@@ -17,12 +17,18 @@ const getPaginationQuery = (page: number = 1, limit: number = 10) => {
    return `pagination[page]=${page}&pagination[pageSize]=${limit}`;
 };
 
-const getFilterQuery = (filters: Record<string, string | number | boolean> = {}) => {
+const getFilterQuery = (
+   filters: Record<string, string | number | boolean> = {},
+) => {
    return Object.entries(filters)
-      .map(([key, value]) => `filters[${key}]=${encodeURIComponent(String(value))}`)
+      .map(([key, value]) => {
+         if (key.startsWith('industrySlug')) {
+            return `filters[industry][slug][$eq]=${encodeURIComponent(String(value))}`;
+         }
+         return `filters[${key}]=${encodeURIComponent(String(value))}`;
+      })
       .join('&');
 };
-
 
 export const getHomePage = async () => {
    try {
@@ -86,6 +92,7 @@ export const getAllReports = async (page = 1, limit = 10, filters = {}) => {
       const paginationQuery = getPaginationQuery(page, limit);
       const filterQuery = getFilterQuery(filters);
       const query = `${populateQuery}&${paginationQuery}&${filterQuery}`;
+      console.log({ query });
       const response = await fetchClient('/reports?' + query, {
          headers: getAuthHeaders(),
       });
@@ -94,9 +101,13 @@ export const getAllReports = async (page = 1, limit = 10, filters = {}) => {
       console.error('Error fetching products:', error);
       throw error;
    }
-}
+};
 
-export const getNewsListingPage = async (page = 1, limit = 10, filters = {}) => {
+export const getNewsListingPage = async (
+   page = 1,
+   limit = 10,
+   filters = {},
+) => {
    try {
       const populateQuery = buildPopulateQuery([
          'thumbnailImage.url',
@@ -115,7 +126,11 @@ export const getNewsListingPage = async (page = 1, limit = 10, filters = {}) => 
    }
 };
 
-export const getBlogsListingPage = async (page = 1, limit = 10, filters = {}) => {
+export const getBlogsListingPage = async (
+   page = 1,
+   limit = 10,
+   filters = {},
+) => {
    try {
       const populateQuery = buildPopulateQuery([
          'thumbnailImage.url',
@@ -306,9 +321,7 @@ export const getServicesPage = async () => {
 
 export const getAllServices = async (page = 1, limit = 10, filters = {}) => {
    try {
-      const populateQuery = buildPopulateQuery([
-         'highlightImage.url',
-      ]);
+      const populateQuery = buildPopulateQuery(['highlightImage.url']);
       const paginationQuery = getPaginationQuery(page, limit);
       const filterQuery = getFilterQuery(filters);
       const query = `${populateQuery}&${paginationQuery}&${filterQuery}`;
@@ -323,9 +336,7 @@ export const getAllServices = async (page = 1, limit = 10, filters = {}) => {
 };
 export const getServiceBySlug = async (slug: string) => {
    try {
-      const populateQuery = buildPopulateQuery([
-         'highlightImage.url'
-      ]);
+      const populateQuery = buildPopulateQuery(['highlightImage.url']);
       const response = await fetchClient(
          `/services?filters[slug][$eq]=${slug}&` + populateQuery,
          {

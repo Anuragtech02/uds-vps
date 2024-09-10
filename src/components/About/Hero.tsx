@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import Button from '../commons/Button';
 interface heroItem {
    heroHeading: string;
@@ -59,12 +60,16 @@ const Hero = ({ hero }: { hero: heroItem }) => {
                      {/* {hero?.heroHeading} */}
                   </h1>
                   <div className='flex items-center justify-center gap-4 pt-6 md:pt-10'>
-                     <Button variant='secondary'>
-                        {hero?.heroPrimaryCTAButton?.title}
-                     </Button>
-                     <Button variant='light'>
-                        {hero?.heroSecondaryCTAButton?.title}
-                     </Button>
+                     <Link href={hero?.heroPrimaryCTAButton?.link}>
+                        <Button variant='secondary'>
+                           {hero?.heroPrimaryCTAButton?.title}
+                        </Button>
+                     </Link>
+                     <Link href={hero?.heroSecondaryCTAButton?.link}>
+                        <Button variant='light'>
+                           {hero?.heroSecondaryCTAButton?.title}
+                        </Button>
+                     </Link>
                   </div>
                </div>
             </div>

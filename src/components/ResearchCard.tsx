@@ -46,7 +46,10 @@ const ResearchCard: FC<ResearchCardProps> = ({
             {type === 'upcoming' && (
                <div className='flex flex-col gap-2 text-sm'>
                   <p className='text-s-500'>{description}</p>
-                  <p className='flex items-center gap-2 font-semibold text-s-700'>
+                  <p
+                     suppressHydrationWarning
+                     className='flex items-center gap-2 font-semibold text-s-700'
+                  >
                      <CalendarSvg />
                      {date}
                   </p>
