@@ -63,9 +63,10 @@ const Hero: React.FC<{ data: any }> = ({ data }) => {
                   </h1>
                   <ClientSearchHero />
 
-                  <div className='mt-4 flex flex-col gap-2 py-4 md:mt-10 md:flex-row md:items-center'>
+                  <div className='mt-4 flex flex-col gap-2 py-4 md:mt-10 lg:flex-row lg:items-center'>
                      <Link href={heroSection.heroPrimaryCTA.link}>
                         <Button
+                           className='w-full lg:w-auto'
                            size='large'
                            variant='secondary'
                            icon={<FaArrowRightLong />}
@@ -75,6 +76,7 @@ const Hero: React.FC<{ data: any }> = ({ data }) => {
                      </Link>
                      <Link href={heroSection.heroSecondaryCTA.link}>
                         <Button
+                           className='w-full lg:w-auto'
                            size='large'
                            variant='light'
                            icon={<FaArrowRightLong />}
@@ -87,11 +89,11 @@ const Hero: React.FC<{ data: any }> = ({ data }) => {
                <div className='relative w-full md:w-[40%]'>
                   <img
                      src={reportIllustration.src}
-                     className='absolute -bottom-20 right-[70%] z-[5] hidden aspect-[2/3] w-[240px] lg:block'
+                     className='absolute bottom-0 right-[60%] z-[5] aspect-[2/3] w-[150px] sm:w-[180px] md:-bottom-12 md:block md:w-[150px] lg:-bottom-20 lg:right-[70%] xl:w-[240px]'
                      alt=''
                   />
 
-                  <div className='relative ml-auto aspect-square w-full md:w-[80%]'>
+                  <div className='relative mx-auto aspect-square w-[80%] pb-10 md:ml-auto md:pb-0'>
                      <StrapiImage media={heroSection.heroImage} />
                   </div>
                </div>
@@ -99,11 +101,14 @@ const Hero: React.FC<{ data: any }> = ({ data }) => {
             <Stats data={stats} />
          </div>
          <Ellipse />
-         <Suspense fallback={
-            <div className='flex h-32 items-center justify-center'>
-               <BiLoaderCircle className='h-8 w-8 animate-spin text-gray-400' />
-            </div>}>
-            <Popup paramName='popup-form' title="Request a Demo">
+         <Suspense
+            fallback={
+               <div className='flex h-32 items-center justify-center'>
+                  <BiLoaderCircle className='h-8 w-8 animate-spin text-gray-400' />
+               </div>
+            }
+         >
+            <Popup paramName='popup-form' title='Request a Demo'>
                <DemoRequestForm />
             </Popup>
          </Suspense>

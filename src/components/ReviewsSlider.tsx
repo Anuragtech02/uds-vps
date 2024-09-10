@@ -26,7 +26,7 @@ const ReviewsSlider: FC<ReviewsSliderProps> = ({ data }) => {
    };
 
    return (
-      <div className='relative mx-auto py-10 pb-20 md:w-2/3'>
+      <div className='relative mx-auto py-10 pb-20 lg:w-2/3'>
          <div className='absolute -left-5 bottom-5 z-[5] md:-left-10'>
             <QuoteLeft />
          </div>
