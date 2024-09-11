@@ -20,9 +20,9 @@ export async function generateMetadata({
    return {
       title: reportPage.attributes.title,
       description: reportPage.attributes.shortDescription,
-      openGraph: {
-         images: [reportPage.attributes.highlightImage.data.attributes.url],
-      },
+      // openGraph: {
+      //    images: [reportPage.attributes.highlightImage.data.attributes.url],
+      // },
    };
 }
 
