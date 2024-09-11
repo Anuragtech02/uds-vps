@@ -60,6 +60,31 @@ const Header: React.FC<{ data: any }> = ({ data }) => {
       }
    }, [showSecondHeader]);
 
+   function getMonthDate(date: Date) {
+      const dateObj = new Date(date);
+      if (!dateObj) {
+         return '';
+      }
+
+      const monthNames = [
+         'January',
+         'February',
+         'March',
+         'April',
+         'May',
+         'June',
+         'July',
+         'August',
+         'September',
+         'October',
+         'November',
+         'December',
+      ];
+      const monthIndex = dateObj.getMonth();
+      const day = dateObj.getDate();
+
+      return `${monthNames[monthIndex]} ${day}`;
+   }
    return (
       <>
          <div
@@ -105,9 +130,7 @@ const Header: React.FC<{ data: any }> = ({ data }) => {
                               className='text-xl text-blue-4'
                               suppressHydrationWarning
                            >
-                              {new Date(
-                                 reportHeaderData?.updatedAt,
-                              )?.toLocaleDateString()}
+                              {getMonthDate(reportHeaderData?.updatedAt)}
                            </p>
                         </div>
                      </div>
