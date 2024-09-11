@@ -67,6 +67,7 @@ export const getReportsPageBySlug = async (slug: string) => {
          'leftSectionPrimaryCTAButton',
          'leftSectionSecondaryCTAButton',
          'highlightImage.url',
+         'variants.price.amount',
       ]);
       const filterQuery = `?filters[slug][$eq]=${slug}`;
       const response = await fetchClient(

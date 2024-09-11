@@ -75,6 +75,15 @@
 .report-content ol {
    padding-left: 1.5rem !important;
    margin-bottom: 1.5rem !important;
+   padding-left: 1.5rem !important;
+}
+
+.report-content ul {
+   list-style-type: disc !important;
+}
+
+.report-content ol {
+   list-style-type: decimal !important;
 }
 
 .report-content li {
@@ -109,7 +118,7 @@
    margin: 20px 0 !important;
 }
 
-.report-content iframe{
+.report-content iframe {
    max-width: 100% !important;
    width: 100% !important;
    height: 500px !important;

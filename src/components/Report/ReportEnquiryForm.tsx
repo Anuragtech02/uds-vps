@@ -7,7 +7,15 @@ import {
 } from 'react-google-recaptcha-v3';
 import { submitContactForm } from '@/utils/api/csr-services';
 
-const DemoRequestForm = () => {
+interface ReportEnquiryFormProps {
+   reportId: number;
+   reportTitle: string;
+}
+
+const ReportEnquiryForm: React.FC<ReportEnquiryFormProps> = ({
+   reportId,
+   reportTitle,
+}) => {
    const [formFields, setFormFields] = useState({
       fullName: '',
       businessEmail: '',
@@ -55,6 +63,7 @@ const DemoRequestForm = () => {
          const response = await submitContactForm({
             ...formFields,
             mobileNumber: phone,
+            // report: reportId,
             captchaToken,
          });
 
@@ -84,10 +93,14 @@ const DemoRequestForm = () => {
       <GoogleReCaptchaProvider
          reCaptchaKey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || ''}
       >
-         <div className='rounded-xl bg-white pt-6 font-medium text-[#020D19]'>
+         <div className='pt-6 font-medium'>
+            <p>
+               Requesting For: <strong>{reportTitle}</strong>
+            </p>
+            <hr className='mb-4 mt-2' />
             <form
                onSubmit={handleSubmit}
-               className='space-y-6 text-sm md:space-y-8'
+               className='mt-2 space-y-6 text-sm md:space-y-8'
             >
                <div className='flex flex-col items-center gap-4 md:flex-row'>
                   <div className='shrink grow basis-0 space-y-1'>
@@ -173,4 +186,4 @@ const DemoRequestForm = () => {
    );
 };
 
-export default DemoRequestForm;
+export default ReportEnquiryForm;

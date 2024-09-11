@@ -5,6 +5,11 @@ import sampleReport from './sample.json';
 import ReportBlockData from './ReportBlockData';
 import Link from 'next/link';
 import { BiChevronRight } from 'react-icons/bi';
+import CollapsibleLicenseOptions from './CollapsibleList';
+import Popup from '../Popup';
+import ReportEnquiryForm from './ReportEnquiryForm';
+import SampleReportDownloadForm from './SampleReportDownloadForm';
+import { getCTALink } from '@/utils/generic-methods';
 // import fetchClientMedusa from '@/utils/api/config-medusa';
 
 const reportIndex = [
@@ -13,49 +18,10 @@ const reportIndex = [
    { title: 'Report Data', id: 'report-data' },
 ];
 
-const licenseOptions = [
-   {
-      title: 'Single User License',
-      discountedPrice: '$4,200',
-      price: '$5,000',
-      perks: [
-         'Electronic copy of the report',
-         'Unlimited access to the report',
-         'Free quarterly updates',
-         'Free report customization',
-      ],
-   },
-   {
-      title: 'Site License',
-      discountedPrice: '$6,800',
-      price: '$8,000',
-      perks: [
-         'Electronic copy of the report',
-         'Unlimited access to the report',
-         'Free quarterly updates',
-         'Free report customization',
-         'Allows up to ten individuals to access the report',
-      ],
-      description: 'Allows up to five individuals to access the report',
-   },
-   {
-      title: 'Global License',
-      discountedPrice: '$9,350',
-      price: '$11,000',
-      perks: [
-         'Electronic copy of the report',
-         'Unlimited access to the report',
-         'Free quarterly updates',
-         'Free report customization',
-         'Allows the report to be shared across all employees',
-      ],
-
-      description: 'Allows the report to be shared across all employees',
-   },
-];
-
 const ReportBlock: React.FC<{ data: any }> = ({ data }) => {
    const reportData = {
+      id: data.id,
+      title: data.attributes.title,
       aboutReport: data.attributes.aboutReport,
       tableOfContent: data.attributes.tableOfContent,
       description: data.attributes.description,
@@ -78,8 +44,17 @@ const ReportBlock: React.FC<{ data: any }> = ({ data }) => {
          data.attributes.leftSectionSecondaryCTAButton,
       rightSectionHeading: data.attributes.rightSectionHeading,
    };
+   const variants = data.attributes.variants.map((variant: any) => ({
+      title: variant.title,
+      description: variant.description,
+      price: {
+         amount: variant.price.amount,
+         currency: variant.price.currency,
+      },
+   }));
+
    const [selectedIndex, setSelectedIndex] = useState(0);
-   const [selectedLicense, setSelectedLicense] = useState(0);
+   const [selectedLicense, setSelectedLicense] = useState<number | null>(0);
    const [medusaReport, setMedusaReport] = useState({});
 
    // useEffect(() => {
@@ -146,13 +121,21 @@ const ReportBlock: React.FC<{ data: any }> = ({ data }) => {
                   <div className='width-[max-content] absolute -top-4 left-0 rounded-md bg-red-500 px-2 py-1 text-xs font-medium text-white'>
                      Upto 20% off
                   </div>
-                  <Link href={reportData.leftSectionPrimaryCTAButton.link}>
+                  <Link
+                     href={getCTALink(
+                        reportData.leftSectionPrimaryCTAButton.link,
+                     )}
+                  >
                      <Button className='w-full py-3' variant='secondary'>
                         {reportData.leftSectionPrimaryCTAButton.title}
                      </Button>
                   </Link>
                </div>
-               <Link href={reportData.leftSectionSecondaryCTAButton.link}>
+               <Link
+                  href={getCTALink(
+                     reportData.leftSectionSecondaryCTAButton.link,
+                  )}
+               >
                   <Button className='w-full py-3' variant='light'>
                      {reportData.leftSectionSecondaryCTAButton.title}
                   </Button>
@@ -166,57 +149,29 @@ const ReportBlock: React.FC<{ data: any }> = ({ data }) => {
                   <p className='capitalise text-center text-lg font-semibold'>
                      {reportData.rightSectionHeading}
                   </p>
-                  <div className='mt-4 flex flex-col gap-2'>
-                     {/* {medusaReport?.variants?.map((license: any, index: number) => (
-                        <div
-                           key={index}
-                           className={`cursor-pointer rounded-md border border-s-300 p-4 transition-all duration-150 ${
-                              selectedLicense === index && 'border-blue-2'
-                           }`}
-                           onClick={() => setSelectedLicense(index)}
-                        >
-                           <div className='flex items-center justify-between gap-3'>
-                              <div className='flex items-start gap-2'>
-                                 <input
-                                    type='radio'
-                                    className='mt-1'
-                                    checked={selectedLicense === index}
-                                 />
-                                 <p className='w-2/3 font-semibold'>
-                                    {license.options[0].value}
-                                 </p>
-                              </div>
-                              <div className='shrink-0'>
-                                 <p className='text-[0.625rem] text-sm line-through'>
-                                    {license.prices[0].amount}
-                                 </p>
-                                 <p className='font-semibold text-green-1'>
-                                    {license.prices[0].amount}
-                                 </p>
-                              </div>
-                           </div>
-
-                           <ul
-                              className={`list-disc pl-4 transition-all duration-150 ${selectedLicense === index ? 'mt-4 h-auto overflow-visible' : 'h-0 overflow-hidden'} `}
-                           >
-                              {license.metadata?.description?.split(",")?.map((perk, index) => (
-                                 <li
-                                    key={index}
-                                    className='py-1 text-sm text-s-800'
-                                 >
-                                    {perk}
-                                 </li>
-                              ))}
-                           </ul>
-                        </div>
-                     ))} */}
-                  </div>
+                  <CollapsibleLicenseOptions
+                     variants={variants}
+                     selectedLicense={selectedLicense}
+                     setSelectedLicense={setSelectedLicense}
+                  />
                </div>
                <Button className='w-full py-3' variant='secondary'>
                   Buy Now
                </Button>
             </div>
          </div>
+         <Popup name='report-enquiry' title='Report Enquiry'>
+            <ReportEnquiryForm
+               reportTitle={reportData?.title}
+               reportId={reportData?.id}
+            />
+         </Popup>
+         <Popup name='sample-report' title='Get Sample Report'>
+            <SampleReportDownloadForm
+               reportTitle={reportData?.title}
+               reportId={reportData?.id}
+            />
+         </Popup>
       </div>
    );
 };
