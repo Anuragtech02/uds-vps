@@ -5,6 +5,8 @@ import ReportFAQs from '@/components/Report/ReportFAQs';
 import { getReportsPageBySlug } from '@/utils/api/services';
 import { Metadata } from 'next';
 
+export const dynamic = 'force-dynamic'; // Forces dynamic rendering, bypassing all static optimizations
+
 export async function generateMetadata({
    params,
 }: {

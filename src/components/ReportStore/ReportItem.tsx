@@ -26,14 +26,14 @@ const ReportStoreItem: FC<ReportStoreItemProps> = ({
             />
          </div>
          <div className='grow space-y-3 md:w-2/3'>
-            <h4 className='text-xl font-semibold'>
-               {title.length > 60 ? title.substring(0, 60) + '...' : title}
+            <h4 className='line-clamp-3 overflow-hidden text-xl font-semibold'>
+               {title}
             </h4>
-            <p className='text-gray-600'>
+            {/* <p className='text-gray-600'>
                {description.length > 100
                   ? description.substring(0, 100) + '...'
                   : description}
-            </p>
+            </p> */}
             {/* {showPrice && (
                <div className='inline-block rounded-full bg-blue-9 px-4 py-2 text-lg font-medium text-blue-1'>
                   <p>{priceRange}</p>

@@ -39,7 +39,7 @@ const ResearchCard: FC<ResearchCardProps> = ({
                </div>
             )}
             <p
-               className={`my-2 font-bold ${type === 'latest' ? 'text-base' : 'text-xl'}`}
+               className={`my-2 line-clamp-3 overflow-hidden font-bold ${type === 'latest' ? 'text-base' : 'text-xl'}`}
             >
                {title}
             </p>
