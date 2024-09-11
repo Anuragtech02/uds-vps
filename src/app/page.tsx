@@ -24,8 +24,8 @@ export async function generateMetadata({
    const homePage = await getHomePage();
 
    return {
-      title: homePage.attributes.heroMainHeading,
-      description: homePage.attributes.heroMainHeading,
+      title: homePage.data.attributes.heroMainHeading,
+      description: homePage.data.attributes.heroMainHeading,
       // openGraph: {
       //    images: [reportPage.attributes.highlightImage.data.attributes.url],
       // },
