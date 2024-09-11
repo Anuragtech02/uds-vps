@@ -15,6 +15,9 @@ export function getCTALink(ctaUrl: string) {
    if (ctaUrl.startsWith('http')) {
       return ctaUrl;
    } else if (ctaUrl.startsWith('?')) {
+      if (!window?.location?.href) {
+         return ctaUrl;
+      }
       const currentUrl = window.location.href;
       const url = new URL(currentUrl);
       url.search = ctaUrl;
