@@ -3,6 +3,7 @@ import Header from '@/components/Report/Header';
 import ReportBlock from '@/components/Report/ReportBlock';
 import ReportFAQs from '@/components/Report/ReportFAQs';
 import { getReportsPageBySlug } from '@/utils/api/services';
+import Head from 'next/head';
 
 const page: React.FC<{
    params: {
@@ -16,6 +17,13 @@ const page: React.FC<{
 
    return (
       <div className='bg-s-50'>
+         <Head>
+            <title>{reportPage.attributes.title}</title>
+            <meta
+               name='description'
+               content={reportPage.attributes.shortDescription}
+            />
+         </Head>
          <div className='mt-40' />
          <Header data={reportPage} />
          <ReportBlock data={reportPage} />
