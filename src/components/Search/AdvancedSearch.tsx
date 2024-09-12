@@ -68,10 +68,15 @@ const AdvancedSearch: React.FC<AdvancedSearchProps> = ({ isOpen, onClose }) => {
    };
 
    const fetchSuggestions = async (searchQuery: string) => {
+      if (searchQuery.length < 3) return;
       setIsLoading(true);
       setHasSearched(true);
       try {
-         const data = await searchContent(encodeURIComponent(searchQuery), 1, 10);
+         const data = await searchContent(
+            encodeURIComponent(searchQuery),
+            1,
+            10,
+         );
          setSuggestions(data.results);
       } catch (error) {
          console.error('Error fetching suggestions:', error);
@@ -96,6 +101,7 @@ const AdvancedSearch: React.FC<AdvancedSearchProps> = ({ isOpen, onClose }) => {
    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
       if (e.key === 'Enter') {
          handleSearch(query);
+         onClose();
       } else if (e.key === 'Escape') {
          onClose();
       }
@@ -103,7 +109,7 @@ const AdvancedSearch: React.FC<AdvancedSearchProps> = ({ isOpen, onClose }) => {
 
    const handleDeleteRecentSearch = (searchToDelete: string) => {
       const updatedSearches = recentSearches.filter(
-         (search) => search !== searchToDelete
+         (search) => search !== searchToDelete,
       );
       saveRecentSearches(updatedSearches);
    };
@@ -154,8 +160,8 @@ const AdvancedSearch: React.FC<AdvancedSearchProps> = ({ isOpen, onClose }) => {
       ) {
          return (
             <div className='py-8 text-center text-gray-500'>
-               No results found for &quot;{query}&quot;. Please try a different search
-               term.
+               No results found for &quot;{query}&quot;. Please try a different
+               search term.
             </div>
          );
       }
@@ -186,9 +192,18 @@ const AdvancedSearch: React.FC<AdvancedSearchProps> = ({ isOpen, onClose }) => {
    if (!isOpen) return null;
 
    return (
-      <div className='fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-4'>
+      <div
+         className='fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-4'
+         onClick={() => {
+            setQuery('');
+            onClose();
+         }}
+      >
          <div className='w-full max-w-2xl rounded-lg bg-white shadow-xl'>
-            <div className='flex items-center border-b p-4'>
+            <div
+               className={`flex items-center ${query?.length >= 3 ? 'border-b' : ''} p-4`}
+               onClick={(e) => e.stopPropagation()}
+            >
                <IoIosSearch className='mr-2 text-gray-400' />
                <input
                   ref={inputRef}
@@ -201,15 +216,22 @@ const AdvancedSearch: React.FC<AdvancedSearchProps> = ({ isOpen, onClose }) => {
                />
                <button
                   title='close'
-                  onClick={onClose}
+                  onClick={() => {
+                     setQuery('');
+                  }}
                   className='text-gray-400 hover:text-gray-600'
                >
                   <IoIosClose />
                </button>
             </div>
-            <div className='max-h-96 overflow-y-auto p-4'>
-               {renderContent()}
-            </div>
+            <p className='absolute px-4 py-2 text-right text-xs text-white'>
+               * Min. 3 characters
+            </p>
+            {query?.length >= 3 && (
+               <div className='max-h-96 overflow-y-auto p-4'>
+                  {renderContent()}
+               </div>
+            )}
          </div>
       </div>
    );
