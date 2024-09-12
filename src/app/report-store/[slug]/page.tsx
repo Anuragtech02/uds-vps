@@ -37,7 +37,6 @@ const page: React.FC<{
 
    let reportPage =
       reportDataList.data?.length > 0 ? reportDataList.data[0] : null;
-
    return (
       <div className='bg-s-50'>
          <div className='mt-40' />
