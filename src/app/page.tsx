@@ -32,7 +32,7 @@ export async function generateMetadata({
    };
 }
 
-export default async function Page() {
+async function Home() {
    let homePage: Awaited<ReturnType<typeof getHomePage>>;
    let upcomingReports: Awaited<ReturnType<typeof getAllReports>>;
    let latestBlogs: Awaited<ReturnType<typeof getBlogsListingPage>>;
@@ -89,4 +89,8 @@ export default async function Page() {
          />
       </>
    );
+}
+
+export default function Page() {
+   return <Home />;
 }

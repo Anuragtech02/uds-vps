@@ -3,7 +3,9 @@ import AboutData from '@/components/About/AboutData';
 import Hero from '@/components/About/Hero';
 
 import MediaCitation from '@/components/commons/MediaCitation';
+import PageSwitchLoading from '@/components/PageSwitchLoading';
 import { getAboutPage } from '@/utils/api/services';
+import { Suspense } from 'react';
 interface heroItem {
    heroHeading: string;
    heroPrimaryCTAButton: {
@@ -72,4 +74,8 @@ const About = async () => {
    );
 };
 
-export default About;
+// export default About;
+
+export default function Page() {
+   return <About />;
+}
