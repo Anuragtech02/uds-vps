@@ -24,14 +24,14 @@ const PreBookCTA: React.FC<{
                   __html: title,
                }}
             ></h2>
-            <Link href={ctaButton.link}>
+            <Link href={ctaButton?.link || ''}>
                <Button
                   size='large'
                   variant='light'
                   className='shrink-0 grow-0'
                   icon={<FaArrowRightLong />}
                >
-                  {ctaButton.title}
+                  {ctaButton?.title}
                </Button>
             </Link>
          </div>

@@ -13,6 +13,8 @@ import {
    getNewsListingPage,
 } from '../utils/api/services';
 import { Metadata } from 'next';
+import RecentResearch from '@/components/Home/RecentResearch';
+import { getRecentReports } from '@/utils/cache-recent-reports.utils';
 
 export async function generateMetadata({
    params,
@@ -73,12 +75,13 @@ async function Home() {
    return (
       <>
          <Hero data={homePage} />
-         <LatestResearch data={homePage} />
+         <RecentResearch data={homePage} />
          <Testimonials data={homePage} />
+         <LatestResearch data={homePage} reports={upcomingReportList} />
+         <MediaCitation mediaCitation={mediaCitation} />
          <UpcomingReports
             data={{ upcomingReports: upcomingReportList, homePage }}
          />
-         <MediaCitation mediaCitation={mediaCitation} />
          <NewsRoom
             data={{
                blogs: latestBlogs?.data?.map((blog: any) => blog.attributes),

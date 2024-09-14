@@ -55,7 +55,10 @@ const sampleData = [
    },
 ];
 
-const LatestResearch: React.FC<{ data: any }> = ({ data }) => {
+const LatestResearch: React.FC<{ data: any; reports: any }> = ({
+   data,
+   reports,
+}) => {
    const settings = {
       dots: false,
       infinite: false,
@@ -112,14 +115,14 @@ const LatestResearch: React.FC<{ data: any }> = ({ data }) => {
             />
             <div className='my-8 md:my-10'>
                <Slider {...settings}>
-                  {sampleData.map((data, index) => (
+                  {reports.map((data: any, index: number) => (
                      <div key={index} className='pr-4'>
                         <ResearchCard
                            key={index}
                            type='latest'
-                           title={data.title}
-                           slug={""}
-                           year={data.year}
+                           title={data?.title}
+                           slug={data?.slug}
+                           year={data?.year}
                            image={data?.image || sampleImage}
                         />
                      </div>

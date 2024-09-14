@@ -5,6 +5,7 @@ import gsap from 'gsap';
 import StrapiImage from '../StrapiImage/StrapiImage';
 import Link from 'next/link';
 import { getCTALink } from '@/utils/generic-methods';
+import { cacheRecentReports } from '@/utils/cache-recent-reports.utils';
 
 const Header: React.FC<{ data: any }> = ({ data }) => {
    const reportHeaderData = {
@@ -38,6 +39,10 @@ const Header: React.FC<{ data: any }> = ({ data }) => {
    const headerRef1 = useRef<HTMLDivElement>(null);
    const headerRef2 = useRef<HTMLDivElement>(null);
    const [showSecondHeader, setShowSecondHeader] = useState(false);
+
+   useEffect(() => {
+      if (data?.attributes) cacheRecentReports(data?.attributes);
+   }, []);
 
    useEffect(() => {
       const handleScroll = () => {
