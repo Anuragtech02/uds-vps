@@ -54,7 +54,7 @@ const ReportBlock: React.FC<{ data: any }> = ({ data }) => {
    }));
 
    const [selectedIndex, setSelectedIndex] = useState(0);
-   const [selectedLicense, setSelectedLicense] = useState<number | null>(0);
+   const [selectedLicense, setSelectedLicense] = useState<number | null>(null);
    const [medusaReport, setMedusaReport] = useState({});
 
    // useEffect(() => {
