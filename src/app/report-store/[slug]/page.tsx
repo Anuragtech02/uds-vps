@@ -16,7 +16,7 @@ const page: React.FC<{
 
    return (
       <div className='bg-s-50'>
-         <div className='mt-40' />
+         <div className='mt-4' />
          <Header data={reportPage} />
          <ReportBlock data={reportPage} />
          {/* <ReportFAQs />

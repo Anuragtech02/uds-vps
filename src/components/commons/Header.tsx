@@ -39,7 +39,7 @@ const Header = ({
 
    return (
       <div
-         className={`${!isSticky ? 'fixed' : 'sticky'} left-0 top-0 z-50 w-full border-b border-s-300 bg-white py-4`}
+         className={`w-full border-b border-s-300 bg-white py-4`}
          key='header'
       >
          <Topbar header={header} industries={industries} />

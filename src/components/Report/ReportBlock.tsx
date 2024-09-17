@@ -125,7 +125,7 @@ const ReportBlock: React.FC<{ data: any }> = ({ data }) => {
             <p></p>
          </div>
          <div className='flex flex-col items-start gap-4 lg:flex-row'>
-            <div className='sticky top-[290px] hidden flex-[0.2] flex-col gap-6 lg:flex'>
+            <div className='sticky top-[210px] hidden flex-[0.2] flex-col gap-6 lg:flex'>
                <div className='w-full rounded-md border border-s-400 bg-white'>
                   <ul className='list-none p-0'>
                      {reportIndex.map((item, index) => (
@@ -161,7 +161,7 @@ const ReportBlock: React.FC<{ data: any }> = ({ data }) => {
             <div className='flex-[0.6]'>
                <ReportBlockData data={reportData} />
             </div>
-            <div className='sticky top-[290px] flex w-full flex-col gap-6 lg:w-max lg:flex-[0.2]'>
+            <div className='sticky top-[210px] flex w-full flex-col gap-6 lg:w-max lg:flex-[0.2]'>
                <div className='w-full rounded-md border border-s-400 bg-white px-4 py-6'>
                   <p className='capitalise text-center text-lg font-semibold'>
                      {reportData.rightSectionHeading}
