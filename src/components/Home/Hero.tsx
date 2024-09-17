@@ -108,7 +108,7 @@ const Hero: React.FC<{ data: any }> = ({ data }) => {
                </div>
             }
          >
-            <Popup paramName='popup-form' title='Request a Demo'>
+            <Popup name='demo-request' title='Request a Demo'>
                <DemoRequestForm />
             </Popup>
          </Suspense>

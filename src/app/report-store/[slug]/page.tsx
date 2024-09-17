@@ -3,6 +3,30 @@ import Header from '@/components/Report/Header';
 import ReportBlock from '@/components/Report/ReportBlock';
 import ReportFAQs from '@/components/Report/ReportFAQs';
 import { getReportsPageBySlug } from '@/utils/api/services';
+import { Metadata } from 'next';
+
+export const dynamic = 'force-dynamic'; // Forces dynamic rendering, bypassing all static optimizations
+
+export async function generateMetadata({
+   params,
+}: {
+   params: {
+      slug: string;
+   };
+}): Promise<Metadata> {
+   const reportDataList = await getReportsPageBySlug(params.slug);
+
+   let reportPage =
+      reportDataList.data?.length > 0 ? reportDataList.data[0] : null;
+
+   return {
+      title: reportPage.attributes.title,
+      description: reportPage.attributes.shortDescription,
+      openGraph: {
+         images: [reportPage.attributes.highlightImage.data.attributes.url],
+      },
+   };
+}
 
 const page: React.FC<{
    params: {
@@ -13,7 +37,6 @@ const page: React.FC<{
 
    let reportPage =
       reportDataList.data?.length > 0 ? reportDataList.data[0] : null;
-
    return (
       <div className='bg-s-50'>
          <div className='mt-4' />

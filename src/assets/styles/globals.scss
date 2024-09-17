@@ -38,6 +38,14 @@ h3 {
    @apply text-s-800;
 }
 
+h4 {
+   font-size: 1.5rem;
+   line-height: 1.8rem;
+   font-family: 'Bricolage Grotesque', sans-serif;
+   font-weight: 500;
+   @apply text-s-800;
+}
+
 @media screen and (max-width: 768px) {
    h1 {
       font-size: 2.25rem;
@@ -52,6 +60,10 @@ h3 {
    h3 {
       font-size: 1.25rem;
       line-height: 1.6rem;
+   }
+   h4 {
+      font-size: 1rem;
+      line-height: 1.2rem;
    }
 }
 

@@ -3,6 +3,9 @@ import Button from '../commons/Button';
 import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import StrapiImage from '../StrapiImage/StrapiImage';
+import Link from 'next/link';
+import { getCTALink } from '@/utils/generic-methods';
+import { cacheRecentReports } from '@/utils/cache-recent-reports.utils';
 
 const Header: React.FC<{ data: any }> = ({ data }) => {
    const reportHeaderData = {
@@ -38,6 +41,10 @@ const Header: React.FC<{ data: any }> = ({ data }) => {
    const [showSecondHeader, setShowSecondHeader] = useState(false);
 
    useEffect(() => {
+      if (data?.attributes) cacheRecentReports(data?.attributes);
+   }, []);
+
+   useEffect(() => {
       const handleScroll = () => {
          const scrollPosition = window.scrollY;
          const header1Height = headerRef1.current?.clientHeight || 0;
@@ -58,6 +65,31 @@ const Header: React.FC<{ data: any }> = ({ data }) => {
       }
    }, [showSecondHeader]);
 
+   function getMonthDate(date: Date) {
+      const dateObj = new Date(date);
+      if (!dateObj) {
+         return '';
+      }
+
+      const monthNames = [
+         'January',
+         'February',
+         'March',
+         'April',
+         'May',
+         'June',
+         'July',
+         'August',
+         'September',
+         'October',
+         'November',
+         'December',
+      ];
+      const monthIndex = dateObj.getMonth();
+      const day = dateObj.getDate();
+
+      return `${monthNames[monthIndex]} ${day}`;
+   }
    return (
       <>
          <div
@@ -103,9 +135,7 @@ const Header: React.FC<{ data: any }> = ({ data }) => {
                               className='text-xl text-blue-4'
                               suppressHydrationWarning
                            >
-                              {new Date(
-                                 reportHeaderData?.updatedAt,
-                              )?.toLocaleDateString()}
+                              {getMonthDate(reportHeaderData?.updatedAt)}
                            </p>
                         </div>
                      </div>
@@ -133,23 +163,35 @@ const Header: React.FC<{ data: any }> = ({ data }) => {
                ref={headerRef2}
             >
                <div className='container'>
-                  <div className='flex flex-col items-start justify-between gap-4 md:flex-row md:gap-6'>
-                     <h3 className='font-bold lg:w-2/3'>
+                  <div className='flex flex-col items-start justify-between gap-4 md:flex-row md:items-center md:gap-6'>
+                     <h4 className='w-full overflow-hidden truncate text-ellipsis font-bold sm:text-wrap lg:w-2/3'>
                         {reportHeaderData.title}
-                     </h3>
-                     <div className='flex w-full grow items-center justify-end gap-2 py-4 md:w-max'>
-                        <Button
-                           variant='light'
-                           className='shrink grow basis-0 md:shrink-0 md:grow-0 md:basis-[unset]'
+                     </h4>
+                     <div className='flex w-full flex-col items-center justify-end gap-2 sm:max-w-max sm:flex-row sm:py-4'>
+                        <Link
+                           href={getCTALink(
+                              reportHeaderData.heroSectionPrimaryCTA.link,
+                           )}
                         >
-                           {reportHeaderData.heroSectionPrimaryCTA.title}
-                        </Button>
-                        <Button
-                           variant='secondary'
-                           className='shrink grow basis-0 md:shrink-0 md:grow-0 md:basis-[unset]'
+                           <Button
+                              variant='light'
+                              className='w-full min-w-[200px] shrink grow basis-0 sm:!max-w-[250px] md:shrink-0 md:grow-0 md:basis-[unset]'
+                           >
+                              {reportHeaderData.heroSectionPrimaryCTA.title}
+                           </Button>
+                        </Link>
+                        <Link
+                           href={getCTALink(
+                              reportHeaderData.heroSectionSecondaryCTA.link,
+                           )}
                         >
-                           {reportHeaderData.heroSectionSecondaryCTA.title}
-                        </Button>
+                           <Button
+                              variant='secondary'
+                              className='w-full min-w-[150px] shrink grow basis-0 sm:!max-w-[200px] md:shrink-0 md:grow-0 md:basis-[unset]'
+                           >
+                              {reportHeaderData.heroSectionSecondaryCTA.title}
+                           </Button>
+                        </Link>
                      </div>
                   </div>
                </div>

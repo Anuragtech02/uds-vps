@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, Suspense } from 'react';
 
 import Navbar from './commons/Navbar';
 import Topbar from './commons/Topbar';
@@ -12,6 +12,7 @@ import {
    getIndustries,
 } from '@/utils/api/services';
 import SearchWrapper from './Search/SearchWrapper';
+import PageSwitchLoading from './PageSwitchLoading';
 
 interface AppwrapperProps {
    children: React.ReactNode;
@@ -38,32 +39,37 @@ export const variants = {
 export interface MenuItemData {
    id: number | string;
    attributes: {
-     [key: string]: any;
-     children?: {
-       data: MenuItemData[];
-     };
+      [key: string]: any;
+      children?: {
+         data: MenuItemData[];
+      };
    };
- }
- 
- export interface MenuItem {
+}
+
+export interface MenuItem {
    id: number | string;
    [key: string]: any;
    children?: MenuItem[];
- }
+}
 
 const mapMenuItem = (item: MenuItemData): MenuItem => ({
    id: item.id,
    ...item.attributes,
-   children: item.attributes.children?.data?.map(mapMenuItem) || []
- });
- 
- export const mapHeaderMainMenu = (headerMainMenuData: any): MenuItem[] => {
-   return headerMainMenuData?.data?.attributes?.items?.data?.map(mapMenuItem) || [];
- };
- 
- export const mapFooterQuickLinks = (footerQuickLinksData: any): MenuItem[] => {
-   return footerQuickLinksData?.data?.attributes?.items?.data?.map(mapMenuItem) || [];
- };
+   children: item.attributes.children?.data?.map(mapMenuItem) || [],
+});
+
+export const mapHeaderMainMenu = (headerMainMenuData: any): MenuItem[] => {
+   return (
+      headerMainMenuData?.data?.attributes?.items?.data?.map(mapMenuItem) || []
+   );
+};
+
+export const mapFooterQuickLinks = (footerQuickLinksData: any): MenuItem[] => {
+   return (
+      footerQuickLinksData?.data?.attributes?.items?.data?.map(mapMenuItem) ||
+      []
+   );
+};
 
 const Appwrapper: FC<AppwrapperProps> = async ({ children }) => {
    let footerData,
@@ -104,7 +110,11 @@ const Appwrapper: FC<AppwrapperProps> = async ({ children }) => {
             industries={industries}
             mainMenu={headerMainMenu}
          />
-         <main key='main'>{children}</main>
+         <Suspense fallback={<PageSwitchLoading />}>
+            <main key='main' className='lg:min-h-[100svh]'>
+               {children}
+            </main>
+         </Suspense>
          <SearchWrapper />
          <Footer
             key='footer'
