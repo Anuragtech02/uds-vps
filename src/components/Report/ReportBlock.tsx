@@ -1,7 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
 import Button from '../commons/Button';
-import sampleReport from './sample.json';
 import ReportBlockData from './ReportBlockData';
 import Link from 'next/link';
 import { BiChevronRight } from 'react-icons/bi';

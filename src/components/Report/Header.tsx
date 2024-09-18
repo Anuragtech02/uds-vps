@@ -115,43 +115,48 @@ const Header: React.FC<{ data: any }> = ({ data }) => {
                         {reportHeaderData.shortDescription}
                      </p>
 
-                     <div className='flex flex-wrap items-center gap-4'>
-                        <div className='flex items-center gap-2'>
-                           <p className='text-lg text-s-500'>Geography:</p>
-                           <p className='text-xl text-blue-4'>
-                              {reportHeaderData.geography.name}
-                           </p>
+                     <div className='flex flex-wrap items-center justify-between gap-4'>
+                        <div className='flex flex-wrap items-center gap-4'>
+                           <div className='flex items-center gap-2'>
+                              <p className='text-lg text-s-500'>Geography:</p>
+                              <p className='text-xl text-blue-4'>
+                                 {reportHeaderData.geography.name}
+                              </p>
+                           </div>
+
+                           <div className='flex items-center gap-2'>
+                              <p className='text-lg text-s-500'>Industry:</p>
+                              <p className='text-xl text-blue-4'>
+                                 {reportHeaderData.industry.name}
+                              </p>
+                           </div>
+                           <div className='flex items-center gap-2'>
+                              <p className='text-lg text-s-500'>
+                                 Last updated:
+                              </p>
+                              <p
+                                 className='text-xl text-blue-4'
+                                 suppressHydrationWarning
+                              >
+                                 {getMonthDate(reportHeaderData?.updatedAt)}
+                              </p>
+                           </div>
                         </div>
 
-                        <div className='flex items-center gap-2'>
-                           <p className='text-lg text-s-500'>Industry:</p>
-                           <p className='text-xl text-blue-4'>
-                              {reportHeaderData.industry.name}
-                           </p>
-                        </div>
-                        <div className='flex items-center gap-2'>
-                           <p className='text-lg text-s-500'>Last updated:</p>
-                           <p
-                              className='text-xl text-blue-4'
-                              suppressHydrationWarning
+                        <div className='flex w-full items-center gap-2 md:w-auto'>
+                           <Button
+                              variant='light'
+                              className='shrink grow basis-0 md:shrink-0 md:grow-0 md:basis-[unset]'
                            >
-                              {getMonthDate(reportHeaderData?.updatedAt)}
-                           </p>
+                              {reportHeaderData.heroSectionPrimaryCTA.title}
+                           </Button>
+                           <Button
+                              variant='secondary'
+                              className='shrink grow basis-0 md:shrink-0 md:grow-0 md:basis-[unset]'
+                           >
+                              {reportHeaderData.heroSectionSecondaryCTA.title}
+                           </Button>
                         </div>
-                     </div>
-                     <div className='flex items-center justify-end gap-2 py-4'>
-                        <Button
-                           variant='light'
-                           className='shrink grow basis-0 md:shrink-0 md:grow-0 md:basis-[unset]'
-                        >
-                           {reportHeaderData.heroSectionPrimaryCTA.title}
-                        </Button>
-                        <Button
-                           variant='secondary'
-                           className='shrink grow basis-0 md:shrink-0 md:grow-0 md:basis-[unset]'
-                        >
-                           {reportHeaderData.heroSectionSecondaryCTA.title}
-                        </Button>
                      </div>
                   </div>
                </div>
@@ -159,24 +164,22 @@ const Header: React.FC<{ data: any }> = ({ data }) => {
          </div>
          {showSecondHeader && (
             <div
-               className={`sticky left-0 right-0 top-[0px] z-20 border-b border-s-300 bg-white py-4 transition-all duration-300`}
+               className={`fixed bottom-0 left-0 right-0 z-20 border-b border-s-300 bg-white py-4 transition-all duration-300 md:sticky md:bottom-[unset] md:top-0`}
                ref={headerRef2}
             >
                <div className='container'>
                   <div className='flex flex-col items-start justify-between gap-4 md:flex-row md:items-center md:gap-6'>
-                     <h4 className='w-full overflow-hidden truncate text-ellipsis font-bold sm:text-wrap lg:w-2/3'>
+                     <h4 className='hidden w-full overflow-hidden truncate text-ellipsis font-bold sm:text-wrap md:block lg:w-2/3'>
                         {reportHeaderData.title}
                      </h4>
-                     <div className='flex w-full flex-col items-center justify-end gap-2 sm:max-w-max sm:flex-row sm:py-4'>
+                     <div className='flex w-full flex-col items-center gap-2 sm:flex-row md:max-w-max md:justify-end md:py-4'>
                         <Link
                            href={getCTALink(
                               reportHeaderData.heroSectionPrimaryCTA.link,
                            )}
+                           className='shrink grow basis-0 md:min-w-[200px] md:!max-w-[250px] md:shrink-0 md:grow-0 md:basis-[unset]'
                         >
-                           <Button
-                              variant='light'
-                              className='w-full min-w-[200px] shrink grow basis-0 sm:!max-w-[250px] md:shrink-0 md:grow-0 md:basis-[unset]'
-                           >
+                           <Button variant='light' className='w-full'>
                               {reportHeaderData.heroSectionPrimaryCTA.title}
                            </Button>
                         </Link>
@@ -184,11 +187,9 @@ const Header: React.FC<{ data: any }> = ({ data }) => {
                            href={getCTALink(
                               reportHeaderData.heroSectionSecondaryCTA.link,
                            )}
+                           className='shrink grow basis-0 md:min-w-[200px] md:!max-w-[250px] md:shrink-0 md:grow-0 md:basis-[unset]'
                         >
-                           <Button
-                              variant='secondary'
-                              className='w-full min-w-[150px] shrink grow basis-0 sm:!max-w-[200px] md:shrink-0 md:grow-0 md:basis-[unset]'
-                           >
+                           <Button variant='secondary' className='w-full'>
                               {reportHeaderData.heroSectionSecondaryCTA.title}
                            </Button>
                         </Link>
