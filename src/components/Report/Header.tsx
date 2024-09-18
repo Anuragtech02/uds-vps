@@ -172,7 +172,7 @@ const Header: React.FC<{ data: any }> = ({ data }) => {
                      <h4 className='hidden w-full overflow-hidden truncate text-ellipsis font-bold sm:text-wrap md:block lg:w-2/3'>
                         {reportHeaderData.title}
                      </h4>
-                     <div className='flex w-full flex-col items-center gap-2 sm:flex-row md:max-w-max md:justify-end md:py-4'>
+                     <div className='flex w-full flex-col items-center gap-2 sm:flex-row md:max-w-max md:justify-end'>
                         <Link
                            href={getCTALink(
                               reportHeaderData.heroSectionPrimaryCTA.link,
