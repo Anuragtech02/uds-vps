@@ -61,9 +61,11 @@ const LatestResearch: React.FC<{ data: any; reports: any }> = ({
 }) => {
    const settings = {
       dots: false,
-      infinite: false,
+      infinite: true,
       speed: 500,
       slidesToShow: 5.2,
+      autoplay: true,
+      autoplaySpeed: 2000,
       arrows: false,
       responsive: [
          {

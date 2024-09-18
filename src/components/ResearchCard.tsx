@@ -29,7 +29,7 @@ const ResearchCard: FC<ResearchCardProps> = ({
 }) => {
    return (
       <Link href={`/report-store/${slug}`}>
-         <div className='flex-col rounded-xl border border-s-200 bg-white p-3'>
+         <div className='!h-full flex-col rounded-xl border border-s-200 bg-white p-3'>
             <div className='relative aspect-square w-full overflow-hidden rounded-xl'>
                <Image src={image} alt={title} fill />
             </div>
