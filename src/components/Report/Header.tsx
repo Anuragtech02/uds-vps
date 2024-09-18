@@ -107,9 +107,9 @@ const Header: React.FC<{ data: any }> = ({ data }) => {
                   </div>
                   <div className='flex flex-col justify-center gap-4 font-semibold'>
                      <div className='flex items-start justify-between gap-6'>
-                        <h3 className='font-bold lg:w-2/3'>
+                        <h1 className='h3 font-bold lg:w-2/3'>
                            {reportHeaderData.title}
-                        </h3>
+                        </h1>
                      </div>
                      <p className='font-medium text-s-700'>
                         {reportHeaderData.shortDescription}

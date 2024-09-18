@@ -14,7 +14,14 @@ import { usePathname } from 'next/navigation';
 import CustomResearchCTA from './CustomResearchCTA';
 
 const socials = [];
-const invalidRoutes = ['/', '/about', '/contact', '/login', '/signup', '/search'];
+const invalidRoutes = [
+   '/',
+   '/about',
+   '/contact',
+   '/login',
+   '/signup',
+   '/search',
+];
 
 const Footer = ({ footer, industries, quickLinks }: any) => {
    const pathname = usePathname();
@@ -33,14 +40,15 @@ const Footer = ({ footer, industries, quickLinks }: any) => {
                   alt=''
                />
                <div className='container relative z-[3]'>
-                  <h1
+                  <p
+                     className='text-[2.25rem] font-bold md:text-[3.5rem]'
                      dangerouslySetInnerHTML={{
                         __html: footer?.footerCTA?.title,
                      }}
                   >
                      {/* Order your <span className='text-white'>tailored</span>{' '}
                      research report now! */}
-                  </h1>
+                  </p>
                   <p className='mx-auto mt-4 text-s-300 md:w-2/3 md:text-2xl'>
                      {footer?.footerCTA?.description}
                   </p>

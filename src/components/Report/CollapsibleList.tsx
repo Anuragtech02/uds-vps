@@ -36,7 +36,7 @@ const CollapsibleLicenseOptions: React.FC<CollapsibleLicenseOptionsProps> = ({
    };
 
    return (
-      <div className='mt-4 flex flex-col gap-2'>
+      <div className='mt-3 flex flex-col gap-2'>
          {variants?.map((license: License, index: number) => (
             <div
                key={index}
@@ -45,7 +45,7 @@ const CollapsibleLicenseOptions: React.FC<CollapsibleLicenseOptionsProps> = ({
                }`}
             >
                <div
-                  className='cursor-pointer p-4'
+                  className='cursor-pointer px-4 py-2'
                   onClick={() => toggleLicense(index)}
                >
                   <div className='flex items-center justify-between gap-3'>
@@ -56,7 +56,9 @@ const CollapsibleLicenseOptions: React.FC<CollapsibleLicenseOptionsProps> = ({
                            checked={selectedLicense === index}
                            onChange={() => toggleLicense(index)}
                         />
-                        <p className='w-2/3 font-semibold'>{license.title}</p>
+                        <p className='w-2/3 grow text-xs font-semibold md:text-sm'>
+                           {license.title}
+                        </p>
                      </div>
                      <div className='flex shrink-0 items-center gap-2'>
                         <div>
@@ -66,7 +68,7 @@ const CollapsibleLicenseOptions: React.FC<CollapsibleLicenseOptionsProps> = ({
                                  license.price.currency,
                               )}
                            </p>
-                           <p className='font-semibold text-green-1'>
+                           <p className='text-sm font-semibold text-green-1'>
                               {formatCurrency(
                                  license.price.amount,
                                  license.price.currency,
