@@ -145,13 +145,13 @@ const Header: React.FC<{ data: any }> = ({ data }) => {
 
                         <div className='flex w-full items-center gap-2 md:w-auto'>
                            <Button
-                              variant='light'
+                              variant='secondary'
                               className='shrink grow basis-0 md:shrink-0 md:grow-0 md:basis-[unset]'
                            >
                               {reportHeaderData.heroSectionPrimaryCTA.title}
                            </Button>
                            <Button
-                              variant='secondary'
+                              variant='light'
                               className='shrink grow basis-0 md:shrink-0 md:grow-0 md:basis-[unset]'
                            >
                               {reportHeaderData.heroSectionSecondaryCTA.title}
@@ -179,7 +179,7 @@ const Header: React.FC<{ data: any }> = ({ data }) => {
                            )}
                            className='shrink grow basis-0 md:min-w-[200px] md:!max-w-[250px] md:shrink-0 md:grow-0 md:basis-[unset]'
                         >
-                           <Button variant='light' className='w-full'>
+                           <Button variant='secondary' className='w-full'>
                               {reportHeaderData.heroSectionPrimaryCTA.title}
                            </Button>
                         </Link>
@@ -189,7 +189,7 @@ const Header: React.FC<{ data: any }> = ({ data }) => {
                            )}
                            className='shrink grow basis-0 md:min-w-[200px] md:!max-w-[250px] md:shrink-0 md:grow-0 md:basis-[unset]'
                         >
-                           <Button variant='secondary' className='w-full'>
+                           <Button variant='light' className='w-full'>
                               {reportHeaderData.heroSectionSecondaryCTA.title}
                            </Button>
                         </Link>
