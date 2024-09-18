@@ -84,7 +84,7 @@ const CollapsibleLicenseOptions: React.FC<CollapsibleLicenseOptionsProps> = ({
                      dangerouslySetInnerHTML={{
                         __html: license?.description,
                      }}
-                     className='report-content px-4 [&>ul]:!list-disc'
+                     className='report-content px-4 text-sm [&>p]:mb-0 [&>ul]:!list-disc'
                   ></div>
                )}
             </div>
