@@ -159,7 +159,7 @@ const Header: React.FC<{ data: any }> = ({ data }) => {
          </div>
          {showSecondHeader && (
             <div
-               className={`sticky left-0 right-0 top-[140px] z-20 border-b border-s-300 bg-white py-4 transition-all duration-300`}
+               className={`sticky left-0 right-0 top-[0px] z-20 border-b border-s-300 bg-white py-4 transition-all duration-300`}
                ref={headerRef2}
             >
                <div className='container'>
@@ -175,7 +175,7 @@ const Header: React.FC<{ data: any }> = ({ data }) => {
                         >
                            <Button
                               variant='light'
-                              className='w-full min-w-[200px] shrink grow basis-0 sm:!max-w-[250px] md:shrink-0'
+                              className='w-full min-w-[200px] shrink grow basis-0 sm:!max-w-[250px] md:shrink-0 md:grow-0 md:basis-[unset]'
                            >
                               {reportHeaderData.heroSectionPrimaryCTA.title}
                            </Button>
@@ -187,7 +187,7 @@ const Header: React.FC<{ data: any }> = ({ data }) => {
                         >
                            <Button
                               variant='secondary'
-                              className='w-full min-w-[150px] shrink grow basis-0 sm:!max-w-[200px] md:shrink-0'
+                              className='w-full min-w-[150px] shrink grow basis-0 sm:!max-w-[200px] md:shrink-0 md:grow-0 md:basis-[unset]'
                            >
                               {reportHeaderData.heroSectionSecondaryCTA.title}
                            </Button>

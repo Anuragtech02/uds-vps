@@ -39,7 +39,7 @@ const page: React.FC<{
       reportDataList.data?.length > 0 ? reportDataList.data[0] : null;
    return (
       <div className='bg-s-50'>
-         <div className='mt-40' />
+         <div className='mt-4' />
          <Header data={reportPage} />
          <ReportBlock data={reportPage} />
          {/* <ReportFAQs />

@@ -3,7 +3,8 @@ export const cacheRecentReports = (report: Report) => {
       localStorage.getItem('recentReports') || '[]',
    );
    const existingIndex = recentReports?.findIndex(
-      (item) => item?.slug === report?.slug,
+      // @ts-ignore
+      (item: any) => item?.slug === report?.slug,
    );
    if (existingIndex === -1) {
       recentReports.unshift(report);
