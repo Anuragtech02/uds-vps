@@ -1,7 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
 import Button from '../commons/Button';
-import sampleReport from './sample.json';
 import ReportBlockData from './ReportBlockData';
 import Link from 'next/link';
 import { BiChevronRight } from 'react-icons/bi';
@@ -78,7 +77,7 @@ const ReportBlock: React.FC<{ data: any }> = ({ data }) => {
    }
 
    return (
-      <div className='container py-10 md:py-16'>
+      <div className='container py-10 md:py-16 md:pt-10'>
          <div className='flex items-center gap-2 pb-10 md:text-lg'>
             <Link href='/'>
                <p>Home</p>
@@ -100,13 +99,13 @@ const ReportBlock: React.FC<{ data: any }> = ({ data }) => {
             <p></p>
          </div>
          <div className='flex flex-col items-start gap-4 lg:flex-row'>
-            <div className='sticky top-[150px] hidden flex-[0.2] flex-col gap-6 lg:flex'>
+            <div className='sticky top-[100px] hidden flex-[0.23] flex-col gap-6 lg:flex'>
                <div className='w-full rounded-md border border-s-400 bg-white'>
                   <ul className='list-none p-0'>
                      {reportIndex.map((item, index) => (
                         <li
                            key={index}
-                           className={`cursor-pointer px-4 py-3 transition-all duration-150 ${selectedIndex === index && 'border-y border-s-300 bg-blue-2 font-semibold text-white'} `}
+                           className={`cursor-pointer px-4 py-2 transition-all duration-150 ${selectedIndex === index && 'border-y border-s-300 bg-blue-2 font-semibold text-white'} `}
                            onClick={() => {
                               setSelectedIndex(index);
                               scrollIntoView(item.id);
@@ -117,7 +116,18 @@ const ReportBlock: React.FC<{ data: any }> = ({ data }) => {
                      ))}
                   </ul>
                </div>
-               <div className='relative mt-4'>
+               <div className='w-full rounded-md border border-s-400 bg-white px-4 py-6 pt-4'>
+                  <p className='capitalise text-center text-lg font-semibold'>
+                     {reportData.rightSectionHeading}
+                  </p>
+                  <CollapsibleLicenseOptions
+                     variants={variants}
+                     selectedLicense={selectedLicense}
+                     setSelectedLicense={setSelectedLicense}
+                  />
+               </div>
+
+               <div className='relative mt-3'>
                   <div className='width-[max-content] absolute -top-4 left-0 rounded-md bg-red-500 px-2 py-1 text-xs font-medium text-white'>
                      Upto 20% off
                   </div>
@@ -141,23 +151,8 @@ const ReportBlock: React.FC<{ data: any }> = ({ data }) => {
                   </Button>
                </Link>
             </div>
-            <div className='flex-[0.6]'>
+            <div className='flex-[0.77]'>
                <ReportBlockData data={reportData} />
-            </div>
-            <div className='sticky top-[150px] flex w-full flex-col gap-6 lg:w-max lg:flex-[0.2]'>
-               <div className='w-full rounded-md border border-s-400 bg-white px-4 py-6'>
-                  <p className='capitalise text-center text-lg font-semibold'>
-                     {reportData.rightSectionHeading}
-                  </p>
-                  <CollapsibleLicenseOptions
-                     variants={variants}
-                     selectedLicense={selectedLicense}
-                     setSelectedLicense={setSelectedLicense}
-                  />
-               </div>
-               <Button className='w-full py-3' variant='secondary'>
-                  Buy Now
-               </Button>
             </div>
          </div>
          <Popup name='report-enquiry' title='Report Enquiry'>

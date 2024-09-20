@@ -2,6 +2,7 @@
 import { useEffect, useRef, useState } from 'react';
 import Navbar from './Navbar';
 import Topbar from './Topbar';
+import { usePathname } from 'next/navigation';
 interface IHeader {
    phoneNumber: string;
    email: string;
@@ -11,6 +12,9 @@ interface IHeader {
    logo?: { data: { attributes: { url?: string } } };
    ctaButton: { id: number; title: string; link: string };
 }
+
+const STICKY_URL = ['/report-store/'];
+
 const Header = ({
    header,
    industries,
@@ -22,6 +26,7 @@ const Header = ({
 }) => {
    const [isSticky, setSticky] = useState(false);
    const navRef = useRef<HTMLDivElement | null>(null);
+   const pathname = usePathname();
 
    const handleScroll = () => {
       if (navRef.current) {
@@ -39,7 +44,11 @@ const Header = ({
 
    return (
       <div
-         className={`w-full border-b border-s-300 bg-white py-4`}
+         className={`${
+            STICKY_URL.some((url) => pathname.includes(url))
+               ? ''
+               : 'fixed left-0 top-0 z-50'
+         } w-full border-b border-s-300 bg-white py-4`}
          key='header'
       >
          <Topbar header={header} industries={industries} />
