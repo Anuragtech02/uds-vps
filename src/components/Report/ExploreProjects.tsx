@@ -84,7 +84,7 @@ const sampleData = [
    },
 ];
 
-const ExploreProjects = () => {
+const ExploreProjects = ({ reports }) => {
    const settings = {
       dots: false,
       infinite: false,
@@ -105,16 +105,25 @@ const ExploreProjects = () => {
 
             <div className='my-8 md:my-16 md:mt-10'>
                <Slider {...settings}>
-                  {sampleData.map((data, index) => (
+                  {reports.map((data: any, index: number) => (
                      <div key={index} className='pr-4'>
                         <ResearchCard
                            type='upcoming'
-                           title={data.title}
-                           year={data.year}
-                           description={data.description}
-                           date={data.date}
-                           slug=''
-                           image={data?.image || sampleImage}
+                           title={data?.title}
+                           year={new Date(
+                              data?.publishedAt ?? new Date().getTime(),
+                           )
+                              ?.getFullYear()
+                              .toString()}
+                           description={data?.shortDescription}
+                           date={new Date(
+                              data?.publishedAt ?? new Date().getTime(),
+                           ).toDateString()}
+                           slug={data?.slug}
+                           image={
+                              data?.highlightImage?.data?.attributes?.url ||
+                              sampleImage
+                           }
                         />
                      </div>
                   ))}
