@@ -24,6 +24,8 @@ const getFilterQuery = (
       .map(([key, value]) => {
          if (key.startsWith('industrySlug')) {
             return `filters[industry][slug][$eq]=${encodeURIComponent(String(value))}`;
+         } else if (key.startsWith('industriesSlug')) {
+            return `filters[industries][slug][$in]=${encodeURIComponent(String(value))}`;
          }
          return `filters[${key}]=${encodeURIComponent(String(value))}`;
       })
