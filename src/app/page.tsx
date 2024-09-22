@@ -37,17 +37,28 @@ export async function generateMetadata({
 async function Home() {
    let homePage: Awaited<ReturnType<typeof getHomePage>>;
    let upcomingReports: Awaited<ReturnType<typeof getAllReports>>;
+   let latestReports: Awaited<ReturnType<typeof getAllReports>>;
    let latestBlogs: Awaited<ReturnType<typeof getBlogsListingPage>>;
    let latestNewsArticles: Awaited<ReturnType<typeof getNewsListingPage>>;
 
    try {
-      [homePage, upcomingReports, latestBlogs, latestNewsArticles] =
-         await Promise.all([
-            getHomePage(),
-            getAllReports(),
-            getBlogsListingPage(1, 1),
-            getNewsListingPage(1, 3),
-         ]);
+      [
+         homePage,
+         upcomingReports,
+         latestReports,
+         latestBlogs,
+         latestNewsArticles,
+      ] = await Promise.all([
+         getHomePage(),
+         getAllReports(1, 10, {
+            status: 'UPCOMING',
+         }),
+         getAllReports(1, 10, {
+            status: 'LIVE',
+         }),
+         getBlogsListingPage(1, 1),
+         getNewsListingPage(1, 3),
+      ]);
       console.log(latestBlogs);
    } catch (error) {
       console.error('Error fetching upcoming reports:', error);
@@ -72,12 +83,21 @@ async function Home() {
       thumbnailImage: report?.attributes?.thumbnailImage?.data?.attributes,
    }));
 
+   const latestReportList = latestReports?.data?.map((report: any) => ({
+      id: report?.id,
+      slug: report?.attributes?.slug,
+      title: report?.attributes?.title,
+      shortDescription: report?.attributes?.shortDescription,
+      publishedAt: report?.attributes?.publishedAt,
+      thumbnailImage: report?.attributes?.thumbnailImage?.data?.attributes,
+   }));
+
    return (
       <>
          <Hero data={homePage} />
          <RecentResearch data={homePage} />
          <Testimonials data={homePage} />
-         <LatestResearch data={homePage} reports={upcomingReportList} />
+         <LatestResearch data={homePage} reports={latestReportList} />
          <MediaCitation mediaCitation={mediaCitation} />
          <UpcomingReports
             data={{ upcomingReports: upcomingReportList, homePage }}

@@ -54,21 +54,10 @@ const RecentResearch: React.FC<{ data: any }> = ({ data }) => {
          data?.data?.attributes?.recentResearchSectionTitle ||
          'Recently Viewed Reports',
       recentResearchSectionReportsCount: reports?.length || 0,
-      recentResearchSectionCTABanner: {
-         title:
-            data?.data?.attributes?.recentResearchSectionCTABanner?.title ||
-            'Hello Please prebook',
-         type:
-            data?.data?.attributes?.recentResearchSectionCTABanner?.type ||
-            'Pleaseeee',
-         ctaButton:
-            data?.data?.attributes?.recentResearchSectionCTABanner?.ctaButton ||
-            '',
-      },
    };
    if (reports?.length < 1) return null;
    return (
-      <section className='min-h-full py-10 md:py-20'>
+      <section className='min-h-full pt-10 md:pt-20'>
          <div className='container'>
             <h2
                dangerouslySetInnerHTML={{
@@ -94,19 +83,6 @@ const RecentResearch: React.FC<{ data: any }> = ({ data }) => {
                   })}
                </div>
             </div>
-            <div className='h-8'></div>
-            <PreBookCTA
-               title={
-                  recentResearchSection?.recentResearchSectionCTABanner?.title
-               }
-               ctaButton={
-                  recentResearchSection?.recentResearchSectionCTABanner
-                     ?.ctaButton || {
-                     link: '',
-                     title: '',
-                  }
-               }
-            />
          </div>
       </section>
    );
