@@ -29,7 +29,6 @@ const Header: React.FC<{ newsArticle: any }> = ({ newsArticle }) => {
       }
    }, [showSecondHeader]);
 
-
    const author = newsArticle?.author?.data?.attributes;
    const publishedAt = new Intl.DateTimeFormat('en-GB', {
       day: '2-digit',
@@ -50,14 +49,16 @@ const Header: React.FC<{ newsArticle: any }> = ({ newsArticle }) => {
                         {newsArticle?.title}
                      </h2>
                      <div className='mx-auto flex flex-wrap justify-center gap-3'>
-                        {newsArticle?.tags?.split(",")?.map((tag: any, index: number) => (
-                           <div
-                              key={index}
-                              className='flex items-center gap-2 rounded-full border border-s-300 bg-s-100 px-4 py-1 text-blue-4'
-                           >
-                              <TagIcon /> {tag?.trim()}
-                           </div>
-                        ))}
+                        {newsArticle?.tags
+                           ?.split(',')
+                           ?.map((tag: any, index: number) => (
+                              <div
+                                 key={index}
+                                 className='flex items-center gap-2 rounded-full border border-s-300 bg-s-100 px-4 py-1 text-blue-4'
+                              >
+                                 <TagIcon /> {tag?.trim()}
+                              </div>
+                           ))}
                      </div>
                      <div className='flex justify-between border-y border-s-300 py-4'>
                         {author?.name && (
@@ -89,7 +90,7 @@ const Header: React.FC<{ newsArticle: any }> = ({ newsArticle }) => {
          </div>
          {showSecondHeader && (
             <div
-               className={`sticky left-0 right-0 top-[150px] z-20 border-b border-s-300 bg-white py-4 transition-all duration-300`}
+               className={`sticky left-0 right-0 top-0 z-20 border-b border-s-300 bg-white py-4 transition-all duration-300`}
                ref={headerRef2}
             >
                <div className='container'>

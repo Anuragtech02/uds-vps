@@ -100,7 +100,7 @@ const Header: React.FC<{ blog: any }> = ({ blog }) => {
          </div>
          {showSecondHeader && (
             <div
-               className={`sticky left-0 right-0 top-[150px] z-20 border-b border-s-300 bg-white py-4 transition-all duration-300`}
+               className={`sticky left-0 right-0 top-[0px] z-20 border-b border-s-300 bg-white py-4 transition-all duration-300`}
                ref={headerRef2}
             >
                <div className='container'>
