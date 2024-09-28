@@ -45,9 +45,9 @@ const Header: React.FC<{ newsArticle: any }> = ({ newsArticle }) => {
             <div className='container'>
                <div className='flex gap-8'>
                   <div className='mx-auto w-full space-y-4 font-semibold md:w-2/3 md:space-y-6'>
-                     <h2 className='mx-auto text-center font-bold'>
+                     <h1 className='h3 mx-auto text-center font-bold'>
                         {newsArticle?.title}
-                     </h2>
+                     </h1>
                      <div className='mx-auto flex flex-wrap justify-center gap-3'>
                         {newsArticle?.tags
                            ?.split(',')
@@ -95,7 +95,9 @@ const Header: React.FC<{ newsArticle: any }> = ({ newsArticle }) => {
             >
                <div className='container'>
                   <div className='flex items-start justify-between gap-6'>
-                     <h3 className='w-2/3 font-bold'>{newsArticle?.title}</h3>
+                     <h1 className='h3 w-2/3 font-bold'>
+                        {newsArticle?.title}
+                     </h1>
                      <div className='flex items-center justify-end gap-2 py-4'></div>
                   </div>
                </div>

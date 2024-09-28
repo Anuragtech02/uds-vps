@@ -60,9 +60,9 @@ const Header: React.FC<{ blog: any }> = ({ blog }) => {
             <div className='container'>
                <div className='flex gap-8'>
                   <div className='mx-auto w-full space-y-4 font-semibold md:w-2/3 md:space-y-6'>
-                     <h2 className='mx-auto text-center font-bold'>
+                     <h1 className='h3 mx-auto text-center font-bold'>
                         {blog?.title}
-                     </h2>
+                     </h1>
                      <div className='mx-auto flex flex-wrap justify-center gap-3'>
                         {industries.map((industry: any, index: number) => (
                            <div
@@ -105,7 +105,7 @@ const Header: React.FC<{ blog: any }> = ({ blog }) => {
             >
                <div className='container'>
                   <div className='flex items-start justify-between gap-6'>
-                     <h3 className='font-bold md:w-2/3'>{blog?.title}</h3>
+                     <h1 className='h3 font-bold md:w-2/3'>{blog?.title}</h1>
                      <div className='flex items-center justify-end gap-2 py-4'></div>
                   </div>
                </div>
