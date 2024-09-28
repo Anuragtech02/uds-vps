@@ -111,7 +111,7 @@ const Header: React.FC<{ data: any }> = ({ data }) => {
                            {reportHeaderData.title}
                         </h1>
                      </div>
-                     <p className='font-medium text-s-700'>
+                     <p className='font-medium text-s-700 md:text-lg'>
                         {reportHeaderData.shortDescription}
                      </p>
 
