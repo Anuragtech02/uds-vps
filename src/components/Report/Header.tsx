@@ -98,13 +98,13 @@ const Header: React.FC<{ data: any }> = ({ data }) => {
          >
             <div className='container'>
                <div className='flex flex-col gap-8 md:flex-row'>
-                  <div className='h-[200px] rounded-md border border-s-300 md:aspect-square'>
+                  {/* <div className='h-[200px] rounded-md border border-s-300 md:aspect-square'>
                      <StrapiImage
                         media={reportHeaderData.highlightImage.data.attributes}
                         objectFit='contain'
                         className='!h-[200px] !object-contain'
                      />
-                  </div>
+                  </div> */}
                   <div className='flex flex-col justify-center gap-4 font-semibold'>
                      <div className='flex items-start justify-between gap-6'>
                         <h1 className='h3 font-bold lg:w-2/3'>
