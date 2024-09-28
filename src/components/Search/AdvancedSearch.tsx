@@ -214,15 +214,17 @@ const AdvancedSearch: React.FC<AdvancedSearchProps> = ({ isOpen, onClose }) => {
                   onChange={(e) => setQuery(e.target.value)}
                   onKeyDown={handleKeyDown}
                />
-               <button
-                  title='close'
-                  onClick={() => {
-                     setQuery('');
-                  }}
-                  className='text-gray-400 hover:text-gray-600'
-               >
-                  <IoIosClose />
-               </button>
+               {query.length > 0 && (
+                  <button
+                     title='Clear search'
+                     onClick={() => {
+                        setQuery('');
+                     }}
+                     className='text-2xl text-gray-400 hover:text-gray-600'
+                  >
+                     <IoIosClose />
+                  </button>
+               )}
             </div>
             <p className='absolute px-4 py-2 text-right text-xs text-white'>
                * Min. 3 characters
