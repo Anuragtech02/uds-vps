@@ -80,14 +80,14 @@ const LatestResearch: React.FC<{ data: any; reports: any }> = ({
          {
             breakpoint: 600,
             settings: {
-               slidesToShow: 2.2,
+               slidesToShow: 2,
                slidesToScroll: 2,
             },
          },
          {
             breakpoint: 480,
             settings: {
-               slidesToShow: 1.2,
+               slidesToShow: 1,
                slidesToScroll: 1,
             },
          },
@@ -96,7 +96,7 @@ const LatestResearch: React.FC<{ data: any; reports: any }> = ({
 
    const latestResearchSection = {
       latestResearchSectionTitle:
-         data.data.attributes.latestResearchSectionTitle,
+         data?.data?.attributes?.latestResearchSectionTitle,
       latestResearchSectionReportsCount:
          data.data.attributes.latestResearchSectionReportsCount,
       latestResearchSectionCTABanner: {
