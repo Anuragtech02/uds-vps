@@ -38,7 +38,7 @@ const NewsRoom: React.FC<{
    return (
       <section className='min-h-max py-12 md:py-20'>
          <div className='container'>
-            <div className='my-6 flex flex-col gap-4 md:my-10 md:mt-0 md:flex-row'>
+            <div className='my-6 flex flex-col gap-4 lg:my-10 lg:mt-0 lg:flex-row'>
                <div className='md:w-1/2'>
                   <h3 className='mb-6 text-blue-2'>Our Blogs</h3>
                   {data?.blogs.map((blog, index) => (
