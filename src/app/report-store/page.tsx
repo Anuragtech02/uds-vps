@@ -24,7 +24,7 @@ interface ReportStoreProps {
    searchParams: SearchParams;
 }
 
-const ITEMS_PER_PAGE = 1;
+const ITEMS_PER_PAGE = 10;
 
 const ReportStore: FC<ReportStoreProps> = async ({ searchParams }) => {
    const filters = searchParams.filter?.split(',').filter(Boolean) || [];
