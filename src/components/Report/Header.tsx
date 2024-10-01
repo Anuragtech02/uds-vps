@@ -98,20 +98,20 @@ const Header: React.FC<{ data: any }> = ({ data }) => {
          >
             <div className='container'>
                <div className='flex flex-col gap-8 md:flex-row'>
-                  <div className='h-[200px] rounded-md border border-s-300 md:aspect-square'>
+                  {/* <div className='h-[200px] rounded-md border border-s-300 md:aspect-square'>
                      <StrapiImage
                         media={reportHeaderData.highlightImage.data.attributes}
                         objectFit='contain'
                         className='!h-[200px] !object-contain'
                      />
-                  </div>
+                  </div> */}
                   <div className='flex flex-col justify-center gap-4 font-semibold'>
                      <div className='flex items-start justify-between gap-6'>
                         <h1 className='h3 font-bold lg:w-2/3'>
                            {reportHeaderData.title}
                         </h1>
                      </div>
-                     <p className='font-medium text-s-700'>
+                     <p className='font-medium text-s-700 md:text-lg'>
                         {reportHeaderData.shortDescription}
                      </p>
 
@@ -172,7 +172,7 @@ const Header: React.FC<{ data: any }> = ({ data }) => {
                      <h4 className='hidden w-full overflow-hidden truncate text-ellipsis font-bold sm:text-wrap md:block lg:w-2/3'>
                         {reportHeaderData.title}
                      </h4>
-                     <div className='flex w-full flex-col items-center gap-2 sm:flex-row md:max-w-max md:justify-end'>
+                     <div className='flex w-full items-center gap-2 md:max-w-max md:justify-end'>
                         <Link
                            href={getCTALink(
                               reportHeaderData.heroSectionPrimaryCTA.link,

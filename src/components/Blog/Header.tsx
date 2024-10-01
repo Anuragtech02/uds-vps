@@ -59,10 +59,10 @@ const Header: React.FC<{ blog: any }> = ({ blog }) => {
          >
             <div className='container'>
                <div className='flex gap-8'>
-                  <div className='mx-auto w-full space-y-4 font-semibold md:w-2/3 md:space-y-6'>
-                     <h2 className='mx-auto text-center font-bold'>
+                  <div className='mx-auto w-full space-y-4 font-semibold md:space-y-6 xl:w-2/3'>
+                     <h1 className='h3 mx-auto text-center font-bold'>
                         {blog?.title}
-                     </h2>
+                     </h1>
                      <div className='mx-auto flex flex-wrap justify-center gap-3'>
                         {industries.map((industry: any, index: number) => (
                            <div
@@ -100,12 +100,12 @@ const Header: React.FC<{ blog: any }> = ({ blog }) => {
          </div>
          {showSecondHeader && (
             <div
-               className={`sticky left-0 right-0 top-[150px] z-20 border-b border-s-300 bg-white py-4 transition-all duration-300`}
+               className={`sticky left-0 right-0 top-[0px] z-20 border-b border-s-300 bg-white py-4 transition-all duration-300`}
                ref={headerRef2}
             >
                <div className='container'>
                   <div className='flex items-start justify-between gap-6'>
-                     <h3 className='font-bold md:w-2/3'>{blog?.title}</h3>
+                     <h1 className='h3 font-bold xl:w-2/3'>{blog?.title}</h1>
                      <div className='flex items-center justify-end gap-2 py-4'></div>
                   </div>
                </div>

@@ -12,12 +12,12 @@ interface NewsItemProps {
       altContent: string;
       width: number;
       height: number;
-   }
+   };
 }
 
 const NewsItem: FC<NewsItemProps> = ({ title, date, thumbnailImage }) => {
    return (
-      <div className='flex flex-col gap-4 rounded-xl border border-s-300 bg-white p-6'>
+      <div className='flex h-full flex-col gap-4 rounded-xl border border-s-300 bg-white p-6'>
          <div className='relative aspect-video rounded-md'>
             <StrapiImage media={thumbnailImage} objectFit='fill' />
          </div>

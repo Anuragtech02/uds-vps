@@ -22,7 +22,7 @@ const Blog = async (data: any) => {
    let blog = blogDetails?.data?.[0]?.attributes;
    return (
       <div className='bg-s-50'>
-         <div className='mt-40' />
+         <div className='mt-0' />
          <Header blog={blog} />
          <div className='container'>
             <div className='flex flex-col gap-6 py-12 md:gap-10 md:py-20 lg:flex-row'>
