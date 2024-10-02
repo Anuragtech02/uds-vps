@@ -6,6 +6,7 @@ import StrapiImage from '../StrapiImage/StrapiImage';
 import Link from 'next/link';
 import { getCTALink } from '@/utils/generic-methods';
 import { cacheRecentReports } from '@/utils/cache-recent-reports.utils';
+import { useCartStore } from '@/stores/cart.store';
 
 const Header: React.FC<{ data: any }> = ({ data }) => {
    const reportHeaderData = {
@@ -39,6 +40,7 @@ const Header: React.FC<{ data: any }> = ({ data }) => {
    const headerRef1 = useRef<HTMLDivElement>(null);
    const headerRef2 = useRef<HTMLDivElement>(null);
    const [showSecondHeader, setShowSecondHeader] = useState(false);
+   const cartStore = useCartStore();
 
    useEffect(() => {
       if (data?.attributes) cacheRecentReports(data?.attributes);
@@ -150,12 +152,25 @@ const Header: React.FC<{ data: any }> = ({ data }) => {
                            >
                               {reportHeaderData.heroSectionPrimaryCTA.title}
                            </Button>
-                           <Button
-                              variant='light'
-                              className='shrink grow basis-0 md:shrink-0 md:grow-0 md:basis-[unset]'
+                           <Link
+                              href={
+                                 reportHeaderData.heroSectionSecondaryCTA.link
+                              }
                            >
-                              {reportHeaderData.heroSectionSecondaryCTA.title}
-                           </Button>
+                              <Button
+                                 variant='light'
+                                 className='shrink grow basis-0 md:shrink-0 md:grow-0 md:basis-[unset]'
+                                 onClick={() => {
+                                    console.log('clicked', data);
+                                    cartStore.addToCart(data?.attributes);
+                                 }}
+                              >
+                                 {
+                                    reportHeaderData.heroSectionSecondaryCTA
+                                       .title
+                                 }
+                              </Button>
+                           </Link>
                         </div>
                      </div>
                   </div>
