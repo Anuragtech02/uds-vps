@@ -17,6 +17,13 @@ const ReportBlockData: React.FC<{ data: any }> = ({ data }) => {
             className='report-content'
          ></div>
 
+         <div
+            id='report-data'
+            className='report-content'
+            dangerouslySetInnerHTML={{
+               __html: data.description,
+            }}
+         ></div>
          <div>
             <div>
                <h2 className={styles.title}>Table of Contents</h2>
@@ -82,14 +89,6 @@ const ReportBlockData: React.FC<{ data: any }> = ({ data }) => {
                </ul>
             </div>
          </div> */}
-
-         <div
-            id='report-data'
-            className='report-content'
-            dangerouslySetInnerHTML={{
-               __html: data.description,
-            }}
-         ></div>
       </div>
    );
 };

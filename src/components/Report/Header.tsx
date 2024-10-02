@@ -118,24 +118,24 @@ const Header: React.FC<{ data: any }> = ({ data }) => {
                      <div className='flex flex-wrap items-center justify-between gap-4'>
                         <div className='flex flex-wrap items-center gap-4'>
                            <div className='flex items-center gap-2'>
-                              <p className='text-lg text-s-500'>Geography:</p>
-                              <p className='text-xl text-blue-4'>
+                              <p className='text-md text-s-500'>Geography:</p>
+                              <p className='text-md text-blue-4'>
                                  {reportHeaderData.geography.name}
                               </p>
                            </div>
 
                            <div className='flex items-center gap-2'>
-                              <p className='text-lg text-s-500'>Industry:</p>
-                              <p className='text-xl text-blue-4'>
+                              <p className='text-md text-s-500'>Industry:</p>
+                              <p className='text-md text-blue-4'>
                                  {reportHeaderData.industry.name}
                               </p>
                            </div>
                            <div className='flex items-center gap-2'>
-                              <p className='text-lg text-s-500'>
+                              <p className='text-md text-s-500'>
                                  Last updated:
                               </p>
                               <p
-                                 className='text-xl text-blue-4'
+                                 className='text-md text-blue-4'
                                  suppressHydrationWarning
                               >
                                  {getMonthDate(reportHeaderData?.updatedAt)}

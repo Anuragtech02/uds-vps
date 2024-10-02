@@ -13,8 +13,9 @@ import { getCTALink } from '@/utils/generic-methods';
 
 const reportIndex = [
    { title: 'About this report', id: 'about-report' },
-   { title: 'Table of content', id: 'table-of-content' },
    { title: 'Report Data', id: 'report-data' },
+   { title: 'Table of content', id: 'table-of-content' },
+   { title: 'Research Methodology', id: 'research-methodology' },
 ];
 
 const ReportBlock: React.FC<{ data: any }> = ({ data }) => {
@@ -70,7 +71,7 @@ const ReportBlock: React.FC<{ data: any }> = ({ data }) => {
       if (element) {
          element.scrollIntoView({
             behavior: 'smooth',
-            block: 'start',
+            block: 'center',
             inline: 'nearest',
          });
       }
