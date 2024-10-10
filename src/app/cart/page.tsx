@@ -1,7 +1,14 @@
+'use client';
 import CartItem from '@/components/Cart/CartItem';
 import CostCalculations from '@/components/Cart/CostCalculations';
 import Button from '@/components/commons/Button';
+import {
+   changeQuantityOfReport,
+   getCart,
+   removeItemFromCart,
+} from '@/utils/cart-utils.util';
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
 
 const sampleCartItems = [
    {
@@ -25,10 +32,42 @@ const sampleCartItems = [
 ];
 
 const Cart = () => {
-   const totalCost = sampleCartItems.reduce((acc, item) => {
-      return acc + item.price * item.quantity;
-   }, 0);
-
+   const [cartData, setCartData] = useState([]);
+   const [totalCost, setTotalCost] = useState(0);
+   const updateTotalCost = (cart) => {
+      setTotalCost(
+         cart.reduce((acc, item) => {
+            console.log(item?.selectedLicense?.price?.amount);
+            return (
+               acc +
+               parseInt(item?.selectedLicense?.price?.amount) *
+                  parseInt(item.quantity)
+            );
+         }, 0),
+      );
+   };
+   useEffect(() => {
+      const cart = getCart();
+      setCartData(cart);
+      updateTotalCost(cart);
+      console.log(cart);
+   }, []);
+   const handleChangeQuantity = (reportId: number, quantity: number) => {
+      const updatedCart = cartData.map((item) =>
+         item?.report?.id === reportId ? { ...item, quantity } : item,
+      );
+      setCartData(updatedCart);
+      updateTotalCost(updatedCart);
+      changeQuantityOfReport(reportId, quantity);
+   };
+   const handleRemoveItem = (reportId: number) => {
+      const updatedCart = cartData?.filter(
+         (item) => item?.report?.id !== reportId,
+      );
+      setCartData(updatedCart);
+      updateTotalCost(updatedCart);
+      removeItemFromCart(reportId);
+   };
    return (
       <div className='container pt-40'>
          <div className='mt-5 w-full space-y-4 rounded-xl bg-white p-6 md:space-y-6'>
@@ -91,8 +130,13 @@ const Cart = () => {
                      </div>
                   </div>
                </div>
-               {sampleCartItems.map((item) => (
-                  <CartItem key={item.id} {...item} />
+               {cartData.map((item) => (
+                  <CartItem
+                     key={item.id}
+                     {...item}
+                     handleRemoveItem={handleRemoveItem}
+                     handleChangeQuantity={handleChangeQuantity}
+                  />
                ))}
             </div>
             <div className='rounded-xl border border-s-400 p-3'>
