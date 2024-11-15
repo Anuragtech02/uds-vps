@@ -105,7 +105,7 @@ const Header: React.FC<{ data: any }> = ({ data }) => {
          return alert('Please select a license');
       }
       addToCart({ id: data?.id, ...data?.attributes }, selectedLicense);
-      router.push(reportHeaderData.heroSectionSecondaryCTA.link);
+      router.push('/cart');
    };
 
    return (

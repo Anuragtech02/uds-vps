@@ -2,12 +2,26 @@
 import CartItem from '@/components/Cart/CartItem';
 import CostCalculations from '@/components/Cart/CostCalculations';
 import Button from '@/components/commons/Button';
+import { useCartStore } from '@/stores/cart.store';
+import {
+   createOrder,
+   createPayment,
+   updateOrderStatus,
+   updatePaymentStatus,
+} from '@/utils/api/csr-services';
+import {
+   createOrderIdFromRazorPay,
+   verifyPayments,
+} from '@/utils/api/services';
+
 import {
    changeQuantityOfReport,
    getCart,
    removeItemFromCart,
 } from '@/utils/cart-utils.util';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import Script from 'next/script';
 import { useEffect, useState } from 'react';
 
 const sampleCartItems = [
@@ -34,6 +48,7 @@ const sampleCartItems = [
 const Cart = () => {
    const [cartData, setCartData] = useState([]);
    const [totalCost, setTotalCost] = useState(0);
+   const router = useRouter();
    const updateTotalCost = (cart) => {
       setTotalCost(
          cart.reduce((acc, item) => {
@@ -68,8 +83,89 @@ const Cart = () => {
       updateTotalCost(updatedCart);
       removeItemFromCart(reportId);
    };
+
+   const processPayment = async (e: any) => {
+      e.preventDefault();
+      try {
+         const orderId: string = await createOrderIdFromRazorPay(totalCost);
+         const createdOrder = await createOrder({
+            reports: cartData?.map((item) => item?.report?.id),
+            orderId,
+            taxAmount: {
+               currency: 'INR',
+               amount: 0,
+            },
+            totalAmount: {
+               currency: 'INR',
+               amount: totalCost,
+            },
+         });
+         let strapiOrderId = createdOrder?.data?.id;
+         console.log(createdOrder);
+         const options = {
+            key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
+            amount: totalCost * 100,
+            currency: 'INR',
+            name: 'Univdatos',
+            description: 'Please complete the payment to purchase the product',
+            order_id: orderId,
+            handler: async function (response: any) {
+               const data = {
+                  orderCreationId: orderId,
+                  razorpayPaymentId: response.razorpay_payment_id,
+                  razorpayOrderId: response.razorpay_order_id,
+                  razorpaySignature: response.razorpay_signature,
+               };
+               //call create payment on strapi
+               let createdPayment = await createPayment({
+                  paymentId: response.razorpay_payment_id,
+                  order: strapiOrderId,
+                  amount: {
+                     currency: 'INR',
+                     amount: totalCost,
+                  },
+               });
+               let strapiPaymentId = createdPayment?.data?.id;
+               const result = await verifyPayments(data);
+               const res = await result?.json();
+               if (res.isOk) {
+                  alert('payment succeed');
+                  //call update order and payment status to completed
+                  await updatePaymentStatus(strapiPaymentId, 'SUCCESS');
+                  await updateOrderStatus(strapiOrderId, 'SUCCESS');
+                  //redirect to success page
+                  router.replace('/payment-success');
+               } else {
+                  alert(res.message);
+                  await updatePaymentStatus(strapiPaymentId, 'CANCEL');
+                  await updateOrderStatus(strapiOrderId, 'FAILED');
+               }
+            },
+            prefill: {
+               name: 'User',
+               email: 'email',
+            },
+            theme: {
+               color: '#3399cc',
+            },
+         };
+         const paymentObject = new window.Razorpay(options);
+         paymentObject.on('payment.failed', async function (response: any) {
+            alert(response.error.description);
+            console.log(response);
+            await updateOrderStatus(strapiOrderId, 'FAILED');
+         });
+         paymentObject.open();
+      } catch (error) {
+         console.log(error);
+      }
+   };
    return (
       <div className='container pt-40'>
+         <Script
+            id='razorpay-checkout-js'
+            src='https://checkout.razorpay.com/v1/checkout.js'
+         />
          <div className='mt-5 w-full space-y-4 rounded-xl bg-white p-6 md:space-y-6'>
             <div className='flex flex-wrap items-center justify-between gap-4 pb-4'>
                <div className='flex w-full items-center justify-between sm:w-max'>
@@ -143,9 +239,9 @@ const Cart = () => {
                <CostCalculations cost={totalCost} city='Mumbai' />
             </div>
             <div className='w-full text-right'>
-               <Link href='/checkout'>
-                  <Button variant='secondary'>Proceed to Checkout</Button>
-               </Link>
+               <Button variant='secondary' onClick={processPayment}>
+                  Proceed to Checkout
+               </Button>
             </div>
          </div>
       </div>
