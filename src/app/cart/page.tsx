@@ -3,6 +3,7 @@ import CartItem from '@/components/Cart/CartItem';
 import CostCalculations from '@/components/Cart/CostCalculations';
 import Button from '@/components/commons/Button';
 import { useCartStore } from '@/stores/cart.store';
+import { useSelectedLicenseStore } from '@/stores/selectedLicense.store';
 import {
    createOrder,
    createPayment,
@@ -18,6 +19,7 @@ import {
    changeQuantityOfReport,
    getCart,
    removeItemFromCart,
+   resetCart,
 } from '@/utils/cart-utils.util';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -49,6 +51,8 @@ const Cart = () => {
    const [cartData, setCartData] = useState([]);
    const [totalCost, setTotalCost] = useState(0);
    const router = useRouter();
+   const cartStore = useCartStore();
+   const licenseStore = useSelectedLicenseStore();
    const updateTotalCost = (cart) => {
       setTotalCost(
          cart.reduce((acc, item) => {
@@ -134,11 +138,15 @@ const Cart = () => {
                   await updatePaymentStatus(strapiPaymentId, 'SUCCESS');
                   await updateOrderStatus(strapiOrderId, 'SUCCESS');
                   //redirect to success page
+                  cartStore.resetCart();
+                  resetCart();
+                  licenseStore.resetLicenses();
                   router.replace('/payment-success');
                } else {
                   alert(res.message);
                   await updatePaymentStatus(strapiPaymentId, 'CANCEL');
                   await updateOrderStatus(strapiOrderId, 'FAILED');
+                  // router.replace('/payment-failure');
                }
             },
             prefill: {
@@ -154,6 +162,7 @@ const Cart = () => {
             alert(response.error.description);
             console.log(response);
             await updateOrderStatus(strapiOrderId, 'FAILED');
+            // router.replace('/payment-failure');
          });
          paymentObject.open();
       } catch (error) {

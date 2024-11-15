@@ -3,6 +3,7 @@ import { create } from 'zustand';
 export const useSelectedLicenseStore = create<{
    selectedLicenses: {};
    selectLicense: (reportId, license) => void;
+   resetLicenses: () => void;
 }>((set) => ({
    selectedLicenses: {},
    selectLicense: (reportId, license) =>
@@ -12,4 +13,5 @@ export const useSelectedLicenseStore = create<{
             [reportId]: license,
          },
       })),
+   resetLicenses: () => set({ selectedLicenses: {} }),
 }));

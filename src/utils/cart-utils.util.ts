@@ -92,3 +92,7 @@ export const changeQuantityOfReport = (reportId: number, quantity: number) => {
       localStorage.setItem('cart', JSON.stringify(cart));
    }
 };
+
+export const resetCart = () => {
+   localStorage.removeItem('cart');
+};
