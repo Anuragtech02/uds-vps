@@ -1,4 +1,5 @@
 'use client';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { BiChevronDown, BiChevronUp } from 'react-icons/bi';
 
@@ -11,8 +12,22 @@ interface industryItem {
    slug: string;
 }
 
-const BlogFilters = ({ industries }: { industries: industryItem[] }) => {
+const BlogFilters = ({
+   industries,
+   filters,
+}: {
+   industries: industryItem[];
+}) => {
+   const router = useRouter();
+
    const [expanded, setExpanded] = useState(false);
+   const handleToggleFilter = (industrySlug: string) => {
+      const newFilters = filters.includes(industrySlug)
+         ? filters.filter((slug) => slug !== industrySlug)
+         : [...filters, industrySlug];
+
+      router.push(`/blogs?filter=${newFilters.join(',')}&page=1`);
+   };
    return (
       <div className='relative w-full flex-[0.3] rounded-xl bg-white p-4 md:px-6 lg:sticky lg:top-48 lg:w-max lg:p-6'>
          <h2 className='hidden text-[1.625rem] font-medium lg:block'>
@@ -27,18 +42,29 @@ const BlogFilters = ({ industries }: { industries: industryItem[] }) => {
          <div
             className={`${expanded ? 'absolute left-0 z-10 mt-4 h-max overflow-auto rounded-b-xl bg-white px-4 pb-4 shadow-md' : 'mt-0 h-0 overflow-hidden md:mt-4 lg:h-max lg:overflow-auto'} w-full space-y-4`}
          >
-            {industries.map((industry) => (
-               <div className='flex items-center gap-4' key={industry?.id}>
-                  <input type='checkbox' id={industry?.name} />
-                  <label
-                     key={industry?.id}
-                     htmlFor={industry?.name}
-                     className='block cursor-pointer'
-                  >
-                     {industry?.name}
-                  </label>
-               </div>
-            ))}
+            {industries?.length > 0 ? (
+               industries.map((industry) => (
+                  <div className='flex items-center gap-4' key={industry?.id}>
+                     <input
+                        type='checkbox'
+                        id={industry?.name}
+                        checked={filters?.includes(industry?.slug)}
+                        onChange={() => handleToggleFilter(industry?.slug)}
+                     />
+                     <label
+                        key={industry?.id}
+                        htmlFor={industry?.name}
+                        className='block cursor-pointer'
+                     >
+                        {industry?.name}
+                     </label>
+                  </div>
+               ))
+            ) : (
+               <p className='text-md p-4 font-bold text-gray-600'>
+                  No Filters found
+               </p>
+            )}
          </div>
       </div>
    );
