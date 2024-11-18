@@ -34,8 +34,13 @@ const LoginForm = () => {
          });
          router.push('/');
       } catch (error: any) {
-         console.log(error);
-         setError('* ' + error?.response?.data?.error?.message);
+         console.log(error?.message?.indexOf('400'));
+         setError(
+            '* ' +
+               (error?.message?.indexOf('400') !== -1
+                  ? 'Invalid username or password'
+                  : 'Something went wrong'),
+         );
       }
       setLoading(false);
    };

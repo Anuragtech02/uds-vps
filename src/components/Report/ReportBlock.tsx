@@ -128,7 +128,7 @@ const ReportBlock: React.FC<{ data: any }> = ({ data }) => {
          return alert('Please select a license');
       }
       addToCart({ id: data?.id, ...data?.attributes }, selectedLicense);
-      router.push(reportData.leftSectionPrimaryCTAButton.link);
+      router.push('/cart');
    };
    return (
       <div className='container py-10 md:py-16 md:pt-10'>
