@@ -9,7 +9,7 @@ export default function PaymentFailure() {
                <IoMdCloseCircle className='mb-4 text-6xl text-red-500' />
                <h1 className='mb-4 text-3xl font-bold'>Payment Failed</h1>
                <p className='mb-8 text-gray-600'>
-                  Sorry, we couldn't process your payment. Please try again
+                  Sorry, we couldn&apos;t process your payment. Please try again
                   later.
                </p>
                <Link href='/'>

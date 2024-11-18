@@ -114,7 +114,7 @@ const ENDPOINTS = {
 };
 
 // Create a new order
-export const createOrder = async (orderData) => {
+export const createOrder = async (orderData: any) => {
    try {
       const response = await fetchClientCSR(ENDPOINTS.orders, {
          method: 'POST',
@@ -137,7 +137,7 @@ export const createOrder = async (orderData) => {
 };
 
 // Update order status
-export const updateOrderStatus = async (orderId, status) => {
+export const updateOrderStatus = async (orderId: number, status: string) => {
    try {
       const response = await fetchClientCSR(`${ENDPOINTS.orders}/${orderId}`, {
          method: 'PUT',
@@ -159,7 +159,7 @@ export const updateOrderStatus = async (orderId, status) => {
 };
 
 // Get order by ID
-export const getOrder = async (orderId) => {
+export const getOrder = async (orderId: number) => {
    try {
       const response = await fetchClientCSR(
          `${ENDPOINTS.orders}/${orderId}?populate=*`,
@@ -178,7 +178,7 @@ export const getOrder = async (orderId) => {
 };
 
 // Create payment for order
-export const createPayment = async (paymentData) => {
+export const createPayment = async (paymentData: any) => {
    try {
       const response = await fetchClientCSR(ENDPOINTS.payments, {
          method: 'POST',
@@ -202,7 +202,10 @@ export const createPayment = async (paymentData) => {
 };
 
 // Update payment status
-export const updatePaymentStatus = async (paymentId, status) => {
+export const updatePaymentStatus = async (
+   paymentId: number,
+   status: string,
+) => {
    try {
       const response = await fetchClientCSR(
          `${ENDPOINTS.payments}/${paymentId}`,

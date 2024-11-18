@@ -29,7 +29,11 @@ interface industryItem {
    slug: string;
 }
 const ITEMS_PER_PAGE = 1;
-const News = async ({ searchParams }) => {
+const News = async ({
+   searchParams,
+}: {
+   searchParams: { filter?: string; page?: string };
+}) => {
    let newsListData: Awaited<ReturnType<typeof getNewsListingPage>>;
    let industriesData: Awaited<ReturnType<typeof getIndustries>>;
    const filters = searchParams.filter?.split(',').filter(Boolean) || [];

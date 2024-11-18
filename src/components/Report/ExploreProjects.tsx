@@ -84,7 +84,7 @@ const sampleData = [
    },
 ];
 
-const ExploreProjects = ({ reports }) => {
+const ExploreProjects = ({ reports }: { reports: any[] }) => {
    const settings = {
       dots: false,
       infinite: false,

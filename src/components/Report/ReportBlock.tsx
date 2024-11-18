@@ -1,4 +1,5 @@
 'use client';
+
 import { useEffect, useState } from 'react';
 import Button from '../commons/Button';
 import ReportBlockData from './ReportBlockData';
@@ -13,11 +14,94 @@ import { useSelectedLicenseStore } from '@/stores/selectedLicense.store';
 import {
    addToCart,
    getLicenseOfReport,
+   License,
    setLicenseOfReport,
 } from '@/utils/cart-utils.util';
-import { get } from 'http';
 import { useRouter } from 'next/navigation';
-// import fetchClientMedusa from '@/utils/api/config-medusa';
+
+// Define type for report variants
+export interface Variant {
+   title: string;
+   description: string;
+   price: {
+      amount: number;
+      currency: string;
+   };
+}
+
+// Define type for report data
+interface ReportData {
+   id: number;
+   title: string;
+   aboutReport: string;
+   tableOfContent: string;
+   description: string;
+   faqSectionHeading: string;
+   industry: {
+      name: string;
+      slug: string;
+   };
+   faqList: any; // Replace `any` with a specific type if available
+   relatedReportsSectionHeading: string;
+   relatedReportsSectionReportsCount: number;
+   relatedReportsSectionSubheading: string;
+   clientsSectionHeading: string;
+   ctaBanner: any; // Replace `any` with a specific type if available
+   leftSectionPrimaryCTAButton: {
+      title: string;
+      link: string;
+   };
+   leftSectionSecondaryCTAButton: {
+      title: string;
+      link: string;
+   };
+   rightSectionHeading: string;
+}
+
+// Component props
+interface ReportBlockProps {
+   data: {
+      id: number;
+      attributes: {
+         title: string;
+         aboutReport: string;
+         tableOfContent: string;
+         description: string;
+         faqSectionHeading: string;
+         industry: {
+            data: {
+               attributes: {
+                  name: string;
+                  slug: string;
+               };
+            };
+         };
+         faqList: any;
+         relatedReportsSectionHeading: string;
+         relatedReportsSectionReportsCount: number;
+         relatedReportsSectionSubheading: string;
+         clientsSectionHeading: string;
+         ctaBanner: any;
+         leftSectionPrimaryCTAButton: {
+            title: string;
+            link: string;
+         };
+         leftSectionSecondaryCTAButton: {
+            title: string;
+            link: string;
+         };
+         rightSectionHeading: string;
+         variants: {
+            title: string;
+            description: string;
+            price: {
+               amount: number;
+               currency: string;
+            };
+         }[];
+      };
+   };
+}
 
 const reportIndex = [
    { title: 'About this report', id: 'about-report' },
@@ -26,8 +110,8 @@ const reportIndex = [
    { title: 'Research Methodology', id: 'research-methodology' },
 ];
 
-const ReportBlock: React.FC<{ data: any }> = ({ data }) => {
-   const reportData = {
+const ReportBlock: React.FC<ReportBlockProps> = ({ data }) => {
+   const reportData: ReportData = {
       id: data.id,
       title: data.attributes.title,
       aboutReport: data.attributes.aboutReport,
@@ -52,7 +136,8 @@ const ReportBlock: React.FC<{ data: any }> = ({ data }) => {
          data.attributes.leftSectionSecondaryCTAButton,
       rightSectionHeading: data.attributes.rightSectionHeading,
    };
-   const variants = data.attributes.variants.map((variant: any) => ({
+
+   const variants: Variant[] = data.attributes.variants.map((variant) => ({
       title: variant.title,
       description: variant.description,
       price: {
@@ -61,54 +146,36 @@ const ReportBlock: React.FC<{ data: any }> = ({ data }) => {
       },
    }));
 
-   const [selectedIndex, setSelectedIndex] = useState(0);
-   const [selectedLicense, setSelectedLicense] = useState<number | null>();
-   const [medusaReport, setMedusaReport] = useState({});
+   const [selectedIndex, setSelectedIndex] = useState<number>(0);
+   const [selectedLicense, setSelectedLicense] = useState<number | null>(null);
    const selectedLicenses = useSelectedLicenseStore();
    const router = useRouter();
+
    useEffect(() => {
-      console.log('selectedLicense', selectedLicense);
-      if (isNaN(selectedLicense) && selectedLicense == undefined) return;
-      selectedLicenses.selectLicense(
-         reportData.id,
-         variants?.[selectedLicense] ?? null,
-      );
-      setLicenseOfReport(reportData.id, variants?.[selectedLicense] ?? null);
-      console.log(
-         variants[selectedLicense],
-         reportData.id,
-         selectedLicenses.selectedLicenses,
-      );
+      if (selectedLicense === null || isNaN(selectedLicense)) return;
+
+      const license = variants[selectedLicense] ?? null;
+      selectedLicenses.selectLicense(reportData.id, license);
+      setLicenseOfReport(reportData.id, license);
    }, [selectedLicense]);
 
    useEffect(() => {
-      //If report in cart showing the selected license
-      const alreadySelectedLicense = getLicenseOfReport(reportData?.id);
+      const alreadySelectedLicense = getLicenseOfReport(reportData.id);
+
       if (alreadySelectedLicense) {
          setSelectedLicense(
-            variants?.findIndex((variant) => {
-               return variant?.title === alreadySelectedLicense?.title;
-            }),
+            variants.findIndex(
+               (variant) => variant.title === alreadySelectedLicense.title,
+            ),
          );
          selectedLicenses.selectLicense(
             reportData.id,
-            getLicenseOfReport(reportData.id),
-         );
-      }
-      if (selectedLicenses?.selectedLicenses?.[reportData.id]) {
-         setSelectedLicense(
-            variants?.findIndex((variant) => {
-               return (
-                  variant?.title ===
-                  selectedLicenses?.selectedLicenses[reportData.id]?.title
-               );
-            }),
+            getLicenseOfReport(reportData.id) as License,
          );
       }
    }, []);
 
-   function scrollIntoView(id: string) {
-      // add 200px of top padding
+   const scrollIntoView = (id: string) => {
       const element = document.getElementById(id);
       if (element) {
          element.scrollIntoView({
@@ -117,19 +184,20 @@ const ReportBlock: React.FC<{ data: any }> = ({ data }) => {
             inline: 'nearest',
          });
       }
-   }
+   };
+
    const handleBuyNow = () => {
-      console.log('clicked', data);
-      console.log(selectedLicenses.selectedLicenses);
-      let selectedLicense =
-         !isNaN(data?.id) &&
-         selectedLicenses.selectedLicenses?.[parseInt(data?.id)];
+      // @ts-ignore
+      const selectedLicense = selectedLicenses.selectedLicenses[reportData.id];
       if (!selectedLicense) {
          return alert('Please select a license');
       }
-      addToCart({ id: data?.id, ...data?.attributes }, selectedLicense);
+
+      // @ts-ignore
+      addToCart({ id: data.id, ...data.attributes }, selectedLicense);
       router.push('/cart');
    };
+
    return (
       <div className='container py-10 md:py-16 md:pt-10'>
          <div className='flex items-center gap-2 pb-10 md:text-lg'>
@@ -145,12 +213,7 @@ const ReportBlock: React.FC<{ data: any }> = ({ data }) => {
             <span>
                <BiChevronRight />
             </span>
-
-            <p>{reportData?.industry?.name}</p>
-            <span>
-               <BiChevronRight />
-            </span>
-            <p></p>
+            <p>{reportData.industry.name}</p>
          </div>
          <div className='flex flex-col items-start gap-4 lg:flex-row'>
             <div className='sticky top-[100px] hidden flex-[0.23] flex-col gap-6 lg:flex'>
@@ -159,7 +222,11 @@ const ReportBlock: React.FC<{ data: any }> = ({ data }) => {
                      {reportIndex.map((item, index) => (
                         <li
                            key={index}
-                           className={`cursor-pointer px-4 py-2 transition-all duration-150 ${selectedIndex === index && 'border-y border-s-300 bg-blue-2 font-semibold text-white'} `}
+                           className={`cursor-pointer px-4 py-2 transition-all duration-150 ${
+                              selectedIndex === index
+                                 ? 'border-y border-s-300 bg-blue-2 font-semibold text-white'
+                                 : ''
+                           }`}
                            onClick={() => {
                               setSelectedIndex(index);
                               scrollIntoView(item.id);
@@ -171,7 +238,7 @@ const ReportBlock: React.FC<{ data: any }> = ({ data }) => {
                   </ul>
                </div>
                <div className='w-full rounded-md border border-s-400 bg-white px-4 py-6 pt-4'>
-                  <p className='capitalise text-center text-lg font-semibold'>
+                  <p className='text-center text-lg font-semibold'>
                      {reportData.rightSectionHeading}
                   </p>
                   <CollapsibleLicenseOptions
@@ -180,12 +247,10 @@ const ReportBlock: React.FC<{ data: any }> = ({ data }) => {
                      setSelectedLicense={setSelectedLicense}
                   />
                </div>
-
                <div className='relative mt-3'>
-                  <div className='width-[max-content] absolute -top-4 left-0 rounded-md bg-red-500 px-2 py-1 text-xs font-medium text-white'>
+                  <div className='absolute -top-4 left-0 rounded-md bg-red-500 px-2 py-1 text-xs font-medium text-white'>
                      Upto 20% off
                   </div>
-
                   <Button
                      className='w-full py-3'
                      variant='secondary'
@@ -210,14 +275,14 @@ const ReportBlock: React.FC<{ data: any }> = ({ data }) => {
          </div>
          <Popup name='report-enquiry' title='Report Enquiry'>
             <ReportEnquiryForm
-               reportTitle={reportData?.title}
-               reportId={reportData?.id}
+               reportTitle={reportData.title}
+               reportId={reportData.id}
             />
          </Popup>
          <Popup name='sample-report' title='Get Sample Report'>
             <SampleReportDownloadForm
-               reportTitle={reportData?.title}
-               reportId={reportData?.id}
+               reportTitle={reportData.title}
+               reportId={reportData.id}
             />
          </Popup>
       </div>

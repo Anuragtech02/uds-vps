@@ -16,6 +16,7 @@ const NewsFilters = ({
    filters,
 }: {
    industries: industryItem[];
+   filters: string[];
 }) => {
    const router = useRouter();
 

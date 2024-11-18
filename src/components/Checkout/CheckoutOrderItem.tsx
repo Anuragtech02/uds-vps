@@ -4,10 +4,14 @@ import { FaCircleMinus, FaCirclePlus } from 'react-icons/fa6';
 import { IoCloseCircle } from 'react-icons/io5';
 
 interface CheckoutOrderItemProps {
-   name: string;
-   price: number;
+   // name: string;
+   // price: number;
    img?: string;
    quantity: number;
+   selectedLicense: any;
+   report: any;
+   handleRemoveItem: (id: number) => void;
+   handleChangeQuantity: (id: number, quantity: number) => void;
 }
 
 const CheckoutOrderItem: FC<CheckoutOrderItemProps> = ({

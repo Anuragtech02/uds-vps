@@ -16,6 +16,7 @@ import {
 } from '@/utils/api/services';
 
 import {
+   ICartItem,
    changeQuantityOfReport,
    getCart,
    removeItemFromCart,
@@ -48,12 +49,12 @@ const sampleCartItems = [
 ];
 
 const Cart = () => {
-   const [cartData, setCartData] = useState([]);
+   const [cartData, setCartData] = useState<ICartItem[]>([]);
    const [totalCost, setTotalCost] = useState(0);
    const router = useRouter();
    const cartStore = useCartStore();
    const licenseStore = useSelectedLicenseStore();
-   const updateTotalCost = (cart) => {
+   const updateTotalCost = (cart: any[]) => {
       setTotalCost(
          cart.reduce((acc, item) => {
             console.log(item?.selectedLicense?.price?.amount);
@@ -72,7 +73,7 @@ const Cart = () => {
       console.log(cart);
    }, []);
    const handleChangeQuantity = (reportId: number, quantity: number) => {
-      const updatedCart = cartData.map((item) =>
+      const updatedCart: any = cartData.map((item: any) =>
          item?.report?.id === reportId ? { ...item, quantity } : item,
       );
       setCartData(updatedCart);
@@ -81,7 +82,7 @@ const Cart = () => {
    };
    const handleRemoveItem = (reportId: number) => {
       const updatedCart = cartData?.filter(
-         (item) => item?.report?.id !== reportId,
+         (item: any) => item?.report?.id !== reportId,
       );
       setCartData(updatedCart);
       updateTotalCost(updatedCart);
@@ -93,7 +94,7 @@ const Cart = () => {
       try {
          const orderId: string = await createOrderIdFromRazorPay(totalCost);
          const createdOrder = await createOrder({
-            reports: cartData?.map((item) => item?.report?.id),
+            reports: cartData?.map((item: any) => item?.report?.id),
             orderId,
             taxAmount: {
                currency: 'INR',
@@ -157,6 +158,7 @@ const Cart = () => {
                color: '#3399cc',
             },
          };
+         // @ts-expect-error ts-migrate(2339) FIXME: Property 'Razorpay' does not exist on type 'Window'.
          const paymentObject = new window.Razorpay(options);
          paymentObject.on('payment.failed', async function (response: any) {
             alert(response.error.description);
@@ -185,6 +187,7 @@ const Cart = () => {
                      name=''
                      id=''
                      className='rounded-full bg-s-200 px-2 py-1 text-sm font-bold sm:hidden'
+                     title='Currency Selector'
                   >
                      <option value=''>USD $</option>
                      <option value=''>INR ₹</option>
@@ -210,6 +213,7 @@ const Cart = () => {
                      name=''
                      id=''
                      className='hidden rounded-full bg-s-200 px-4 text-lg font-bold sm:block'
+                     title='Currency Selector'
                   >
                      <option value=''>USD $</option>
                      <option value=''>INR ₹</option>
@@ -235,7 +239,7 @@ const Cart = () => {
                      </div>
                   </div>
                </div>
-               {cartData.map((item) => (
+               {cartData.map((item: any) => (
                   <CartItem
                      key={item.id}
                      {...item}
@@ -248,7 +252,10 @@ const Cart = () => {
                <CostCalculations cost={totalCost} city='Mumbai' />
             </div>
             <div className='w-full text-right'>
-               <Button variant='secondary' onClick={processPayment}>
+               <Button
+                  variant='secondary'
+                  onClick={() => processPayment(event)}
+               >
                   Proceed to Checkout
                </Button>
             </div>

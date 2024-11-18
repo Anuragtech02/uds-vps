@@ -35,7 +35,14 @@ const ITEMS_PER_PAGE = 1;
  *
  * @returns {JSX.Element} A JSX component with the blog list and industries.
  */
-const Blog = async ({ searchParams }): Promise<JSX.Element> => {
+const Blog = async ({
+   searchParams,
+}: {
+   searchParams: {
+      filter?: string;
+      page?: string;
+   };
+}): Promise<JSX.Element> => {
    const filters = searchParams.filter?.split(',').filter(Boolean) || [];
    const currentPage = parseInt(searchParams.page || '1', 10);
    const filtersQuery = filters.reduce(

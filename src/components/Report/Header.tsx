@@ -43,7 +43,8 @@ const Header: React.FC<{ data: any }> = ({ data }) => {
    const headerRef2 = useRef<HTMLDivElement>(null);
    const [showSecondHeader, setShowSecondHeader] = useState(false);
    const router = useRouter();
-   const selectedLicenses = useSelectedLicenseStore();
+   const selectedLicenses: { selectedLicenses: { [key: number]: any } } =
+      useSelectedLicenseStore();
 
    useEffect(() => {
       if (data?.attributes) cacheRecentReports(data?.attributes);

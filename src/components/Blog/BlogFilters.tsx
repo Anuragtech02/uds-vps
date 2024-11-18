@@ -17,6 +17,7 @@ const BlogFilters = ({
    filters,
 }: {
    industries: industryItem[];
+   filters: string[];
 }) => {
    const router = useRouter();
 

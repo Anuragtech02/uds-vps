@@ -8,6 +8,10 @@ interface CartItemProps {
    price: number;
    img?: string;
    quantity: number;
+   selectedLicense: any;
+   report: any;
+   handleRemoveItem: (id: number) => void;
+   handleChangeQuantity: (id: number, quantity: number) => void;
 }
 
 const CartItem: FC<CartItemProps> = ({
