@@ -39,13 +39,13 @@ const ResearchCard: FC<ResearchCardProps> = ({
                </div>
             )}
             <p
-               className={`my-2 line-clamp-3 overflow-hidden font-bold ${type === 'latest' ? 'text-base' : 'text-xl'}`}
+               className={`my-2 line-clamp-2 overflow-hidden font-bold ${type === 'latest' ? 'text-base' : 'text-xl'}`}
             >
                {title}
             </p>
             {type === 'upcoming' && (
                <div className='flex flex-col gap-2 text-sm'>
-                  <p className='text-s-500'>{description}</p>
+                  <p className='line-clamp-2 text-s-500'>{description}</p>
                   <p
                      suppressHydrationWarning
                      className='flex items-center gap-2 font-semibold text-s-700'

@@ -1,5 +1,6 @@
 import BlogFilters from '@/components/Blog/BlogFilters';
 import BlogItem from '@/components/Blog/BlogItem';
+import Pagination from '@/components/ReportStore/Pagination';
 import { getBlogsListingPage, getIndustries } from '@/utils/api/services';
 import Link from 'next/link';
 interface blogsItem {
@@ -27,86 +28,107 @@ interface industryItem {
    slug: string;
 }
 
+const ITEMS_PER_PAGE = 1;
+
 /**
  * Fetches the blog listing page and industries, maps them to the required types, and returns a JSX component.
  *
  * @returns {JSX.Element} A JSX component with the blog list and industries.
  */
-const Blog = async (): Promise<JSX.Element> => {
+const Blog = async ({ searchParams }): Promise<JSX.Element> => {
+   const filters = searchParams.filter?.split(',').filter(Boolean) || [];
+   const currentPage = parseInt(searchParams.page || '1', 10);
+   const filtersQuery = filters.reduce(
+      (acc, filter) => {
+         acc[`industriesSlug_${filter}`] = filter;
+         return acc;
+      },
+      {} as Record<string, string>,
+   );
    let blogListData: Awaited<ReturnType<typeof getBlogsListingPage>>;
    let industriesData: Awaited<ReturnType<typeof getIndustries>>;
 
    try {
       [blogListData, industriesData] = await Promise.all([
-         getBlogsListingPage(),
+         getBlogsListingPage(currentPage, ITEMS_PER_PAGE, filtersQuery),
          getIndustries(),
       ]);
    } catch (error) {
       console.error('Error fetching blogs or industries:', error);
    }
+   const totalItems = blogListData?.meta?.pagination?.total || 0;
+   const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
 
-   const blogList = blogListData?.data?.map(
-      (
-         blog: { attributes: blogsItem; id: number },
-         idx: number,
-      ): blogsItem => ({
-         id: blog?.id ?? idx,
-         title: blog?.attributes?.title ?? '',
-         shortDescription: blog?.attributes?.shortDescription ?? '',
-         thumbnailImage:
-            // @ts-expect-error ts-migrate(2531) FIXME: Object is possibly 'null'.
-            blog?.attributes?.thumbnailImage?.data?.attributes ?? '',
-         description: blog?.attributes?.description ?? '',
-         createdAt: blog?.attributes?.createdAt ?? '',
-         publishedAt: blog?.attributes?.publishedAt ?? '',
-         locale: blog?.attributes?.locale ?? '',
-         slug: blog?.attributes?.slug ?? '',
-      }),
-   );
+   const blogList =
+      blogListData?.data?.map(
+         (
+            blog: { attributes: blogsItem; id: number },
+            idx: number,
+         ): blogsItem => ({
+            id: blog?.id ?? idx,
+            title: blog?.attributes?.title ?? '',
+            shortDescription: blog?.attributes?.shortDescription ?? '',
+            thumbnailImage:
+               // @ts-expect-error ts-migrate(2531) FIXME: Object is possibly 'null'.
+               blog?.attributes?.thumbnailImage?.data?.attributes ?? '',
+            description: blog?.attributes?.description ?? '',
+            createdAt: blog?.attributes?.createdAt ?? '',
+            publishedAt: blog?.attributes?.publishedAt ?? '',
+            locale: blog?.attributes?.locale ?? '',
+            slug: blog?.attributes?.slug ?? '',
+         }),
+      ) ?? [];
 
-   const industries = industriesData?.data?.map(
-      (
-         industry: { attributes: industryItem; id: number },
-         idx: number,
-      ): industryItem => ({
-         id: industry?.id ?? idx,
-         name: industry?.attributes?.name ?? '',
-         createdAt: industry?.attributes?.createdAt ?? '',
-         publishedAt: industry?.attributes?.publishedAt ?? '',
-         slug: industry?.attributes?.slug ?? '',
-      }),
-   );
-
-   if (!blogList || !industries) {
-      console.error(
-         'Error fetching blogs or industries: Data is null or undefined',
-      );
-      return <div>Error fetching data</div>;
-   }
+   const industries =
+      industriesData?.data?.map(
+         (
+            industry: { attributes: industryItem; id: number },
+            idx: number,
+         ): industryItem => ({
+            id: industry?.id ?? idx,
+            name: industry?.attributes?.name ?? '',
+            createdAt: industry?.attributes?.createdAt ?? '',
+            publishedAt: industry?.attributes?.publishedAt ?? '',
+            slug: industry?.attributes?.slug ?? '',
+         }),
+      ) ?? [];
 
    return (
       <div className='container pt-40'>
          <h1 className='mt-5 text-center font-bold'>Blogs</h1>
          <div className='my-10 flex flex-col items-start gap-6 lg:flex-row'>
-            <BlogFilters industries={industries} />
+            <BlogFilters industries={industries} filters={filters} />
             <div className='flex flex-[0.7] flex-col gap-4 md:gap-6'>
-               {blogList!.map((blog: blogsItem, i: number) => (
-                  <Link href={`/blogs/${blog?.slug}`} key={i}>
-                     <BlogItem
-                        key={i}
-                        title={blog?.title}
-                        thumbnailImage={blog?.thumbnailImage}
-                        shortDescription={blog?.shortDescription}
-                        date={new Intl.DateTimeFormat('en-GB', {
-                           day: '2-digit',
-                           month: 'long',
-                           year: 'numeric',
-                        }).format(new Date(blog?.publishedAt))}
-                     />
-                  </Link>
-               ))}
+               {blogList?.length > 0 ? (
+                  blogList!.map((blog: blogsItem, i: number) => (
+                     <Link href={`/blogs/${blog?.slug}`} key={i}>
+                        <BlogItem
+                           key={i}
+                           title={blog?.title}
+                           thumbnailImage={blog?.thumbnailImage}
+                           shortDescription={blog?.shortDescription}
+                           date={new Intl.DateTimeFormat('en-GB', {
+                              day: '2-digit',
+                              month: 'long',
+                              year: 'numeric',
+                           }).format(new Date(blog?.publishedAt))}
+                        />
+                     </Link>
+                  ))
+               ) : (
+                  <p className='rounded bg-gray-100 p-4 text-2xl font-bold text-gray-600'>
+                     No Blogs found
+                  </p>
+               )}
             </div>
          </div>
+         {totalPages > 1 && (
+            <Pagination
+               filters={filters}
+               currentPage={currentPage}
+               totalPages={totalPages}
+            />
+         )}
       </div>
    );
 };

@@ -17,6 +17,28 @@ const ReportBlockData: React.FC<{ data: any }> = ({ data }) => {
             className='report-content'
          ></div>
 
+         <div
+            id='report-data'
+            className='report-content'
+            dangerouslySetInnerHTML={{
+               __html: data.description,
+            }}
+         ></div>
+         <div>
+            <div>
+               <h2 className={styles.title}>Table of Contents</h2>
+            </div>
+            <ol id='table-of-content'>
+               {data.tableOfContent.map((section: any, index: number) => (
+                  <TableOfContentItem
+                     {...section}
+                     number={index + 1}
+                     key={index}
+                  />
+               ))}
+            </ol>
+         </div>
+
          {/* <div className='space-y-4'>
             <div>
                <h2 className={styles.title}>Expert Analysis</h2>
@@ -67,36 +89,6 @@ const ReportBlockData: React.FC<{ data: any }> = ({ data }) => {
                </ul>
             </div>
          </div> */}
-
-         <div
-            id='report-data'
-            className='report-content'
-            dangerouslySetInnerHTML={{
-               __html: data.description,
-            }}
-         ></div>
-         <div>
-            <div>
-               <h2 className={styles.title}>Table of Contents</h2>
-            </div>
-            <ol id='table-of-content'>
-               {data.tableOfContent.map((section: any, index: number) => (
-                  <TableOfContentItem
-                     {...section}
-                     number={index + 1}
-                     key={index}
-                  />
-               ))}
-            </ol>
-         </div>
-
-         <div
-            id='report-methodology'
-            className='report-content'
-            dangerouslySetInnerHTML={{
-               __html: data.reportMethodology,
-            }}
-         ></div>
       </div>
    );
 };

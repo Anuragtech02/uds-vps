@@ -24,6 +24,8 @@ const getFilterQuery = (
       .map(([key, value]) => {
          if (key.startsWith('industrySlug')) {
             return `filters[industry][slug][$eq]=${encodeURIComponent(String(value))}`;
+         } else if (key.startsWith('industriesSlug')) {
+            return `filters[industries][slug][$in]=${encodeURIComponent(String(value))}`;
          }
          return `filters[${key}]=${encodeURIComponent(String(value))}`;
       })
@@ -348,5 +350,39 @@ export const getServiceBySlug = async (slug: string) => {
    } catch (error) {
       console.error('Error fetching main menu:', error);
       throw error;
+   }
+};
+export const createOrderIdFromRazorPay = async (amount: number) => {
+   try {
+      const response = await fetch('/api/payments/order', {
+         method: 'POST',
+         headers: {
+            'Content-Type': 'application/json',
+         },
+         body: JSON.stringify({
+            amount: amount * 100,
+         }),
+      });
+
+      if (!response.ok) {
+         throw new Error('Network response was not ok');
+      }
+
+      const data = await response.json();
+      return data.orderId;
+   } catch (error) {
+      console.error('There was a problem while creating order:', error);
+   }
+};
+export const verifyPayments = async (body: any) => {
+   try {
+      const response = await fetch('/api/payments/verify', {
+         method: 'POST',
+         body: JSON.stringify(body),
+         headers: { 'Content-Type': 'application/json' },
+      });
+      return response;
+   } catch (error) {
+      console.error('There was a problem while verifying payments:', error);
    }
 };

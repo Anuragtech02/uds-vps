@@ -9,12 +9,21 @@ import Popup from '../Popup';
 import ReportEnquiryForm from './ReportEnquiryForm';
 import SampleReportDownloadForm from './SampleReportDownloadForm';
 import { getCTALink } from '@/utils/generic-methods';
+import { useSelectedLicenseStore } from '@/stores/selectedLicense.store';
+import {
+   addToCart,
+   getLicenseOfReport,
+   setLicenseOfReport,
+} from '@/utils/cart-utils.util';
+import { get } from 'http';
+import { useRouter } from 'next/navigation';
 // import fetchClientMedusa from '@/utils/api/config-medusa';
 
 const reportIndex = [
    { title: 'About this report', id: 'about-report' },
-   { title: 'Table of content', id: 'table-of-content' },
    { title: 'Report Data', id: 'report-data' },
+   { title: 'Table of content', id: 'table-of-content' },
+   { title: 'Research Methodology', id: 'research-methodology' },
 ];
 
 const ReportBlock: React.FC<{ data: any }> = ({ data }) => {
@@ -53,16 +62,50 @@ const ReportBlock: React.FC<{ data: any }> = ({ data }) => {
    }));
 
    const [selectedIndex, setSelectedIndex] = useState(0);
-   const [selectedLicense, setSelectedLicense] = useState<number | null>(null);
+   const [selectedLicense, setSelectedLicense] = useState<number | null>();
    const [medusaReport, setMedusaReport] = useState({});
+   const selectedLicenses = useSelectedLicenseStore();
+   const router = useRouter();
+   useEffect(() => {
+      console.log('selectedLicense', selectedLicense);
+      if (isNaN(selectedLicense) && selectedLicense == undefined) return;
+      selectedLicenses.selectLicense(
+         reportData.id,
+         variants?.[selectedLicense] ?? null,
+      );
+      setLicenseOfReport(reportData.id, variants?.[selectedLicense] ?? null);
+      console.log(
+         variants[selectedLicense],
+         reportData.id,
+         selectedLicenses.selectedLicenses,
+      );
+   }, [selectedLicense]);
 
-   // useEffect(() => {
-   //    async function fetchProduct(){
-   //       const res = await fetchClientMedusa(`/products/${data.attributes.medusaID}`);
-   //       setMedusaReport(res.product);
-   //    }
-   //    fetchProduct();
-   // }, []);
+   useEffect(() => {
+      //If report in cart showing the selected license
+      const alreadySelectedLicense = getLicenseOfReport(reportData?.id);
+      if (alreadySelectedLicense) {
+         setSelectedLicense(
+            variants?.findIndex((variant) => {
+               return variant?.title === alreadySelectedLicense?.title;
+            }),
+         );
+         selectedLicenses.selectLicense(
+            reportData.id,
+            getLicenseOfReport(reportData.id),
+         );
+      }
+      if (selectedLicenses?.selectedLicenses?.[reportData.id]) {
+         setSelectedLicense(
+            variants?.findIndex((variant) => {
+               return (
+                  variant?.title ===
+                  selectedLicenses?.selectedLicenses[reportData.id]?.title
+               );
+            }),
+         );
+      }
+   }, []);
 
    function scrollIntoView(id: string) {
       // add 200px of top padding
@@ -70,12 +113,23 @@ const ReportBlock: React.FC<{ data: any }> = ({ data }) => {
       if (element) {
          element.scrollIntoView({
             behavior: 'smooth',
-            block: 'start',
+            block: 'center',
             inline: 'nearest',
          });
       }
    }
-
+   const handleBuyNow = () => {
+      console.log('clicked', data);
+      console.log(selectedLicenses.selectedLicenses);
+      let selectedLicense =
+         !isNaN(data?.id) &&
+         selectedLicenses.selectedLicenses?.[parseInt(data?.id)];
+      if (!selectedLicense) {
+         return alert('Please select a license');
+      }
+      addToCart({ id: data?.id, ...data?.attributes }, selectedLicense);
+      router.push('/cart');
+   };
    return (
       <div className='container py-10 md:py-16 md:pt-10'>
          <div className='flex items-center gap-2 pb-10 md:text-lg'>
@@ -131,15 +185,14 @@ const ReportBlock: React.FC<{ data: any }> = ({ data }) => {
                   <div className='width-[max-content] absolute -top-4 left-0 rounded-md bg-red-500 px-2 py-1 text-xs font-medium text-white'>
                      Upto 20% off
                   </div>
-                  <Link
-                     href={getCTALink(
-                        reportData.leftSectionPrimaryCTAButton.link,
-                     )}
+
+                  <Button
+                     className='w-full py-3'
+                     variant='secondary'
+                     onClick={handleBuyNow}
                   >
-                     <Button className='w-full py-3' variant='secondary'>
-                        {reportData.leftSectionPrimaryCTAButton.title}
-                     </Button>
-                  </Link>
+                     {reportData.leftSectionPrimaryCTAButton.title}
+                  </Button>
                </div>
                <Link
                   href={getCTALink(

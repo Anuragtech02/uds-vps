@@ -11,16 +11,23 @@ interface CartItemProps {
 }
 
 const CartItem: FC<CartItemProps> = ({
-   name,
-   price,
-   img = reportPlaceholder.src,
+   report,
    quantity,
+   selectedLicense,
+   handleRemoveItem,
+   handleChangeQuantity,
 }) => {
+   let name = report?.title,
+      price = selectedLicense?.price?.amount,
+      img = report?.highlightImage?.data?.attributes?.url;
    return (
       <div className='flex flex-col justify-between gap-6 border-b border-s-500 pb-4 pt-4 font-semibold first-of-type:pt-0 last-of-type:border-0 last-of-type:pb-0 sm:flex-row sm:gap-0 md:text-lg'>
          <div className='flex shrink flex-col items-center gap-3 sm:w-1/2 sm:flex-row'>
             <div className='flex items-center gap-3'>
-               <span className='cursor-pointer text-lg text-gray-500 md:text-xl'>
+               <span
+                  className='cursor-pointer text-lg text-gray-500 md:text-xl'
+                  onClick={handleRemoveItem.bind(this, report?.id)}
+               >
                   <IoCloseCircle />
                </span>
                <img
@@ -40,13 +47,25 @@ const CartItem: FC<CartItemProps> = ({
                   <button
                      className='text-blue-2 disabled:text-gray-300 md:text-xl'
                      disabled={quantity === 1}
+                     onClick={handleChangeQuantity.bind(
+                        this,
+                        report?.id,
+                        quantity - 1,
+                     )}
                   >
                      <FaCircleMinus />
                   </button>
                   <p className='text-sm font-normal text-gray-700'>
                      {quantity}
                   </p>
-                  <button className='text-blue-2 disabled:text-gray-300 md:text-xl'>
+                  <button
+                     className='text-blue-2 disabled:text-gray-300 md:text-xl'
+                     onClick={handleChangeQuantity.bind(
+                        this,
+                        report?.id,
+                        quantity + 1,
+                     )}
+                  >
                      <FaCirclePlus />
                   </button>
                </div>

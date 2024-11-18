@@ -11,15 +11,22 @@ interface CheckoutOrderItemProps {
 }
 
 const CheckoutOrderItem: FC<CheckoutOrderItemProps> = ({
-   name,
-   price,
-   img = reportPlaceholder.src,
+   report,
    quantity,
+   selectedLicense,
+   handleRemoveItem,
+   handleChangeQuantity,
 }) => {
+   let name = report?.title,
+      price = selectedLicense?.price?.amount,
+      img = report?.highlightImage?.data?.attributes?.url;
    return (
       <div className='space-y-1 border-b border-s-500 pb-4 pt-4 first-of-type:pt-0 last-of-type:border-0 last-of-type:pb-0'>
          <div className='flex items-center gap-3'>
-            <span className='cursor-pointer text-xl text-gray-500'>
+            <span
+               className='cursor-pointer text-xl text-gray-500'
+               onClick={handleRemoveItem?.bind(this, report?.id)}
+            >
                <IoCloseCircle />
             </span>
             <img
@@ -34,11 +41,23 @@ const CheckoutOrderItem: FC<CheckoutOrderItemProps> = ({
                <button
                   className='text-xl text-blue-2 disabled:text-gray-300'
                   disabled={quantity === 1}
+                  onClick={handleChangeQuantity?.bind(
+                     this,
+                     report?.id,
+                     quantity - 1,
+                  )}
                >
                   <FaCircleMinus />
                </button>
                <p className='text-sm text-gray-700'>{quantity}</p>
-               <button className='text-xl text-blue-2 disabled:text-gray-300'>
+               <button
+                  className='text-xl text-blue-2 disabled:text-gray-300'
+                  onClick={handleChangeQuantity?.bind(
+                     this,
+                     report?.id,
+                     quantity + 1,
+                  )}
+               >
                   <FaCirclePlus />
                </button>
             </div>

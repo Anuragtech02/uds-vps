@@ -6,6 +6,9 @@ import StrapiImage from '../StrapiImage/StrapiImage';
 import Link from 'next/link';
 import { getCTALink } from '@/utils/generic-methods';
 import { cacheRecentReports } from '@/utils/cache-recent-reports.utils';
+import { useSelectedLicenseStore } from '@/stores/selectedLicense.store';
+import { useRouter } from 'next/navigation';
+import { addToCart } from '@/utils/cart-utils.util';
 
 const Header: React.FC<{ data: any }> = ({ data }) => {
    const reportHeaderData = {
@@ -39,6 +42,8 @@ const Header: React.FC<{ data: any }> = ({ data }) => {
    const headerRef1 = useRef<HTMLDivElement>(null);
    const headerRef2 = useRef<HTMLDivElement>(null);
    const [showSecondHeader, setShowSecondHeader] = useState(false);
+   const router = useRouter();
+   const selectedLicenses = useSelectedLicenseStore();
 
    useEffect(() => {
       if (data?.attributes) cacheRecentReports(data?.attributes);
@@ -90,6 +95,19 @@ const Header: React.FC<{ data: any }> = ({ data }) => {
 
       return `${monthNames[monthIndex]} ${day}`;
    }
+   const handleBuyNow = () => {
+      console.log('clicked', data);
+      console.log(selectedLicenses.selectedLicenses);
+      let selectedLicense =
+         !isNaN(data?.id) &&
+         selectedLicenses.selectedLicenses?.[parseInt(data?.id)];
+      if (!selectedLicense) {
+         return alert('Please select a license');
+      }
+      addToCart({ id: data?.id, ...data?.attributes }, selectedLicense);
+      router.push('/cart');
+   };
+
    return (
       <>
          <div
@@ -118,24 +136,24 @@ const Header: React.FC<{ data: any }> = ({ data }) => {
                      <div className='flex flex-wrap items-center justify-between gap-4'>
                         <div className='flex flex-wrap items-center gap-4'>
                            <div className='flex items-center gap-2'>
-                              <p className='text-lg text-s-500'>Geography:</p>
-                              <p className='text-xl text-blue-4'>
+                              <p className='text-md text-s-500'>Geography:</p>
+                              <p className='text-md text-blue-4'>
                                  {reportHeaderData.geography.name}
                               </p>
                            </div>
 
                            <div className='flex items-center gap-2'>
-                              <p className='text-lg text-s-500'>Industry:</p>
-                              <p className='text-xl text-blue-4'>
+                              <p className='text-md text-s-500'>Industry:</p>
+                              <p className='text-md text-blue-4'>
                                  {reportHeaderData.industry.name}
                               </p>
                            </div>
                            <div className='flex items-center gap-2'>
-                              <p className='text-lg text-s-500'>
+                              <p className='text-md text-s-500'>
                                  Last updated:
                               </p>
                               <p
-                                 className='text-xl text-blue-4'
+                                 className='text-md text-blue-4'
                                  suppressHydrationWarning
                               >
                                  {getMonthDate(reportHeaderData?.updatedAt)}
@@ -150,9 +168,11 @@ const Header: React.FC<{ data: any }> = ({ data }) => {
                            >
                               {reportHeaderData.heroSectionPrimaryCTA.title}
                            </Button>
+
                            <Button
                               variant='light'
                               className='shrink grow basis-0 md:shrink-0 md:grow-0 md:basis-[unset]'
+                              onClick={handleBuyNow}
                            >
                               {reportHeaderData.heroSectionSecondaryCTA.title}
                            </Button>
@@ -183,16 +203,15 @@ const Header: React.FC<{ data: any }> = ({ data }) => {
                               {reportHeaderData.heroSectionPrimaryCTA.title}
                            </Button>
                         </Link>
-                        <Link
-                           href={getCTALink(
-                              reportHeaderData.heroSectionSecondaryCTA.link,
-                           )}
-                           className='shrink grow basis-0 md:min-w-[200px] md:!max-w-[250px] md:shrink-0 md:grow-0 md:basis-[unset]'
-                        >
-                           <Button variant='light' className='w-full'>
+                        <div className='shrink grow basis-0 md:min-w-[200px] md:!max-w-[250px] md:shrink-0 md:grow-0 md:basis-[unset]'>
+                           <Button
+                              variant='light'
+                              className='w-full'
+                              onClick={handleBuyNow}
+                           >
                               {reportHeaderData.heroSectionSecondaryCTA.title}
                            </Button>
-                        </Link>
+                        </div>
                      </div>
                   </div>
                </div>
