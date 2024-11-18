@@ -1,3 +1,5 @@
+export const runtime = 'edge';
+
 import MediaCitation from '@/components/commons/MediaCitation';
 import Hero from '@/components/Home/Hero';
 import LatestResearch from '@/components/Home/LatestResearch';
