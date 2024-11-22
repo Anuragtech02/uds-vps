@@ -116,12 +116,7 @@ const Appwrapper: FC<AppwrapperProps> = async ({ children }) => {
             </main>
          </Suspense>
          <SearchWrapper />
-         <Footer
-            key='footer'
-            footer={footer}
-            industries={industries}
-            quickLinks={footerQuickLinks}
-         />
+         <Footer key='footer' footer={footer} quickLinks={footerQuickLinks} />
       </>
    );
 };

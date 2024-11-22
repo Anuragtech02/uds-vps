@@ -209,6 +209,7 @@ export const getFooter = async () => {
          'footerCTA.ctaButton',
          'companyInfo',
          'companyInfo.logo',
+         'industries.slug',
       ]);
       const response = await fetchClient('/footer?' + populateQuery, {
          headers: getAuthHeaders(),

@@ -130,7 +130,7 @@ const DesktopMenuItem: React.FC<{ item: MenuItem; depth: number }> = ({
                   >
                      <div className={`${depth > 0 ? 'pl-2' : 'pt-2'}`}>
                         <Link href={item.url}>
-                           <ul className='rounded-md border border-s-400 bg-white font-medium text-s-800 shadow-md'>
+                           <ul className='max-h-[min(500px,50vh)] overflow-y-auto rounded-md border border-s-400 bg-white font-medium text-s-800 shadow-md'>
                               {item.children.map((child, index) => (
                                  <DesktopMenuItem
                                     key={index}

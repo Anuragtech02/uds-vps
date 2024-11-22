@@ -23,8 +23,9 @@ const invalidRoutes = [
    '/search',
 ];
 
-const Footer = ({ footer, industries, quickLinks }: any) => {
+const Footer = ({ footer, quickLinks }: any) => {
    const pathname = usePathname();
+   console.log(footer);
    return (
       <>
          {/* {invalidRoutes.includes(pathname) ? null : (
@@ -97,13 +98,13 @@ const Footer = ({ footer, industries, quickLinks }: any) => {
                         INDUSTRY VERTICALS
                      </p>
                      <ul className='space-y-2'>
-                        {industries?.map((item: any) => (
-                           <li key={item?.slug}>
+                        {footer.industries?.data?.map((item: any) => (
+                           <li key={item?.attributes?.slug}>
                               <Link
-                                 href={`/industry/${item?.slug}`}
+                                 href={`/industry/${item?.attributes?.slug}`}
                                  className='hover:text-gray-300'
                               >
-                                 {item?.name}
+                                 {item?.attributes?.name}
                               </Link>
                            </li>
                         ))}
