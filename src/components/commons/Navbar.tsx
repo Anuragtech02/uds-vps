@@ -219,10 +219,10 @@ const Navbar: React.FC<INavbarProps> = ({ header, mainMenu, industries }) => {
 
          {/* Mobile Side Menu */}
          <div
-            className={`fixed inset-0 z-50 bg-black bg-opacity-50 transition-opacity duration-300 ${isMobileMenuOpen ? 'opacity-100' : 'opacity-0'}`}
+            className={`fixed inset-0 z-50 bg-black bg-opacity-50 transition-opacity duration-300 ${isMobileMenuOpen ? 'visible' : 'invisible'}`}
          >
             <div
-               className={`pointer-events-auto absolute right-0 top-0 h-full w-64 bg-blue-2 shadow-lg transition-transform duration-300 ease-in-out ${isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}
+               className={`pointer-events-auto absolute right-0 top-0 h-full w-full bg-blue-2 shadow-lg transition-transform duration-300 ease-in-out sm:w-[300px] ${isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}
             >
                <div className='flex h-[50px] justify-end p-4'>
                   <button
