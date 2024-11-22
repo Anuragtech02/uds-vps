@@ -49,6 +49,7 @@ const CartItem: FC<CartItemProps> = ({
             <div className='flex w-1/3 justify-center sm:block'>
                <div className='flex w-max gap-2 rounded-md border border-s-300 px-2 py-1 md:gap-4 md:px-4 md:py-2'>
                   <button
+                     title='Decrease Quantity'
                      className='text-blue-2 disabled:text-gray-300 md:text-xl'
                      disabled={quantity === 1}
                      onClick={handleChangeQuantity.bind(
@@ -63,6 +64,7 @@ const CartItem: FC<CartItemProps> = ({
                      {quantity}
                   </p>
                   <button
+                     title='Increase Quantity'
                      className='text-blue-2 disabled:text-gray-300 md:text-xl'
                      onClick={handleChangeQuantity.bind(
                         this,

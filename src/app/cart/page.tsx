@@ -183,7 +183,7 @@ const Cart = () => {
                   <p className='text-[1.625rem] font-semibold text-s-800 md:text-[2rem]'>
                      Cart
                   </p>
-                  <select
+                  {/* <select
                      name=''
                      id=''
                      className='rounded-full bg-s-200 px-2 py-1 text-sm font-bold sm:hidden'
@@ -193,23 +193,23 @@ const Cart = () => {
                      <option value=''>INR ₹</option>
                      <option value=''>EUR €</option>
                      <option value=''>GBP £</option>
-                  </select>
+                  </select> */}
                </div>
                <div className='flex w-full items-stretch gap-0 sm:w-[auto] sm:gap-4'>
-                  <input
+                  {/* <input
                      type='text'
                      className='shrink grow basis-0 bg-gray-50 px-6 text-sm sm:shrink-0 sm:grow-0 sm:basis-[unset]'
                      placeholder='Coupon Code'
                   />
 
                   <Button
-                     variant='secondary'
+                     variant='light'
                      className='shrink grow basis-0 sm:shrink-0 sm:grow-0 sm:basis-[unset]'
                   >
                      Apply Code
-                  </Button>
+                  </Button> */}
 
-                  <select
+                  {/* <select
                      name=''
                      id=''
                      className='hidden rounded-full bg-s-200 px-4 text-lg font-bold sm:block'
@@ -219,7 +219,7 @@ const Cart = () => {
                      <option value=''>INR ₹</option>
                      <option value=''>EUR €</option>
                      <option value=''>GBP £</option>
-                  </select>
+                  </select> */}
                </div>
             </div>
             <div className='rounded-xl border border-s-400 p-3'>
@@ -234,14 +234,14 @@ const Cart = () => {
                      <div className='w-1/3'>
                         <p>Quantity</p>
                      </div>
-                     <div className='w-1/3'>
+                     <div className='w-1/3 text-right'>
                         <p>Subtotal</p>
                      </div>
                   </div>
                </div>
-               {cartData.map((item: any) => (
+               {cartData.map((item: any, i) => (
                   <CartItem
-                     key={item.id}
+                     key={i}
                      {...item}
                      handleRemoveItem={handleRemoveItem}
                      handleChangeQuantity={handleChangeQuantity}

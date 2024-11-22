@@ -7,14 +7,14 @@ interface CostCalculationsProps {
 }
 
 const CostCalculations: FC<CostCalculationsProps> = ({ cost, city }) => {
-   const tax = cost * 0.18;
+   // const tax = cost * 0.18;
    return (
       <>
          <div className='flex justify-between border-b border-s-500 pb-4 font-semibold text-s-600 md:text-lg'>
             <p>Subtotal</p>
             <p className='text-lg md:text-2xl'>${cost}</p>
          </div>
-         <div className='flex justify-between border-b border-s-500 pb-4 pt-4 font-semibold text-s-600 md:text-lg'>
+         {/* <div className='flex justify-between border-b border-s-500 pb-4 pt-4 font-semibold text-s-600 md:text-lg'>
             <p className='text-gray-500'>Shipping</p>
             <div className='space-y-1 text-right md:text-lg'>
                <p>Free shipping</p>
@@ -26,14 +26,14 @@ const CostCalculations: FC<CostCalculationsProps> = ({ cost, city }) => {
                   </span>
                </p>
             </div>
-         </div>
+         </div> */}
          <div className='flex justify-between border-b border-s-500 pb-4 pt-4 font-semibold text-s-600 md:text-lg'>
             <p>Tax</p>
-            <p className='text-lg md:text-2xl'>${tax}</p>
+            <p className='text-md md:text-lg'>Available on payment screen</p>
          </div>
          <div className='flex items-center justify-between pt-4 font-semibold text-s-600 md:text-lg'>
             <p className='font-bold md:text-2xl'>Total</p>
-            <p className='text-lg md:text-2xl'>${cost + tax}</p>
+            <p className='text-lg md:text-2xl'>${cost}</p>
          </div>
       </>
    );
