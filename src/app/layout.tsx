@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import '@/assets/styles/style.scss';
 import Appwrapper from '@/components/Appwrapper';
+import Script from 'next/script';
 
 export const metadata: Metadata = {
    title: 'Univdatos',
@@ -16,6 +17,14 @@ export default function RootLayout({
       <html lang='en'>
          <body>
             <Appwrapper>{children}</Appwrapper>
+            <div className='gtranslate_wrapper'></div>
+            {/* <Script id='gtranslate-settings' strategy='afterInteractive'>
+               {`window.gtranslateSettings = {"default_language":"en","languages":["en","fr","it","es"],"wrapper_selector":".gtranslate_wrapper"}`}
+            </Script>
+            <Script
+               src='https://cdn.gtranslate.net/widgets/latest/float.js'
+               defer
+            ></Script> */}
          </body>
       </html>
    );

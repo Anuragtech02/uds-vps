@@ -28,7 +28,15 @@ const sampleFAQs = [
    },
 ];
 
-const ReportFAQs = ({ data }) => {
+const ReportFAQs = ({
+   data,
+}: {
+   data: {
+      attributes: {
+         faqList: any[];
+      };
+   };
+}) => {
    const faqList = data?.attributes?.faqList || [];
 
    return (
