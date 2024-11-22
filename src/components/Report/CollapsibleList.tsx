@@ -50,24 +50,30 @@ const CollapsibleLicenseOptions: React.FC<CollapsibleLicenseOptionsProps> = ({
                >
                   <div className='flex items-center justify-between gap-3'>
                      <div className='flex items-start gap-2'>
-                        <input
-                           type='radio'
-                           className='mt-1'
-                           checked={selectedLicense === index}
-                           onChange={() => toggleLicense(index)}
-                        />
-                        <p className='w-2/3 grow text-xs font-semibold md:text-sm'>
-                           {license.title}
-                        </p>
+                        <div className='flex items-center gap-2'>
+                           <input
+                              type='radio'
+                              className='mt-1'
+                              checked={selectedLicense === index}
+                              onChange={() => toggleLicense(index)}
+                              id={`license-${index}`}
+                           />
+                           <label
+                              htmlFor={`license-${index}`}
+                              className='w-2/3 grow text-xs font-semibold md:text-sm'
+                           >
+                              {license.title}
+                           </label>
+                        </div>
                      </div>
                      <div className='flex shrink-0 items-center gap-2'>
                         <div>
-                           <p className='text-[0.625rem] text-sm line-through'>
+                           {/* <p className='text-[0.625rem] text-sm line-through'>
                               {formatCurrency(
                                  license.price.amount,
                                  license.price.currency,
                               )}
-                           </p>
+                           </p> */}
                            <p className='text-sm font-semibold text-green-1'>
                               {formatCurrency(
                                  license.price.amount,

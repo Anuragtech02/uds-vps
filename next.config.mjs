@@ -2,7 +2,7 @@
 const nextConfig = {
    // reactStrictMode: true,
    images: {
-      domains: ['univdatos-cms.s3.ap-south-1.amazonaws.com'],
+      domains: ['udsweb.s3.ap-south-1.amazonaws.com'],
    },
 };
 

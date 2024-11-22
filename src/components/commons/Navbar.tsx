@@ -20,6 +20,10 @@ interface INavbarProps {
       ctaButton: { id: number; title: string; link: string };
    };
    mainMenu: MenuItem[];
+   industries: Array<{
+      slug: string;
+      name: string;
+   }>;
 }
 
 const MobileMenuItem: React.FC<{ item: MenuItem; depth: number }> = ({
@@ -152,7 +156,7 @@ const DesktopMenuItem: React.FC<{ item: MenuItem; depth: number }> = ({
    );
 };
 
-const Navbar: React.FC<INavbarProps> = ({ header, mainMenu }) => {
+const Navbar: React.FC<INavbarProps> = ({ header, mainMenu, industries }) => {
    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
    const [isMobile, setIsMobile] = useState(false);
 
@@ -186,9 +190,23 @@ const Navbar: React.FC<INavbarProps> = ({ header, mainMenu }) => {
             ) : (
                <>
                   <ul className='flex items-center space-x-1 text-white'>
-                     {mainMenu.map((item, index) => (
-                        <DesktopMenuItem key={index} item={item} depth={0} />
-                     ))}
+                     {mainMenu.map((item, index) =>
+                        item.title?.toLowerCase()?.includes('industr') ? (
+                           <DesktopMenuItem
+                              key={index}
+                              item={{
+                                 ...item,
+                                 children: industries.map(({ slug, name }) => ({
+                                    title: name,
+                                    url: `/reports?filter=${slug}&page=1`,
+                                 })),
+                              }}
+                              depth={0}
+                           />
+                        ) : (
+                           <DesktopMenuItem key={index} item={item} depth={0} />
+                        ),
+                     )}
                   </ul>
                   <div className='flex items-center'>
                      <Link href={header?.ctaButton?.link ?? ''}>
@@ -201,12 +219,12 @@ const Navbar: React.FC<INavbarProps> = ({ header, mainMenu }) => {
 
          {/* Mobile Side Menu */}
          <div
-            className={`fixed inset-0 z-50 bg-black bg-opacity-50 transition-opacity duration-300 ${isMobileMenuOpen ? 'opacity-100' : 'pointer-events-none opacity-0'}`}
+            className={`fixed inset-0 z-50 bg-black bg-opacity-50 transition-opacity duration-300 ${isMobileMenuOpen ? 'opacity-100' : 'opacity-0'}`}
          >
             <div
-               className={`absolute right-0 top-0 h-full w-64 bg-blue-2 shadow-lg transition-transform duration-300 ease-in-out ${isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}
+               className={`pointer-events-auto absolute right-0 top-0 h-full w-64 bg-blue-2 shadow-lg transition-transform duration-300 ease-in-out ${isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}
             >
-               <div className='flex justify-end p-4'>
+               <div className='flex h-[50px] justify-end p-4'>
                   <button
                      title='close'
                      onClick={() => setIsMobileMenuOpen(false)}
@@ -214,12 +232,26 @@ const Navbar: React.FC<INavbarProps> = ({ header, mainMenu }) => {
                      <BiX size={24} color='white' />
                   </button>
                </div>
-               <ul className='mt-4'>
-                  {mainMenu.map((item, index) => (
-                     <MobileMenuItem key={index} item={item} depth={0} />
-                  ))}
+               <ul className='max-h-[calc(100%-50px-70px)] overflow-y-auto'>
+                  {mainMenu.map((item, index) =>
+                     item.title?.toLowerCase()?.includes('industr') ? (
+                        <MobileMenuItem
+                           key={index}
+                           item={{
+                              ...item,
+                              children: industries.map(({ slug, name }) => ({
+                                 title: name,
+                                 url: `/reports?filter=${slug}&page=1`,
+                              })),
+                           }}
+                           depth={0}
+                        />
+                     ) : (
+                        <MobileMenuItem key={index} item={item} depth={0} />
+                     ),
+                  )}
                </ul>
-               <div className='mt-4 px-4'>
+               <div className='mt-4 h-[70px] px-4'>
                   <Link href={header?.ctaButton?.link ?? ''}>
                      <Button className='w-full'>
                         {header?.ctaButton?.title}

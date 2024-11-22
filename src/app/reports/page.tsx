@@ -58,20 +58,23 @@ const ReportStore: FC<ReportStoreProps> = async ({ searchParams }) => {
       <div className='container pt-40'>
          <h1 className='mt-5 text-center font-bold'>Report Store</h1>
 
-         <div className='my-10 flex flex-col items-start gap-6 lg:min-h-[50vh] lg:flex-row'>
-            <Suspense fallback={<div>Loading filters...</div>}>
-               <ReportStoreFilters
-                  filters={filters}
-                  industries={industriesData?.data || []}
-               />
-            </Suspense>
+         <div className='my-10 flex flex-col items-start justify-between gap-6 lg:min-h-[50vh] lg:flex-row'>
+            <div className='w-full lg:sticky lg:top-48 lg:w-[350px]'>
+               <Suspense fallback={<div>Loading filters...</div>}>
+                  <ReportStoreFilters
+                     filters={filters}
+                     industries={industriesData?.data || []}
+                  />
+               </Suspense>
+            </div>
             <Suspense fallback={<ReportListLoading />}>
-               <div className='flex-[0.7] space-y-6'>
+               <div className='items-between grid flex-1 grid-cols-1 gap-4 xl:grid-cols-2'>
                   {reportsList?.data && reportsList.data.length > 0 ? (
                      reportsList.data.map((report: Report) => (
                         <Link
                            key={report.attributes.slug}
-                           href={`/report-store/${report.attributes.slug}`}
+                           href={`/reports/${report.attributes.slug}`}
+                           className='w-full'
                         >
                            <ReportStoreItem
                               title={report.attributes.title}

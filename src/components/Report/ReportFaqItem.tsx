@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { BiChevronDown } from 'react-icons/bi';
 
-const FAQItem = (data: { question: string; answer: string }) => {
+const FAQItem = (data: { title: string; description: string }) => {
    const [isOpen, setIsOpen] = useState(false);
 
    return (
@@ -12,7 +12,7 @@ const FAQItem = (data: { question: string; answer: string }) => {
          onClick={() => setIsOpen(!isOpen)}
       >
          <div className='flex w-full items-center justify-between'>
-            <p className='text-lg font-semibold text-blue-1'>{data.question}</p>
+            <p className='text-lg font-semibold text-blue-1'>{data.title}</p>
             {!isOpen ? (
                <BiChevronDown className='shrink-0 text-2xl text-blue-1' />
             ) : (
@@ -22,7 +22,7 @@ const FAQItem = (data: { question: string; answer: string }) => {
          <div
             className={`transition-all duration-200 ${isOpen ? 'h-auto overflow-visible py-4' : 'h-0 overflow-hidden'}`}
          >
-            <p>{data.answer}</p>
+            <div dangerouslySetInnerHTML={{ __html: data.description }}></div>
          </div>
       </div>
    );

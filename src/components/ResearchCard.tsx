@@ -28,7 +28,7 @@ const ResearchCard: FC<ResearchCardProps> = ({
    date,
 }) => {
    return (
-      <Link href={`/report-store/${slug}`}>
+      <Link href={`/reports/${slug}`}>
          <div className='!h-full flex-col rounded-xl border border-s-200 bg-white p-3'>
             <div className='relative aspect-square w-full overflow-hidden rounded-xl'>
                <Image src={image} alt={title} fill />
@@ -54,7 +54,7 @@ const ResearchCard: FC<ResearchCardProps> = ({
                      {date}
                   </p>
 
-                  {/* <Link href={`/report-store/${sku || 1254}`}>
+                  {/* <Link href={`/reports/${sku || 1254}`}>
                      <Button
                         onClick={cta}
                         size='small'
@@ -68,7 +68,7 @@ const ResearchCard: FC<ResearchCardProps> = ({
             )}
             {/* {type === 'latest' && (
                <p className='mt-2 flex items-center gap-2 text-xs uppercase'>
-                  <Link href={`/report-store/${sku || 1254}`}>View Report </Link>{' '}
+                  <Link href={`/reports/${sku || 1254}`}>View Report </Link>{' '}
                   <span>
                      <BsArrowRight />
                   </span>

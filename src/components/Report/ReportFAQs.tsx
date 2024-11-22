@@ -28,7 +28,9 @@ const sampleFAQs = [
    },
 ];
 
-const ReportFAQs = () => {
+const ReportFAQs = ({ data }) => {
+   const faqList = data?.attributes?.faqList || [];
+
    return (
       <section className='min-h-max bg-white'>
          <div className='container'>
@@ -36,7 +38,7 @@ const ReportFAQs = () => {
                Frequently Asked Questions <span>FAQs</span>
             </h2>
             <div className='mx-auto space-y-4 md:w-3/4'>
-               {sampleFAQs.map((faq, index) => (
+               {faqList.map((faq, index) => (
                   <FAQItem key={index} {...faq} />
                ))}
             </div>

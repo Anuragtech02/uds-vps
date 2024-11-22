@@ -28,7 +28,7 @@ interface industryItem {
    slug: string;
 }
 
-const ITEMS_PER_PAGE = 1;
+const ITEMS_PER_PAGE = 10;
 
 /**
  * Fetches the blog listing page and industries, maps them to the required types, and returns a JSX component.

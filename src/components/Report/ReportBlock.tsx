@@ -104,7 +104,7 @@ interface ReportBlockProps {
 }
 
 const reportIndex = [
-   { title: 'About this report', id: 'about-report' },
+   // { title: 'About this report', id: 'about-report' },
    { title: 'Report Data', id: 'report-data' },
    { title: 'Table of content', id: 'table-of-content' },
    { title: 'Research Methodology', id: 'research-methodology' },
@@ -207,7 +207,7 @@ const ReportBlock: React.FC<ReportBlockProps> = ({ data }) => {
             <span>
                <BiChevronRight />
             </span>
-            <Link href='/report-store'>
+            <Link href='/reports'>
                <p>Report Store</p>
             </Link>
             <span>

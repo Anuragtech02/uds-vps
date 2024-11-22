@@ -16,7 +16,7 @@ const ReportStoreItem: FC<ReportStoreItemProps> = ({
    description,
 }) => {
    return (
-      <div className='flex flex-col gap-4 rounded-xl bg-white p-6 md:flex-row'>
+      <div className='flex flex-col gap-4 rounded-xl bg-white p-6 transition-colors hover:bg-blue-1 hover:bg-opacity-10 md:flex-row'>
          <div className='relative aspect-square h-auto w-[180px] rounded-xl border border-s-300'>
             <Image
                src={newPlaceHolder}
