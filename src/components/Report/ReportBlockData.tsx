@@ -14,7 +14,7 @@ const ReportBlockData: React.FC<{ data: any }> = ({ data }) => {
             dangerouslySetInnerHTML={{
                __html: data.aboutReport,
             }}
-            className='report-content'
+            className='report-content -mt-10'
          ></div>
 
          <div
