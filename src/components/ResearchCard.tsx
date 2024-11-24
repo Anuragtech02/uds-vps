@@ -30,8 +30,8 @@ const ResearchCard: FC<ResearchCardProps> = ({
    return (
       <Link href={`/reports/${slug}`}>
          <div className='!h-full flex-col rounded-xl border border-s-200 bg-white p-3'>
-            <div className='relative aspect-square w-full overflow-hidden rounded-xl'>
-               <Image src={image} alt={title} fill />
+            <div className='relative aspect-square w-full overflow-hidden rounded-xl bg-[#d1e0ff]/20'>
+               <Image src={image} alt={title} fill className='object-contain' />
             </div>
             {type === 'latest' && (
                <div className='my-2 inline-block rounded-full bg-blue-9 px-2 py-1 text-xs'>
