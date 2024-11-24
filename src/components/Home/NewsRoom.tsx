@@ -38,12 +38,15 @@ const NewsRoom: React.FC<{
    return (
       <section className='min-h-max py-12 md:py-20'>
          <div className='container'>
-            <div className='my-6 flex flex-col gap-4 lg:my-10 lg:mt-0 lg:flex-row'>
+            <div className='my-6 flex flex-col items-stretch gap-4 lg:my-10 lg:mt-0 lg:flex-row'>
                <div className='md:w-1/2'>
                   <h3 className='mb-6 text-blue-2'>Our Blogs</h3>
                   {data?.blogs.map((blog, index) => (
                      <Link href={`/blogs/${blog.slug}`} key={index}>
-                        <div className='rounded-xl bg-white p-6' key={index}>
+                        <div
+                           className='rounded-xl bg-white p-6 transition-colors hover:bg-blue-1 hover:bg-opacity-10'
+                           key={index}
+                        >
                            <div className='relative aspect-video w-full rounded-md'>
                               <Image
                                  src={newPlaceHolder}
@@ -99,7 +102,7 @@ const NewsRoom: React.FC<{
                         <Link href={`/news/${news.slug}`} key={index}>
                            <div
                               key={index}
-                              className='flex flex-col gap-4 rounded-xl bg-white p-6 md:flex-row'
+                              className='flex flex-col gap-4 rounded-xl bg-white p-6 transition-colors hover:bg-blue-1 hover:bg-opacity-10 md:flex-row'
                            >
                               <div className='relative aspect-video rounded-md md:w-1/3'>
                                  <Image
