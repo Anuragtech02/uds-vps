@@ -11,14 +11,23 @@ interface BlogItemProps {
       altContent: string;
       width: number;
       height: number;
-   }
+   };
 }
 
-const BlogItem: FC<BlogItemProps> = ({ title, date, shortDescription, thumbnailImage }) => {
+const BlogItem: FC<BlogItemProps> = ({
+   title,
+   date,
+   shortDescription,
+   thumbnailImage,
+}) => {
    return (
-      <div className='flex flex-col gap-4 rounded-xl bg-white p-6 md:flex-row'>
+      <div className='flex w-full flex-col gap-4 rounded-xl bg-white p-6 md:flex-row'>
          <div className='relative aspect-video rounded-md md:w-1/3'>
-         <StrapiImage media={thumbnailImage} objectFit='cover' className='rounded-md' />
+            <StrapiImage
+               media={thumbnailImage}
+               objectFit='cover'
+               className='rounded-md'
+            />
          </div>
          <div className='md:w-2/3'>
             <div className='my-2 flex items-center'>
@@ -28,9 +37,7 @@ const BlogItem: FC<BlogItemProps> = ({ title, date, shortDescription, thumbnailI
                {title}
                {/* {title.length > 60 ? title.substring(0, 60) + '...' : title} */}
             </h4>
-            <p className='text-gray-600'>
-               {shortDescription}
-            </p>
+            <p className='text-gray-600'>{shortDescription}</p>
             <p className='my-2 flex items-center gap-2'>
                <CalendarSvg />
                {date}

@@ -94,8 +94,10 @@ const News = async ({
       <div className='container pt-40'>
          <h1 className='mt-5 text-center font-bold'>News</h1>
          <div className='my-10 flex flex-col items-start gap-6 lg:flex-row'>
-            <NewsFilters industries={industries} filters={filters} />
-            <div className='grid flex-[0.7] gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-3'>
+            <div className='w-full lg:sticky lg:top-48 lg:w-[350px]'>
+               <NewsFilters industries={industries} filters={filters} />
+            </div>
+            <div className='grid flex-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-3'>
                {newsList?.length > 0 ? (
                   newsList?.map((news: newsItem, i: number) => (
                      <Link href={`/news/${news?.slug}`} key={i}>

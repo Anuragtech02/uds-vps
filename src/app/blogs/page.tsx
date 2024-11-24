@@ -103,9 +103,13 @@ const Blog = async ({
    return (
       <div className='container pt-40'>
          <h1 className='mt-5 text-center font-bold'>Blogs</h1>
-         <div className='my-10 flex flex-col items-start gap-6 lg:flex-row'>
-            <BlogFilters industries={industries} filters={filters} />
-            <div className='flex flex-[0.7] flex-col gap-4 md:gap-6'>
+
+         <div className='my-10 flex flex-col items-start justify-between gap-6 lg:min-h-[50vh] lg:flex-row'>
+            <div className='w-full lg:sticky lg:top-48 lg:w-[350px]'>
+               <BlogFilters industries={industries} filters={filters} />
+            </div>
+
+            <div className='flex grow flex-col gap-4 md:gap-6'>
                {blogList?.length > 0 ? (
                   blogList!.map((blog: blogsItem, i: number) => (
                      <Link href={`/blogs/${blog?.slug}`} key={i}>

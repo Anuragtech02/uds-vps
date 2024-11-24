@@ -29,7 +29,7 @@ const NewsFilters = ({
       router.push(`/news?filter=${newFilters.join(',')}&page=1`);
    };
    return (
-      <div className='relative w-full flex-[0.3] rounded-xl bg-white p-4 md:px-6 lg:sticky lg:top-48 lg:w-max lg:p-6'>
+      <div className='relative w-full rounded-xl bg-white p-4 md:px-6'>
          <h2 className='hidden text-[1.625rem] font-medium lg:block'>
             News by industry
          </h2>
@@ -40,7 +40,7 @@ const NewsFilters = ({
             </span>
          </div>
          <div
-            className={`${expanded ? 'absolute left-0 z-10 mt-4 h-max overflow-auto rounded-b-xl bg-white px-4 pb-4 shadow-md' : 'mt-0 h-0 overflow-hidden lg:mt-4 lg:h-max lg:overflow-auto'} w-full space-y-4`}
+            className={`${expanded ? 'absolute left-0 z-10 mt-4 h-max overflow-auto rounded-b-xl bg-white px-4 pb-4 shadow-md' : 'mt-0 h-0 overflow-hidden lg:mt-4 lg:h-max lg:overflow-auto'} max-h-[50vh] w-full space-y-4 overflow-y-auto`}
          >
             {industries?.length > 0 ? (
                industries.map((industry) => (
