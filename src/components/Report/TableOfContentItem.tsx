@@ -26,7 +26,7 @@ const TableOfContentItem = (data: {
             )}
          </div>
          <div
-            className={`transition-all duration-200 ${isOpen ? 'h-auto overflow-visible border-t border-s-300 py-4 pl-6' : 'h-0 overflow-hidden'}`}
+            className={`${isOpen ? 'h-auto overflow-visible border-t border-s-300 py-4 pl-6' : 'h-0 overflow-hidden'}`}
          >
             {/* <ol className='list-decimal' start={1}>
                {data.subsections.map((item: string, index: number) => (

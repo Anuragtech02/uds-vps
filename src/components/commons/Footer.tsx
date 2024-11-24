@@ -33,7 +33,7 @@ const Footer = ({ footer, quickLinks }: any) => {
                <CustomResearchCTA  />
             </div>
          )} */}
-         <footer className='bg-blue-1 pb-12 text-white'>
+         <footer className='bg-blue-1 pb-12 text-white [&>a]:hover:underline'>
             <div className='relative border-b border-blue-4 py-12 text-center'>
                <img
                   src={earth.src}
@@ -83,7 +83,7 @@ const Footer = ({ footer, quickLinks }: any) => {
                            <li key={item}>
                               <Link
                                  href={item?.url ?? ''}
-                                 className='hover:text-gray-300'
+                                 className='hover:text-gray-300 hover:underline'
                               >
                                  {item?.title}
                               </Link>
@@ -102,7 +102,7 @@ const Footer = ({ footer, quickLinks }: any) => {
                            <li key={item?.attributes?.slug}>
                               <Link
                                  href={`/industry/${item?.attributes?.slug}`}
-                                 className='hover:text-gray-300'
+                                 className='hover:text-gray-300 hover:underline'
                               >
                                  {item?.attributes?.name}
                               </Link>

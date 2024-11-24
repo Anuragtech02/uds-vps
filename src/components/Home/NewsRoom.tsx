@@ -1,7 +1,6 @@
 import Image from 'next/image';
 import newPlaceHolder from '@/assets/img/newPlaceholder.jpg';
 import { CalendarSvg, UserSvg } from '../commons/Icons';
-import logo from '@/assets/img/logo.png';
 import Link from 'next/link';
 
 // const newsItems = [
@@ -43,37 +42,54 @@ const NewsRoom: React.FC<{
                <div className='md:w-1/2'>
                   <h3 className='mb-6 text-blue-2'>Our Blogs</h3>
                   {data?.blogs.map((blog, index) => (
-                     <div className='rounded-xl bg-white p-6' key={index}>
-                        <div className='relative aspect-video w-full rounded-md'>
-                           <Image
-                              src={newPlaceHolder}
-                              alt='news'
-                              fill
-                              className='rounded-xl'
-                           />
-                        </div>
-                        {blog?.tags?.split(',').map((tag, index) => (
-                           <div
-                              key={index}
-                              className='my-3 inline-block rounded-full border border-s-400 px-6 py-2 text-sm capitalize text-green-1'
-                           >
-                              {tag}
+                     <Link href={`/blogs/${blog.slug}`} key={index}>
+                        <div className='rounded-xl bg-white p-6' key={index}>
+                           <div className='relative aspect-video w-full rounded-md'>
+                              <Image
+                                 src={newPlaceHolder}
+                                 alt='news'
+                                 fill
+                                 className='rounded-xl'
+                              />
                            </div>
-                        ))}
-                        <h4 className='mb-2 text-2xl font-semibold'>
-                           {blog.title}
-                        </h4>
-                        <p className='text-sm text-s-800'>{blog.descrption}</p>
-                        <div className='mt-4 flex items-center gap-6'>
-                           <p className='flex items-center gap-2'>
-                              <CalendarSvg />{' '}
-                              {new Date(blog.publishedAt).toLocaleDateString()}
+                           <div className='flex flex-wrap gap-2 py-4'>
+                              {blog?.tags
+                                 ?.split(',')
+                                 .filter(
+                                    (b: string) =>
+                                       !['blog', 'news'].includes(
+                                          b.toLowerCase(),
+                                       ),
+                                 )
+                                 .map((tag: string, index: number) => (
+                                    <div
+                                       key={index}
+                                       className='rounded-full border border-green-1 px-3 py-1 text-xs capitalize text-green-1'
+                                    >
+                                       {tag}
+                                    </div>
+                                 ))}
+                           </div>
+                           <h4 className='mb-2 text-2xl font-semibold'>
+                              {blog.title}
+                           </h4>
+                           <p className='text-sm text-s-800'>
+                              {blog.descrption}
                            </p>
-                           <p className='flex items-center gap-2'>
-                              <UserSvg /> {blog.author?.data?.attributes?.name}
-                           </p>
+                           <div className='mt-4 flex items-center gap-6'>
+                              <p className='flex items-center gap-2'>
+                                 <CalendarSvg />{' '}
+                                 {new Date(
+                                    blog.publishedAt,
+                                 ).toLocaleDateString()}
+                              </p>
+                              <p className='flex items-center gap-2'>
+                                 <UserSvg />{' '}
+                                 {blog.author?.data?.attributes?.name}
+                              </p>
+                           </div>
                         </div>
-                     </div>
+                     </Link>
                   ))}
                </div>
                <div className='md:w-1/2'>
