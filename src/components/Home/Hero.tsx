@@ -93,7 +93,7 @@ const Hero: React.FC<{ data: any }> = ({ data }) => {
                      alt=''
                   />
 
-                  <div className='relative mx-auto aspect-square w-[80%] pb-10 md:ml-auto md:pb-0'>
+                  <div className='relative mx-auto aspect-square w-[80%] overflow-hidden rounded-xl pb-10 md:ml-auto md:pb-0'>
                      <StrapiImage media={heroSection.heroImage} />
                   </div>
                </div>
