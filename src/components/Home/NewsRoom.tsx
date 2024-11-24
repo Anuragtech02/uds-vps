@@ -2,6 +2,7 @@ import Image from 'next/image';
 import newPlaceHolder from '@/assets/img/newPlaceholder.jpg';
 import { CalendarSvg, UserSvg } from '../commons/Icons';
 import logo from '@/assets/img/logo.png';
+import Link from 'next/link';
 
 // const newsItems = [
 //    {
@@ -51,9 +52,14 @@ const NewsRoom: React.FC<{
                               className='rounded-xl'
                            />
                         </div>
-                        <div className='my-3 inline-block rounded-full border border-s-400 px-6 py-2 text-sm capitalize text-green-1'>
-                           {blog.tags}
-                        </div>
+                        {blog?.tags?.split(',').map((tag, index) => (
+                           <div
+                              key={index}
+                              className='my-3 inline-block rounded-full border border-s-400 px-6 py-2 text-sm capitalize text-green-1'
+                           >
+                              {tag}
+                           </div>
+                        ))}
                         <h4 className='mb-2 text-2xl font-semibold'>
                            {blog.title}
                         </h4>
@@ -74,35 +80,37 @@ const NewsRoom: React.FC<{
                   <h3 className='mb-6 text-blue-2'>Latest News</h3>
                   <div className='flex flex-col gap-6'>
                      {data?.newsArticles.map((news, index) => (
-                        <div
-                           key={index}
-                           className='flex flex-col gap-4 rounded-xl bg-white p-6 md:flex-row'
-                        >
-                           <div className='relative aspect-video rounded-md md:w-1/3'>
-                              <Image
-                                 src={newPlaceHolder}
-                                 alt='news'
-                                 fill
-                                 className='rounded-xl'
-                              />
-                           </div>
-                           <div className='md:w-2/3'>
-                              <div className='my-2 flex items-center'>
-                                 <p className='font-medium'>Univdatos</p>
+                        <Link href={`/news/${news.slug}`} key={index}>
+                           <div
+                              key={index}
+                              className='flex flex-col gap-4 rounded-xl bg-white p-6 md:flex-row'
+                           >
+                              <div className='relative aspect-video rounded-md md:w-1/3'>
+                                 <Image
+                                    src={newPlaceHolder}
+                                    alt='news'
+                                    fill
+                                    className='rounded-xl'
+                                 />
                               </div>
-                              <h4 className='mb-2 text-xl font-semibold'>
-                                 {news.title.length > 60
-                                    ? news.title.substring(0, 60) + '...'
-                                    : news.title}
-                              </h4>
-                              <p className='my-2 flex items-center gap-2'>
-                                 <CalendarSvg />
-                                 {new Date(
-                                    news.publishedAt,
-                                 ).toLocaleDateString()}
-                              </p>
+                              <div className='md:w-2/3'>
+                                 <div className='my-2 flex items-center'>
+                                    <p className='font-medium'>Univdatos</p>
+                                 </div>
+                                 <h4 className='mb-2 text-xl font-semibold'>
+                                    {news.title.length > 60
+                                       ? news.title.substring(0, 60) + '...'
+                                       : news.title}
+                                 </h4>
+                                 <p className='my-2 flex items-center gap-2'>
+                                    <CalendarSvg />
+                                    {new Date(
+                                       news.publishedAt,
+                                    ).toLocaleDateString()}
+                                 </p>
+                              </div>
                            </div>
-                        </div>
+                        </Link>
                      ))}
                   </div>
                </div>
