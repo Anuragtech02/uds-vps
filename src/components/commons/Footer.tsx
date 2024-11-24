@@ -53,7 +53,7 @@ const Footer = ({ footer, quickLinks }: any) => {
                   <p className='mx-auto mt-4 text-s-300 md:w-2/3 md:text-2xl'>
                      {footer?.footerCTA?.description}
                   </p>
-                  <Link href={footer?.footerCTA?.ctaButton?.link ?? ''}>
+                  <Link href={footer?.footerCTA?.ctaButton?.link ?? '/contact'}>
                      <Button variant='primary' className='mx-auto mt-10'>
                         {footer?.footerCTA?.ctaButton?.title}
                      </Button>

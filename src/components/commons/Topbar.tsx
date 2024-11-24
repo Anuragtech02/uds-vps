@@ -57,9 +57,11 @@ const Topbar = ({ header, industries }: ITopbarProps) => {
                      <FaCircleUser />
                   </span>
                </Link>
-               <span className='cursor-pointer text-xl'>
-                  <IoMdCart />
-               </span>
+               <Link href='/cart'>
+                  <span className='cursor-pointer text-xl'>
+                     <IoMdCart />
+                  </span>
+               </Link>
             </div>
          </div>
       </div>
