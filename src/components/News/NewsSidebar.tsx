@@ -15,7 +15,7 @@ const recentPostsSample = [
 const NewsSidebar = () => {
    return (
       <div className='space-y-4 md:space-y-6'>
-         <p className='text-lg font-semibold text-s-700'>Recent News</p>
+         {/* <p className='text-lg font-semibold text-s-700'>Recent News</p>
          <div className='flex flex-col gap-4 font-semibold'>
             {recentPostsSample.map((post, index) => (
                <div key={index} className='flex gap-2'>
@@ -25,7 +25,7 @@ const NewsSidebar = () => {
                   <p className='text-s-700'>{post}</p>
                </div>
             ))}
-         </div>
+         </div> */}
          <div className='bg-white'>
             <GetCallBackForm />
          </div>

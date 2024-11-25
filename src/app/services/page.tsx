@@ -7,25 +7,29 @@ const About = async () => {
    let allServicesList: Awaited<ReturnType<typeof getAllServices>>;
 
    try {
-    [data, allServicesList] = await Promise.all([getServicesPage(), getAllServices()]);
-    console.log(allServicesList)
-    } catch (error) {
-        console.error('Error fetching about page:', error);
-    }
+      [data, allServicesList] = await Promise.all([
+         getServicesPage(),
+         getAllServices(),
+      ]);
+      console.log(allServicesList);
+   } catch (error) {
+      console.error('Error fetching about page:', error);
+   }
 
-    const hero = {
-        heroSectionHeading: data?.data?.attributes?.heroSectionHeading ?? '',
-        heroSectionDescription: data?.data?.attributes?.heroSectionDescription ?? '',
-    }
+   const hero = {
+      heroSectionHeading: data?.data?.attributes?.heroSectionHeading ?? '',
+      heroSectionDescription:
+         data?.data?.attributes?.heroSectionDescription ?? '',
+   };
 
-    const servicesList = allServicesList?.data?.map((service: any) => ({
-        id: service?.id,
-        slug: service?.attributes?.slug,
-        title: service?.attributes?.title,
-        description: service?.attributes?.description,
-        shortDescription: service?.attributes?.shortDescription,
-    }));
-
+   const servicesList = allServicesList?.data?.map((service: any) => ({
+      id: service?.id,
+      slug: service?.attributes?.slug,
+      title: service?.attributes?.title,
+      description: service?.attributes?.description,
+      shortDescription: service?.attributes?.shortDescription,
+      image: service?.attributes?.highlightImage?.data?.attributes?.url,
+   }));
 
    return (
       <>

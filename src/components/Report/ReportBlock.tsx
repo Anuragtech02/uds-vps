@@ -107,7 +107,7 @@ interface ReportBlockProps {
 
 const reportIndex = [
    // { title: 'About this report', id: 'about-report' },
-   { title: 'Report Data', id: 'report-data' },
+   { title: 'Report Description', id: 'report-data' },
    { title: 'Table of content', id: 'table-of-content' },
    { title: 'Research Methodology', id: 'research-methodology' },
 ];
