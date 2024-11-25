@@ -163,12 +163,14 @@ const Header: React.FC<{ data: any }> = ({ data }) => {
                         </div>
 
                         <div className='flex w-full items-center gap-2 md:w-auto'>
-                           <Button
-                              variant='secondary'
-                              className='shrink grow basis-0 md:shrink-0 md:grow-0 md:basis-[unset]'
-                           >
-                              {reportHeaderData.heroSectionPrimaryCTA.title}
-                           </Button>
+                           <Link href='?popup=sample-request'>
+                              <Button
+                                 variant='secondary'
+                                 className='shrink grow basis-0 md:shrink-0 md:grow-0 md:basis-[unset]'
+                              >
+                                 {reportHeaderData.heroSectionPrimaryCTA.title}
+                              </Button>
+                           </Link>
 
                            <Button
                               variant='light'
