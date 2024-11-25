@@ -55,7 +55,6 @@ const page: React.FC<{
          <div className='mt-4' />
          <Header data={reportPage} />
          <ReportBlock data={reportPage} />
-         <ReportFAQs data={reportPage} />
          <ExploreProjects reports={relatedReportsData} />
       </div>
    );

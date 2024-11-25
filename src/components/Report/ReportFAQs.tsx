@@ -53,12 +53,12 @@ const ReportFAQs = ({
    };
 
    return (
-      <section className='min-h-max bg-white'>
-         <div className='container'>
-            <h2 className='py-8 text-center text-blue-1'>
+      <section className='min-h-max py-0'>
+         <div className='w-full px-8'>
+            <h2 className='pb-8 text-center text-blue-1'>
                Frequently Asked Questions <span>FAQs</span>
             </h2>
-            <div className='mx-auto space-y-4 md:w-3/4'>
+            <div className='mx-auto space-y-4'>
                {faqList.map((faq, index) => (
                   <FAQItem key={index} {...faq} />
                ))}

@@ -18,6 +18,7 @@ import {
    setLicenseOfReport,
 } from '@/utils/cart-utils.util';
 import { useRouter } from 'next/navigation';
+import ReportFAQs from './ReportFAQs';
 
 // Define type for report variants
 export interface Variant {
@@ -273,6 +274,7 @@ const ReportBlock: React.FC<ReportBlockProps> = ({ data }) => {
             </div>
             <div className='flex-[0.77]'>
                <ReportBlockData data={reportData} />
+               <ReportFAQs data={data} />
             </div>
          </div>
          <Popup name='report-enquiry' title='Report Enquiry'>
