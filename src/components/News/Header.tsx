@@ -63,14 +63,14 @@ const Header: React.FC<{ newsArticle: any }> = ({ newsArticle }) => {
                      <div className='flex justify-between border-y border-s-300 py-4'>
                         {author?.name && (
                            <div className='flex items-center gap-4'>
-                              <img
+                              {/* <img
                                  src={
                                     author?.profilePicture?.data?.attributes
                                        ?.url
                                  }
                                  alt=''
                                  className='h-12 w-12 rounded-full'
-                              />
+                              /> */}
                               <p className='text-s-600'>{author?.name}</p>
                            </div>
                         )}
