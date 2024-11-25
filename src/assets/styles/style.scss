@@ -72,8 +72,14 @@
 
 /* Paragraph styling */
 .report-content p {
-   margin-bottom: 0rem !important;
+   margin-bottom: 1rem !important;
    line-height: 1.8 !important;
+}
+
+.report-content p {
+   &:has(:only-child[data-value='&nbsp;']) {
+      display: none !important;
+   }
 }
 
 .report-content a:has(img) {
@@ -151,6 +157,10 @@
    max-width: 100% !important;
    width: 100% !important;
    height: 500px !important;
+}
+
+.report-content br {
+   display: none !important;
 }
 
 /* Responsive Typography Adjustments */
