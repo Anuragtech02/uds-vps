@@ -39,6 +39,19 @@ const ReportFAQs = ({
 }) => {
    const faqList = data?.attributes?.faqList || [];
 
+   const faqSchema = {
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: faqList.map((faq, index) => ({
+         '@type': 'Question',
+         name: `Q${index + 1}: ${faq.title}`,
+         acceptedAnswer: {
+            '@type': 'Answer',
+            text: `Ans: ${faq.description}`,
+         },
+      })),
+   };
+
    return (
       <section className='min-h-max bg-white'>
          <div className='container'>
@@ -51,6 +64,10 @@ const ReportFAQs = ({
                ))}
             </div>
          </div>
+         <script
+            type='application/ld+json'
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+         />
       </section>
    );
 };
