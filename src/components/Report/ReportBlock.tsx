@@ -35,6 +35,7 @@ interface ReportData {
    title: string;
    aboutReport: string;
    tableOfContent: string;
+   researchMethodology: string;
    description: string;
    faqSectionHeading: string;
    industry: {
@@ -66,6 +67,7 @@ interface ReportBlockProps {
          title: string;
          aboutReport: string;
          tableOfContent: string;
+         researchMethodology: string;
          description: string;
          faqSectionHeading: string;
          industry: {
@@ -114,8 +116,9 @@ const ReportBlock: React.FC<ReportBlockProps> = ({ data }) => {
    const reportData: ReportData = {
       id: data.id,
       title: data.attributes.title,
-      aboutReport: data.attributes.aboutReport,
+      aboutReport: data.attributes?.aboutReport || '',
       tableOfContent: data.attributes.tableOfContent,
+      researchMethodology: data.attributes.researchMethodology,
       description: data.attributes.description,
       faqSectionHeading: data.attributes.faqSectionHeading,
       industry: {

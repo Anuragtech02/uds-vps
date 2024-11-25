@@ -7,15 +7,28 @@ const styles = {
 };
 
 const ReportBlockData: React.FC<{ data: any }> = ({ data }) => {
+   function processAndRemoveH2FromRM() {
+      // <h2 style="pointer-events: auto;">Research Methodology</h2>
+      const rmData = data.researchMethodology;
+      // prase DOM and remove H2 having text 'Research Methodology'
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(rmData, 'text/html');
+      const h2 = doc.querySelector('h2');
+      if (h2 && h2.textContent === 'Research Methodology') {
+         h2.remove();
+      }
+      return doc.body.innerHTML;
+   }
+
    return (
       <div className='space-y-6 text-s-700 md:px-4'>
-         <div
+         {/* <div
             id='about-report'
             dangerouslySetInnerHTML={{
                __html: data.aboutReport,
             }}
             className='report-content -mt-10'
-         ></div>
+         ></div> */}
 
          <div
             id='report-data'
@@ -37,6 +50,19 @@ const ReportBlockData: React.FC<{ data: any }> = ({ data }) => {
                   />
                ))}
             </ol>
+         </div>
+
+         <div>
+            {/* <div>
+               <h2 className={styles.title}>Research Methodology</h2>
+            </div> */}
+            <div
+               id='research-methodology'
+               className='report-content -mt-10'
+               dangerouslySetInnerHTML={{
+                  __html: processAndRemoveH2FromRM(),
+               }}
+            ></div>
          </div>
 
          {/* <div className='space-y-4'>
