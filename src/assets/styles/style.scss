@@ -76,6 +76,20 @@
    line-height: 1.8 !important;
 }
 
+.report-content a:has(img) {
+   display: inline-block;
+   width: 100% !important;
+
+   img {
+      width: 100% !important;
+      height: auto !important;
+   }
+}
+
+.report-content figure {
+   width: 100% !important;
+}
+
 /* Image styling */
 .report-content img {
    max-width: 100% !important;

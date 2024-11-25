@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import reportData from './sample.json';
 import TableOfContentItem from './TableOfContentItem';
 
@@ -7,6 +8,8 @@ const styles = {
 };
 
 const ReportBlockData: React.FC<{ data: any }> = ({ data }) => {
+   const [rmData, setRmData] = useState(data.researchMethodology);
+
    function processAndRemoveH2FromRM() {
       // <h2 style="pointer-events: auto;">Research Methodology</h2>
       const rmData = data.researchMethodology;
@@ -17,8 +20,19 @@ const ReportBlockData: React.FC<{ data: any }> = ({ data }) => {
       if (h2 && h2.textContent === 'Research Methodology') {
          h2.remove();
       }
+
+      // also remove element with class price-breakup
+      const priceBreakup = doc.querySelector('.price-breakup');
+      if (priceBreakup) {
+         priceBreakup.remove();
+      }
+
       return doc.body.innerHTML;
    }
+
+   useEffect(() => {
+      setRmData(processAndRemoveH2FromRM());
+   }, []);
 
    return (
       <div className='space-y-6 text-s-700 md:px-4'>
@@ -60,7 +74,7 @@ const ReportBlockData: React.FC<{ data: any }> = ({ data }) => {
                id='research-methodology'
                className='report-content -mt-10'
                dangerouslySetInnerHTML={{
-                  __html: processAndRemoveH2FromRM(),
+                  __html: rmData,
                }}
             ></div>
          </div>

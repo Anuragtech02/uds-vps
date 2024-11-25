@@ -97,7 +97,7 @@ const ExploreProjects = ({ reports }: { reports: any[] }) => {
       <section className='block min-h-max'>
          <div className='container'>
             <h2>
-               <span>Explore</span> more
+               <span>Related</span> Reports
             </h2>
             <p className='text-medium mt-2'>
                Customers who bought this item also bought

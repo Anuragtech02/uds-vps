@@ -4,6 +4,7 @@ import ReportBlock from '@/components/Report/ReportBlock';
 import ReportFAQs from '@/components/Report/ReportFAQs';
 import { getAllReports, getReportsPageBySlug } from '@/utils/api/services';
 import { Metadata } from 'next';
+import { cookies } from 'next/headers';
 
 export const dynamic = 'force-dynamic'; // Forces dynamic rendering, bypassing all static optimizations
 

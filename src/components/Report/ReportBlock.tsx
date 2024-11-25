@@ -181,11 +181,10 @@ const ReportBlock: React.FC<ReportBlockProps> = ({ data }) => {
    const scrollIntoView = (id: string) => {
       const element = document.getElementById(id);
       if (element) {
-         element.scrollIntoView({
-            behavior: 'smooth',
-            block: 'center',
-            inline: 'nearest',
-         });
+         const yOffset = -200; // Adjust this value to provide padding/margin from top
+         const y =
+            element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+         window.scrollTo({ top: y, behavior: 'smooth' });
       }
    };
 

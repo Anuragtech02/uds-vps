@@ -18,13 +18,13 @@ export default function RootLayout({
          <body>
             <Appwrapper>{children}</Appwrapper>
             <div className='gtranslate_wrapper'></div>
-            {/* <Script id='gtranslate-settings' strategy='afterInteractive'>
+            <Script id='gtranslate-settings' strategy='afterInteractive'>
                {`window.gtranslateSettings = {"default_language":"en","languages":["en","fr","it","es"],"wrapper_selector":".gtranslate_wrapper"}`}
             </Script>
             <Script
                src='https://cdn.gtranslate.net/widgets/latest/float.js'
                defer
-            ></Script> */}
+            ></Script>
          </body>
       </html>
    );
