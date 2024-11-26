@@ -18,12 +18,25 @@ export default function RootLayout({
          <body>
             <Appwrapper>{children}</Appwrapper>
             <Script id='gtranslate-settings' strategy='afterInteractive'>
-               {`window.gtranslateSettings = {"default_language":"en","url_structure":"sub_directory","languages":["en","fr","it","es"],"wrapper_selector":".gtranslate_wrapper"}`}
+               {`window.gtranslateSettings = {"default_language":"en","languages":["en","fr","it","es"],"wrapper_selector":".gtranslate_wrapper"}}`}
             </Script>
             <Script
                src='https://cdn.gtranslate.net/widgets/latest/dropdown.js'
                defer
             ></Script>
+            <Script id='tawk-api' defer type='text/javascript'>
+               {`   var Tawk_API = Tawk_API || {},
+               Tawk_LoadStart = new Date();
+               (function() {
+               var s1 = document.createElement("script"),
+               s0 = document.getElementsByTagName("script")[0];
+               s1.async = true;
+               s1.src = 'https://embed.tawk.to/60ed46e3649e0a0a5ccbed30/1fafdpr6a';
+               s1.charset = 'UTF-8';
+               s1.setAttribute('crossorigin', '*');
+               s0.parentNode.insertBefore(s1, s0);
+               })();`}
+            </Script>
          </body>
       </html>
    );

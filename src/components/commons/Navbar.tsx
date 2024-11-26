@@ -206,7 +206,7 @@ const Navbar: React.FC<INavbarProps> = ({ header, mainMenu, industries }) => {
                                  ...item,
                                  children: industries.map(({ slug, name }) => ({
                                     title: name,
-                                    url: `/reports?filter=${slug}&page=1`,
+                                    url: `/reports?industries=${slug}&page=1`,
                                  })),
                               }}
                               depth={0}
@@ -249,7 +249,7 @@ const Navbar: React.FC<INavbarProps> = ({ header, mainMenu, industries }) => {
                               ...item,
                               children: industries.map(({ slug, name }) => ({
                                  title: name,
-                                 url: `/reports?filter=${slug}&page=1`,
+                                 url: `/reports?industries=${slug}&page=1`,
                               })),
                            }}
                            depth={0}

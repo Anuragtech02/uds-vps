@@ -67,7 +67,6 @@ const RecentResearch: React.FC<{ data: any }> = ({ data }) => {
             <div className='my-8 md:my-10'>
                <div className='grid grid-cols-2 md:grid-cols-5'>
                   {reports?.map((data: any, index: number) => {
-                     console.log(data);
                      return (
                         <div key={index} className='pr-4'>
                            <ResearchCard

@@ -24,11 +24,11 @@ const ReportStoreFilters: React.FC<ReportStoreFiltersProps> = ({
    const [expanded, setExpanded] = useState(false);
 
    const handleToggleFilter = (industrySlug: string) => {
-      const newFilters = filters.includes(industrySlug)
+      const reportFilters = filters.includes(industrySlug)
          ? filters.filter((slug) => slug !== industrySlug)
          : [...filters, industrySlug];
 
-      router.push(`/reports?filter=${newFilters.join(',')}&page=1`);
+      router.push(`/reports?industries=${reportFilters.join(',')}&page=1`);
    };
 
    return (

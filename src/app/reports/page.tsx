@@ -7,7 +7,9 @@ import ReportListLoading from '@/components/ReportStore/ReportListLoading';
 import Pagination from '@/components/ReportStore/Pagination';
 
 interface SearchParams {
-   filter?: string;
+   // filter?: string;
+   industries?: string;
+   geographies?: string;
    page?: string;
 }
 
@@ -27,9 +29,13 @@ interface ReportStoreProps {
 const ITEMS_PER_PAGE = 10;
 
 const ReportStore: FC<ReportStoreProps> = async ({ searchParams }) => {
-   const filters = searchParams.filter?.split(',').filter(Boolean) || [];
+   const industryFilters =
+      searchParams.industries?.split(',').filter(Boolean) || [];
+   const geographyFilters =
+      searchParams.geographies?.split(',').filter(Boolean) || [];
    const currentPage = parseInt(searchParams.page || '1', 10);
 
+   const filters = industryFilters.concat(geographyFilters);
    const filtersQuery = filters.reduce(
       (acc, filter) => {
          acc[`industrySlug_${filter}`] = filter;
@@ -71,19 +77,15 @@ const ReportStore: FC<ReportStoreProps> = async ({ searchParams }) => {
                <div className='items-between grid flex-1 grid-cols-1 gap-4 xl:grid-cols-2'>
                   {reportsList?.data && reportsList.data.length > 0 ? (
                      reportsList.data.map((report: Report) => (
-                        <Link
+                        <ReportStoreItem
                            key={report.attributes.slug}
-                           href={`/reports/${report.attributes.slug}`}
-                           className='w-full'
-                        >
-                           <ReportStoreItem
-                              title={report.attributes.title}
-                              date={new Date(
-                                 report.attributes.publishedAt,
-                              ).toLocaleDateString()}
-                              description={report.attributes.shortDescription}
-                           />
-                        </Link>
+                           title={report.attributes.title}
+                           date={new Date(
+                              report.attributes.publishedAt,
+                           ).toLocaleDateString()}
+                           slug={report.attributes.slug}
+                           description={report.attributes.shortDescription}
+                        />
                      ))
                   ) : (
                      <p className='rounded bg-gray-100 p-4 text-2xl font-bold text-gray-600'>

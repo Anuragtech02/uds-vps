@@ -92,9 +92,9 @@ const Header: React.FC<{ data: any }> = ({ data }) => {
          'Dec',
       ];
       const monthIndex = dateObj.getMonth();
-      const day = dateObj.getDate();
+      const year = dateObj.getFullYear();
 
-      return `${monthNames[monthIndex]} ${day}`;
+      return `${monthNames[monthIndex]} ${year}`;
    }
    const handleBuyNow = () => {
       console.log('clicked', data);
@@ -145,8 +145,12 @@ const Header: React.FC<{ data: any }> = ({ data }) => {
 
                            <div className='flex items-center gap-2'>
                               <p className='text-md text-s-500'>Industry:</p>
-                              <p className='text-md text-blue-4'>
-                                 {reportHeaderData.industry.name}
+                              <p className='text-md text-blue-4 hover:underline'>
+                                 <Link
+                                    href={`/reports/?industries=${reportHeaderData.industry.slug}`}
+                                 >
+                                    {reportHeaderData.industry.name}
+                                 </Link>
                               </p>
                            </div>
                            <div className='flex items-center gap-2'>
