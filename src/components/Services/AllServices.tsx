@@ -1,9 +1,9 @@
 import React from 'react';
 
-const AllServices = ({ services }) => {
+const AllServices = ({ services }: any) => {
    return (
       <div className='container space-y-12 py-8'>
-         {services?.map((service, index) => (
+         {services?.map((service: any, index: number) => (
             <div
                key={index}
                className='space-y-8 rounded-md border border-s-300 bg-white p-8'
