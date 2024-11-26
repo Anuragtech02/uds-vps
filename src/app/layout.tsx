@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import '@/assets/styles/style.scss';
 import Appwrapper from '@/components/Appwrapper';
 import Script from 'next/script';
+import HandleRTL from '@/components/commons/HandleRTL';
 
 export const metadata: Metadata = {
    title: 'Univdatos',
@@ -17,8 +18,10 @@ export default function RootLayout({
       <html lang='en'>
          <body>
             <Appwrapper>{children}</Appwrapper>
+            <HandleRTL />
             <Script id='gtranslate-settings' strategy='afterInteractive'>
-               {`window.gtranslateSettings = {"default_language":"en","languages":["en","fr","it","es"],"wrapper_selector":".gtranslate_wrapper"}}`}
+               {/* Russian(Ru), Arabic(AR), German(DE), French, Chinese(ZH-tw), Japanese(ja), Korean(KO), Vietnamese(Vi), Italian(It),Poland(pl) */}
+               {`window.gtranslateSettings = {"default_language":"en","languages":["en","ru","ar","de","fr","zh-TW","ja","ko","vi","it","pl"],"wrapper_selector":".gtranslate_wrapper"}`}
             </Script>
             <Script
                src='https://cdn.gtranslate.net/widgets/latest/dropdown.js'
