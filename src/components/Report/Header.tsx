@@ -163,7 +163,7 @@ const Header: React.FC<{ data: any }> = ({ data }) => {
                         </div>
 
                         <div className='flex w-full items-center gap-2 md:w-auto'>
-                           <Link href='?popup=sample-request'>
+                           <Link href='?popup=report-enquiry'>
                               <Button
                                  variant='secondary'
                                  className='shrink grow basis-0 md:shrink-0 md:grow-0 md:basis-[unset]'

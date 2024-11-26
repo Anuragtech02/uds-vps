@@ -111,6 +111,7 @@ const reportIndex = [
    { title: 'Report Description', id: 'report-data' },
    { title: 'Table of content', id: 'table-of-content' },
    { title: 'Research Methodology', id: 'research-methodology' },
+   { title: 'FAQs', id: 'faq-section' },
 ];
 
 const ReportBlock: React.FC<ReportBlockProps> = ({ data }) => {

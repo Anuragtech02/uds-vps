@@ -80,6 +80,40 @@ const DesktopMenuItem: React.FC<{ item: MenuItem; depth: number }> = ({
    const handleMouseEnter = () => setIsOpen(true);
    const handleMouseLeave = () => setIsOpen(false);
 
+   if (item.title?.toLowerCase()?.includes('industr')) {
+      return (
+         <li
+            className='dropdown-menu relative'
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+         >
+            <div className='flex cursor-pointer items-center px-3 py-2 hover:bg-blue-3'>
+               <span>{item.title}</span>
+               <BiChevronDown
+                  className={`ml-1 inline text-xl ${isOpen ? 'rotate-180' : ''} transition-transform`}
+               />
+            </div>
+            {isOpen && (
+               <div className='absolute left-0 top-full pt-2'>
+                  <div className='rounded-md border border-s-400 bg-white p-6 shadow-md'>
+                     <div className='grid min-w-[600px] grid-cols-2 gap-x-16 gap-y-2'>
+                        {item.children?.map((child, index) => (
+                           <Link
+                              key={index}
+                              href={child.url ?? ''}
+                              className='whitespace-nowrap text-s-800 hover:text-blue-600'
+                           >
+                              {child.title}
+                           </Link>
+                        ))}
+                     </div>
+                  </div>
+               </div>
+            )}
+         </li>
+      );
+   }
+
    return (
       <li
          className={`dropdown-menu relative ${depth > 0 ? 'w-full' : ''}`}
@@ -88,66 +122,40 @@ const DesktopMenuItem: React.FC<{ item: MenuItem; depth: number }> = ({
       >
          {item.children && item.children.length > 0 ? (
             <>
-               {item.url?.length > 0 ? (
-                  <Link href={item.url}>
-                     <div
-                        className={`flex items-center justify-between rounded-md ${depth > 0 ? 'w-full px-4 py-2 hover:bg-gray-100' : 'cursor-pointer px-3 py-2 hover:bg-blue-3'}`}
-                     >
-                        <span>{item.title}</span>
-                        {depth === 0 ? (
-                           <BiChevronDown
-                              className={`ml-1 inline text-xl ${isOpen ? 'rotate-180' : ''} transition-transform`}
-                           />
-                        ) : (
-                           <BiChevronRight className='ml-1 inline text-xl' />
-                        )}
-                     </div>
-                  </Link>
-               ) : (
+               <Link href={item.url ?? ''}>
                   <div
-                     className={`flex items-center justify-between rounded-md ${depth > 0 ? 'w-full px-4 py-2 hover:bg-gray-100' : 'cursor-pointer px-3 py-2 hover:bg-blue-3'}`}
+                     className={`flex items-center justify-between rounded-md ${
+                        depth > 0
+                           ? 'w-full px-4 py-2 hover:bg-gray-100'
+                           : 'cursor-pointer px-3 py-2 hover:bg-blue-3'
+                     }`}
                   >
                      <span>{item.title}</span>
-                     {depth === 0 ? (
-                        <BiChevronDown
-                           className={`ml-1 inline text-xl ${isOpen ? 'rotate-180' : ''} transition-transform`}
-                        />
-                     ) : (
-                        <BiChevronRight className='ml-1 inline text-xl' />
-                     )}
+                     <BiChevronDown
+                        className={`ml-1 inline text-xl ${isOpen ? 'rotate-180' : ''} transition-transform`}
+                     />
                   </div>
-               )}
-               {/* <div className={`flex items-center justify-between rounded-md ${depth > 0 ? 'w-full px-4 py-2 hover:bg-gray-100' : 'cursor-pointer px-3 py-2 hover:bg-blue-3'}`}>
-            <span>{item.title}</span>
-            {depth === 0 ? 
-              <BiChevronDown className={`ml-1 inline text-xl ${isOpen ? 'rotate-180' : ''} transition-transform`} /> :
-              <BiChevronRight className="ml-1 inline text-xl" />
-            }
-          </div> */}
+               </Link>
                {isOpen && (
-                  <div
-                     className={`absolute ${depth === 0 ? 'left-0 top-full' : 'left-full top-0'} min-w-[200px]`}
-                  >
-                     <div className={`${depth > 0 ? 'pl-2' : 'pt-2'}`}>
-                        <Link href={item.url}>
-                           <ul className='max-h-[min(500px,50vh)] overflow-y-auto rounded-md border border-s-400 bg-white font-medium text-s-800 shadow-md'>
-                              {item.children.map((child, index) => (
-                                 <DesktopMenuItem
-                                    key={index}
-                                    item={child}
-                                    depth={depth + 1}
-                                 />
-                              ))}
-                           </ul>
-                        </Link>
-                     </div>
+                  <div className='absolute left-0 top-full pt-2'>
+                     <ul className='rounded-md border border-s-400 bg-white shadow-md'>
+                        {item.children.map((child, index) => (
+                           <DesktopMenuItem
+                              key={index}
+                              item={child}
+                              depth={depth + 1}
+                           />
+                        ))}
+                     </ul>
                   </div>
                )}
             </>
          ) : (
             <Link
                href={item.url ?? ''}
-               className={`block w-full rounded-md px-4 py-2 ${depth > 0 ? 'hover:bg-gray-100' : 'hover:bg-blue-3'}`}
+               className={`block rounded-md px-4 py-2 ${
+                  depth > 0 ? 'hover:bg-gray-100' : 'hover:bg-blue-3'
+               }`}
             >
                {item.title}
             </Link>

@@ -54,7 +54,7 @@ const ReportFAQs = ({
 
    return (
       <section className='min-h-max py-0'>
-         <div className='w-full px-8'>
+         <div className='w-full px-8' id='faq-section'>
             <h2 className='pb-8 text-center text-blue-1'>
                Frequently Asked Questions <span>FAQs</span>
             </h2>

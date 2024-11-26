@@ -43,7 +43,7 @@ const Topbar = ({ header, industries }: ITopbarProps) => {
                      </option>
                   ))}
                </select> */}
-
+               <div className='gtranslate_wrapper !relative'></div>
                <span
                   className='cursor-pointer text-xl'
                   onClick={() => {

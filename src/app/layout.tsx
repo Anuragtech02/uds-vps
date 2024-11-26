@@ -17,12 +17,11 @@ export default function RootLayout({
       <html lang='en'>
          <body>
             <Appwrapper>{children}</Appwrapper>
-            <div className='gtranslate_wrapper'></div>
             <Script id='gtranslate-settings' strategy='afterInteractive'>
-               {`window.gtranslateSettings = {"default_language":"en","languages":["en","fr","it","es"],"wrapper_selector":".gtranslate_wrapper"}`}
+               {`window.gtranslateSettings = {"default_language":"en","url_structure":"sub_directory","languages":["en","fr","it","es"],"wrapper_selector":".gtranslate_wrapper"}`}
             </Script>
             <Script
-               src='https://cdn.gtranslate.net/widgets/latest/float.js'
+               src='https://cdn.gtranslate.net/widgets/latest/dropdown.js'
                defer
             ></Script>
          </body>
