@@ -11,6 +11,7 @@ const ReportResults = ({ reports }: any) => {
                   title={report?.title}
                   description={report?.shortDescription}
                   key={report?.id}
+                  slug={report?.slug}
                />
             </Link>
          ))}
