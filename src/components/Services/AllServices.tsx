@@ -1,29 +1,43 @@
-import Link from 'next/link';
 import React from 'react';
 
-const AllServices = ({ services }: any) => {
+const AllServices = ({ services }) => {
    return (
-      <div className='container grid grid-cols-2 gap-4 py-8'>
-         {services?.map((service: any, index: number) => (
-            <Link
-               href={`/services/${service?.slug}`}
-               className='h-full'
+      <div className='container space-y-12 py-8'>
+         {services?.map((service, index) => (
+            <div
                key={index}
+               className='space-y-8 rounded-md border border-s-300 bg-white p-8'
             >
-               <div className='flex h-full flex-col items-start gap-4 rounded-md border border-s-300 bg-white p-8 transition-all duration-200 ease-in-out hover:bg-blue-8 md:flex-row'>
-                  <div className='space-y-2'>
+               {/* Top section with image and short description */}
+               <div
+                  className={`flex flex-col gap-8 ${index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'}`}
+               >
+                  <div className='w-full flex-shrink-0 md:w-2/5'>
                      <img
                         src={service?.image}
-                        alt='service'
-                        className='h-[200px] w-full rounded-md object-cover'
+                        alt={service?.title}
+                        className='h-[300px] w-full rounded-md object-cover'
                      />
-                     <p className='mt-4 text-2xl font-bold md:text-[2rem]'>
+                  </div>
+                  <div className='flex w-full flex-col justify-center space-y-4 md:w-3/5'>
+                     <h2 className='text-2xl font-bold md:text-4xl'>
                         {service?.title}
+                     </h2>
+                     <p className='text-lg text-gray-700'>
+                        {service?.shortDescription}
                      </p>
-                     <p>{service?.shortDescription}</p>
                   </div>
                </div>
-            </Link>
+
+               {/* Full width main content section below */}
+               <div className='prose max-w-none border-t pt-8'>
+                  <div
+                     dangerouslySetInnerHTML={{
+                        __html: service?.description,
+                     }}
+                  />
+               </div>
+            </div>
          ))}
       </div>
    );

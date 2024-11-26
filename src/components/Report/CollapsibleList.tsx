@@ -37,7 +37,7 @@ const CollapsibleLicenseOptions: React.FC<CollapsibleLicenseOptionsProps> = ({
 
    return (
       <div className='mt-3 flex flex-col gap-2'>
-         {variants?.map((license: License, index: number) => (
+         {variants?.reverse()?.map((license: License, index: number) => (
             <div
                key={index}
                className={`rounded-md border border-s-300 transition-all duration-150 ${

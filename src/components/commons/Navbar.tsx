@@ -87,7 +87,7 @@ const DesktopMenuItem: React.FC<{ item: MenuItem; depth: number }> = ({
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
          >
-            <div className='flex cursor-pointer items-center px-3 py-2 hover:bg-blue-3'>
+            <div className='flex cursor-pointer items-center px-3 py-2 text-white hover:bg-blue-3'>
                <span>{item.title}</span>
                <BiChevronDown
                   className={`ml-1 inline text-xl ${isOpen ? 'rotate-180' : ''} transition-transform`}
@@ -126,8 +126,8 @@ const DesktopMenuItem: React.FC<{ item: MenuItem; depth: number }> = ({
                   <div
                      className={`flex items-center justify-between rounded-md ${
                         depth > 0
-                           ? 'w-full px-4 py-2 hover:bg-gray-100'
-                           : 'cursor-pointer px-3 py-2 hover:bg-blue-3'
+                           ? 'w-full px-4 py-2 text-s-800 hover:bg-gray-100'
+                           : 'cursor-pointer px-3 py-2 text-white hover:bg-blue-3'
                      }`}
                   >
                      <span>{item.title}</span>
@@ -154,7 +154,9 @@ const DesktopMenuItem: React.FC<{ item: MenuItem; depth: number }> = ({
             <Link
                href={item.url ?? ''}
                className={`block rounded-md px-4 py-2 ${
-                  depth > 0 ? 'hover:bg-gray-100' : 'hover:bg-blue-3'
+                  depth > 0
+                     ? 'text-s-800 hover:bg-gray-100'
+                     : 'text-white hover:bg-blue-3'
                }`}
             >
                {item.title}

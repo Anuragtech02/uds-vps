@@ -101,7 +101,7 @@ const Footer = ({ footer, quickLinks }: any) => {
                         {footer.industries?.data?.map((item: any) => (
                            <li key={item?.attributes?.slug}>
                               <Link
-                                 href={`/industry/${item?.attributes?.slug}`}
+                                 href={`/reports?industries=${item?.attributes?.slug}`}
                                  className='hover:text-gray-300 hover:underline'
                               >
                                  {item?.attributes?.name}
@@ -116,12 +116,14 @@ const Footer = ({ footer, quickLinks }: any) => {
                      <p className='mb-4 text-lg text-white'>CONTACT</p>
                      <p className='mb-2'>{footer?.phoneNumber}</p>
                      <p className='mb-4'>{footer?.email}</p>
-                     <Button
-                        variant='light'
-                        className='border border-blue-9 !bg-blue-1 text-blue-9'
-                     >
-                        Send An Enquiry →
-                     </Button>
+                     <Link href='?popup=report-enquiry'>
+                        <Button
+                           variant='light'
+                           className='border border-blue-9 !bg-blue-1 text-blue-9'
+                        >
+                           Send An Enquiry →
+                        </Button>
+                     </Link>
                   </div>
                </div>
 
