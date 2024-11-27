@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Button from './Button';
 import Link from 'next/link';
 import { BiChevronDown, BiChevronRight, BiMenu, BiX } from 'react-icons/bi';
+import { LocalizedLink } from './LocalizedLink';
 
 interface MenuItem {
    title: string;
@@ -37,16 +38,16 @@ const MobileMenuItem: React.FC<{ item: MenuItem; depth: number }> = ({
          {item.children && item.children.length > 0 ? (
             <>
                <div
-                  className='flex w-full items-center justify-between px-4 py-2 text-white hover:bg-blue-2'
+                  className='flex w-full items-center justify-between px-4 py-3 text-white hover:bg-blue-2'
                   onClick={() => setIsOpen(!isOpen)}
                >
-                  <span>{item.title}</span>
+                  <span className='break-words pr-2'>{item.title}</span>
                   <BiChevronDown
-                     className={`ml-1 inline text-xl ${isOpen ? 'rotate-180' : ''} transition-transform`}
+                     className={`ml-1 flex-shrink-0 text-xl ${isOpen ? 'rotate-180' : ''} transition-transform`}
                   />
                </div>
                {isOpen && (
-                  <Link href={item.url}>
+                  <LocalizedLink href={item.url}>
                      <ul className='w-full'>
                         {item.children.map((child, index) => (
                            <MobileMenuItem
@@ -56,16 +57,16 @@ const MobileMenuItem: React.FC<{ item: MenuItem; depth: number }> = ({
                            />
                         ))}
                      </ul>
-                  </Link>
+                  </LocalizedLink>
                )}
             </>
          ) : (
-            <Link
+            <LocalizedLink
                href={item.url ?? ''}
-               className='block w-full px-4 py-2 text-white hover:bg-blue-2'
+               className='block w-full px-4 py-3 text-white hover:bg-blue-2'
             >
-               {item.title}
-            </Link>
+               <span className='break-words'>{item.title}</span>
+            </LocalizedLink>
          )}
       </li>
    );
@@ -87,24 +88,26 @@ const DesktopMenuItem: React.FC<{ item: MenuItem; depth: number }> = ({
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
          >
-            <div className='flex cursor-pointer items-center px-3 py-2 text-white hover:bg-blue-3'>
-               <span>{item.title}</span>
+            <div className='flex cursor-pointer items-center px-4 py-2 text-white hover:bg-blue-3'>
+               <span className='max-w-[200px] whitespace-normal break-words'>
+                  {item.title}
+               </span>
                <BiChevronDown
-                  className={`ml-1 inline text-xl ${isOpen ? 'rotate-180' : ''} transition-transform`}
+                  className={`ml-1 flex-shrink-0 text-xl ${isOpen ? 'rotate-180' : ''} transition-transform`}
                />
             </div>
             {isOpen && (
-               <div className='absolute left-0 top-full pt-2'>
+               <div className='absolute left-0 top-full z-50 pt-2'>
                   <div className='rounded-md border border-s-400 bg-white p-6 shadow-md'>
-                     <div className='grid min-w-[600px] grid-cols-2 gap-x-16 gap-y-2'>
+                     <div className='grid min-w-[300px] grid-cols-1 gap-4 lg:min-w-[600px] lg:grid-cols-2'>
                         {item.children?.map((child, index) => (
-                           <Link
+                           <LocalizedLink
                               key={index}
                               href={child.url ?? ''}
-                              className='whitespace-nowrap text-s-800 hover:text-blue-600'
+                              className='break-words text-s-800 hover:text-blue-600'
                            >
                               {child.title}
-                           </Link>
+                           </LocalizedLink>
                         ))}
                      </div>
                   </div>
@@ -122,23 +125,25 @@ const DesktopMenuItem: React.FC<{ item: MenuItem; depth: number }> = ({
       >
          {item.children && item.children.length > 0 ? (
             <>
-               <Link href={item.url ?? ''}>
+               <LocalizedLink href={item.url ?? ''}>
                   <div
                      className={`flex items-center justify-between rounded-md ${
                         depth > 0
-                           ? 'w-full px-4 py-2 text-s-800 hover:bg-gray-100'
-                           : 'cursor-pointer px-3 py-2 text-white hover:bg-blue-3'
+                           ? 'w-full px-4 py-3 text-s-800 hover:bg-gray-100'
+                           : 'cursor-pointer px-4 py-2 text-white hover:bg-blue-3'
                      }`}
                   >
-                     <span>{item.title}</span>
+                     <span className='max-w-[200px] whitespace-normal break-words'>
+                        {item.title}
+                     </span>
                      <BiChevronDown
-                        className={`ml-1 inline text-xl ${isOpen ? 'rotate-180' : ''} transition-transform`}
+                        className={`ml-1 flex-shrink-0 text-xl ${isOpen ? 'rotate-180' : ''} transition-transform`}
                      />
                   </div>
-               </Link>
+               </LocalizedLink>
                {isOpen && (
-                  <div className='absolute left-0 top-full pt-2'>
-                     <ul className='rounded-md border border-s-400 bg-white shadow-md'>
+                  <div className='absolute left-0 top-full z-50 pt-2'>
+                     <ul className='min-w-[200px] rounded-md border border-s-400 bg-white shadow-md'>
                         {item.children.map((child, index) => (
                            <DesktopMenuItem
                               key={index}
@@ -151,7 +156,7 @@ const DesktopMenuItem: React.FC<{ item: MenuItem; depth: number }> = ({
                )}
             </>
          ) : (
-            <Link
+            <LocalizedLink
                href={item.url ?? ''}
                className={`block rounded-md px-4 py-2 ${
                   depth > 0
@@ -159,8 +164,10 @@ const DesktopMenuItem: React.FC<{ item: MenuItem; depth: number }> = ({
                      : 'text-white hover:bg-blue-3'
                }`}
             >
-               {item.title}
-            </Link>
+               <span className='whitespace-normal break-words'>
+                  {item.title}
+               </span>
+            </LocalizedLink>
          )}
       </li>
    );
@@ -172,7 +179,7 @@ const Navbar: React.FC<INavbarProps> = ({ header, mainMenu, industries }) => {
 
    useEffect(() => {
       const handleResize = () => {
-         setIsMobile(window.innerWidth < 1024); // Changed to 1024px
+         setIsMobile(window.innerWidth < 1024);
       };
       handleResize();
       window.addEventListener('resize', handleResize);
@@ -181,14 +188,14 @@ const Navbar: React.FC<INavbarProps> = ({ header, mainMenu, industries }) => {
 
    return (
       <div className='container'>
-         <nav className='flex items-center justify-between rounded-md bg-blue-2 px-6 py-2 md:px-8'>
-            <Link href='/' className='flex items-center'>
+         <nav className='flex items-center justify-between rounded-md bg-blue-2 px-4 py-2 lg:px-8'>
+            <LocalizedLink href='/' className='flex items-center'>
                <img
                   src={header?.logo?.data?.attributes?.url}
                   alt='logo'
                   className='h-10 w-24 object-contain md:h-16 md:w-32'
                />
-            </Link>
+            </LocalizedLink>
             {isMobile ? (
                <button
                   title='open'
@@ -199,7 +206,7 @@ const Navbar: React.FC<INavbarProps> = ({ header, mainMenu, industries }) => {
                </button>
             ) : (
                <>
-                  <ul className='flex items-center space-x-1 text-white'>
+                  <ul className='flex flex-wrap items-center gap-1 text-white'>
                      {mainMenu.map((item, index) =>
                         item.title?.toLowerCase()?.includes('industr') ? (
                            <DesktopMenuItem
@@ -218,10 +225,10 @@ const Navbar: React.FC<INavbarProps> = ({ header, mainMenu, industries }) => {
                         ),
                      )}
                   </ul>
-                  <div className='flex items-center'>
-                     <Link href={header?.ctaButton?.link ?? ''}>
+                  <div className='ml-4 flex items-center'>
+                     <LocalizedLink href={header?.ctaButton?.link ?? ''}>
                         <Button>{header?.ctaButton?.title}</Button>
-                     </Link>
+                     </LocalizedLink>
                   </div>
                </>
             )}
@@ -261,12 +268,12 @@ const Navbar: React.FC<INavbarProps> = ({ header, mainMenu, industries }) => {
                      ),
                   )}
                </ul>
-               <div className='mt-4 h-[70px] px-4'>
-                  <Link href={header?.ctaButton?.link ?? ''}>
+               <div className='sticky bottom-0 mt-4 h-[70px] bg-blue-2 px-4'>
+                  <LocalizedLink href={header?.ctaButton?.link ?? ''}>
                      <Button className='w-full'>
                         {header?.ctaButton?.title}
                      </Button>
-                  </Link>
+                  </LocalizedLink>
                </div>
             </div>
          </div>

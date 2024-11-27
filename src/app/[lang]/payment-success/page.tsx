@@ -14,11 +14,11 @@ const PaymentSuccess = () => {
                   Thank you for your purchase. We will send you an email with
                   the details of your order.
                </p>
-               <Link href='/'>
+               <LocalizedLink href='/'>
                   <button className='rounded-full bg-green-500 px-4 py-2 font-bold text-white hover:bg-green-700'>
                      Go back to home
                   </button>
-               </Link>
+               </LocalizedLink>
             </div>
          </div>
       </div>

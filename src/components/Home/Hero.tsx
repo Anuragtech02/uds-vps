@@ -14,6 +14,7 @@ import DemoRequestForm from './DemoRequestForm';
 import reportIllustration from '@/assets/img/report.svg';
 import { Suspense } from 'react';
 import { BiLoaderCircle } from 'react-icons/bi';
+import { LocalizedLink } from '../commons/LocalizedLink';
 
 const Hero: React.FC<{ data: any }> = ({ data }) => {
    const heroSection = {
@@ -64,7 +65,7 @@ const Hero: React.FC<{ data: any }> = ({ data }) => {
                   <ClientSearchHero />
 
                   <div className='mt-4 flex flex-col gap-2 py-4 md:mt-10 lg:flex-row lg:items-center'>
-                     <Link href={heroSection.heroPrimaryCTA.link}>
+                     <LocalizedLink href={heroSection.heroPrimaryCTA.link}>
                         <Button
                            className='w-full lg:w-auto'
                            size='large'
@@ -73,8 +74,8 @@ const Hero: React.FC<{ data: any }> = ({ data }) => {
                         >
                            {heroSection.heroPrimaryCTA.title}
                         </Button>
-                     </Link>
-                     <Link href={heroSection.heroSecondaryCTA.link}>
+                     </LocalizedLink>
+                     <LocalizedLink href={heroSection.heroSecondaryCTA.link}>
                         <Button
                            className='w-full lg:w-auto'
                            size='large'
@@ -83,7 +84,7 @@ const Hero: React.FC<{ data: any }> = ({ data }) => {
                         >
                            {heroSection.heroSecondaryCTA.title}
                         </Button>
-                     </Link>
+                     </LocalizedLink>
                   </div>
                </div>
                <div className='relative w-full md:w-[40%]'>

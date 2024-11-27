@@ -2,6 +2,7 @@ import Image from 'next/image';
 import newPlaceHolder from '@/assets/img/newPlaceholder.jpg';
 import { CalendarSvg, UserSvg } from '../commons/Icons';
 import Link from 'next/link';
+import { LocalizedLink } from '../commons/LocalizedLink';
 
 // const newsItems = [
 //    {
@@ -42,7 +43,7 @@ const NewsRoom: React.FC<{
                <div className='md:w-1/2'>
                   <h3 className='mb-6 text-blue-2'>Our Blogs</h3>
                   {data?.blogs.map((blog, index) => (
-                     <Link href={`/blogs/${blog.slug}`} key={index}>
+                     <LocalizedLink href={`/blogs/${blog.slug}`} key={index}>
                         <div
                            className='rounded-xl bg-white p-6 transition-colors hover:bg-blue-1 hover:bg-opacity-10'
                            key={index}
@@ -92,14 +93,14 @@ const NewsRoom: React.FC<{
                               </p>
                            </div>
                         </div>
-                     </Link>
+                     </LocalizedLink>
                   ))}
                </div>
                <div className='md:w-1/2'>
                   <h3 className='mb-6 text-blue-2'>Latest News</h3>
                   <div className='flex flex-col gap-6'>
                      {data?.newsArticles.map((news, index) => (
-                        <Link href={`/news/${news.slug}`} key={index}>
+                        <LocalizedLink href={`/news/${news.slug}`} key={index}>
                            <div
                               key={index}
                               className='flex flex-col gap-4 rounded-xl bg-white p-6 transition-colors hover:bg-blue-1 hover:bg-opacity-10 md:flex-row'
@@ -129,7 +130,7 @@ const NewsRoom: React.FC<{
                                  </p>
                               </div>
                            </div>
-                        </Link>
+                        </LocalizedLink>
                      ))}
                   </div>
                </div>

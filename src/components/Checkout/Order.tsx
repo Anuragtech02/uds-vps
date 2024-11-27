@@ -87,13 +87,16 @@ const Order = () => {
                Your personal data will be used to process your order, support
                your experience throughout this website, and for other purposes
                described in our{' '}
-               <Link className='underline' href='/privacy-policy'>
+               <LocalizedLink className='underline' href='/privacy-policy'>
                   privacy policy
-               </Link>
+               </LocalizedLink>
                . <br />I have read and agree to the website{' '}
-               <Link className='underline' href='/terms-and-conditions'>
+               <LocalizedLink
+                  className='underline'
+                  href='/terms-and-conditions'
+               >
                   terms and conditions
-               </Link>
+               </LocalizedLink>
                *
             </label>
          </div>

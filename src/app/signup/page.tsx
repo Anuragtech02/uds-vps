@@ -135,7 +135,7 @@ const SignUp = () => {
                         </div>
                      </div>
                      {err && (
-                        <p className='1s animate-bounce text-sm font-semibold text-red-500 mt-2'>
+                        <p className='1s mt-2 animate-bounce text-sm font-semibold text-red-500'>
                            {err}
                         </p>
                      )}
@@ -164,9 +164,9 @@ const SignUp = () => {
                      </Button>
                      <p className='mx-auto mt-6 text-center md:w-2/3'>
                         By continuing, you agree to our{' '}
-                        <Link href='' className='text-[#007AFF]'>
+                        <LocalizedLink href='' className='text-[#007AFF]'>
                            Terms and Privacy Policy.
-                        </Link>
+                        </LocalizedLink>
                      </p>
                   </div>
                </form>
@@ -175,9 +175,9 @@ const SignUp = () => {
          <div className='mt-10 text-center'>
             <p>
                Already have an account?{' '}
-               <Link href='/login' className='text-[#007AFF]'>
+               <LocalizedLink href='/login' className='text-[#007AFF]'>
                   Login
-               </Link>
+               </LocalizedLink>
             </p>
          </div>
       </div>

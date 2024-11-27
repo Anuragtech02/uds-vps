@@ -19,6 +19,7 @@ import {
 } from '@/utils/cart-utils.util';
 import { useRouter } from 'next/navigation';
 import ReportFAQs from './ReportFAQs';
+import { LocalizedLink } from '../commons/LocalizedLink';
 
 // Define type for report variants
 export interface Variant {
@@ -205,15 +206,15 @@ const ReportBlock: React.FC<ReportBlockProps> = ({ data }) => {
    return (
       <div className='container py-10 md:py-16 md:pt-10'>
          <div className='flex items-center gap-2 pb-10 md:text-lg'>
-            <Link href='/'>
+            <LocalizedLink href='/'>
                <p>Home</p>
-            </Link>
+            </LocalizedLink>
             <span>
                <BiChevronRight />
             </span>
-            <Link href='/reports'>
+            <LocalizedLink href='/reports'>
                <p>Report Store</p>
-            </Link>
+            </LocalizedLink>
             <span>
                <BiChevronRight />
             </span>
@@ -266,7 +267,7 @@ const ReportBlock: React.FC<ReportBlockProps> = ({ data }) => {
                      )}
                   </Button>
                </div>
-               <Link
+               <LocalizedLink
                   href={getCTALink(
                      reportData.leftSectionSecondaryCTAButton.link,
                   )}
@@ -275,7 +276,7 @@ const ReportBlock: React.FC<ReportBlockProps> = ({ data }) => {
                      {'Request For Customization' ||
                         reportData.leftSectionSecondaryCTAButton.title}
                   </Button>
-               </Link>
+               </LocalizedLink>
             </div>
             <div className='flex-[0.77]'>
                <ReportBlockData data={reportData} />

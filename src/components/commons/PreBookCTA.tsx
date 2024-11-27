@@ -2,6 +2,7 @@ import { FaArrowRightLong } from 'react-icons/fa6';
 import Button from './Button';
 import prebookBg from '@/assets/img/prebook-bg.png';
 import Link from 'next/link';
+import { LocalizedLink } from './LocalizedLink';
 
 const PreBookCTA: React.FC<{
    title: string;
@@ -24,7 +25,7 @@ const PreBookCTA: React.FC<{
                   __html: title,
                }}
             ></h2>
-            <Link href={ctaButton?.link || ''}>
+            <LocalizedLink href={ctaButton?.link || ''}>
                <Button
                   size='large'
                   variant='light'
@@ -33,7 +34,7 @@ const PreBookCTA: React.FC<{
                >
                   {ctaButton?.title}
                </Button>
-            </Link>
+            </LocalizedLink>
          </div>
       </div>
    );

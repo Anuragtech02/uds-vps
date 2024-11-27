@@ -4,6 +4,7 @@ import { CalendarSvg } from '../commons/Icons';
 import { FC } from 'react';
 import Button from '../commons/Button';
 import Link from 'next/link';
+import { LocalizedLink } from '../commons/LocalizedLink';
 
 interface ReportStoreItemProps {
    title: string;
@@ -32,9 +33,9 @@ const ReportStoreItem: FC<ReportStoreItemProps> = ({
          </div>
          <div className='grow space-y-3 md:w-2/3'>
             <h4 className='line-clamp-3 overflow-hidden text-xl font-semibold hover:underline'>
-               <Link href={`/reports/${slug}`} className='w-full'>
+               <LocalizedLink href={`/reports/${slug}`} className='w-full'>
                   {title}
-               </Link>
+               </LocalizedLink>
             </h4>
             {viewType === 'list' && (
                <p className='text-gray-600'>
@@ -55,14 +56,14 @@ const ReportStoreItem: FC<ReportStoreItemProps> = ({
                      {date}
                   </p>
                   {/* <p className='text-sm font-semibold'>SKU: {sku}</p> */}
-                  <Link
+                  <LocalizedLink
                      href={`/reports/${slug}?popup=report-enquiry`}
                      className='mt-2'
                   >
                      <Button variant='light' size='small'>
                         Download Sample
                      </Button>
-                  </Link>
+                  </LocalizedLink>
                </div>
             </div>
          </div>

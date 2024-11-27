@@ -1,11 +1,11 @@
 import Link from 'next/link';
 import BlogItem from '../Blog/BlogItem';
 
-const BlogResults = ({ blogs }: {blogs: Array<any>}) => {
+const BlogResults = ({ blogs }: { blogs: Array<any> }) => {
    return (
       <div>
          {blogs?.map((blog: any) => (
-            <Link href={`/blogs/${blog?.slug}`} key={blog?.id}>
+            <LocalizedLink href={`/blogs/${blog?.slug}`} key={blog?.id}>
                <BlogItem
                   key={blog.id}
                   thumbnailImage={blog?.thumbnailImage}
@@ -13,7 +13,7 @@ const BlogResults = ({ blogs }: {blogs: Array<any>}) => {
                   title={blog?.title}
                   shortDescription={blog?.shortDescription}
                />
-            </Link>
+            </LocalizedLink>
          ))}
          {blogs?.length === 0 && <p>No blogs found</p>}
       </div>

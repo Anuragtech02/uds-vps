@@ -60,16 +60,16 @@ const Hero = ({ hero }: { hero: heroItem }) => {
                      {/* {hero?.heroHeading} */}
                   </h1>
                   <div className='flex items-center justify-center gap-4 pt-6 md:pt-10'>
-                     <Link href={hero?.heroPrimaryCTAButton?.link}>
+                     <LocalizedLink href={hero?.heroPrimaryCTAButton?.link}>
                         <Button variant='secondary'>
                            {hero?.heroPrimaryCTAButton?.title}
                         </Button>
-                     </Link>
-                     <Link href={hero?.heroSecondaryCTAButton?.link}>
+                     </LocalizedLink>
+                     <LocalizedLink href={hero?.heroSecondaryCTAButton?.link}>
                         <Button variant='light'>
                            {hero?.heroSecondaryCTAButton?.title}
                         </Button>
-                     </Link>
+                     </LocalizedLink>
                   </div>
                </div>
             </div>

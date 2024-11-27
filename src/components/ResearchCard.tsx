@@ -3,6 +3,7 @@ import { FC } from 'react';
 import { CalendarSvg } from './commons/Icons';
 import Link from 'next/link';
 import Button from './commons/Button';
+import { LocalizedLink } from './commons/LocalizedLink';
 
 interface ResearchCardProps {
    type: string;
@@ -41,7 +42,7 @@ const ResearchCard: FC<ResearchCardProps> = ({
          <p
             className={`my-2 line-clamp-2 overflow-hidden font-bold hover:underline ${type === 'latest' ? 'text-base' : 'text-xl'}`}
          >
-            <Link href={`/reports/${slug}`}>{title}</Link>
+            <LocalizedLink href={`/reports/${slug}`}>{title}</LocalizedLink>
          </p>
          {type === 'upcoming' && (
             <div className='flex flex-col gap-2 text-sm'>
@@ -54,7 +55,7 @@ const ResearchCard: FC<ResearchCardProps> = ({
                   {date}
                </p>
 
-               {/* <Link href={`/reports/${sku || 1254}`}>
+               {/* <LocalizedLink href={`/reports/${sku || 1254}`}>
                      <Button
                         onClick={cta}
                         size='small'
@@ -63,17 +64,17 @@ const ResearchCard: FC<ResearchCardProps> = ({
                      >
                         Select options
                      </Button>
-                  </Link> */}
-               <Link href={`/reports/${slug}?popup=report-enquiry`}>
+                  </LocalizedLink> */}
+               <LocalizedLink href={`/reports/${slug}?popup=report-enquiry`}>
                   <Button variant='light' size='small' className='w-full'>
                      Download Sample
                   </Button>
-               </Link>
+               </LocalizedLink>
             </div>
          )}
          {/* {type === 'latest' && (
                <p className='mt-2 flex items-center gap-2 text-xs uppercase'>
-                  <Link href={`/reports/${sku || 1254}`}>View Report </Link>{' '}
+                  <LocalizedLink href={`/reports/${sku || 1254}`}>View Report </LocalizedLink>{' '}
                   <span>
                      <BsArrowRight />
                   </span>

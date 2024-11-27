@@ -3,12 +3,12 @@ import Button from '../commons/Button';
 import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import StrapiImage from '../StrapiImage/StrapiImage';
-import Link from 'next/link';
 import { getCTALink } from '@/utils/generic-methods';
 import { cacheRecentReports } from '@/utils/cache-recent-reports.utils';
 import { useSelectedLicenseStore } from '@/stores/selectedLicense.store';
 import { useRouter } from 'next/navigation';
 import { addToCart } from '@/utils/cart-utils.util';
+import { LocalizedLink } from '../commons/LocalizedLink';
 
 const Header: React.FC<{ data: any }> = ({ data }) => {
    const reportHeaderData = {
@@ -146,11 +146,11 @@ const Header: React.FC<{ data: any }> = ({ data }) => {
                            <div className='flex items-center gap-2'>
                               <p className='text-md text-s-500'>Industry:</p>
                               <p className='text-md text-blue-4 hover:underline'>
-                                 <Link
+                                 <LocalizedLink
                                     href={`/reports/?industries=${reportHeaderData.industry.slug}`}
                                  >
                                     {reportHeaderData.industry.name}
-                                 </Link>
+                                 </LocalizedLink>
                               </p>
                            </div>
                            <div className='flex items-center gap-2'>
@@ -167,14 +167,14 @@ const Header: React.FC<{ data: any }> = ({ data }) => {
                         </div>
 
                         <div className='flex w-full items-center gap-2 md:w-auto'>
-                           <Link href='?popup=report-enquiry'>
+                           <LocalizedLink href='?popup=report-enquiry'>
                               <Button
                                  variant='secondary'
                                  className='shrink grow basis-0 md:shrink-0 md:grow-0 md:basis-[unset]'
                               >
                                  {reportHeaderData.heroSectionPrimaryCTA.title}
                               </Button>
-                           </Link>
+                           </LocalizedLink>
 
                            <Button
                               variant='light'
@@ -203,7 +203,7 @@ const Header: React.FC<{ data: any }> = ({ data }) => {
                         {reportHeaderData.title}
                      </h4>
                      <div className='flex w-full items-center gap-2 md:max-w-max md:justify-end'>
-                        <Link
+                        <LocalizedLink
                            href={getCTALink(
                               reportHeaderData.heroSectionPrimaryCTA.link,
                            )}
@@ -212,7 +212,7 @@ const Header: React.FC<{ data: any }> = ({ data }) => {
                            <Button variant='secondary' className='w-full'>
                               {reportHeaderData.heroSectionPrimaryCTA.title}
                            </Button>
-                        </Link>
+                        </LocalizedLink>
                         <div className='shrink grow basis-0 md:min-w-[200px] md:!max-w-[250px] md:shrink-0 md:grow-0 md:basis-[unset]'>
                            <Button
                               variant='light'

@@ -4,6 +4,7 @@ import { FaPhoneAlt } from 'react-icons/fa';
 import { FaCircleUser } from 'react-icons/fa6';
 import { IoIosSearch, IoMdCart } from 'react-icons/io';
 import { IoMail } from 'react-icons/io5';
+import { LocalizedLink } from './LocalizedLink';
 interface ITopbarProps {
    header: {
       phoneNumber: string;
@@ -52,16 +53,16 @@ const Topbar = ({ header, industries }: ITopbarProps) => {
                >
                   <IoIosSearch />
                </span>
-               <Link href='/login'>
+               <LocalizedLink href='/login'>
                   <span className='text-xl'>
                      <FaCircleUser />
                   </span>
-               </Link>
-               <Link href='/cart'>
+               </LocalizedLink>
+               <LocalizedLink href='/cart'>
                   <span className='cursor-pointer text-xl'>
                      <IoMdCart />
                   </span>
-               </Link>
+               </LocalizedLink>
             </div>
          </div>
       </div>

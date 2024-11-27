@@ -12,6 +12,7 @@ import {
 } from 'react-icons/fa6';
 import { usePathname } from 'next/navigation';
 import CustomResearchCTA from './CustomResearchCTA';
+import { LocalizedLink } from './LocalizedLink';
 
 const socials = [];
 const invalidRoutes = [
@@ -53,11 +54,13 @@ const Footer = ({ footer, quickLinks }: any) => {
                   <p className='mx-auto mt-4 text-s-300 md:w-2/3 md:text-2xl'>
                      {footer?.footerCTA?.description}
                   </p>
-                  <Link href={footer?.footerCTA?.ctaButton?.link ?? '/contact'}>
+                  <LocalizedLink
+                     href={footer?.footerCTA?.ctaButton?.link ?? '/contact'}
+                  >
                      <Button variant='primary' className='mx-auto mt-10'>
                         {footer?.footerCTA?.ctaButton?.title}
                      </Button>
-                  </Link>
+                  </LocalizedLink>
                </div>
             </div>
             <div className='container mx-auto px-4'>
@@ -81,12 +84,12 @@ const Footer = ({ footer, quickLinks }: any) => {
                      <ul className='space-y-2'>
                         {quickLinks?.map((item: any) => (
                            <li key={item}>
-                              <Link
+                              <LocalizedLink
                                  href={item?.url ?? ''}
                                  className='hover:text-gray-300 hover:underline'
                               >
                                  {item?.title}
-                              </Link>
+                              </LocalizedLink>
                            </li>
                         ))}
                      </ul>
@@ -100,12 +103,12 @@ const Footer = ({ footer, quickLinks }: any) => {
                      <ul className='space-y-2'>
                         {footer.industries?.data?.map((item: any) => (
                            <li key={item?.attributes?.slug}>
-                              <Link
+                              <LocalizedLink
                                  href={`/reports?industries=${item?.attributes?.slug}`}
                                  className='hover:text-gray-300 hover:underline'
                               >
                                  {item?.attributes?.name}
-                              </Link>
+                              </LocalizedLink>
                            </li>
                         ))}
                      </ul>
@@ -116,14 +119,14 @@ const Footer = ({ footer, quickLinks }: any) => {
                      <p className='mb-4 text-lg text-white'>CONTACT</p>
                      <p className='mb-2'>{footer?.phoneNumber}</p>
                      <p className='mb-4'>{footer?.email}</p>
-                     <Link href='?popup=report-enquiry'>
+                     <LocalizedLink href='?popup=report-enquiry'>
                         <Button
                            variant='light'
                            className='border border-blue-9 !bg-blue-1 text-blue-9'
                         >
                            Send An Enquiry →
                         </Button>
-                     </Link>
+                     </LocalizedLink>
                   </div>
                </div>
 

@@ -100,7 +100,7 @@ const News = async ({
             <div className='grid flex-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-3'>
                {newsList?.length > 0 ? (
                   newsList?.map((news: newsItem, i: number) => (
-                     <Link href={`/news/${news?.slug}`} key={i}>
+                     <LocalizedLink href={`/news/${news?.slug}`} key={i}>
                         <NewsItem
                            key={i}
                            title={news?.title}
@@ -111,7 +111,7 @@ const News = async ({
                               year: 'numeric',
                            }).format(new Date(news?.publishedAt))}
                         />
-                     </Link>
+                     </LocalizedLink>
                   ))
                ) : (
                   <p className='rounded bg-gray-100 p-4 text-2xl font-bold text-gray-600'>
