@@ -260,7 +260,10 @@ const ReportBlock: React.FC<ReportBlockProps> = ({ data }) => {
                      variant='secondary'
                      onClick={handleBuyNow}
                   >
-                     {reportData.leftSectionPrimaryCTAButton.title}
+                     {reportData.leftSectionPrimaryCTAButton.title?.replace(
+                        'Purchase',
+                        'Buy',
+                     )}
                   </Button>
                </div>
                <Link
@@ -269,7 +272,8 @@ const ReportBlock: React.FC<ReportBlockProps> = ({ data }) => {
                   )}
                >
                   <Button className='w-full py-3' variant='light'>
-                     {reportData.leftSectionSecondaryCTAButton.title}
+                     {'Request For Customization' ||
+                        reportData.leftSectionSecondaryCTAButton.title}
                   </Button>
                </Link>
             </div>

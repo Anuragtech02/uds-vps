@@ -181,7 +181,10 @@ const Header: React.FC<{ data: any }> = ({ data }) => {
                               className='shrink grow basis-0 md:shrink-0 md:grow-0 md:basis-[unset]'
                               onClick={handleBuyNow}
                            >
-                              {reportHeaderData.heroSectionSecondaryCTA.title}
+                              {reportHeaderData.heroSectionSecondaryCTA.title?.replace(
+                                 'Purchase',
+                                 'Buy',
+                              )}
                            </Button>
                         </div>
                      </div>

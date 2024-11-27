@@ -25,7 +25,7 @@ const invalidRoutes = [
 
 const Footer = ({ footer, quickLinks }: any) => {
    const pathname = usePathname();
-   console.log(footer);
+
    return (
       <>
          {/* {invalidRoutes.includes(pathname) ? null : (

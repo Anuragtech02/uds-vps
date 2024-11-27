@@ -30,7 +30,7 @@ const AllServices = ({ services }: any) => {
                </div>
 
                {/* Full width main content section below */}
-               <div className='prose max-w-none border-t pt-8'>
+               <div className='prose report-content max-w-none border-t pt-8'>
                   <div
                      dangerouslySetInnerHTML={{
                         __html: service?.description,

@@ -6,6 +6,7 @@ import {
    GoogleReCaptcha,
 } from 'react-google-recaptcha-v3';
 import { submitContactForm } from '@/utils/api/csr-services';
+import Button from '../commons/Button';
 
 const DemoRequestForm = () => {
    const [formFields, setFormFields] = useState({
@@ -159,13 +160,13 @@ const DemoRequestForm = () => {
                   </p>
                )}
                <div>
-                  <button
-                     className='rounded-md bg-blue-2 px-4 py-2 text-white'
+                  <Button
+                     className='w-full !bg-blue-1 text-white'
                      type='submit'
                      disabled={isSubmitting}
                   >
-                     {isSubmitting ? 'Submitting...' : 'Request Demo'}
-                  </button>
+                     {isSubmitting ? 'Submitting...' : 'Get Sample on Email'}
+                  </Button>
                </div>
             </form>
          </div>

@@ -30,8 +30,35 @@ const ReportBlockData: React.FC<{ data: any }> = ({ data }) => {
       return doc.body.innerHTML;
    }
 
+   function processReportData() {
+      // remove all paragraph tags that only have a line break
+      // <p><br>&nbsp;</p>
+      const reportDataEl = document.getElementById('report-data');
+
+      if (reportDataEl) {
+         const pTags = reportDataEl.querySelectorAll('p');
+         console.log({ pTags });
+         pTags.forEach((pTag) => {
+            // <p><br>&nbsp;</p>
+            console.log(pTag.innerHTML);
+            if (
+               pTag.innerHTML === '<br>&nbsp;' ||
+               pTag.innerHTML === '<br>' ||
+               pTag.innerHTML === '<br> ' ||
+               pTag.innerHTML === '<br> &nbsp;' ||
+               pTag.innerHTML === '&nbsp;' ||
+               pTag.innerHTML === '<br><br>&nbsp;'
+            ) {
+               console.log('first');
+               // document.getElementById('report-data')?.removeChild(pTag);
+            }
+         });
+      }
+   }
+
    useEffect(() => {
       setRmData(processAndRemoveH2FromRM());
+      processReportData();
    }, []);
 
    return (
