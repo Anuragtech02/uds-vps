@@ -1,3 +1,4 @@
+export const runtime = 'edge';
 import ContactDetails from '@/components/Contact/ContactDetails';
 import ContactForm from '@/components/Contact/ContactForm';
 import { getContagePageData } from '@/utils/api/services';

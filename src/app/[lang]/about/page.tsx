@@ -1,3 +1,4 @@
+export const runtime = 'edge';
 import AboutCta from '@/components/About/AboutCta';
 import AboutData from '@/components/About/AboutData';
 import Hero from '@/components/About/Hero';

@@ -1,3 +1,4 @@
+export const runtime = 'edge';
 import GetCallBackForm from '@/components/commons/GetCallBackForm';
 import ClientSearchHero from '@/components/Home/ClientSearchHero';
 import SearchResults from '@/components/Search/SearchResults';

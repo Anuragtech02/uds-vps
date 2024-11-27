@@ -1,3 +1,5 @@
+export const runtime = 'edge';
+
 import BillingDetails from '@/components/Checkout/BillingDetails';
 import Order from '@/components/Checkout/Order';
 import Button from '@/components/commons/Button';

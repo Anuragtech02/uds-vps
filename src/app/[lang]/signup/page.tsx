@@ -1,4 +1,5 @@
 'use client';
+export const runtime = 'edge';
 import Button from '@/components/commons/Button';
 import { LocalizedLink } from '@/components/commons/LocalizedLink';
 import { signup } from '@/utils/api/csr-services';

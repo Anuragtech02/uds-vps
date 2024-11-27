@@ -1,3 +1,5 @@
+export const runtime = 'edge';
+
 import { FC, Suspense, useState } from 'react';
 import ReportStoreItem from '@/components/ReportStore/ReportItem';
 import ReportStoreFilters from '@/components/ReportStore/ReportStoreFilters';

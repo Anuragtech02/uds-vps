@@ -1,3 +1,5 @@
+export const runtime = 'edge';
+
 import BlogBody from '@/components/Blog/BlogBody';
 import BlogSidebar from '@/components/Blog/BlogSidebar';
 import Header from '@/components/Blog/Header';

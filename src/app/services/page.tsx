@@ -1,3 +1,4 @@
+export const runtime = 'edge';
 import AllServices from '@/components/Services/AllServices';
 import Hero from '@/components/Services/Hero';
 import { getServicesPage, getAllServices } from '@/utils/api/services';

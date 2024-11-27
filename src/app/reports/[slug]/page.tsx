@@ -1,3 +1,4 @@
+export const runtime = 'edge';
 import ExploreProjects from '@/components/Report/ExploreProjects';
 import Header from '@/components/Report/Header';
 import ReportBlock from '@/components/Report/ReportBlock';

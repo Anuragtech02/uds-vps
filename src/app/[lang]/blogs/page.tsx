@@ -1,3 +1,4 @@
+export const runtime = 'edge';
 import BlogFilters from '@/components/Blog/BlogFilters';
 import BlogItem from '@/components/Blog/BlogItem';
 import { LocalizedLink } from '@/components/commons/LocalizedLink';
