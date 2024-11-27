@@ -1,5 +1,6 @@
 import BlogFilters from '@/components/Blog/BlogFilters';
 import BlogItem from '@/components/Blog/BlogItem';
+import { LocalizedLink } from '@/components/commons/LocalizedLink';
 import Pagination from '@/components/ReportStore/Pagination';
 import { getBlogsListingPage, getIndustries } from '@/utils/api/services';
 import Link from 'next/link';

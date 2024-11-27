@@ -1,3 +1,4 @@
+import { LocalizedLink } from '@/components/commons/LocalizedLink';
 import NewsFilters from '@/components/News/NewsFilters';
 import NewsItem from '@/components/News/NewsItem';
 import Pagination from '@/components/ReportStore/Pagination';

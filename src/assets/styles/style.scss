@@ -241,6 +241,71 @@
    color: transparent !important;
 }
 
+.gtranslate_wrapper {
+   position: relative;
+
+   .gt_selector {
+      appearance: none;
+      background-color: transparent;
+      border: 1px solid #c1cfeb;
+      border-radius: 8px;
+      color: #1e1e1e;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      padding: 4px 36px 4px 8px;
+      transition: all 0.2s ease-in-out;
+      width: auto;
+      min-width: 160px;
+
+      // Custom dropdown arrow
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23333' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 8px center;
+      background-size: 16px;
+
+      &:hover {
+         border-color: #2b3b7c;
+         background-color: #f8f9fa;
+      }
+
+      &:focus {
+         outline: none;
+         border-color: #2b3b7c;
+         box-shadow: 0 0 0 2px rgba(43, 59, 124, 0.1);
+      }
+
+      option {
+         background-color: white;
+         color: #1e1e1e;
+         padding: 8px;
+      }
+   }
+
+   // Hide the Google Translate element
+   #google_translate_element2 {
+      display: none;
+   }
+}
+
+// Additional styling for the container
+.gt_container--wz96ug {
+   display: inline-block;
+   margin: 0;
+   padding: 0;
+}
+
+// Optional: Add a custom class for mobile responsiveness
+@media (max-width: 768px) {
+   .gtranslate_wrapper {
+      .gt_selector {
+         min-width: 120px;
+         font-size: 13px;
+         padding: 6px 32px 6px 10px;
+      }
+   }
+}
+
 .VIpgJd-ZVi9od-aZ2wEe-wOHMyf {
    visibility: hidden !important;
 }
