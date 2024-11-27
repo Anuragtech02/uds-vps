@@ -34,8 +34,7 @@ export async function generateMetadata({
    };
 }
 
-async function Home({ lang }) {
-   console.log({ lang });
+async function Home() {
    let homePage: Awaited<ReturnType<typeof getHomePage>>;
    let upcomingReports: Awaited<ReturnType<typeof getAllReports>>;
    let latestReports: Awaited<ReturnType<typeof getAllReports>>;
@@ -115,6 +114,6 @@ async function Home({ lang }) {
    );
 }
 
-export default function Page({ lang }) {
-   return <Home lang={lang} />;
+export default function Page() {
+   return <Home />;
 }

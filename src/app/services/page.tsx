@@ -30,7 +30,7 @@ const About = async () => {
          shortDescription: service?.attributes?.shortDescription,
          image: service?.attributes?.highlightImage?.data?.attributes?.url,
       }))
-      .sort((a, b) => a.id - b.id);
+      .sort((a: any, b: any) => a.id - b.id);
 
    return (
       <>

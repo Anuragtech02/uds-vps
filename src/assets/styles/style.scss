@@ -72,7 +72,7 @@
 
 /* Paragraph styling */
 .report-content p {
-   margin-bottom: 1rem !important;
+   // margin-bottom: 1rem !important;
    line-height: 1.8 !important;
 }
 
@@ -109,7 +109,7 @@
 .report-content ul,
 .report-content ol {
    padding-left: 1.5rem !important;
-   margin-bottom: 1.5rem !important;
+   // margin-bottom: 1.5rem !important;
    padding-left: 1.5rem !important;
 }
 
@@ -159,12 +159,12 @@
    height: 500px !important;
 }
 
-.report-content {
-   p br,
-   br {
-      display: none !important;
-   }
-}
+// .report-content {
+//    p br,
+//    br {
+//       display: none !important;
+//    }
+// }
 
 .report-content p {
    &:has(:only-child[data-value='&nbsp;']),

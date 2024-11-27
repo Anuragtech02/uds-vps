@@ -11,6 +11,7 @@ import {
    ICartItem,
    removeItemFromCart,
 } from '@/utils/cart-utils.util';
+import { LocalizedLink } from '../commons/LocalizedLink';
 
 // Define types for cart items
 interface License {

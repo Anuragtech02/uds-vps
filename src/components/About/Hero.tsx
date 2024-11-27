@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import Button from '../commons/Button';
+import { LocalizedLink } from '../commons/LocalizedLink';
 interface heroItem {
    heroHeading: string;
    heroPrimaryCTAButton: {

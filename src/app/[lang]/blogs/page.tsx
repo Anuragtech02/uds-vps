@@ -1,5 +1,6 @@
 import BlogFilters from '@/components/Blog/BlogFilters';
 import BlogItem from '@/components/Blog/BlogItem';
+import { LocalizedLink } from '@/components/commons/LocalizedLink';
 import Pagination from '@/components/ReportStore/Pagination';
 import { getBlogsListingPage, getIndustries } from '@/utils/api/services';
 import Link from 'next/link';
@@ -37,14 +38,12 @@ const ITEMS_PER_PAGE = 10;
  */
 const Blog = async ({
    searchParams,
-   lang,
 }: {
    searchParams: {
       filter?: string;
       page?: string;
    };
 }): Promise<JSX.Element> => {
-   console.log({ lang });
    const filters = searchParams.filter?.split(',').filter(Boolean) || [];
    const currentPage = parseInt(searchParams.page || '1', 10);
    const filtersQuery = filters.reduce(

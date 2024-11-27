@@ -1,5 +1,6 @@
 import { IoMdCloseCircle } from 'react-icons/io';
 import Link from 'next/link';
+import { LocalizedLink } from '@/components/commons/LocalizedLink';
 
 export default function PaymentFailure() {
    return (

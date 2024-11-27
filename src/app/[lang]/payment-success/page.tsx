@@ -1,3 +1,4 @@
+import { LocalizedLink } from '@/components/commons/LocalizedLink';
 import Link from 'next/link';
 import { IoMdCheckmarkCircle } from 'react-icons/io';
 

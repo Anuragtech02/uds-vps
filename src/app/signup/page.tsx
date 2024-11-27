@@ -1,5 +1,6 @@
 'use client';
 import Button from '@/components/commons/Button';
+import { LocalizedLink } from '@/components/commons/LocalizedLink';
 import { signup } from '@/utils/api/csr-services';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';

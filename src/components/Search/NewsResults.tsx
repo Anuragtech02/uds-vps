@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import NewsItem from '../News/NewsItem';
+import { LocalizedLink } from '../commons/LocalizedLink';
 
 const NewsResults = ({ news }: any) => {
    return (

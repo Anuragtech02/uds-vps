@@ -1,3 +1,5 @@
+export const runtime = 'edge';
+
 import MediaCitation from '@/components/commons/MediaCitation';
 import Hero from '@/components/Home/Hero';
 import LatestResearch from '@/components/Home/LatestResearch';
@@ -34,7 +36,7 @@ export async function generateMetadata({
    };
 }
 
-async function Home({ lang }) {
+async function Home() {
    let homePage: Awaited<ReturnType<typeof getHomePage>>;
    let upcomingReports: Awaited<ReturnType<typeof getAllReports>>;
    let latestReports: Awaited<ReturnType<typeof getAllReports>>;
@@ -114,6 +116,6 @@ async function Home({ lang }) {
    );
 }
 
-export default function Page({ parmas }: any) {
-   return <Home lang={parmas?.lang} />;
+export default function Page() {
+   return <Home  />;
 }

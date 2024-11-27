@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import BlogItem from '../Blog/BlogItem';
+import { LocalizedLink } from '../commons/LocalizedLink';
 
 const BlogResults = ({ blogs }: { blogs: Array<any> }) => {
    return (

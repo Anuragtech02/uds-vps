@@ -111,6 +111,14 @@ const Footer = ({ footer, quickLinks }: any) => {
                               </LocalizedLink>
                            </li>
                         ))}
+                        <li>
+                           <LocalizedLink
+                              href='/reports'
+                              className='hover:text-gray-300 hover:underline'
+                           >
+                              View All
+                           </LocalizedLink>
+                        </li>
                      </ul>
                   </div>
 
