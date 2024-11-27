@@ -7,12 +7,14 @@ import { getAllReports, getIndustries } from '@/utils/api/services';
 import Link from 'next/link';
 import ReportListLoading from '@/components/ReportStore/ReportListLoading';
 import Pagination from '@/components/ReportStore/Pagination';
+import ViewToggle from '@/components/Report/ViewToggle';
 
 interface SearchParams {
    // filter?: string;
    industries?: string;
    geographies?: string;
    page?: string;
+   viewType?: string;
 }
 
 interface Report {
@@ -31,7 +33,7 @@ interface ReportStoreProps {
 const ITEMS_PER_PAGE = 10;
 
 const ReportStore: FC<ReportStoreProps> = async ({ searchParams }) => {
-   const viewType = 'list';
+   const viewType = searchParams.viewType || 'list';
    const industryFilters =
       searchParams.industries?.split(',').filter(Boolean) || [];
    const geographyFilters =
@@ -64,50 +66,61 @@ const ReportStore: FC<ReportStoreProps> = async ({ searchParams }) => {
    const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
 
    return (
-      <div className='container pt-40'>
-         <h1 className='mt-5 text-center font-bold'>Report Store</h1>
+      <div className="container pt-40">
+      <h1 className="mt-5 text-center font-bold">Report Store</h1>
 
-         <div className='my-10 flex flex-col items-start justify-between gap-6 lg:min-h-[50vh] lg:flex-row'>
-            <div className='w-full lg:sticky lg:top-48 lg:w-[350px]'>
-               <Suspense fallback={<div>Loading filters...</div>}>
-                  <ReportStoreFilters
-                     filters={filters}
-                     industries={industriesData?.data || []}
-                  />
-               </Suspense>
-            </div>
-            <Suspense fallback={<ReportListLoading />}>
-               <div
-                  className={`items-between grid flex-1 grid-cols-1 gap-4 xl:${viewType === 'list' ? 'grid-cols-1' : 'grid-cols-2'}`}
-               >
-                  {reportsList?.data && reportsList.data.length > 0 ? (
-                     reportsList.data.map((report: Report) => (
-                        <ReportStoreItem
-                           key={report.attributes.slug}
-                           title={report.attributes.title}
-                           date={new Date(
-                              report.attributes.publishedAt,
-                           ).toLocaleDateString()}
-                           slug={report.attributes.slug}
-                           description={report.attributes.shortDescription}
-                        />
-                     ))
-                  ) : (
-                     <p className='rounded bg-gray-100 p-4 text-2xl font-bold text-gray-600'>
-                        No reports found
-                     </p>
-                  )}
-               </div>
-            </Suspense>
-         </div>
-         {totalPages > 1 && (
-            <Pagination
-               filters={filters}
-               currentPage={currentPage}
-               totalPages={totalPages}
+      <div className="my-10 flex flex-col items-start justify-between gap-6 lg:min-h-[50vh] lg:flex-row">
+        <div className="w-full lg:sticky lg:top-48 lg:w-[350px]">
+          <Suspense fallback={<div>Loading filters...</div>}>
+            <ReportStoreFilters
+              filters={filters}
+              industries={industriesData?.data || []}
             />
-         )}
+          </Suspense>
+        </div>
+        <div className="flex-1">
+          <div className="mb-4 flex justify-between items-center">
+            <h4>All Reports</h4>
+            <ViewToggle currentView={viewType} />
+          </div>
+          <Suspense fallback={<ReportListLoading />}>
+            <div
+              className={`grid gap-4 ${
+                viewType === 'list'
+                  ? 'grid-cols-1'
+                  : 'grid-cols-1 md:grid-cols-2 xl:grid-cols-2'
+              }`}
+            >
+              {reportsList?.data && reportsList.data.length > 0 ? (
+                reportsList.data.map((report: Report) => (
+                  <ReportStoreItem
+                    key={report.attributes.slug}
+                    title={report.attributes.title}
+                    date={new Date(
+                      report.attributes.publishedAt,
+                    ).toLocaleDateString()}
+                    slug={report.attributes.slug}
+                    description={report.attributes.shortDescription}
+                    viewType={viewType}
+                  />
+                ))
+              ) : (
+                <p className="rounded bg-gray-100 p-4 text-2xl font-bold text-gray-600">
+                  No reports found
+                </p>
+              )}
+            </div>
+          </Suspense>
+        </div>
       </div>
+      {totalPages > 1 && (
+        <Pagination
+          filters={filters}
+          currentPage={currentPage}
+          totalPages={totalPages}
+        />
+      )}
+    </div>
    );
 };
 
