@@ -61,18 +61,21 @@ const LatestResearch: React.FC<{ data: any; reports: any }> = ({
 }) => {
    const settings = {
       dots: false,
-      infinite: false,
-      speed: 5000,
+      infinite: true,
+      speed: 2000,
       slidesToShow: 4.2,
+      slidesToScroll: 1,
       arrows: false,
       dynamicHeight: false,
       autoplay: true,
+      autoplaySpeed: 3000,
+      cssEase: "linear",  
       responsive: [
          {
             breakpoint: 1024,
             settings: {
                slidesToShow: 3.2,
-               slidesToScroll: 3,
+               // slidesToScroll: 1,
                infinite: true,
                dots: false,
             },
@@ -81,14 +84,14 @@ const LatestResearch: React.FC<{ data: any; reports: any }> = ({
             breakpoint: 600,
             settings: {
                slidesToShow: 2,
-               slidesToScroll: 2,
+               // slidesToScroll: 2,
             },
          },
          {
             breakpoint: 480,
             settings: {
                slidesToShow: 1,
-               slidesToScroll: 1,
+               // slidesToScroll: 1,
             },
          },
       ],
@@ -107,6 +110,17 @@ const LatestResearch: React.FC<{ data: any; reports: any }> = ({
       },
    };
 
+   function getYear(report: {
+      publishedAt: string;
+      oldPublishedAt: string | null;
+   }){
+      if(report.oldPublishedAt && new Date(report.oldPublishedAt)){
+         return new Date(report.oldPublishedAt).getFullYear().toString();
+      }
+
+      return new Date(report.publishedAt).getFullYear().toString();
+   }
+
    return (
       <section className='min-h-full py-10 md:py-20'>
          <div className='container'>
@@ -117,15 +131,15 @@ const LatestResearch: React.FC<{ data: any; reports: any }> = ({
             />
             <div className='my-8 md:my-10'>
                <Slider {...settings}>
-                  {reports.map((data: any, index: number) => (
+                  {reports.map((report: any, index: number) => (
                      <div key={index} className='pr-4'>
                         <ResearchCard
                            key={index}
                            type='latest'
-                           title={data?.title}
-                           slug={data?.slug}
-                           year={data?.year}
-                           image={data?.image || sampleImage}
+                           title={report?.title}
+                           slug={report?.slug}
+                           year={getYear(report)}
+                           image={report?.highlightImage?.data?.attributes?.formats?.small?.url || sampleImage}
                         />
                      </div>
                   ))}

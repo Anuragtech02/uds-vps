@@ -6,6 +6,7 @@ const AllServices = ({ services }: any) => {
          {services?.map((service: any, index: number) => (
             <div
                key={index}
+               id={service?.slug}
                className='space-y-8 rounded-md border border-s-300 bg-white p-8'
             >
                {/* Top section with image and short description */}

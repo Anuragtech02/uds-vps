@@ -224,7 +224,7 @@ const Cart = () => {
                </div>
             </div>
             <div className='rounded-xl border border-s-400 p-3'>
-               <div className='hidden items-center justify-between font-bold text-s-600 sm:flex md:text-2xl md:text-lg'>
+               <div className='hidden items-center justify-between font-bold text-s-600 sm:flex md:text-lg'>
                   <div className='w-1/2'>
                      <p>Product</p>
                   </div>
@@ -232,10 +232,7 @@ const Cart = () => {
                      <div className='w-1/3'>
                         <p>Price</p>
                      </div>
-                     <div className='w-1/3'>
-                        <p>Quantity</p>
-                     </div>
-                     <div className='w-1/3 text-right'>
+                     <div className='w-1/3 text-right ml-auto'>
                         <p>Subtotal</p>
                      </div>
                   </div>

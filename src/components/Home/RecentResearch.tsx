@@ -56,6 +56,19 @@ const RecentResearch: React.FC<{ data: any }> = ({ data }) => {
       recentResearchSectionReportsCount: reports?.length || 0,
    };
    if (reports?.length < 1) return null;
+
+
+   function getYear(report: {
+      publishedAt: string;
+      oldPublishedAt: string | null;
+   }){
+      if(report.oldPublishedAt && new Date(report.oldPublishedAt)){
+         return new Date(report.oldPublishedAt).getFullYear().toString();
+      }
+
+      return new Date(report.publishedAt).getFullYear().toString();
+   }
+
    return (
       <section className='min-h-full pt-10 md:pt-20'>
          <div className='container'>
@@ -66,16 +79,16 @@ const RecentResearch: React.FC<{ data: any }> = ({ data }) => {
             />
             <div className='my-8 md:my-10'>
                <div className='grid grid-cols-2 md:grid-cols-5'>
-                  {reports?.map((data: any, index: number) => {
+                  {reports?.map((report: any, index: number) => {
                      return (
                         <div key={index} className='pr-4'>
                            <ResearchCard
                               key={index}
                               type='latest'
-                              title={data?.title}
-                              slug={data?.slug}
-                              year={data?.year}
-                              image={data?.image || sampleImage}
+                              title={report?.title}
+                              slug={report?.slug}
+                              year={getYear(report)}
+                              image={report?.hilightImage?.data?.attributes?.formats?.small?.url || sampleImage}
                            />
                         </div>
                      );

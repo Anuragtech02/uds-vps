@@ -46,7 +46,7 @@ const CartItem: FC<CartItemProps> = ({
             <div className='w-1/3'>
                <p className='text-blue-3'>${price}</p>
             </div>
-            <div className='flex w-1/3 justify-center sm:block'>
+            {/* <div className='flex w-1/3 justify-center sm:block'>
                <div className='flex w-max gap-2 rounded-md border border-s-300 px-2 py-1 md:gap-4 md:px-4 md:py-2'>
                   <button
                      title='Decrease Quantity'
@@ -75,9 +75,9 @@ const CartItem: FC<CartItemProps> = ({
                      <FaCirclePlus />
                   </button>
                </div>
-            </div>
+            </div> */}
 
-            <div className='w-1/3 text-right'>
+            <div className='w-1/3 text-right ml-auto'>
                <p className='text-blue-3'>${price * quantity}</p>
             </div>
          </div>

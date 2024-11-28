@@ -61,7 +61,7 @@ async function Home() {
          getBlogsListingPage(1, 1),
          getNewsListingPage(1, 3),
       ]);
-      console.log(latestBlogs);
+      console.log(latestReports);
    } catch (error) {
       console.error('Error fetching upcoming reports:', error);
    }
@@ -82,7 +82,7 @@ async function Home() {
       title: report?.attributes?.title,
       shortDescription: report?.attributes?.shortDescription,
       publishedAt: report?.attributes?.publishedAt,
-      thumbnailImage: report?.attributes?.thumbnailImage?.data?.attributes,
+      highlightImage: report?.attributes?.highlightImage
    }));
 
    const latestReportList = latestReports?.data?.map((report: any) => ({
@@ -91,7 +91,7 @@ async function Home() {
       title: report?.attributes?.title,
       shortDescription: report?.attributes?.shortDescription,
       publishedAt: report?.attributes?.publishedAt,
-      thumbnailImage: report?.attributes?.thumbnailImage?.data?.attributes,
+      highlightImage: report?.attributes?.highlightImage
    }));
 
    return (

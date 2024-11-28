@@ -81,7 +81,7 @@ async function Home() {
       title: report?.attributes?.title,
       shortDescription: report?.attributes?.shortDescription,
       publishedAt: report?.attributes?.publishedAt,
-      thumbnailImage: report?.attributes?.thumbnailImage?.data?.attributes,
+      highlightImage: report?.attributes?.highlightImage?.data?.attributes,
    }));
 
    const latestReportList = latestReports?.data?.map((report: any) => ({
@@ -90,7 +90,7 @@ async function Home() {
       title: report?.attributes?.title,
       shortDescription: report?.attributes?.shortDescription,
       publishedAt: report?.attributes?.publishedAt,
-      thumbnailImage: report?.attributes?.thumbnailImage?.data?.attributes,
+      highlightImage: report?.attributes?.highlightImage?.data?.attributes,
    }));
 
    return (

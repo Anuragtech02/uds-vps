@@ -138,7 +138,7 @@ const UpcomingReports: React.FC<{ data: any }> = ({ data }) => {
                               data.publishedAt,
                            ).toLocaleDateString()}
                            sku={data.sku}
-                           image={data?.image || sampleImage}
+                           image={data?.highlightImage || sampleImage}
                         />
                      </div>
                   ))}
