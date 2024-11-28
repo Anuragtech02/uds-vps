@@ -38,13 +38,13 @@ export async function generateMetadata({
      
      // Open Graph
      openGraph: {
-       title: seo?.metaSocial?.find(social => social.socialNetwork === 'facebook')?.title || seo?.metaTitle || attributes?.title,
-       description: seo?.metaSocial?.find(social => social.socialNetwork === 'facebook')?.description || seo?.metaDescription || attributes?.shortDescription,
+       title: seo?.metaSocial?.find((social: any) => social.socialNetwork === 'facebook')?.title || seo?.metaTitle || attributes?.title,
+       description: seo?.metaSocial?.find((social: any) => social.socialNetwork === 'facebook')?.description || seo?.metaDescription || attributes?.shortDescription,
        type: 'article',
        url: absoluteUrl(`/reports/${params.slug}`),
        images: [
          {
-           url: seo?.metaSocial?.find(social => social.socialNetwork === 'facebook')?.image?.url || 
+           url: seo?.metaSocial?.find((social: any) => social.socialNetwork === 'facebook')?.image?.url || 
                 seo?.metaImage?.url || 
                 attributes?.highlightImage?.data?.attributes?.url,
            width: 1200,
@@ -58,10 +58,10 @@ export async function generateMetadata({
      // Twitter
      twitter: {
        card: 'summary_large_image',
-       title: seo?.metaSocial?.find(social => social.socialNetwork === 'twitter')?.title || seo?.metaTitle || attributes?.title,
-       description: seo?.metaSocial?.find(social => social.socialNetwork === 'twitter')?.description || seo?.metaDescription || attributes?.shortDescription,
+       title: seo?.metaSocial?.find((social: any) => social.socialNetwork === 'twitter')?.title || seo?.metaTitle || attributes?.title,
+       description: seo?.metaSocial?.find((social: any) => social.socialNetwork === 'twitter')?.description || seo?.metaDescription || attributes?.shortDescription,
        images: [
-         seo?.metaSocial?.find(social => social.socialNetwork === 'twitter')?.image?.url || 
+         seo?.metaSocial?.find((social: any) => social.socialNetwork === 'twitter')?.image?.url || 
          seo?.metaImage?.url || 
          attributes?.highlightImage?.data?.attributes?.url
        ],
