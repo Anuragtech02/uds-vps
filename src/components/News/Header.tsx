@@ -2,6 +2,7 @@
 import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { CalendarSvg, CommentSvg, TagIcon } from '../commons/Icons';
+import { LocalizedLink } from '../commons/LocalizedLink';
 
 const Header: React.FC<{ newsArticle: any }> = ({ newsArticle }) => {
    const headerRef1 = useRef<HTMLDivElement>(null);
@@ -36,6 +37,13 @@ const Header: React.FC<{ newsArticle: any }> = ({ newsArticle }) => {
       year: 'numeric',
    }).format(new Date(newsArticle?.oldPublishedAt || newsArticle?.publishedAt));
 
+   const industries = newsArticle?.industries?.data?.map((industry: any) => {
+      return {
+         id: industry?.id,
+         ...industry?.attributes,
+      };
+   });
+
    return (
       <>
          <div
@@ -49,15 +57,17 @@ const Header: React.FC<{ newsArticle: any }> = ({ newsArticle }) => {
                         {newsArticle?.title}
                      </h1>
                      <div className='mx-auto flex flex-wrap justify-center gap-3'>
-                        {newsArticle?.tags
-                           ?.split(',')
-                           ?.map((tag: any, index: number) => (
+                        {industries?.map((industry: any, index: number) => (
+                           <LocalizedLink
+                              key={index}
+                              href={`/news?industry=${industry?.slug}`}
+                           >
                               <div
-                                 key={index}
                                  className='flex items-center gap-2 rounded-full border border-s-300 bg-s-100 px-4 py-1 text-blue-4'
                               >
-                                 <TagIcon /> {tag?.trim()}
+                                 <TagIcon /> {industry?.name}
                               </div>
+                           </LocalizedLink>
                            ))}
                      </div>
                      <div className='flex justify-between border-y border-s-300 py-4'>
@@ -71,7 +81,7 @@ const Header: React.FC<{ newsArticle: any }> = ({ newsArticle }) => {
                                  alt=''
                                  className='h-12 w-12 rounded-full'
                               /> */}
-                              <p className='text-s-600'>{author?.name}</p>
+                             <p className='text-s-600'>Author: {author?.name}</p>
                            </div>
                         )}
 

@@ -19,6 +19,7 @@ interface blogsItem {
    description: string;
    createdAt: string;
    publishedAt: string;
+   oldPublishedAt: string;
    locale: string;
    slug: string;
 }
@@ -84,6 +85,7 @@ const Blog = async ({
             description: blog?.attributes?.description ?? '',
             createdAt: blog?.attributes?.createdAt ?? '',
             publishedAt: blog?.attributes?.publishedAt ?? '',
+            oldPublishedAt: blog?.attributes?.oldPublishedAt ?? '',
             locale: blog?.attributes?.locale ?? '',
             slug: blog?.attributes?.slug ?? '',
          }),
@@ -125,7 +127,7 @@ const Blog = async ({
                               day: '2-digit',
                               month: 'long',
                               year: 'numeric',
-                           }).format(new Date(blog?.publishedAt))}
+                           }).format(new Date(blog?.oldPublishedAt || blog?.publishedAt))}
                         />
                      </LocalizedLink>
                   ))

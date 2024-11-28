@@ -187,6 +187,15 @@
    font-weight: 600 !important;
 }
 
+.report-content a{
+   color: #2f71f6 !important;
+   text-decoration: underline !important;
+}
+
+.report-content a:hover{
+   color: #1e51b8 !important;
+}
+
 /* Responsive Typography Adjustments */
 @media screen and (max-width: 768px) {
    .report-content h1 {

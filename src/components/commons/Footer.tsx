@@ -143,7 +143,7 @@ const Footer = ({ footer, quickLinks }: any) => {
                   <p>{footer?.copyRightText}</p>
                   <div className='mt-4 flex space-x-4 md:mt-0'>
                      <a
-                        href={`https://facebook.com`}
+                        href={`https://www.facebook.com/univdatosmarketinsights/`}
                         target='_blank'
                         rel='noopener noreferrer'
                         className='hover:text-gray-300'
@@ -151,7 +151,7 @@ const Footer = ({ footer, quickLinks }: any) => {
                         <FaFacebook key='FaFacebook' />
                      </a>
                      <a
-                        href={`https://twitter.com`}
+                        href={`https://x.com/iuniv_datos`}
                         target='_blank'
                         rel='noopener noreferrer'
                         className='hover:text-gray-300'
@@ -159,7 +159,7 @@ const Footer = ({ footer, quickLinks }: any) => {
                         <FaTwitter key='FaTwitter' />
                      </a>
                      <a
-                        href={`https://linkedin.com`}
+                        href={`https://www.linkedin.com/company/univ-datos-market-insight/`}
                         target='_blank'
                         rel='noopener noreferrer'
                         className='hover:text-gray-300'
@@ -167,7 +167,7 @@ const Footer = ({ footer, quickLinks }: any) => {
                         <FaLinkedin key='FaLinkedin' />
                      </a>
                      <a
-                        href={`https://instagram.com`}
+                        href={`https://www.instagram.com/univdatosmarketinsights/?hl=en`}
                         target='_blank'
                         rel='noopener noreferrer'
                         className='hover:text-gray-300'

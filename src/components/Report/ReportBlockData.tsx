@@ -63,7 +63,7 @@ const ReportBlockData: React.FC<ReportBlockDataProps> = ({ data }) => {
       <div className='space-y-6 text-s-700 md:px-4'>
          <div
             id='report-data'
-            className='report-content'
+            className='report-content -mt-5'
             dangerouslySetInnerHTML={{
                __html: data.description,
             }}

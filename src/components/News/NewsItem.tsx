@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import newPlaceHolder from '@/assets/img/newPlaceholder.jpg';
+import thumbnailNewsPlaceholder from '@/assets/img/thumbnail_news.jpg';
 import { CalendarSvg } from '../commons/Icons';
 import { FC } from 'react';
 import StrapiImage from '../StrapiImage/StrapiImage';
@@ -19,12 +19,10 @@ const NewsItem: FC<NewsItemProps> = ({ title, date, thumbnailImage }) => {
    return (
       <div className='flex h-full flex-col gap-4 rounded-xl border border-s-300 bg-white p-6'>
          <div className='relative aspect-video rounded-md'>
-            <StrapiImage media={thumbnailImage} objectFit='fill' />
+            {/* <StrapiImage media={thumbnailImage} objectFit='fill' /> */}
+            <Image src={thumbnailNewsPlaceholder.src} alt={title} fill className='rounded-md' objectFit='cover' />
          </div>
          <div className=''>
-            <div className='my-2 flex items-center'>
-               <p className='font-medium'>UnivDatos</p>
-            </div>
             <h4 className='mb-2 text-xl font-semibold'>
                {title.length > 60 ? title.substring(0, 60) + '...' : title}
             </h4>
