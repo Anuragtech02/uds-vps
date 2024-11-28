@@ -45,8 +45,8 @@ const config: Config = {
             },
          },
          fontFamily: {
-            bricolage: ['Bricolage Grotesque', 'sans-serif'],
-            manrope: ['Manrope', 'sans-serif'],
+            bricolage: ['var(--font-bricolage-grotesque)'],
+            manrope: ['var(--font-manrope)'],
          },
       },
    },

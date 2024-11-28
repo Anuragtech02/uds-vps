@@ -1,6 +1,5 @@
 @import 'slick-carousel/slick/slick.css';
 @import 'slick-carousel/slick/slick-theme.css';
-@import './font.scss';
 
 @import './globals.scss';
 
@@ -24,7 +23,7 @@
 .report-content h3 span,
 .report-content h3,
 .report-content h4 span {
-   font-family: 'Bricolage Grotesque', sans-serif !important;
+   font-family: var(--font-bricolage-grotesque) !important;
    font-weight: 600 !important;
    margin-top: 1rem !important;
    margin-bottom: 0.5rem !important;

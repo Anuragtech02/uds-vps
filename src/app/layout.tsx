@@ -4,12 +4,18 @@ import Appwrapper from '@/components/Appwrapper';
 import Script from 'next/script';
 import HandleRTL from '@/components/commons/HandleRTL';
 import { SUPPORTED_LOCALES } from '@/utils/constants';
-import { Bricolage_Grotesque } from 'next/font/google';
+import { Bricolage_Grotesque, Manrope } from 'next/font/google';
 
-// const bricolageGrotesque = Bricolage_Grotesque({
-//    subsets: ['latin'],
-//    weight: ['200', '300', '400', '500', '600', '700', '800'],
-// });
+const bricolageGrotesque = Bricolage_Grotesque({
+   subsets: ['latin'],
+   weight: ['200', '300', '400', '500', '600', '700', '800'],
+   variable: '--font-bricolage-grotesque',
+});
+
+const manrope = Manrope({
+   subsets: ['latin'],
+   variable: '--font-manrope',
+});
 
 export const metadata: Metadata = {
    title: 'Univdatos',
@@ -31,7 +37,10 @@ export default function RootLayout({
    children: React.ReactNode;
 }>) {
    return (
-      <html lang='en'>
+      <html
+         lang='en'
+         className={`${manrope.variable} ${bricolageGrotesque.variable} `}
+      >
          <body>
             <Appwrapper>{children}</Appwrapper>
             <HandleRTL />

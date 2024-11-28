@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 body {
-   font-family: 'Manrope', sans-serif;
+   font-family: var(--font-manrope);
    font-optical-sizing: auto;
    @apply bg-s-100;
 }
@@ -21,13 +21,13 @@ h1,
 .h1 {
    font-size: 3.5rem;
    line-height: 4.46rem;
-   font-family: 'Bricolage Grotesque', sans-serif;
+   font-family: var(--font-bricolage-grotesque);
 }
 
 h2 {
    font-size: 2.5rem;
    line-height: 2.87rem;
-   font-family: 'Bricolage Grotesque', sans-serif;
+   font-family: var(--font-bricolage-grotesque);
    @apply text-s-800;
 }
 
@@ -35,20 +35,20 @@ h3,
 .h3 {
    font-size: 2rem;
    line-height: 2.4rem;
-   font-family: 'Bricolage Grotesque', sans-serif;
+   font-family: var(--font-bricolage-grotesque);
    font-weight: 500;
    @apply text-s-800;
 }
 
 .h3 {
-   font-family: 'Bricolage Grotesque', sans-serif;
+   font-family: var(--font-bricolage-grotesque);
    font-weight: 700;
 }
 
 h4 {
    font-size: 1.5rem;
    line-height: 1.8rem;
-   font-family: 'Bricolage Grotesque', sans-serif;
+   font-family: var(--font-bricolage-grotesque);
    font-weight: 500;
    @apply text-s-800;
 }
