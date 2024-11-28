@@ -31,7 +31,7 @@ const BlogItem: FC<BlogItemProps> = ({
          </div>
          <div className='md:w-2/3'>
             <div className='my-2 flex items-center'>
-               <p className='font-medium'>Univdatos</p>
+               {/* <p className='font-medium'>Univdatos</p> */}
             </div>
             <h4 className='mb-2 text-xl font-semibold'>
                {title}

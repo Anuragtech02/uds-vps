@@ -29,3 +29,7 @@ export function getCTALink(ctaUrl: string) {
       return `/${ctaUrl}`;
    }
 }
+
+export function absoluteUrl(path: string): string {
+   return `${process.env.NEXT_PUBLIC_APP_URL || 'https://univdatos.com'}${path}`;
+ }

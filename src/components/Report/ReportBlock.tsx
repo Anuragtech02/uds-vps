@@ -280,7 +280,9 @@ const ReportBlock: React.FC<ReportBlockProps> = ({ data }) => {
             </div>
             <div className='flex-[0.77]'>
                <ReportBlockData data={reportData} />
-               <ReportFAQs data={data} />
+               {
+                data?.attributes?.faqList?.length > 0 && (<ReportFAQs data={data} />)
+               }
             </div>
          </div>
          <Popup name='report-enquiry' title='Report Enquiry'>
