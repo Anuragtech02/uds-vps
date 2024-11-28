@@ -1,4 +1,2 @@
-/:locale/report/* /:locale/reports/:splat 301
-/:locale/report/*/ /:locale/reports/:splat 301
-/report/* /reports/:splat 301
-/report/*/ /reports/:splat 301
+/:locale/report/* /:locale/reports/* 301
+/report/* /reports/* 301
