@@ -4,24 +4,33 @@ import React from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { BiChevronLeft, BiChevronRight } from 'react-icons/bi';
 
+interface SearchParams {
+   industries?: string;
+   geographies?: string;
+   page?: string;
+   viewType?: string;
+}
+
 interface PaginationProps {
-   filters: string[];
+   searchParams: SearchParams;
    currentPage: number;
    totalPages: number;
 }
 
 const Pagination: React.FC<PaginationProps> = ({
-   filters,
+   searchParams,
    currentPage,
    totalPages,
 }) => {
    const router = useRouter();
    const pathname = usePathname();
-   console.log({ pathname });
+
    const handlePageChange = (newPage: number) => {
-      const filterParam =
-         filters.length > 0 ? `filter=${filters.join(',')}&` : '';
-      router.push(`${pathname}?${filterParam}page=${newPage}`);
+      const params = new URLSearchParams({
+         ...searchParams,
+         page: newPage.toString(),
+      });
+      router.push(`${pathname}?${params.toString()}`);
    };
 
    if (totalPages <= 1) {

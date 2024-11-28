@@ -115,7 +115,7 @@ const ReportStore: FC<ReportStoreProps> = async ({ searchParams }) => {
       </div>
       {totalPages > 1 && (
         <Pagination
-          filters={filters}
+          searchParams={searchParams}
           currentPage={currentPage}
           totalPages={totalPages}
         />

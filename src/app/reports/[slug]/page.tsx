@@ -7,6 +7,7 @@ import { getAllReports, getReportsPageBySlug } from '@/utils/api/services';
 import { absoluteUrl } from '@/utils/generic-methods';
 import { Metadata } from 'next';
 import { cookies } from 'next/headers';
+import { notFound } from 'next/navigation';
 
 export const dynamic = 'force-dynamic'; // Forces dynamic rendering, bypassing all static optimizations
 
@@ -130,8 +131,9 @@ const page: React.FC<{
       });
    } catch (err) {
       console.log(err);
+      notFound();
    }
-   console.log({ relatedReports });
+
    let reportPage =
       reportDataList.data?.length > 0 ? reportDataList.data[0] : null;
    let relatedReportsData =

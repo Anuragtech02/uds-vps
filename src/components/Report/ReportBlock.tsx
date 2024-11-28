@@ -273,8 +273,7 @@ const ReportBlock: React.FC<ReportBlockProps> = ({ data }) => {
                   )}
                >
                   <Button className='w-full py-3' variant='light'>
-                     {'Request For Customization' ||
-                        reportData.leftSectionSecondaryCTAButton.title}
+                     {reportData.leftSectionSecondaryCTAButton.title}
                   </Button>
                </LocalizedLink>
             </div>

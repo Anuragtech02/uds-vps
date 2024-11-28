@@ -37,6 +37,7 @@ const Header: React.FC<{ data: any }> = ({ data }) => {
       figuresCount: data.attributes.figuresCount,
       highlightImage: data.attributes.highlightImage,
       updatedAt: data.attributes.updatedAt,
+      oldPublishedAt: data.attributes.oldPublishedAt,
    };
 
    const headerRef1 = useRef<HTMLDivElement>(null);
@@ -161,7 +162,7 @@ const Header: React.FC<{ data: any }> = ({ data }) => {
                                  className='text-md text-blue-4'
                                  suppressHydrationWarning
                               >
-                                 {getMonthDate(reportHeaderData?.updatedAt)}
+                                 {getMonthDate(reportHeaderData?.oldPublishedAt || reportHeaderData.updatedAt)}
                               </p>
                            </div>
                         </div>

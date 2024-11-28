@@ -130,7 +130,7 @@ const ExploreProjects = ({ reports }: { reports: any[] }) => {
                </Slider>
             </div>
          </div>
-         <div className='my-8 md:my-16 md:mt-10'>
+         {/* <div className='my-8 md:my-16 md:mt-10'>
             <p className='text-center text-2xl text-blue-4'>
                Trusted by Companies.{' '}
                <span className='font-bold'>Big and Small.</span>
@@ -139,9 +139,8 @@ const ExploreProjects = ({ reports }: { reports: any[] }) => {
                <BrandsMarquee logos={[]} />
             </div>
             <div className='container py-10 md:py-16'>
-               {/* <PreBookCTA ctaButton={{}} /> */}
             </div>
-         </div>
+         </div> */}
       </section>
    );
 };

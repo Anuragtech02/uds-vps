@@ -124,7 +124,7 @@ const News = async ({
          </div>
          {totalPages > 1 && (
             <Pagination
-               filters={filters}
+               searchParams={searchParams}
                currentPage={currentPage}
                totalPages={totalPages}
             />
