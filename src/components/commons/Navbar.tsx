@@ -173,7 +173,7 @@ const DesktopMenuItem: React.FC<{ item: MenuItem; depth: number }> = ({
    );
 };
 
-const exclude = ['unknown'];
+const exclude = ['unknown', 'medical devices', 'pharmaceuticals'];
 
 const Navbar: React.FC<INavbarProps> = ({ header, mainMenu, industries }) => {
    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
