@@ -111,7 +111,7 @@ const ExploreProjects = ({ reports }: { reports: any[] }) => {
                            type='upcoming'
                            title={data?.title}
                            year={new Date(
-                              data?.publishedAt ?? new Date().getTime(),
+                              data?.oldPublishedAt || data?.publishedAt || new Date().getTime(),
                            )
                               ?.getFullYear()
                               .toString()}

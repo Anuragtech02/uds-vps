@@ -8,7 +8,7 @@ const ReportResults = ({ reports }: any) => {
          {reports?.map((report: any) => (
             <LocalizedLink href={`/reports/${report?.slug}`} key={report?.id}>
                <ReportStoreItem
-                  date={new Date(report?.createdAt).toDateString()}
+                  date={new Date(report.oldPublishedAt || report.publishedAt || report?.createdAt).toDateString()}
                   title={report?.title}
                   description={report?.shortDescription}
                   key={report?.id}

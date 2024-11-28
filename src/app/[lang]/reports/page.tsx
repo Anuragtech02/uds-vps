@@ -23,6 +23,7 @@ interface Report {
       title: string;
       publishedAt: string;
       shortDescription: string;
+      oldPublishedAt: string;
    };
 }
 
@@ -97,7 +98,7 @@ const ReportStore: FC<ReportStoreProps> = async ({ searchParams }) => {
                     key={report.attributes.slug}
                     title={report.attributes.title}
                     date={new Date(
-                      report.attributes.publishedAt,
+                      report.attributes.oldPublishedAt || report.attributes.publishedAt,
                     ).toLocaleDateString()}
                     slug={report.attributes.slug}
                     description={report.attributes.shortDescription}

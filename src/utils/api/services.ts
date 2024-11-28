@@ -95,7 +95,7 @@ export const getAllReports = async (page = 1, limit = 10, filters = {}) => {
       const paginationQuery = getPaginationQuery(page, limit);
       const filterQuery = getFilterQuery(filters);
       const query = `${populateQuery}&${paginationQuery}&${filterQuery}`;
-      console.log({ query });
+
       const response = await fetchClient('/reports?' + query, {
          headers: getAuthHeaders(),
       });
