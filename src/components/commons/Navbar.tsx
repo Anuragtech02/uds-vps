@@ -173,6 +173,8 @@ const DesktopMenuItem: React.FC<{ item: MenuItem; depth: number }> = ({
    );
 };
 
+const exclude = ['unknown'];
+
 const Navbar: React.FC<INavbarProps> = ({ header, mainMenu, industries }) => {
    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
    const [isMobile, setIsMobile] = useState(false);
@@ -213,10 +215,17 @@ const Navbar: React.FC<INavbarProps> = ({ header, mainMenu, industries }) => {
                               key={index}
                               item={{
                                  ...item,
-                                 children: industries.map(({ slug, name }) => ({
-                                    title: name,
-                                    url: `/reports?industries=${slug}&page=1`,
-                                 })),
+                                 children: industries
+                                    .filter(
+                                       (industry) =>
+                                          !exclude.includes(
+                                             industry.name.toLowerCase(),
+                                          ),
+                                    )
+                                    .map(({ slug, name }) => ({
+                                       title: name,
+                                       url: `/reports?industries=${slug}&page=1`,
+                                    })),
                               }}
                               depth={0}
                            />

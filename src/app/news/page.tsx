@@ -31,6 +31,7 @@ interface industryItem {
    slug: string;
 }
 const ITEMS_PER_PAGE = 10;
+
 const News = async ({
    searchParams,
 }: {

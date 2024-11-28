@@ -12,6 +12,8 @@ interface industryItem {
    slug: string;
 }
 
+const exclude = ['unknown'];
+
 const BlogFilters = ({
    industries,
    filters,
@@ -44,23 +46,31 @@ const BlogFilters = ({
             className={`${expanded ? 'absolute left-0 z-10 mt-4 h-max overflow-auto rounded-b-xl bg-white px-4 pb-4 shadow-md' : 'mt-0 h-0 overflow-hidden lg:mt-4 lg:h-max lg:overflow-auto'} max-h-[50vh] w-full space-y-4 overflow-y-auto`}
          >
             {industries?.length > 0 ? (
-               industries.map((industry) => (
-                  <div className='flex items-center gap-4' key={industry?.id}>
-                     <input
-                        type='checkbox'
-                        id={industry?.name}
-                        checked={filters?.includes(industry?.slug)}
-                        onChange={() => handleToggleFilter(industry?.slug)}
-                     />
-                     <label
+               industries
+                  .filter(
+                     (industry) =>
+                        !exclude.includes(industry.name.toLowerCase()),
+                  )
+                  .map((industry) => (
+                     <div
+                        className='flex items-center gap-4'
                         key={industry?.id}
-                        htmlFor={industry?.name}
-                        className='block cursor-pointer'
                      >
-                        {industry?.name}
-                     </label>
-                  </div>
-               ))
+                        <input
+                           type='checkbox'
+                           id={industry?.name}
+                           checked={filters?.includes(industry?.slug)}
+                           onChange={() => handleToggleFilter(industry?.slug)}
+                        />
+                        <label
+                           key={industry?.id}
+                           htmlFor={industry?.name}
+                           className='block cursor-pointer'
+                        >
+                           {industry?.name}
+                        </label>
+                     </div>
+                  ))
             ) : (
                <p className='text-md p-4 font-bold text-gray-600'>
                   No Filters found
