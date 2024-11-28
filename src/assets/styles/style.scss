@@ -1,6 +1,6 @@
-@import './font.scss';
 @import 'slick-carousel/slick/slick.css';
 @import 'slick-carousel/slick/slick-theme.css';
+@import './font.scss';
 
 @import './globals.scss';
 
@@ -44,7 +44,6 @@
 .blog-content h4 {
    margin-bottom: 1rem !important;
 }
-
 
 .report-content h1 span,
 .report-content h1 {
@@ -317,11 +316,10 @@
    visibility: hidden !important;
 }
 
-
-.blog-content p{
+.blog-content p {
    margin: 0.5rem 0 !important;
 }
-.tags-bottom{
+.tags-bottom {
    display: none !important;
 }
 

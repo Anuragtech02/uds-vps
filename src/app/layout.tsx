@@ -4,6 +4,12 @@ import Appwrapper from '@/components/Appwrapper';
 import Script from 'next/script';
 import HandleRTL from '@/components/commons/HandleRTL';
 import { SUPPORTED_LOCALES } from '@/utils/constants';
+import { Bricolage_Grotesque } from 'next/font/google';
+
+// const bricolageGrotesque = Bricolage_Grotesque({
+//    subsets: ['latin'],
+//    weight: ['200', '300', '400', '500', '600', '700', '800'],
+// });
 
 export const metadata: Metadata = {
    title: 'Univdatos',
