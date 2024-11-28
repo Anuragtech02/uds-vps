@@ -16,6 +16,8 @@ interface ReportStoreFiltersProps {
    filters: string[];
 }
 
+const exclude = ['unknown', 'medical devices', 'pharmaceuticals'];
+
 const ReportStoreFilters: React.FC<ReportStoreFiltersProps> = ({
    industries,
    filters,
@@ -46,19 +48,24 @@ const ReportStoreFilters: React.FC<ReportStoreFiltersProps> = ({
          <div
             className={`${expanded ? 'absolute left-0 z-10 mt-4 h-max overflow-auto rounded-b-xl bg-white px-4 pb-4 shadow-md' : 'mt-0 h-0 overflow-hidden lg:mt-4 lg:h-max lg:overflow-auto'} max-h-[50vh] w-full space-y-4 overflow-y-auto`}
          >
-            {industries.map(({ attributes: { slug, name } }) => (
-               <div className='flex items-center gap-4' key={slug}>
-                  <input
-                     type='checkbox'
-                     id={name}
-                     checked={filters?.includes(slug)}
-                     onChange={() => handleToggleFilter(slug)}
-                  />
-                  <label htmlFor={name} className='block cursor-pointer'>
-                     {name}
-                  </label>
-               </div>
-            ))}
+            {industries
+               .filter(
+                  (industry) =>
+                     !exclude.includes(industry.attributes.name.toLowerCase()),
+               )
+               .map(({ attributes: { slug, name } }) => (
+                  <div className='flex items-center gap-4' key={slug}>
+                     <input
+                        type='checkbox'
+                        id={name}
+                        checked={filters?.includes(slug)}
+                        onChange={() => handleToggleFilter(slug)}
+                     />
+                     <label htmlFor={name} className='block cursor-pointer'>
+                        {name}
+                     </label>
+                  </div>
+               ))}
          </div>
       </div>
    );
