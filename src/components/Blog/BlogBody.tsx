@@ -1,7 +1,7 @@
 const BlogBody = ({ blog }: any) => {
    return (
       <div
-         className='report-content'
+         className='report-content blog-content'
          dangerouslySetInnerHTML={{ __html: blog?.description }}
       ></div>
    );

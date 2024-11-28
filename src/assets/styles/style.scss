@@ -38,6 +38,14 @@
    // margin-bottom: 1rem !important;
 }
 
+.blog-content h1,
+.blog-content h2,
+.blog-content h3,
+.blog-content h4 {
+   margin-bottom: 1rem !important;
+}
+
+
 .report-content h1 span,
 .report-content h1 {
    font-size: 2.3rem !important;
@@ -307,6 +315,14 @@
 
 .VIpgJd-ZVi9od-aZ2wEe-wOHMyf {
    visibility: hidden !important;
+}
+
+
+.blog-content p{
+   margin: 0.5rem 0 !important;
+}
+.tags-bottom{
+   display: none !important;
 }
 
 /* RTL Support for Arabic Language */

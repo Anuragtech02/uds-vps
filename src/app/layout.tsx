@@ -29,7 +29,7 @@ export default function RootLayout({
          <body>
             <Appwrapper>{children}</Appwrapper>
             <HandleRTL />
-            <Script id='gtranslate-settings' strategy='afterInteractive'>
+            <Script id='gtranslate-settings' defer strategy='afterInteractive'>
                {/* Russian(Ru), Arabic(AR), German(DE), French, Chinese(ZH-tw), Japanese(ja), Korean(KO), Vietnamese(Vi), Italian(It),Poland(pl) */}
                {`window.gtranslateSettings = {"default_language":"en","languages":["en","ru","ar","de","fr","zh-TW","ja","ko","vi","it","pl"],"wrapper_selector":".gtranslate_wrapper"}`}
             </Script>
