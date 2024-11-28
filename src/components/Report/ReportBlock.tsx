@@ -218,7 +218,11 @@ const ReportBlock: React.FC<ReportBlockProps> = ({ data }) => {
             <span>
                <BiChevronRight />
             </span>
-            <p>{reportData.industry.name}</p>
+            <p>
+               <LocalizedLink href={`/reports/?industries=${reportData.industry.slug}`}>
+               {reportData.industry.name}
+               </LocalizedLink>
+            </p>
          </div>
          <div className='flex flex-col items-start gap-4 lg:flex-row'>
             <div className='sticky top-[100px] hidden flex-[0.23] flex-col gap-6 lg:flex'>

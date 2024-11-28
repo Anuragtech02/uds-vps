@@ -15,7 +15,6 @@ import {
    createOrderIdFromRazorPay,
    verifyPayments,
 } from '@/utils/api/services';
-
 import {
    ICartItem,
    changeQuantityOfReport,
@@ -23,31 +22,9 @@ import {
    removeItemFromCart,
    resetCart,
 } from '@/utils/cart-utils.util';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import Script from 'next/script';
 import { useEffect, useState } from 'react';
-
-const sampleCartItems = [
-   {
-      id: 1,
-      name: 'Product 1',
-      price: 100,
-      quantity: 1,
-   },
-   {
-      id: 2,
-      name: 'Product 2',
-      price: 200,
-      quantity: 2,
-   },
-   {
-      id: 3,
-      name: 'Product 3',
-      price: 300,
-      quantity: 3,
-   },
-];
 
 const Cart = () => {
    const [cartData, setCartData] = useState<ICartItem[]>([]);
@@ -55,32 +32,30 @@ const Cart = () => {
    const router = useRouter();
    const cartStore = useCartStore();
    const licenseStore = useSelectedLicenseStore();
+
    const updateTotalCost = (cart: any[]) => {
       setTotalCost(
          cart.reduce((acc, item) => {
-            console.log(item?.selectedLicense?.price?.amount);
-            return (
-               acc +
-               parseInt(item?.selectedLicense?.price?.amount) *
-                  parseInt(item.quantity)
-            );
+            return acc + (item?.selectedLicense?.price?.amount || 0) * (item.quantity || 1);
          }, 0),
       );
    };
+
    useEffect(() => {
       const cart = getCart();
       setCartData(cart);
       updateTotalCost(cart);
-      console.log(cart);
    }, []);
+
    const handleChangeQuantity = (reportId: number, quantity: number) => {
-      const updatedCart: any = cartData.map((item: any) =>
+      const updatedCart = cartData.map((item: any) =>
          item?.report?.id === reportId ? { ...item, quantity } : item,
       );
       setCartData(updatedCart);
       updateTotalCost(updatedCart);
       changeQuantityOfReport(reportId, quantity);
    };
+
    const handleRemoveItem = (reportId: number) => {
       const updatedCart = cartData?.filter(
          (item: any) => item?.report?.id !== reportId,
@@ -90,7 +65,7 @@ const Cart = () => {
       removeItemFromCart(reportId);
    };
 
-   const processPayment = async (e: any) => {
+   const processPayment = async (e: React.MouseEvent) => {
       e.preventDefault();
       try {
          const orderId: string = await createOrderIdFromRazorPay(totalCost);
@@ -106,8 +81,9 @@ const Cart = () => {
                amount: totalCost,
             },
          });
-         let strapiOrderId = createdOrder?.data?.id;
-         console.log(createdOrder);
+
+         const strapiOrderId = createdOrder?.data?.id;
+         
          const options = {
             key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
             amount: totalCost * 100,
@@ -122,8 +98,8 @@ const Cart = () => {
                   razorpayOrderId: response.razorpay_order_id,
                   razorpaySignature: response.razorpay_signature,
                };
-               //call create payment on strapi
-               let createdPayment = await createPayment({
+
+               const createdPayment = await createPayment({
                   paymentId: response.razorpay_payment_id,
                   order: strapiOrderId,
                   amount: {
@@ -131,24 +107,21 @@ const Cart = () => {
                      amount: totalCost,
                   },
                });
-               let strapiPaymentId = createdPayment?.data?.id;
+
+               const strapiPaymentId = createdPayment?.data?.id;
                const result = await verifyPayments(data);
                const res = await result?.json();
+
                if (res.isOk) {
-                  alert('payment succeed');
-                  //call update order and payment status to completed
                   await updatePaymentStatus(strapiPaymentId, 'SUCCESS');
                   await updateOrderStatus(strapiOrderId, 'SUCCESS');
-                  //redirect to success page
                   cartStore.resetCart();
                   resetCart();
                   licenseStore.resetLicenses();
                   router.replace('/payment-success');
                } else {
-                  alert(res.message);
                   await updatePaymentStatus(strapiPaymentId, 'CANCEL');
                   await updateOrderStatus(strapiOrderId, 'FAILED');
-                  // router.replace('/payment-failure');
                }
             },
             prefill: {
@@ -159,100 +132,70 @@ const Cart = () => {
                color: '#3399cc',
             },
          };
-         // @ts-expect-error ts-migrate(2339) FIXME: Property 'Razorpay' does not exist on type 'Window'.
+
+         // @ts-expect-error
          const paymentObject = new window.Razorpay(options);
          paymentObject.on('payment.failed', async function (response: any) {
-            alert(response.error.description);
-            console.log(response);
+            console.error(response.error.description);
             await updateOrderStatus(strapiOrderId, 'FAILED');
-            // router.replace('/payment-failure');
          });
          paymentObject.open();
       } catch (error) {
-         console.log(error);
+         console.error(error);
       }
    };
+
    return (
-      <div className='container pt-40'>
+      <div className="container mx-auto px-4 pt-40">
          <Script
-            id='razorpay-checkout-js'
-            src='https://checkout.razorpay.com/v1/checkout.js'
+            id="razorpay-checkout-js"
+            src="https://checkout.razorpay.com/v1/checkout.js"
          />
-         <div className='mt-5 w-full space-y-4 rounded-xl bg-white p-6 md:space-y-6'>
-            <div className='flex flex-wrap items-center justify-between gap-4 pb-4'>
-               <div className='flex w-full items-center justify-between sm:w-max'>
-                  <p className='text-[1.625rem] font-semibold text-s-800 md:text-[2rem]'>
-                     Cart
-                  </p>
-                  {/* <select
-                     name=''
-                     id=''
-                     className='rounded-full bg-s-200 px-2 py-1 text-sm font-bold sm:hidden'
-                     title='Currency Selector'
-                  >
-                     <option value=''>USD $</option>
-                     <option value=''>INR ₹</option>
-                     <option value=''>EUR €</option>
-                     <option value=''>GBP £</option>
-                  </select> */}
-               </div>
-               <div className='flex w-full items-stretch gap-0 sm:w-[auto] sm:gap-4'>
-                  {/* <input
-                     type='text'
-                     className='shrink grow basis-0 bg-gray-50 px-6 text-sm sm:shrink-0 sm:grow-0 sm:basis-[unset]'
-                     placeholder='Coupon Code'
-                  />
+         
+         <div className="mt-5 w-full space-y-6 rounded-xl bg-white p-6">
+            <h1 className="text-2xl md:text-3xl font-semibold text-gray-900">
+               Cart
+            </h1>
 
-                  <Button
-                     variant='light'
-                     className='shrink grow basis-0 sm:shrink-0 sm:grow-0 sm:basis-[unset]'
-                  >
-                     Apply Code
-                  </Button> */}
-
-                  {/* <select
-                     name=''
-                     id=''
-                     className='hidden rounded-full bg-s-200 px-4 text-lg font-bold sm:block'
-                     title='Currency Selector'
-                  >
-                     <option value=''>USD $</option>
-                     <option value=''>INR ₹</option>
-                     <option value=''>EUR €</option>
-                     <option value=''>GBP £</option>
-                  </select> */}
-               </div>
-            </div>
-            <div className='rounded-xl border border-s-400 p-3'>
-               <div className='hidden items-center justify-between font-bold text-s-600 sm:flex md:text-lg'>
-                  <div className='w-1/2'>
-                     <p>Product</p>
+            {/* Cart Items Container */}
+            <div className="rounded-xl border border-gray-200 p-6">
+               {/* Cart Headers */}
+               <div className="flex items-center text-gray-600 font-medium pb-2 border-b border-gray-200">
+                  <div className="flex-grow">
+                     <span>Product</span>
                   </div>
-                  <div className='flex w-1/2 items-center gap-3 md:gap-6'>
-                     <div className='w-1/3'>
-                        <p>Price</p>
-                     </div>
-                     <div className='w-1/3 text-right ml-auto'>
-                        <p>Subtotal</p>
-                     </div>
+                  <div className="w-32 text-right">
+                     <span>Price</span>
+                  </div>
+                  <div className="w-32 text-right">
+                     <span>Subtotal</span>
                   </div>
                </div>
-               {cartData.map((item: any, i) => (
-                  <CartItem
-                     key={i}
-                     {...item}
-                     handleRemoveItem={handleRemoveItem}
-                     handleChangeQuantity={handleChangeQuantity}
-                  />
-               ))}
+
+               {/* Cart Items */}
+               <div className="divide-y divide-gray-200">
+                  {cartData.map((item: any, i) => (
+                     <CartItem
+                        key={i}
+                        {...item}
+                        handleRemoveItem={handleRemoveItem}
+                        handleChangeQuantity={handleChangeQuantity}
+                     />
+                  ))}
+               </div>
             </div>
-            <div className='rounded-xl border border-s-400 p-3'>
-               <CostCalculations cost={totalCost} city='Mumbai' />
+
+            {/* Cost Calculations */}
+            <div className="rounded-xl border border-gray-200 p-6">
+               <CostCalculations cost={totalCost} city="Mumbai" />
             </div>
-            <div className='w-full text-right'>
+
+            {/* Checkout Button */}
+            <div className="flex justify-end">
                <Button
-                  variant='secondary'
-                  onClick={() => processPayment(event)}
+                  variant="secondary"
+                  onClick={() => processPayment}
+                  className="min-w-[200px]"
                >
                   Proceed to Checkout
                </Button>

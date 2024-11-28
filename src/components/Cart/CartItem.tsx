@@ -1,6 +1,4 @@
-import reportPlaceholder from '@/assets/img/sampleResearch.png';
 import { FC } from 'react';
-import { FaCircleMinus, FaCirclePlus } from 'react-icons/fa6';
 import { IoCloseCircle } from 'react-icons/io5';
 
 interface CartItemProps {
@@ -23,62 +21,39 @@ const CartItem: FC<CartItemProps> = ({
 }) => {
    let name = report?.title,
       price = selectedLicense?.price?.amount,
-      img = report?.highlightImage?.data?.attributes?.url;
-   return (
-      <div className='flex flex-col justify-between gap-6 border-b border-s-500 pb-4 pt-4 font-semibold first-of-type:pt-0 last-of-type:border-0 last-of-type:pb-0 sm:flex-row sm:gap-0 md:text-lg'>
-         <div className='flex shrink flex-col items-center gap-3 sm:w-1/2 sm:flex-row'>
-            <div className='flex items-center gap-3'>
-               <span
-                  className='cursor-pointer text-lg text-gray-500 md:text-xl'
-                  onClick={handleRemoveItem.bind(this, report?.id)}
-               >
-                  <IoCloseCircle />
-               </span>
-               <img
-                  src={img}
-                  alt=''
-                  className='w-[80%] rounded-sm border border-s-300 sm:h-10 sm:w-10 md:h-16 md:w-16'
-               />
-            </div>
-            <p className='text-blue-3'>{name}</p>
-         </div>
-         <div className='flex items-center gap-3 sm:w-1/2 md:gap-6'>
-            <div className='w-1/3'>
-               <p className='text-blue-3'>${price}</p>
-            </div>
-            {/* <div className='flex w-1/3 justify-center sm:block'>
-               <div className='flex w-max gap-2 rounded-md border border-s-300 px-2 py-1 md:gap-4 md:px-4 md:py-2'>
-                  <button
-                     title='Decrease Quantity'
-                     className='text-blue-2 disabled:text-gray-300 md:text-xl'
-                     disabled={quantity === 1}
-                     onClick={handleChangeQuantity.bind(
-                        this,
-                        report?.id,
-                        quantity - 1,
-                     )}
-                  >
-                     <FaCircleMinus />
-                  </button>
-                  <p className='text-sm font-normal text-gray-700'>
-                     {quantity}
-                  </p>
-                  <button
-                     title='Increase Quantity'
-                     className='text-blue-2 disabled:text-gray-300 md:text-xl'
-                     onClick={handleChangeQuantity.bind(
-                        this,
-                        report?.id,
-                        quantity + 1,
-                     )}
-                  >
-                     <FaCirclePlus />
-                  </button>
-               </div>
-            </div> */}
+      img = report?.highlightImage?.data?.attributes?.url || "/api/placeholder/64/64";
 
-            <div className='w-1/3 text-right ml-auto'>
-               <p className='text-blue-3'>${price * quantity}</p>
+   return (
+      <div className="flex flex-col sm:flex-row items-center gap-4 border-b border-gray-200 py-4 first:pt-0 last:border-0 last:pb-0">
+         {/* Left section with delete, image, and title - gets most space */}
+         <div className="flex items-center gap-4 w-full sm:w-3/5">
+            <button
+               title='Remove item'
+               onClick={() => handleRemoveItem(report?.id)}
+               className="text-gray-500 hover:text-gray-700 transition-colors"
+            >
+               <IoCloseCircle className="w-5 h-5" />
+            </button>
+            
+            <img
+               src={img}
+               alt={name}
+               className="w-16 h-16 object-cover rounded border border-gray-300"
+            />
+            
+            <h5 className="text-gray-900 font-medium flex-1 line-clamp-2">
+               {name}
+            </h5>
+         </div>
+
+         {/* Right section with price and subtotal - fixed width */}
+         <div className="flex items-center justify-end gap-8 w-full sm:w-2/5">
+            <div className="text-gray-900 font-medium">
+               ${price?.toFixed(2)}
+            </div>
+
+            <div className="text-gray-900 font-medium text-right min-w-[80px]">
+               ${(price * quantity).toFixed(2)}
             </div>
          </div>
       </div>
