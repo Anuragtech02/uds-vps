@@ -88,7 +88,7 @@ const RecentResearch: React.FC<{ data: any }> = ({ data }) => {
                               title={report?.title}
                               slug={report?.slug}
                               year={getYear(report)}
-                              image={report?.hilightImage?.data?.attributes?.formats?.small?.url || sampleImage}
+                              image={report?.highlightImage?.data?.attributes?.formats?.small?.url || sampleImage}
                            />
                         </div>
                      );

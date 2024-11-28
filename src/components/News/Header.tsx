@@ -34,7 +34,7 @@ const Header: React.FC<{ newsArticle: any }> = ({ newsArticle }) => {
       day: '2-digit',
       month: 'long',
       year: 'numeric',
-   }).format(new Date(newsArticle?.publishedAt));
+   }).format(new Date(newsArticle?.oldPublishedAt));
 
    return (
       <>
