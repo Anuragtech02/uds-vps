@@ -117,7 +117,7 @@ const UpcomingReports: React.FC<{ data: any }> = ({ data }) => {
       ],
    };
 
-   return (
+   return data?.upcomingReports?.length &&  (
       <section className='block min-h-max pb-12 md:pb-20'>
          <div className='container'>
             <h2>
