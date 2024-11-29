@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import newsPlaceholder from '@/assets/img/thumbnail_news.jpg';
 import newPlaceHolder from '@/assets/img/newPlaceholder.jpg';
 import { CalendarSvg, UserSvg } from '../commons/Icons';
 import Link from 'next/link';
@@ -50,7 +51,7 @@ const NewsRoom: React.FC<{
                         >
                            <div className='relative aspect-video w-full rounded-md'>
                               <Image
-                                 src={newPlaceHolder}
+                                 src={blog?.thumbnailImage?.data?.attributes?.url || newPlaceHolder}
                                  alt='news'
                                  fill
                                  className='rounded-xl'
@@ -84,7 +85,7 @@ const NewsRoom: React.FC<{
                               <p className='flex items-center gap-2'>
                                  <CalendarSvg />{' '}
                                  {new Date(
-                                    blog.publishedAt,
+                                    blog.oldPublishedAt || blog.publishedAt,
                                  ).toLocaleDateString()}
                               </p>
                               <p className='flex items-center gap-2'>
@@ -107,7 +108,7 @@ const NewsRoom: React.FC<{
                            >
                               <div className='relative aspect-video rounded-md md:w-1/3'>
                                  <Image
-                                    src={newPlaceHolder}
+                                    src={newsPlaceholder}
                                     alt='news'
                                     fill
                                     className='rounded-xl'
@@ -125,7 +126,7 @@ const NewsRoom: React.FC<{
                                  <p className='my-2 flex items-center gap-2'>
                                     <CalendarSvg />
                                     {new Date(
-                                       news.publishedAt,
+                                      news.oldPublishedAt || news.publishedAt,
                                     ).toLocaleDateString()}
                                  </p>
                               </div>
