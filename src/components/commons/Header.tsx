@@ -13,7 +13,7 @@ interface IHeader {
    ctaButton: { id: number; title: string; link: string };
 }
 
-const STICKY_URL = ['/reports/', '/blogs/', '/news/'];
+const STICKY_URL = ['/reports/'];
 
 const Header = ({
    header,
