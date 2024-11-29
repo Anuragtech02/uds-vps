@@ -40,39 +40,39 @@ const nextConfig = {
    images: {
       domains: ['udsweb.s3.ap-south-1.amazonaws.com'],
    },
-  //  async redirects() {
-  //     return [
-  //        // Handle invalid paths for valid locales
-  //        {
-  //           source: '/:locale(' + SUPPORTED_LOCALES.join('|') + ')/:invalidPath((?!not-found|' +
-  //                    validRoutes.join('|') + '|' +
-  //                    validRoutes.map(route => `${route}/.*`).join('|') +
-  //                    ').*)',
-  //           destination: '/:locale/not-found',
-  //           permanent: false
-  //        },
-  //        // Handle completely invalid paths (including invalid locales)
-  //        {
-  //           source: '/:invalidPath((?!_next|api|favicon.ico|reports?|not-found|$|' + 
-  //                    SUPPORTED_LOCALES.join('|') + '|' +
-  //                    validRoutes.join('|') + '|' +
-  //                    validRoutes.map(route => `${route}/.*`).join('|') +
-  //                    ').*)',
-  //           destination: '/en/not-found',
-  //           permanent: false
-  //        },
-  //        {
-  //           source: '/report/:path*',
-  //           destination: '/reports/:path*',
-  //           permanent: true,
-  //        },
-  //        {
-  //           source: '/:locale/report/:path*',
-  //           destination: '/:locale/reports/:path*',
-  //           permanent: true,
-  //        },
-  //     ];
-  //  },
+   async redirects() {
+      return [
+         // Handle invalid paths for valid locales
+         {
+            source: '/:locale(' + SUPPORTED_LOCALES.join('|') + ')/:invalidPath((?!not-found|' +
+                     validRoutes.join('|') + '|' +
+                     validRoutes.map(route => `${route}/.*`).join('|') +
+                     ').*)',
+            destination: '/:locale/not-found',
+            permanent: false
+         },
+         // Handle completely invalid paths (including invalid locales)
+         {
+            source: '/:invalidPath((?!_next|api|favicon.ico|reports?|not-found|$|' + 
+                     SUPPORTED_LOCALES.join('|') + '|' +
+                     validRoutes.join('|') + '|' +
+                     validRoutes.map(route => `${route}/.*`).join('|') +
+                     ').*)',
+            destination: '/en/not-found',
+            permanent: false
+         },
+         {
+            source: '/report/:path*',
+            destination: '/reports/:path*',
+            permanent: true,
+         },
+         {
+            source: '/:locale/report/:path*',
+            destination: '/:locale/reports/:path*',
+            permanent: true,
+         },
+      ];
+   },
 };
 
 if (process.env.NODE_ENV === 'development') {
