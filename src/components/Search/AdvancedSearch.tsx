@@ -94,8 +94,8 @@ const AdvancedSearch: React.FC<AdvancedSearchProps> = ({ isOpen, onClose }) => {
       ].slice(0, MAX_RECENT_SEARCHES);
       saveRecentSearches(updatedSearches);
 
-      router.push(`/search?q=${encodeURIComponent(searchQuery)}`);
       onClose();
+      router.push(`/search?q=${encodeURIComponent(searchQuery)}`);
    };
 
    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
