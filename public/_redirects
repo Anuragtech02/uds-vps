@@ -1,1 +1,16 @@
-/report/* /reports/* 301
+/report/*  /reports/:splat  301
+/:locale/report/*  /:locale/reports/:splat  301
+
+/en/*  /en/not-found  404  !path=/en/(about|blogs|cart|checkout|contact|login|news|payment-failure|payment-success|privacy-policy|profile|reports|search|services|signup|terms-and-conditions|not-found)/*
+/ru/*  /ru/not-found  404  !path=/ru/(about|blogs|cart|checkout|contact|login|news|payment-failure|payment-success|privacy-policy|profile|reports|search|services|signup|terms-and-conditions|not-found)/*
+/ar/*  /ar/not-found  404  !path=/ar/(about|blogs|cart|checkout|contact|login|news|payment-failure|payment-success|privacy-policy|profile|reports|search|services|signup|terms-and-conditions|not-found)/*
+/de/*  /de/not-found  404  !path=/de/(about|blogs|cart|checkout|contact|login|news|payment-failure|payment-success|privacy-policy|profile|reports|search|services|signup|terms-and-conditions|not-found)/*
+/fr/*  /fr/not-found  404  !path=/fr/(about|blogs|cart|checkout|contact|login|news|payment-failure|payment-success|privacy-policy|profile|reports|search|services|signup|terms-and-conditions|not-found)/*
+/zh-TW/*  /zh-TW/not-found  404  !path=/zh-TW/(about|blogs|cart|checkout|contact|login|news|payment-failure|payment-success|privacy-policy|profile|reports|search|services|signup|terms-and-conditions|not-found)/*
+/ja/*  /ja/not-found  404  !path=/ja/(about|blogs|cart|checkout|contact|login|news|payment-failure|payment-success|privacy-policy|profile|reports|search|services|signup|terms-and-conditions|not-found)/*
+/ko/*  /ko/not-found  404  !path=/ko/(about|blogs|cart|checkout|contact|login|news|payment-failure|payment-success|privacy-policy|profile|reports|search|services|signup|terms-and-conditions|not-found)/*
+/vi/*  /vi/not-found  404  !path=/vi/(about|blogs|cart|checkout|contact|login|news|payment-failure|payment-success|privacy-policy|profile|reports|search|services|signup|terms-and-conditions|not-found)/*
+/it/*  /it/not-found  404  !path=/it/(about|blogs|cart|checkout|contact|login|news|payment-failure|payment-success|privacy-policy|profile|reports|search|services|signup|terms-and-conditions|not-found)/*
+/pl/*  /pl/not-found  404  !path=/pl/(about|blogs|cart|checkout|contact|login|news|payment-failure|payment-success|privacy-policy|profile|reports|search|services|signup|terms-and-conditions|not-found)/*
+
+/*  /en/not-found  404  !path=/_next/*  !path=/api/*  !path=/favicon.ico  !path=/reports/*  !path=/not-found  !path=/en/*  !path=/ru/*  !path=/ar/*  !path=/de/*  !path=/fr/*  !path=/zh-TW/*  !path=/ja/*  !path=/ko/*  !path=/vi/*  !path=/it/*  !path=/pl/*  !path=/(about|blogs|cart|checkout|contact|login|news|payment-failure|payment-success|privacy-policy|profile|reports|search|services|signup|terms-and-conditions|not-found)/*

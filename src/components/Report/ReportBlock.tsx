@@ -206,20 +206,25 @@ const ReportBlock: React.FC<ReportBlockProps> = ({ data }) => {
    return (
       <div className='container py-10 md:py-16 md:pt-10'>
          <div className='flex items-center gap-2 pb-10 md:text-lg'>
-            <LocalizedLink href='/'>
-               <p>Home</p>
-            </LocalizedLink>
+            <p className='hover:underline hover:blue-5'>
+               <LocalizedLink href='/'>
+                  Home
+                  
+               </LocalizedLink>
+            </p>
             <span>
                <BiChevronRight />
             </span>
-            <LocalizedLink href='/reports'>
-               <p>Report Store</p>
-            </LocalizedLink>
+               <p className='hover:underline hover:blue-5'>
+                  <LocalizedLink href='/reports'>
+                        Report Store
+                  </LocalizedLink>
+               </p>
             <span>
                <BiChevronRight />
             </span>
-            <p>
-               <LocalizedLink href={`/reports/?industries=${reportData.industry.slug}`}>
+            <p className='hover:underline hover:blue-5'>
+               <LocalizedLink href={`/reports/?industries=${reportData.industry.slug}`} >
                {reportData.industry.name}
                </LocalizedLink>
             </p>
