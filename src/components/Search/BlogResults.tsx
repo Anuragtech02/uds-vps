@@ -4,7 +4,7 @@ import { LocalizedLink } from '../commons/LocalizedLink';
 
 const BlogResults = ({ blogs }: { blogs: Array<any> }) => {
    return (
-      <div>
+      <div className='flex flex-col gap-4'>
          {blogs?.map((blog: any) => (
             <BlogItem
                key={blog.id}

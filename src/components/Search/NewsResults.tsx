@@ -4,7 +4,7 @@ import { LocalizedLink } from '../commons/LocalizedLink';
 
 const NewsResults = ({ news }: any) => {
    return (
-      <div>
+      <div className='flex flex-col gap-4'>
          {news.map((item: any) => {
             return (
                   <NewsItem
