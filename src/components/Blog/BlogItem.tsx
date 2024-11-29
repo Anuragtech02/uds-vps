@@ -1,10 +1,12 @@
 import { CalendarSvg } from '../commons/Icons';
 import { FC } from 'react';
 import StrapiImage from '../StrapiImage/StrapiImage';
+import { LocalizedLink } from '../commons/LocalizedLink';
 
 interface BlogItemProps {
    title: string;
    date: string;
+   slug: string;
    shortDescription: string;
    thumbnailImage: {
       url: string;
@@ -17,6 +19,7 @@ interface BlogItemProps {
 const BlogItem: FC<BlogItemProps> = ({
    title,
    date,
+   slug,
    shortDescription,
    thumbnailImage,
 }) => {
@@ -33,10 +36,12 @@ const BlogItem: FC<BlogItemProps> = ({
             <div className='my-2 flex items-center'>
                {/* <p className='font-medium'>Univdatos</p> */}
             </div>
-            <h4 className='mb-2 text-xl font-semibold'>
-               {title}
-               {/* {title.length > 60 ? title.substring(0, 60) + '...' : title} */}
-            </h4>
+            <LocalizedLink href={`/blogs/${slug}`}>
+               <h4 className='mb-2 text-xl font-semibold'>
+                  {title}
+                  {/* {title.length > 60 ? title.substring(0, 60) + '...' : title} */}
+               </h4>
+            </LocalizedLink>
             <p className='text-gray-600'>{shortDescription}</p>
             <p className='my-2 flex items-center gap-2'>
                <CalendarSvg />

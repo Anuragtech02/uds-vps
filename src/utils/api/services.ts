@@ -353,9 +353,10 @@ export const getServiceBySlug = async (slug: string) => {
       throw error;
    }
 };
+
 export const createOrderIdFromRazorPay = async (amount: number) => {
    try {
-      const response = await fetch('/api/payments/order', {
+      const response = await fetchClient('/rpay/order', {
          method: 'POST',
          headers: {
             'Content-Type': 'application/json',
@@ -375,9 +376,10 @@ export const createOrderIdFromRazorPay = async (amount: number) => {
       console.error('There was a problem while creating order:', error);
    }
 };
+
 export const verifyPayments = async (body: any) => {
    try {
-      const response = await fetch('/api/payments/verify', {
+      const response = await fetchClient('/rpay/verify', {
          method: 'POST',
          body: JSON.stringify(body),
          headers: { 'Content-Type': 'application/json' },
@@ -387,3 +389,51 @@ export const verifyPayments = async (body: any) => {
       console.error('There was a problem while verifying payments:', error);
    }
 };
+
+export const getPrivacyPolicy = async () => {
+   try {
+      const response = await fetchClient('/privacy-policy', {
+         headers: getAuthHeaders(),
+      },);
+      return await response;
+   } catch (error) {
+      console.error('Error fetching privacy policy:', error);
+      throw error;
+   }
+}
+
+export const getTermsAndConditions = async () => {
+   try {
+      const response = await fetchClient('/t-and-c',{
+         headers: getAuthHeaders(),
+      },);
+      return await response;
+   } catch (error) {
+      console.error('Error fetching terms and conditions:', error);
+      throw error;
+   }
+}
+
+export const getLegal = async () => {
+   try {
+      const response = await fetchClient('/legal',{
+         headers: getAuthHeaders(),
+      },);
+      return await response;
+   } catch (error) {
+      console.error('Error fetching legal:', error);
+      throw error;
+   }
+}
+
+export const getDisclaimer = async () => {
+   try {
+      const response = await fetchClient('/disclaimer',{
+         headers: getAuthHeaders(),
+      },);
+      return await response;
+   } catch (error) {
+      console.error('Error fetching disclaimer:', error);
+      throw error;
+   }
+}

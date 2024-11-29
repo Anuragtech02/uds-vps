@@ -1,18 +1,18 @@
 import ClientSearchHero from "@/components/Home/ClientSearchHero";
 import NewsSidebar from "@/components/News/NewsSidebar";
-import { getPrivacyPolicy } from "@/utils/api/services";
+import { getLegal } from "@/utils/api/services";
 
 export const runtime = 'edge';
 
 
 const page = async () => {
 
-   const res = await getPrivacyPolicy();
+   const res = await getLegal();
    const data = res.data.attributes;
 
 
    return   (
-      <div className='bg-s-50'>
+    <div className='bg-s-50'>
          <div className='mt-[100px] sm:mt-[150px] pb-10 pt-20 sm:py-20 flex justify-center items-center border-b' >
             <h1 className="font-bold">{data?.heroHeading}</h1>
          </div>

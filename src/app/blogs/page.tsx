@@ -117,7 +117,6 @@ const Blog = async ({
             <div className='flex grow flex-col gap-4 md:gap-6'>
                {blogList?.length > 0 ? (
                   blogList!.map((blog: blogsItem, i: number) => (
-                     <LocalizedLink href={`/blogs/${blog?.slug}`} key={i}>
                         <BlogItem
                            key={i}
                            title={blog?.title}
@@ -128,8 +127,8 @@ const Blog = async ({
                               month: 'long',
                               year: 'numeric',
                            }).format(new Date(blog?.oldPublishedAt || blog?.publishedAt))}
+                           slug={blog?.slug}
                         />
-                     </LocalizedLink>
                   ))
                ) : (
                   <p className='rounded bg-gray-100 p-4 text-2xl font-bold text-gray-600'>

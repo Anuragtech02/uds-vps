@@ -19,6 +19,7 @@ interface newsItem {
    description: string;
    createdAt: string;
    publishedAt: string;
+   oldPublishedAt: string;
    locale: string;
    slug: string;
 }
@@ -75,6 +76,7 @@ const News = async ({
             description: news?.attributes?.description ?? '',
             createdAt: news?.attributes?.createdAt ?? '',
             publishedAt: news?.attributes?.publishedAt ?? '',
+            oldPublishedAt: news?.attributes?.oldPublishedAt ?? '',
             locale: news?.attributes?.locale ?? '',
             slug: news?.attributes?.slug ?? '',
          }),
@@ -103,18 +105,17 @@ const News = async ({
             <div className='grid flex-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-3'>
                {newsList?.length > 0 ? (
                   newsList?.map((news: newsItem, i: number) => (
-                     <LocalizedLink href={`/news/${news?.slug}`} key={i}>
-                        <NewsItem
-                           key={i}
-                           title={news?.title}
-                           thumbnailImage={news?.thumbnailImage}
-                           date={new Intl.DateTimeFormat('en-GB', {
-                              day: '2-digit',
-                              month: 'long',
-                              year: 'numeric',
-                           }).format(new Date(news?.publishedAt))}
-                        />
-                     </LocalizedLink>
+                     <NewsItem
+                        key={i}
+                        title={news?.title}
+                        thumbnailImage={news?.thumbnailImage}
+                        date={new Intl.DateTimeFormat('en-GB', {
+                           day: '2-digit',
+                           month: 'long',
+                           year: 'numeric',
+                        }).format(new Date(news?.oldPublishedAt || news?.publishedAt))}
+                        slug={news?.slug}
+                     />
                   ))
                ) : (
                   <p className='rounded bg-gray-100 p-4 text-2xl font-bold text-gray-600'>

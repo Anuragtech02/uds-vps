@@ -1,11 +1,11 @@
 import { setupDevPlatform } from '@cloudflare/next-on-pages/next-dev';
 
 const validRoutes = [
-   'about',
+   'about-us',
    'blogs',
    'cart',
    'checkout',
-   'contact',
+   'contact-us',
    'login',
    'news',
    'payment-failure',
@@ -17,6 +17,8 @@ const validRoutes = [
    'services',
    'signup',
    'terms-and-conditions',
+   'disclaimer',
+   'legal',
    'not-found'  // Add not-found as a valid route
 ];
 
