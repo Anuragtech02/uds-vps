@@ -6,15 +6,14 @@ const BlogResults = ({ blogs }: { blogs: Array<any> }) => {
    return (
       <div>
          {blogs?.map((blog: any) => (
-            <LocalizedLink href={`/blogs/${blog?.slug}`} key={blog?.id}>
-               <BlogItem
-                  key={blog.id}
-                  thumbnailImage={blog?.thumbnailImage}
-                  date={new Date(blog?.publishedAt).toDateString()}
-                  title={blog?.title}
-                  shortDescription={blog?.shortDescription}
-               />
-            </LocalizedLink>
+            <BlogItem
+               key={blog.id}
+               thumbnailImage={blog?.thumbnailImage}
+               date={new Date(blog?.oldPublishedAt || blog?.publishedAt).toDateString()}
+               title={blog?.title}
+               shortDescription={blog?.shortDescription}
+               slug={blog?.slug}
+            />
          ))}
          {blogs?.length === 0 && <p>No blogs found</p>}
       </div>

@@ -7,14 +7,13 @@ const NewsResults = ({ news }: any) => {
       <div>
          {news.map((item: any) => {
             return (
-               <LocalizedLink href={`/news/${item?.slug}`} key={item.id}>
                   <NewsItem
                      key={item.id}
                      thumbnailImage={item?.thumbnailImage}
                      title={item?.title}
-                     date={new Date(item?.publishedAt).toDateString()}
+                     date={new Date(item?.oldPublishedAt || item?.publishedAt).toDateString()}
+                     slug={item?.slug}
                   />
-               </LocalizedLink>
             );
          })}
          {news.length === 0 && <p>No news articles found</p>}
