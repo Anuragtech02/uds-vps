@@ -4,12 +4,13 @@ const AllServices = ({ services }: any) => {
    return (
       <div className='container space-y-12 py-8'>
          {services?.map((service: any, index: number) => (
+            // Add scroll-margin-top to offset the sticky header
             <div
                key={index}
                id={service?.slug}
-               className='space-y-8 rounded-md border border-s-300 bg-white p-8'
+               className='space-y-8 rounded-md border border-s-300 bg-white p-8 scroll-mt-40'
             >
-               {/* Top section with image and short description */}
+               {/* Rest of your component remains the same */}
                <div
                   className={`flex flex-col gap-8 ${index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'}`}
                >
@@ -30,7 +31,6 @@ const AllServices = ({ services }: any) => {
                   </div>
                </div>
 
-               {/* Full width main content section below */}
                <div className='prose report-content max-w-none border-t pt-8'>
                   <div
                      dangerouslySetInnerHTML={{
