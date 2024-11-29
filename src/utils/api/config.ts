@@ -4,8 +4,6 @@ const timeout = 10000;
 const fetchClient = async (url: string, options: any = {}) => {
    const fullUrl = `${baseURL}${url}`;
 
-   console.log(fullUrl);
-
    const defaultHeaders = {
       'Content-Type': 'application/json',
    };
