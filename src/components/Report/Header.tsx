@@ -98,8 +98,6 @@ const Header: React.FC<{ data: any }> = ({ data }) => {
       return `${monthNames[monthIndex]} ${year}`;
    }
    const handleBuyNow = () => {
-      console.log('clicked', data);
-      console.log(selectedLicenses.selectedLicenses);
       let selectedLicense =
          !isNaN(data?.id) &&
          selectedLicenses.selectedLicenses?.[parseInt(data?.id)];

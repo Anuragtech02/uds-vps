@@ -32,8 +32,6 @@ const SignUp = () => {
       setErr(null);
       setSuccessMessage(null);
       setLoading(true);
-      console.log('Email:', email);
-      console.log('Password:', password);
       // Add your signup logic here
       try {
          const res = await signup({
@@ -41,7 +39,6 @@ const SignUp = () => {
             username: email,
             password: password,
          });
-         console.log(res);
          setSuccessMessage('* Signup Successfull! Please Login');
          router.push('/login');
       } catch (err) {

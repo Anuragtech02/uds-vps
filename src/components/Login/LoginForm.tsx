@@ -34,7 +34,7 @@ const LoginForm = () => {
          });
          router.push('/');
       } catch (error: any) {
-         console.log(error?.message?.indexOf('400'));
+
          setError(
             '* ' +
                (error?.message?.indexOf('400') !== -1

@@ -131,7 +131,6 @@ const page: React.FC<{
    } catch (err) {
       console.log(err);
    }
-   console.log({ relatedReports });
    let reportPage =
       reportDataList.data?.length > 0 ? reportDataList.data[0] : null;
    let relatedReportsData =

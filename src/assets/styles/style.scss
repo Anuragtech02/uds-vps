@@ -124,6 +124,14 @@
 
 .report-content ol {
    list-style-type: decimal !important;
+   
+   ol, li ol {
+      list-style-type: lower-alpha !important;
+      
+      ol, li ol {
+         list-style-type: lower-roman !important;
+      }
+   }
 }
 
 .report-content li {
@@ -171,13 +179,13 @@
    }
 }
 
-.report-content p {
-   &:has(:only-child[data-value='&nbsp;']),
-   &:has(:only-child br) {
-      display: none !important;
-      margin: 0 !important;
-   }
-}
+// .report-content p {
+//    &:has(:only-child[data-value='&nbsp;']),
+//    &:has(:only-child br) {
+//       display: none !important;
+//       margin: 0 !important;
+//    }
+// }
 
 .report-content figcaption{
    display: none !important;

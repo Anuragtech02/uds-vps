@@ -8,6 +8,13 @@ const config: Config = {
    ],
    theme: {
       extend: {
+         listStyleType: {
+            none: 'none',
+            disc: 'disc',
+            decimal: 'decimal',
+            square: 'square',
+            roman: 'upper-roman',
+          },
          colors: {
             green: {
                1: '#009090',

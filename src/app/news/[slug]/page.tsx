@@ -7,7 +7,6 @@ import ClientSearchHero from '@/components/Home/ClientSearchHero';
 
 const News = async (props: any) => {
    const { slug } = props?.params;
-   console.log(slug, 'here');
    let newsArticle: Awaited<ReturnType<typeof getNewsBySlug>>;
 
    try {

@@ -19,7 +19,6 @@ const HandleRTL = () => {
       if (typeof window !== 'undefined') {
          //  setTimeout(() => {
          const el = document.querySelector('.gt_selector') as HTMLSelectElement;
-         console.log('This is window', el);
          if (el) {
             const selectedLang = el.value;
             checkAndUpdateRTL(selectedLang);

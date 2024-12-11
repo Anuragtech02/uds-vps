@@ -58,7 +58,7 @@ const Cart = () => {
    const updateTotalCost = (cart: any[]) => {
       setTotalCost(
          cart.reduce((acc, item) => {
-            console.log(item?.selectedLicense?.price?.amount);
+
             return (
                acc +
                parseInt(item?.selectedLicense?.price?.amount) *
@@ -71,7 +71,6 @@ const Cart = () => {
       const cart = getCart();
       setCartData(cart);
       updateTotalCost(cart);
-      console.log(cart);
    }, []);
    const handleChangeQuantity = (reportId: number, quantity: number) => {
       const updatedCart: any = cartData.map((item: any) =>
@@ -107,7 +106,6 @@ const Cart = () => {
             },
          });
          let strapiOrderId = createdOrder?.data?.id;
-         console.log(createdOrder);
          const options = {
             key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
             amount: totalCost * 100,
@@ -163,7 +161,6 @@ const Cart = () => {
          const paymentObject = new window.Razorpay(options);
          paymentObject.on('payment.failed', async function (response: any) {
             alert(response.error.description);
-            console.log(response);
             await updateOrderStatus(strapiOrderId, 'FAILED');
             // router.replace('/payment-failure');
          });

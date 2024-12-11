@@ -5,7 +5,7 @@ const ContactDetails = ({ contactDetails }: any) => {
       ...contact,
       icon: contact?.icon?.data?.attributes,
    }));
-   console.log(JSON.stringify(contacts));
+
    return (
       <div className='w-full rounded-xl bg-white p-4 font-medium text-blue-2 md:p-6'>
          <div className='space-y-6 md:space-y-8'>
