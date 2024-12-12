@@ -59,42 +59,54 @@ const LatestResearch: React.FC<{ data: any; reports: any }> = ({
    data,
    reports,
 }) => {
-   const settings = {
-      dots: false,
-      infinite: true,
-      speed: 2000,
-      slidesToShow: 4.2,
-      slidesToScroll: 1,
-      arrows: false,
-      dynamicHeight: false,
-      autoplay: true,
-      autoplaySpeed: 3000,
-      cssEase: "linear",  
-      responsive: [
-         {
-            breakpoint: 1024,
-            settings: {
-               slidesToShow: 3.2,
-               // slidesToScroll: 1,
-               infinite: true,
-               dots: false,
+      const settings = {
+         dots: false,
+         infinite: true,
+         slidesToShow: 4.2,
+         slidesToScroll: 1,
+         arrows: false,
+         dynamicHeight: false,
+         responsive: [
+            {
+               breakpoint: 1200,
+               settings: {
+                  slidesToShow: 3.2,
+                  // slidesToScroll: 1,
+                  infinite: true,
+                  dots: false,
+               },
             },
-         },
-         {
-            breakpoint: 600,
-            settings: {
-               slidesToShow: 2,
-               // slidesToScroll: 2,
+            {
+               breakpoint: 1024,
+               settings: {
+                  slidesToShow: 3.2,
+                  // slidesToScroll: 1,
+                  infinite: true,
+                  dots: false,
+               },
             },
-         },
-         {
-            breakpoint: 480,
-            settings: {
-               slidesToShow: 1,
-               // slidesToScroll: 1,
+            {
+               breakpoint: 786,
+               settings: {
+                  slidesToShow: 2,
+                  // slidesToScroll: 2,
+               },
             },
-         },
-      ],
+            {
+               breakpoint: 600,
+               settings: {
+                  slidesToShow: 2,
+                  // slidesToScroll: 2,
+               },
+            },
+            {
+               breakpoint: 480,
+               settings: {
+                  slidesToShow: 1,
+                  // slidesToScroll: 1,
+               },
+            },
+         ],
    };
 
    const latestResearchSection = {

@@ -87,10 +87,52 @@ const sampleData = [
 const ExploreProjects = ({ reports }: { reports: any[] }) => {
    const settings = {
       dots: false,
-      infinite: false,
-      speed: 500,
+      infinite: true,
       slidesToShow: 4.2,
+      slidesToScroll: 1,
       arrows: false,
+      dynamicHeight: false,
+      responsive: [
+         {
+            breakpoint: 1200,
+            settings: {
+               slidesToShow: 3.2,
+               // slidesToScroll: 1,
+               infinite: true,
+               dots: false,
+            },
+         },
+         {
+            breakpoint: 1024,
+            settings: {
+               slidesToShow: 3.2,
+               // slidesToScroll: 1,
+               infinite: true,
+               dots: false,
+            },
+         },
+         {
+            breakpoint: 786,
+            settings: {
+               slidesToShow: 2,
+               // slidesToScroll: 2,
+            },
+         },
+         {
+            breakpoint: 600,
+            settings: {
+               slidesToShow: 2,
+               // slidesToScroll: 2,
+            },
+         },
+         {
+            breakpoint: 480,
+            settings: {
+               slidesToShow: 1,
+               // slidesToScroll: 1,
+            },
+         },
+      ],
    };
 
    return (
