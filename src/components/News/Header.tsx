@@ -47,7 +47,7 @@ const Header: React.FC<{ newsArticle: any }> = ({ newsArticle }) => {
    return (
       <>
          <div
-            className={`w-full bg-white py-4 transition-all duration-300`}
+            className={`w-full bg-white py-4 transition-all duration-300 mt-[140px] sm:mt-[160px] sm:pt-[20px]`}
             ref={headerRef1}
          >
             <div className='container'>
