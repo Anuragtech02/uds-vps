@@ -119,7 +119,8 @@ export const getNewsListingPage = async (
       ]);
       const paginationQuery = getPaginationQuery(page, limit);
       const filterQuery = getFilterQuery(filters);
-      const query = `${populateQuery}&${paginationQuery}&${filterQuery}`;
+      const sortQuery = 'sort[0]=id:desc';
+      const query = `${populateQuery}&${paginationQuery}&${filterQuery}&${sortQuery}`;
       const response = await fetchClient('/news-articles?' + query, {
          headers: getAuthHeaders(),
       });
@@ -142,7 +143,8 @@ export const getBlogsListingPage = async (
       ]);
       const paginationQuery = getPaginationQuery(page, limit);
       const filterQuery = getFilterQuery(filters);
-      const query = `${populateQuery}&${paginationQuery}&${filterQuery}`;
+      const sortQuery = 'sort[0]=oldPublishedAt:desc';
+      const query = `${populateQuery}&${paginationQuery}&${filterQuery}&${sortQuery}`;
       const response = await fetchClient('/blogs?' + query, {
          headers: getAuthHeaders(),
       });

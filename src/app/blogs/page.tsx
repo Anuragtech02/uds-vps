@@ -122,9 +122,9 @@ const Blog = async ({
                            title={blog?.title}
                            thumbnailImage={blog?.thumbnailImage}
                            shortDescription={blog?.shortDescription}
-                           date={new Intl.DateTimeFormat('en-GB', {
+                           date={new Intl.DateTimeFormat('en-IN', {
                               day: '2-digit',
-                              month: 'long',
+                              month: 'short',
                               year: 'numeric',
                            }).format(new Date(blog?.oldPublishedAt || blog?.publishedAt))}
                            slug={blog?.slug}

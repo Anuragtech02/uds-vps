@@ -108,9 +108,9 @@ const News = async ({
                            key={i}
                            title={news?.title}
                            thumbnailImage={news?.thumbnailImage}
-                           date={new Intl.DateTimeFormat('en-GB', {
+                           date={new Intl.DateTimeFormat('en-IN', {
                               day: '2-digit',
-                              month: 'long',
+                              month: 'short',
                               year: 'numeric',
                            }).format(new Date(news?.oldPublishedAt || news?.publishedAt))}
                            slug={news?.slug}
