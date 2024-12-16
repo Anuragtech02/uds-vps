@@ -230,7 +230,7 @@ const Header: React.FC<{ data: any }> = ({ data }) => {
                      </div>
                      <div className='flex w-full items-center gap-2 md:max-w-max md:justify-end'>
                         <div className='text-right text-sm lg:block hidden'>
-                           <p>test@email.com</p>
+                           <p>contact@univdatos.com</p>
                            <p>+19787330253</p>
                         </div>
                         <div className='flex w-full items-center gap-2 md:max-w-max md:justify-end'>
