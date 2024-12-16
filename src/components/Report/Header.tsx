@@ -202,9 +202,20 @@ const Header: React.FC<{ data: any }> = ({ data }) => {
             >
                <div className='container'>
                   <div className='flex flex-col items-start justify-between gap-4 md:flex-row md:items-center md:gap-6'>
-                     <h4 className='hidden w-full overflow-hidden truncate text-ellipsis font-bold sm:text-wrap md:block lg:w-2/3'>
-                        {reportHeaderData.title}
-                     </h4>
+                     <div className='flex flex-col justify-start items-start gap-2'>
+                        <StrapiImage
+                           media={{
+                              url: 'https://udsweb.s3.ap-south-1.amazonaws.com/logo_dark_91bf6337d3.svg',
+                              width: 100,
+                              height: 50,
+                           }}
+                           objectFit='contain'
+                           className='!h-[20px] !object-contain'
+                        />
+                        <h5 className='hidden w-full overflow-hidden truncate text-ellipsis font-bold sm:text-wrap md:block lg:w-2/3'>
+                           {reportHeaderData.title}
+                        </h5>
+                     </div>
                      <div className='flex w-full items-center gap-2 md:max-w-max md:justify-end'>
                         <LocalizedLink
                            href={getCTALink(
