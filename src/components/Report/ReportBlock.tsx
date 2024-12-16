@@ -193,9 +193,12 @@ const ReportBlock: React.FC<ReportBlockProps> = ({ data }) => {
 
    const handleBuyNow = () => {
       // @ts-ignore
-      const selectedLicense = selectedLicenses.selectedLicenses[reportData.id];
+      let selectedLicense = selectedLicenses.selectedLicenses[reportData.id];
       if (!selectedLicense) {
-         return alert('Please select a license');
+         // select single user by default
+         selectedLicense = variants.find(
+            (variant) => variant.title?.includes("Single User"),
+         );
       }
 
       // @ts-ignore

@@ -13,6 +13,7 @@ const ReportResults = ({ reports }: any) => {
                   description={report?.shortDescription}
                   key={report?.id}
                   slug={report?.slug}
+                  highlightImageUrl={report?.highlightImage?.data?.attributes?.url}
                />
             </LocalizedLink>
          ))}

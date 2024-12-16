@@ -102,8 +102,13 @@ const Header: React.FC<{ data: any }> = ({ data }) => {
          !isNaN(data?.id) &&
          selectedLicenses.selectedLicenses?.[parseInt(data?.id)];
       if (!selectedLicense) {
-         return alert('Please select a license');
+         // select single user by default
+         console.log(data.attributes)
+         selectedLicense = data?.attributes?.variants?.find(
+            (variant: any) => variant?.title?.includes("Single User"),
+         );
       }
+      console.log(selectedLicense)
       addToCart({ id: data?.id, ...data?.attributes }, selectedLicense);
       router.push('/cart');
    };

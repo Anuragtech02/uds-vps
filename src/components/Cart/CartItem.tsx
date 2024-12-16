@@ -10,6 +10,7 @@ interface CartItemProps {
    report: any;
    handleRemoveItem: (id: number) => void;
    handleChangeQuantity: (id: number, quantity: number) => void;
+   handleChangeLicense: (id: number, license: any) => void;
 }
 
 const CartItem: FC<CartItemProps> = ({
@@ -18,15 +19,16 @@ const CartItem: FC<CartItemProps> = ({
    selectedLicense,
    handleRemoveItem,
    handleChangeQuantity,
+   handleChangeLicense,
 }) => {
    let name = report?.title,
       price = selectedLicense?.price?.amount,
       img = report?.highlightImage?.data?.attributes?.url || "/api/placeholder/64/64";
 
    return (
-      <div className="flex flex-col sm:flex-row items-center gap-4 border-b border-gray-200 py-4 first:pt-0 last:border-0 last:pb-0">
-         {/* Left section with delete, image, and title - gets most space */}
-         <div className="flex items-center gap-4 w-full sm:w-3/5">
+      <div className="flex flex-col sm:flex-row items-start gap-4 border-b border-gray-200 py-4 first:pt-0 last:border-0 last:pb-0">
+         {/* Left section with delete, image, and title */}
+         <div className="flex items-center gap-4 w-full sm:w-2/5">
             <button
                title='Remove item'
                onClick={() => handleRemoveItem(report?.id)}
@@ -46,7 +48,29 @@ const CartItem: FC<CartItemProps> = ({
             </h5>
          </div>
 
-         {/* Right section with price and subtotal - fixed width */}
+         {/* Middle section with license selection */}
+         <div className="w-full sm:w-1/5">
+            <select
+               value={selectedLicense?.title}
+               onChange={(e) => {
+                  const newLicense = report.variants.find(
+                     (variant: any) => variant.title === e.target.value
+                  );
+                  handleChangeLicense(report.id, newLicense);
+               }}
+               className="w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm 
+                        focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500
+                        text-gray-700 text-sm"
+            >
+               {report.variants.map((variant: any) => (
+                  <option key={variant.id} value={variant.title}>
+                     {variant.title} - ${variant.price.amount.toLocaleString()}
+                  </option>
+               ))}
+            </select>
+         </div>
+
+         {/* Right section with price and subtotal */}
          <div className="flex items-center justify-end gap-8 w-full sm:w-2/5">
             <div className="text-gray-900 font-medium">
                ${price?.toFixed(2)}

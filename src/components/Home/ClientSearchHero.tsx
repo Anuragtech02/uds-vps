@@ -18,7 +18,7 @@ const ClientSearchHero: React.FC<{
   };
 
   const inputClasses = variant === 'light' 
-    ? 'text-white border-gray-300'
+    ? 'bg-white text-gray-700 [&>input]:placeholder:text-gray-700'
     : 'text-border-blue-2 border-blue-2';
 
   return (

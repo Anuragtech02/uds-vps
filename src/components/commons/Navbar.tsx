@@ -239,7 +239,7 @@ const Navbar: React.FC<INavbarProps> = ({ header, mainMenu, industries }) => {
                      {/* <LocalizedLink href={header?.ctaButton?.link ?? ''}>
                         <Button>{header?.ctaButton?.title}</Button>
                      </LocalizedLink> */}
-                      <div className='max-w-[180px] [&>div]:w-full [&>div]:mt-0'>
+                      <div className='max-w-[190px] [&>div]:w-full [&>div]:mt-0'>
                         <ClientSearchHero placeholder='Search here...' variant='light' />
                      </div>
                   </div>
