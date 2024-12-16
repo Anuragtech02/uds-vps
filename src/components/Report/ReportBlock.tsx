@@ -236,7 +236,7 @@ const ReportBlock: React.FC<ReportBlockProps> = ({ data }) => {
             <div className='sticky top-[100px] hidden flex-[0.23] flex-col gap-6 lg:flex'>
                <div className='w-full rounded-md border border-s-400 bg-white'>
                   <ul className='list-none p-0'>
-                     {reportIndex.map((item, index) => (
+                     {reportIndex.filter((idx) => idx.title === 'FAQs' ? reportData.faqList?.length > 0 : true ).map((item, index) => (
                         <li
                            key={index}
                            className={`cursor-pointer px-4 py-2 transition-all duration-150 ${
