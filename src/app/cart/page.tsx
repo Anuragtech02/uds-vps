@@ -17,6 +17,7 @@ import {
 } from '@/utils/api/services';
 import {
    ICartItem,
+   changeLicenseOfReport,
    changeQuantityOfReport,
    getCart,
    removeItemFromCart,
@@ -64,6 +65,17 @@ const Cart = () => {
       updateTotalCost(updatedCart);
       removeItemFromCart(reportId);
    };
+
+
+   const handleChangeLicense = (reportId: number, newLicense: any) => {
+      const updatedCart = cartData.map((item: any) =>
+         item?.report?.id === reportId ? { ...item, selectedLicense: newLicense } : item,
+      );
+      setCartData(updatedCart);
+      updateTotalCost(updatedCart);
+      changeLicenseOfReport(reportId, newLicense);
+   };
+
 
    const processPayment = async (e: React.MouseEvent) => {
       e.preventDefault();
@@ -180,6 +192,7 @@ const Cart = () => {
                         {...item}
                         handleRemoveItem={handleRemoveItem}
                         handleChangeQuantity={handleChangeQuantity}
+                        handleChangeLicense={handleChangeLicense}
                      />
                   ))}
                </div>

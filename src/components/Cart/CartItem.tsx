@@ -26,7 +26,7 @@ const CartItem: FC<CartItemProps> = ({
       img = report?.highlightImage?.data?.attributes?.url || "/api/placeholder/64/64";
 
    return (
-      <div className="flex flex-col sm:flex-row items-start gap-4 border-b border-gray-200 py-4 first:pt-0 last:border-0 last:pb-0">
+      <div className="flex flex-col sm:flex-row items-center gap-4 border-b border-gray-200 py-4 mt-2 first:pt-0 last:border-0 last:pb-0">
          {/* Left section with delete, image, and title */}
          <div className="flex items-center gap-4 w-full sm:w-2/5">
             <button
@@ -51,6 +51,7 @@ const CartItem: FC<CartItemProps> = ({
          {/* Middle section with license selection */}
          <div className="w-full sm:w-1/5">
             <select
+               aria-label="Select license type"
                value={selectedLicense?.title}
                onChange={(e) => {
                   const newLicense = report.variants.find(

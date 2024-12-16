@@ -43,6 +43,15 @@ export const getCart = (): ICartItem[] => {
    return JSON.parse(localStorage.getItem('cart') || '[]');
 };
 
+export const changeLicenseOfReport = (reportId: number, newLicense: any) => {
+   const cart = getCart();
+   const updatedCart = cart.map((item: any) =>
+     item?.report?.id === reportId ? { ...item, selectedLicense: newLicense } : item
+   );
+   localStorage.setItem('cart', JSON.stringify(updatedCart));
+   return updatedCart;
+ };
+
 export const removeItemFromCart = (reportId: number): void => {
    let cart: ICartItem[] = JSON.parse(localStorage.getItem('cart') || '[]');
 
