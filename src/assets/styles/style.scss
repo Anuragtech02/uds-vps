@@ -30,6 +30,13 @@
    color: #09184c !important;
 }
 
+.report-content h1:first-of-type,
+.report-content h2:first-of-type,
+.report-content h3:first-of-type
+{
+   margin-top: 0 !important;
+}
+
 .report-content h1,
 .report-content h2,
 .report-content h3,

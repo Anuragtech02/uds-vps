@@ -25,12 +25,41 @@ const ReportStoreFilters: React.FC<ReportStoreFiltersProps> = ({
    const router = useRouter();
    const [expanded, setExpanded] = useState(false);
 
-   const handleToggleFilter = (industrySlug: string) => {
-      const reportFilters = filters.includes(industrySlug)
-         ? filters.filter((slug) => slug !== industrySlug)
-         : [...filters, industrySlug];
+   const handleToggleFilter = (slug: string, type: 'industry' | 'geography' = 'industry') => {
+      const currentParams = new URLSearchParams(window.location.search);
+      const industryFilters = currentParams.get('industries')?.split(',').filter(Boolean) || [];
+      const geographyFilters = currentParams.get('geographies')?.split(',').filter(Boolean) || [];
 
-      router.push(`/reports?industries=${reportFilters.join(',')}&page=1`);
+      let updatedIndustryFilters = [...industryFilters];
+      let updatedGeographyFilters = [...geographyFilters];
+
+      if (type === 'industry') {
+         updatedIndustryFilters = industryFilters.includes(slug)
+            ? industryFilters.filter((item) => item !== slug)
+            : [...industryFilters, slug];
+      } else {
+         updatedGeographyFilters = geographyFilters.includes(slug)
+            ? geographyFilters.filter((item) => item !== slug)
+            : [...geographyFilters, slug];
+      }
+
+      const updatedParams: Record<string, string> = {
+         page: currentParams.get('page') || '1',
+         industries: updatedIndustryFilters.join(','),
+         geographies: updatedGeographyFilters.join(','),
+      };
+
+      const searchQuery = currentParams.get('search');
+      if (searchQuery) {
+         updatedParams.search = searchQuery;
+      }
+
+      // Remove empty params
+      Object.keys(updatedParams).forEach(key => 
+         !updatedParams[key] && delete updatedParams[key]
+      );
+
+      router.push(`/reports?${new URLSearchParams(updatedParams).toString()}`);
    };
 
    return (

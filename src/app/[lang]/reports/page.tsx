@@ -34,21 +34,25 @@ interface ReportStoreProps {
 const ITEMS_PER_PAGE = 10;
 
 const ReportStore: FC<ReportStoreProps> = async ({ searchParams }) => {
-   const viewType = searchParams.viewType || 'list';
-   const industryFilters =
-      searchParams.industries?.split(',').filter(Boolean) || [];
-   const geographyFilters =
-      searchParams.geographies?.split(',').filter(Boolean) || [];
-   const currentPage = parseInt(searchParams.page || '1', 10);
+  const viewType = searchParams.viewType || 'list';
+  const industryFilters =
+     searchParams.industries?.split(',').filter(Boolean) || [];
+  const geographyFilters =
+     searchParams.geographies?.split(',').filter(Boolean) || [];
+  const currentPage = parseInt(searchParams.page || '1', 10);
 
-   const filters = industryFilters.concat(geographyFilters);
-   const filtersQuery = filters.reduce(
-      (acc, filter) => {
-         acc[`industrySlug_${filter}`] = filter;
-         return acc;
-      },
-      {} as Record<string, string>,
-   );
+  const filters = industryFilters.concat(geographyFilters);
+  const filtersQuery = filters.reduce(
+    (acc, filter) => {
+      if (industryFilters.includes(filter)) {
+        acc[`industrySlug_${filter}`] = filter;
+      } else if (geographyFilters.includes(filter)) {
+        acc[`geographySlug_${filter}`] = filter;
+      }
+      return acc;
+    },
+    {} as Record<string, string>,
+  );
 
    const [reportsList, industriesData] = await Promise.all([
       getAllReports(currentPage, ITEMS_PER_PAGE, filtersQuery).catch(

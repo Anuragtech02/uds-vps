@@ -26,6 +26,10 @@ const getFilterQuery = (
             return `filters[industry][slug][$eq]=${encodeURIComponent(String(value))}`;
          } else if (key.startsWith('industriesSlug')) {
             return `filters[industries][slug][$in]=${encodeURIComponent(String(value))}`;
+         } else if (key.startsWith('geographySlug')) {
+            return `filters[geography][slug][$eq]=${encodeURIComponent(String(value))}`;
+         } else if (key.startsWith('geographiesSlug')) {
+            return `filters[geographies][slug][$in]=${encodeURIComponent(String(value))}`;
          }
          return `filters[${key}]=${encodeURIComponent(String(value))}`;
       })
@@ -96,6 +100,8 @@ export const getAllReports = async (page = 1, limit = 10, filters = {}) => {
       const filterQuery = getFilterQuery(filters);
       const sortQuery = 'sort[0]=oldPublishedAt:desc';
       const query = `${populateQuery}&${paginationQuery}&${filterQuery}&${sortQuery}`;
+
+      console.log(query)
 
       const response = await fetchClient('/reports?' + query, {
          headers: getAuthHeaders(),

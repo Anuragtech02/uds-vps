@@ -3,6 +3,7 @@ import Button from './Button';
 import Link from 'next/link';
 import { BiChevronDown, BiChevronRight, BiMenu, BiX } from 'react-icons/bi';
 import { LocalizedLink } from './LocalizedLink';
+import ClientSearchHero from '../Home/ClientSearchHero';
 
 interface MenuItem {
    title: string;
@@ -88,7 +89,7 @@ const DesktopMenuItem: React.FC<{ item: MenuItem; depth: number }> = ({
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
          >
-            <div className='flex cursor-pointer items-center px-4 py-2 text-white hover:bg-blue-3'>
+            <div className='flex cursor-pointer items-center px-4 py-2 text-white hover:bg-blue-3 rounded-md'>
                <span className='max-w-[200px] whitespace-normal break-words'>
                   {item.title}
                </span>
@@ -235,9 +236,12 @@ const Navbar: React.FC<INavbarProps> = ({ header, mainMenu, industries }) => {
                      )}
                   </ul>
                   <div className='ml-4 flex items-center'>
-                     <LocalizedLink href={header?.ctaButton?.link ?? ''}>
+                     {/* <LocalizedLink href={header?.ctaButton?.link ?? ''}>
                         <Button>{header?.ctaButton?.title}</Button>
-                     </LocalizedLink>
+                     </LocalizedLink> */}
+                      <div className='max-w-[180px] [&>div]:w-full [&>div]:mt-0'>
+                        <ClientSearchHero placeholder='Search here...' variant='light' />
+                     </div>
                   </div>
                </>
             )}

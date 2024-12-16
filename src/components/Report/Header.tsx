@@ -137,8 +137,12 @@ const Header: React.FC<{ data: any }> = ({ data }) => {
                         <div className='flex flex-wrap items-center gap-4'>
                            <div className='flex items-center gap-2'>
                               <p className='text-md text-s-500'>Geography:</p>
-                              <p className='text-md text-blue-4'>
-                                 {reportHeaderData.geography.name}
+                              <p className='text-md text-blue-4 hover:underline'>
+                                 <LocalizedLink
+                                    href={`/reports/?geographies=${reportHeaderData.geography.slug}`}
+                                 >
+                                    {reportHeaderData.geography.name}
+                                 </LocalizedLink>
                               </p>
                            </div>
 

@@ -4,21 +4,32 @@ import { useState } from 'react';
 import { IoIosSearch } from 'react-icons/io';
 import { useSearchStore } from '@/stores/search.store';
 
-const ClientSearchHero: React.FC = ({ }) => {
+const ClientSearchHero: React.FC<{
+  placeholder?: string;
+  variant?: 'light' | 'dark';
+}> = ({
+  placeholder = "Search for reports, blogs, news articles, industries, or geographies...",
+  variant = 'dark',
+ }) => {
   const searchStore = useSearchStore();
 
   const handleSearchClick = () => {
     searchStore?.toggleGlobalSearch();
   };
+
+  const inputClasses = variant === 'light' 
+    ? 'text-white border-gray-300'
+    : 'text-border-blue-2 border-blue-2';
+
   return (
-    <div className='mt-6 flex items-center gap-3 rounded-full border border-blue-2 px-6 py-3 md:w-2/3'>
+    <div className={`mt-6 flex items-center gap-2 rounded-xl border px-3 py-2 md:w-2/3 ${inputClasses}`}>
       <span className='text-2xl'>
         <IoIosSearch />
       </span>
       <input
         onClick={handleSearchClick}
         type='text'
-        placeholder="Search for reports, blogs, news articles, industries, or geographies..."
+        placeholder={placeholder}
         className='w-full bg-transparent text-[1.125rem] outline-none'
       />
     </div>
