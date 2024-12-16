@@ -202,19 +202,22 @@ const Header: React.FC<{ data: any }> = ({ data }) => {
             >
                <div className='container'>
                   <div className='flex flex-col items-start justify-between gap-4 md:flex-row md:items-center md:gap-6'>
-                     <div className='flex flex-col lg:flex-row justify-start items-center gap-2'>
+                     <div className='hidden md:flex flex-col lg:flex-row justify-start items-center gap-2'>
                         <StrapiImage
                            media={{
-                              url: 'https://udsweb.s3.ap-south-1.amazonaws.com/logo_dark_91bf6337d3.svg',
-                              width: 100,
+                              url: 'https://udsweb.s3.ap-south-1.amazonaws.com/uds_1921e7b253.svg',
+                              width: 50,
                               height: 50,
                            }}
                            objectFit='contain'
-                           className='!h-[20px] !object-contain'
+                           className='!h-[50px] !object-contain lg:block hidden'
                         />
-                        <h5 className='hidden w-full overflow-hidden truncate text-ellipsis font-bold sm:text-wrap md:block lg:w-2/3'>
-                           {reportHeaderData.title}
-                        </h5>
+                        <div>
+                           <h5 className='w-full overflow-hidden truncate text-ellipsis font-bold sm:text-wrap  lg:w-[100%]'>
+                              {reportHeaderData.title}
+                           </h5>
+                           <p className='text-xs'>Last Updated: {getMonthDate(reportHeaderData?.oldPublishedAt || reportHeaderData.updatedAt)}</p>
+                        </div>
                      </div>
                      <div className='flex w-full items-center gap-2 md:max-w-max md:justify-end'>
                         <LocalizedLink
