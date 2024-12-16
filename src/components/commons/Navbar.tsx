@@ -39,7 +39,7 @@ const MobileMenuItem: React.FC<{ item: MenuItem; depth: number }> = ({
          {item.children && item.children.length > 0 ? (
             <>
                <div
-                  className='flex w-full items-center justify-between px-4 py-3 text-white hover:bg-blue-2'
+                  className='flex w-full items-center justify-between px-2 py-3 text-white hover:bg-blue-2'
                   onClick={() => setIsOpen(!isOpen)}
                >
                   <span className='break-words pr-2'>{item.title}</span>
@@ -64,7 +64,7 @@ const MobileMenuItem: React.FC<{ item: MenuItem; depth: number }> = ({
          ) : (
             <LocalizedLink
                href={item.url ?? ''}
-               className='block w-full px-4 py-3 text-white hover:bg-blue-2'
+               className='block w-full px-2 py-3 text-white hover:bg-blue-2'
             >
                <span className='break-words'>{item.title}</span>
             </LocalizedLink>
@@ -89,7 +89,7 @@ const DesktopMenuItem: React.FC<{ item: MenuItem; depth: number }> = ({
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
          >
-            <div className='flex cursor-pointer items-center px-4 py-2 text-white hover:bg-blue-3 rounded-md'>
+            <div className='flex cursor-pointer items-center px-2 py-2 text-white hover:bg-blue-3 rounded-md'>
                <span className='max-w-[200px] whitespace-normal break-words'>
                   {item.title}
                </span>
@@ -130,8 +130,8 @@ const DesktopMenuItem: React.FC<{ item: MenuItem; depth: number }> = ({
                   <div
                      className={`flex items-center justify-between rounded-md ${
                         depth > 0
-                           ? 'w-full px-4 py-3 text-s-800 hover:bg-gray-100'
-                           : 'cursor-pointer px-4 py-2 text-white hover:bg-blue-3'
+                           ? 'w-full px-2 py-3 text-s-800 hover:bg-gray-100'
+                           : 'cursor-pointer px-2 py-2 text-white hover:bg-blue-3'
                      }`}
                   >
                      <span className='max-w-[200px] whitespace-normal break-words'>
@@ -159,7 +159,7 @@ const DesktopMenuItem: React.FC<{ item: MenuItem; depth: number }> = ({
          ) : (
             <LocalizedLink
                href={item.url ?? ''}
-               className={`block rounded-md px-4 py-2 ${
+               className={`block rounded-md px-2 py-2 ${
                   depth > 0
                      ? 'text-s-800 hover:bg-gray-100'
                      : 'text-white hover:bg-blue-3'
@@ -191,7 +191,7 @@ const Navbar: React.FC<INavbarProps> = ({ header, mainMenu, industries }) => {
 
    return (
       <div className='container'>
-         <nav className='flex items-center justify-between rounded-md bg-blue-2 px-4 py-2 lg:px-8'>
+         <nav className='flex items-center justify-between rounded-md bg-blue-2 px-2 py-2 lg:px-8'>
             <LocalizedLink href='/' className='flex items-center'>
                <img
                   src={header?.logo?.data?.attributes?.url}
@@ -281,7 +281,7 @@ const Navbar: React.FC<INavbarProps> = ({ header, mainMenu, industries }) => {
                      ),
                   )}
                </ul>
-               <div className='sticky bottom-0 mt-4 h-[70px] bg-blue-2 px-4'>
+               <div className='sticky bottom-0 mt-4 h-[70px] bg-blue-2 px-2'>
                   <LocalizedLink href={header?.ctaButton?.link ?? ''}>
                      <Button className='w-full'>
                         {header?.ctaButton?.title}

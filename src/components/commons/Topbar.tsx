@@ -45,14 +45,14 @@ const Topbar = ({ header, industries }: ITopbarProps) => {
                   ))}
                </select> */}
                <div className='gtranslate_wrapper !relative'></div>
-               <span
+               {/* <span
                   className='cursor-pointer text-xl'
                   onClick={() => {
                      searchStore?.toggleGlobalSearch();
                   }}
                >
                   <IoIosSearch />
-               </span>
+               </span> */}
                <LocalizedLink href='/login'>
                   <span className='text-xl'>
                      <FaCircleUser />
