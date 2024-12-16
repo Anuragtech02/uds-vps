@@ -100,9 +100,7 @@ export const getAllReports = async (page = 1, limit = 10, filters = {}) => {
       const filterQuery = getFilterQuery(filters);
       const sortQuery = 'sort[0]=oldPublishedAt:desc';
       const query = `${populateQuery}&${paginationQuery}&${filterQuery}&${sortQuery}`;
-
-      console.log(query)
-
+      
       const response = await fetchClient('/reports?' + query, {
          headers: getAuthHeaders(),
       });

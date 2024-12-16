@@ -12,6 +12,7 @@ interface ReportStoreItemProps {
    description: string;
    slug: string;
    viewType?: string;
+   highlightImageUrl: string,
 }
 
 const ReportStoreItem: FC<ReportStoreItemProps> = ({
@@ -20,12 +21,13 @@ const ReportStoreItem: FC<ReportStoreItemProps> = ({
    description,
    slug,
    viewType,
+   highlightImageUrl,
 }) => {
    return (
       <div className='flex flex-col gap-4 rounded-xl bg-white p-6 md:flex-row'>
          <div className='relative aspect-square h-auto w-[180px] rounded-xl border border-s-300'>
             <Image
-               src={newPlaceHolder}
+               src={highlightImageUrl || newPlaceHolder}
                alt='news'
                fill
                className='rounded-xl object-contain'

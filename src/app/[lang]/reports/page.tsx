@@ -24,6 +24,13 @@ interface Report {
       publishedAt: string;
       shortDescription: string;
       oldPublishedAt: string;
+      highlightImage: {
+          data: {
+              attributes: {
+                url: string;
+              };
+          };
+      }
    };
 }
 
@@ -107,6 +114,7 @@ const ReportStore: FC<ReportStoreProps> = async ({ searchParams }) => {
                     slug={report.attributes.slug}
                     description={report.attributes.shortDescription}
                     viewType={viewType}
+                    highlightImageUrl={report.attributes.highlightImage?.data?.attributes?.url}
                   />
                 ))
               ) : (
