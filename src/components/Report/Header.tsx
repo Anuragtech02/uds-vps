@@ -125,8 +125,11 @@ const Header: React.FC<{ data: any }> = ({ data }) => {
                   </div> */}
                   <div className='flex w-full flex-col justify-center gap-4 font-semibold'>
                      <div className='flex items-start justify-between gap-6'>
-                        <h1 className='h3 font-bold lg:w-2/3'>
-                           {reportHeaderData.title}
+                        <h1 className='h3 font-bold lg:w-2/3' dangerouslySetInnerHTML={
+                           {
+                              __html: reportHeaderData.title,
+                           }
+                        }>
                         </h1>
                      </div>
                      <p className='font-medium text-s-700 md:text-lg'>
@@ -213,8 +216,9 @@ const Header: React.FC<{ data: any }> = ({ data }) => {
                            className='!h-[50px] !object-contain lg:block hidden'
                         />
                         <div>
-                           <h5 className='w-full overflow-hidden truncate text-ellipsis font-bold sm:text-wrap  lg:w-[100%]'>
-                              {reportHeaderData.title}
+                           <h5 className='w-full overflow-hidden truncate text-ellipsis font-bold sm:text-wrap  lg:w-[100%]' dangerouslySetInnerHTML={{
+                              __html: reportHeaderData.title,
+                           }}>
                            </h5>
                            <p className='text-xs'>Last Updated: {getMonthDate(reportHeaderData?.oldPublishedAt || reportHeaderData.updatedAt)}</p>
                         </div>

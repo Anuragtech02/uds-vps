@@ -42,7 +42,11 @@ const ResearchCard: FC<ResearchCardProps> = ({
          <p
             className={`my-2 line-clamp-2 overflow-hidden font-bold hover:underline ${type === 'latest' ? 'text-base' : 'text-xl'}`}
          >
-            <LocalizedLink href={`/reports/${slug}`}>{title}</LocalizedLink>
+            <LocalizedLink href={`/reports/${slug}`}>
+               <span dangerouslySetInnerHTML={ {
+                              __html: title,
+                           }}></span>
+            </LocalizedLink>
          </p>
          {type === 'upcoming' && (
             <div className='flex flex-col gap-2 text-sm'>

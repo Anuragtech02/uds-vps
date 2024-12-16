@@ -36,7 +36,8 @@ const ReportStoreItem: FC<ReportStoreItemProps> = ({
          <div className='grow space-y-3 md:w-2/3'>
             <h4 className='line-clamp-3 overflow-hidden text-xl font-semibold hover:underline'>
                <LocalizedLink href={`/reports/${slug}`} className='w-full'>
-                  {title}
+                  <span dangerouslySetInnerHTML={{ __html: title }}>
+                  </span>
                </LocalizedLink>
             </h4>
             {viewType === 'list' && (
