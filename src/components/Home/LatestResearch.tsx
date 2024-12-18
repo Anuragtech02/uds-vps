@@ -66,6 +66,9 @@ const LatestResearch: React.FC<{ data: any; reports: any }> = ({
          slidesToScroll: 1,
          arrows: false,
          dynamicHeight: false,
+         autoplay: true,
+         autoplaySpeed: 3000,
+         ease: 'linear',
          responsive: [
             {
                breakpoint: 1200,
