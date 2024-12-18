@@ -27,12 +27,74 @@ import { useRouter } from 'next/navigation';
 import Script from 'next/script';
 import { useEffect, useState } from 'react';
 
+const CURRENCIES: {
+   [key: string]: { symbol: string; name: string };
+} = {
+   USD: { symbol: '$', name: 'USD' },
+   INR: { symbol: '₹', name: 'INR' },
+   GBP: { symbol: '£', name: 'GBP' },
+   JPY: { symbol: '¥', name: 'JPY' }
+};
+
+const CurrencySelector = ({ selectedCurrency, onCurrencyChange }: {
+   selectedCurrency: string;
+   onCurrencyChange: (currency: string) => void;
+}) => {
+   return (
+     <div className="flex items-center space-x-2">
+       <span className="text-sm text-gray-600">Currency:</span>
+       <select
+         aria-label="Currency Selector"
+         value={selectedCurrency}
+         onChange={(e) => onCurrencyChange(e.target.value)}
+         className="border border-gray-200 rounded-md px-2 py-1 text-sm"
+       >
+         {Object.keys(CURRENCIES).map((currency) => (
+           <option key={currency} value={currency}>
+             {CURRENCIES[currency].symbol} {currency}
+           </option>
+         ))}
+       </select>
+     </div>
+   );
+};
+
 const Cart = () => {
    const [cartData, setCartData] = useState<ICartItem[]>([]);
    const [totalCost, setTotalCost] = useState(0);
+   const [selectedCurrency, setSelectedCurrency] = useState('INR');
+   const [exchangeRates, setExchangeRates] = useState<any>({});
    const router = useRouter();
    const cartStore = useCartStore();
    const licenseStore = useSelectedLicenseStore();
+
+   const fetchRates = async () => {
+      try {
+         const response = await fetch(`https://free.ratesdb.com/v1/rates?from=USD`);
+         const data = await response.json();
+         
+         // Set exchange rates with USD as base
+         setExchangeRates({ ...data.data.rates, USD: 1 });
+      } catch (error) {
+         console.error('Error fetching exchange rates:', error);
+      }
+   };
+
+   useEffect(() => {
+      fetchRates();
+   }, []); // Only fetch rates once on component mount
+
+   const convertPrice = (amount: number | undefined) => {
+      if (amount === undefined || isNaN(amount)) return 0;
+      if (!exchangeRates[selectedCurrency]) return amount;
+
+      // Convert from INR to selected currency using USD as base
+      const inrToUsd = exchangeRates.INR ? 1 / exchangeRates.INR : 0;
+      const amountInUsd = amount * inrToUsd;
+      const rate = exchangeRates[selectedCurrency];
+      
+      return Number((amountInUsd * rate).toFixed(2));
+   };
 
    const updateTotalCost = (cart: any[]) => {
       setTotalCost(
@@ -47,6 +109,10 @@ const Cart = () => {
       setCartData(cart);
       updateTotalCost(cart);
    }, []);
+
+   const handleCurrencyChange = (newCurrency: string) => {
+      setSelectedCurrency(newCurrency);
+   };
 
    const handleChangeQuantity = (reportId: number, quantity: number) => {
       const updatedCart = cartData.map((item: any) =>
@@ -66,7 +132,6 @@ const Cart = () => {
       removeItemFromCart(reportId);
    };
 
-
    const handleChangeLicense = (reportId: number, newLicense: any) => {
       const updatedCart = cartData.map((item: any) =>
          item?.report?.id === reportId ? { ...item, selectedLicense: newLicense } : item,
@@ -75,7 +140,6 @@ const Cart = () => {
       updateTotalCost(updatedCart);
       changeLicenseOfReport(reportId, newLicense);
    };
-
 
    const processPayment = async (e: React.MouseEvent) => {
       e.preventDefault();
@@ -165,9 +229,15 @@ const Cart = () => {
          />
          
          <div className="mt-5 w-full space-y-6 rounded-xl bg-white p-6">
-            <h1 className="text-2xl md:text-3xl font-semibold text-gray-900">
-               Cart
-            </h1>
+            <div className="flex justify-between items-center">
+               <h1 className="text-2xl md:text-3xl font-semibold text-gray-900">
+                  Cart
+               </h1>
+               <CurrencySelector 
+                  selectedCurrency={selectedCurrency}
+                  onCurrencyChange={handleCurrencyChange}
+               />
+            </div>
 
             {/* Cart Items Container */}
             <div className="rounded-xl border border-gray-200 p-6">
@@ -193,6 +263,9 @@ const Cart = () => {
                         handleRemoveItem={handleRemoveItem}
                         handleChangeQuantity={handleChangeQuantity}
                         handleChangeLicense={handleChangeLicense}
+                        convertPrice={convertPrice}
+                        selectedCurrency={selectedCurrency}
+                        currencySymbol={CURRENCIES[selectedCurrency].symbol}
                      />
                   ))}
                </div>
@@ -200,7 +273,11 @@ const Cart = () => {
 
             {/* Cost Calculations */}
             <div className="rounded-xl border border-gray-200 p-6">
-               <CostCalculations cost={totalCost} city="Mumbai" />
+               <CostCalculations 
+                  cost={convertPrice(totalCost) as number} 
+                  city="Mumbai" 
+                  currency={CURRENCIES[selectedCurrency]}
+               />
             </div>
 
             {/* Checkout Button */}

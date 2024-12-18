@@ -11,6 +11,9 @@ interface CartItemProps {
    handleRemoveItem: (id: number) => void;
    handleChangeQuantity: (id: number, quantity: number) => void;
    handleChangeLicense: (id: number, license: any) => void;
+   convertPrice: (amount: number) => number;
+   selectedCurrency: string;
+   currencySymbol: string;
 }
 
 const CartItem: FC<CartItemProps> = ({
@@ -20,10 +23,19 @@ const CartItem: FC<CartItemProps> = ({
    handleRemoveItem,
    handleChangeQuantity,
    handleChangeLicense,
+   convertPrice,
+   selectedCurrency,
+   currencySymbol
 }) => {
    let name = report?.title,
       price = selectedLicense?.price?.amount,
       img = report?.highlightImage?.data?.attributes?.url || "/api/placeholder/64/64";
+
+   const formatPrice = (amount: number | undefined) => {
+      if (amount === undefined || isNaN(amount)) return `${currencySymbol}0.00`;
+      const converted = convertPrice(amount);
+      return `${currencySymbol}${Number(converted).toFixed(2)}`;
+   };
 
    return (
       <div className="flex flex-col sm:flex-row items-center gap-4 border-b border-gray-200 py-4 mt-2 first:pt-0 last:border-0 last:pb-0">
@@ -63,9 +75,9 @@ const CartItem: FC<CartItemProps> = ({
                         focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500
                         text-gray-700 text-sm"
             >
-               {report.variants.map((variant: any) => (
-                  <option key={variant.id} value={variant.title}>
-                     {variant.title} - ${variant.price.amount.toLocaleString()}
+               {report.variants?.map((variant: any) => (
+                  <option key={variant?.id} value={variant?.title}>
+                     {variant?.title} - {formatPrice(variant?.price?.amount)}
                   </option>
                ))}
             </select>
@@ -74,11 +86,11 @@ const CartItem: FC<CartItemProps> = ({
          {/* Right section with price and subtotal */}
          <div className="flex items-center justify-end gap-8 w-full sm:w-2/5">
             <div className="text-gray-900 font-medium">
-               ${price?.toFixed(2)}
+               {formatPrice(price)}
             </div>
 
             <div className="text-gray-900 font-medium text-right min-w-[80px]">
-               ${(price * quantity).toFixed(2)}
+               {formatPrice(price * quantity)}
             </div>
          </div>
       </div>
