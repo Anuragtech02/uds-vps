@@ -30,12 +30,14 @@ const CartItem: FC<CartItemProps> = ({
    let name = report?.title,
       price = selectedLicense?.price?.amount,
       img = report?.highlightImage?.data?.attributes?.url || "/api/placeholder/64/64";
-
-   const formatPrice = (amount: number | undefined) => {
-      if (amount === undefined || isNaN(amount)) return `${currencySymbol}0.00`;
-      const converted = convertPrice(amount);
-      return `${currencySymbol}${Number(converted).toFixed(2)}`;
-   };
+      const formatPrice = (amount: number | undefined) => {
+         if (amount === undefined || isNaN(amount)) return `${currencySymbol}0.00`;
+         const converted = convertPrice(amount);
+         return new Intl.NumberFormat(selectedCurrency, {
+            style: 'currency',
+            currency: selectedCurrency,
+         }).format(converted);
+      };
 
    return (
       <div className="flex flex-col sm:flex-row items-center gap-4 border-b border-gray-200 py-4 mt-2 first:pt-0 last:border-0 last:pb-0">

@@ -70,7 +70,12 @@ const Cart = () => {
 
    const fetchRates = async () => {
       try {
-         const response = await fetch(`https://free.ratesdb.com/v1/rates?from=USD`);
+         const response = await fetch(`https://free.ratesdb.com/v1/rates?from=USD`, {
+            headers: {
+               'Content-Type': 'application/json',
+               
+            }
+         });
          const data = await response.json();
          
          // Set exchange rates with USD as base

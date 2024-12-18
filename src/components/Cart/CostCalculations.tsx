@@ -16,7 +16,7 @@ const CostCalculations: FC<CostCalculationsProps> = ({ cost, city, currency }) =
          <div className='flex justify-between border-b border-s-500 pb-4 font-semibold text-s-600 md:text-lg'>
             <p>Subtotal</p>
             <p className='text-lg md:text-2xl'>
-               {currency.symbol}{Number(cost).toFixed(2)}
+            {new Intl.NumberFormat('en-US', { style: 'currency', currency: currency.name }).format(cost)}
             </p>
          </div>
          <div className='flex justify-between border-b border-s-500 pb-4 pt-4 font-semibold text-s-600 md:text-lg'>
@@ -26,7 +26,7 @@ const CostCalculations: FC<CostCalculationsProps> = ({ cost, city, currency }) =
          <div className='flex items-center justify-between pt-4 font-semibold text-s-600 md:text-lg'>
             <p className='font-bold md:text-2xl'>Total</p>
             <p className='text-lg md:text-2xl'>
-               {currency.symbol}{Number(cost).toFixed(2)}
+               {new Intl.NumberFormat('en-US', { style: 'currency', currency: currency.name }).format(cost)}
             </p>
          </div>
       </>

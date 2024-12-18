@@ -228,3 +228,15 @@ export const updatePaymentStatus = async (
       throw error;
    }
 };
+
+export const getCurrencyRates = async () => {
+   try {
+      const response = await fetchClientCSR('/currency-rates?from=USD', {
+         headers: getAuthHeaders(),
+      });
+      return await response;
+   } catch (error) {
+      console.error('Error fetching currency rates:', error);
+      throw error;
+   }
+}

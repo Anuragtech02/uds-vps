@@ -8,6 +8,7 @@ import { useSelectedLicenseStore } from '@/stores/selectedLicense.store';
 import {
    createOrder,
    createPayment,
+   getCurrencyRates,
    updateOrderStatus,
    updatePaymentStatus,
 } from '@/utils/api/csr-services';
@@ -62,7 +63,7 @@ const CurrencySelector = ({ selectedCurrency, onCurrencyChange }: {
 const Cart = () => {
    const [cartData, setCartData] = useState<ICartItem[]>([]);
    const [totalCost, setTotalCost] = useState(0);
-   const [selectedCurrency, setSelectedCurrency] = useState('INR');
+   const [selectedCurrency, setSelectedCurrency] = useState('USD');
    const [exchangeRates, setExchangeRates] = useState<any>({});
    const router = useRouter();
    const cartStore = useCartStore();
@@ -70,8 +71,7 @@ const Cart = () => {
 
    const fetchRates = async () => {
       try {
-         const response = await fetch(`https://free.ratesdb.com/v1/rates?from=USD`);
-         const data = await response.json();
+         const data = await getCurrencyRates(); 
          
          // Set exchange rates with USD as base
          setExchangeRates({ ...data.data.rates, USD: 1 });
@@ -89,8 +89,7 @@ const Cart = () => {
       if (!exchangeRates[selectedCurrency]) return amount;
 
       // Convert from INR to selected currency using USD as base
-      const inrToUsd = exchangeRates.INR ? 1 / exchangeRates.INR : 0;
-      const amountInUsd = amount * inrToUsd;
+      const amountInUsd = amount;
       const rate = exchangeRates[selectedCurrency];
       
       return Number((amountInUsd * rate).toFixed(2));
