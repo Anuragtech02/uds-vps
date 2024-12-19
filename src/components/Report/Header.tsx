@@ -137,8 +137,9 @@ const Header: React.FC<{ data: any }> = ({ data }) => {
                         }>
                         </h1>
                      </div>
-                     <p className='font-medium text-s-700 md:text-lg'>
-                        {reportHeaderData.shortDescription}
+                     <p className='font-medium text-s-700 md:text-lg' dangerouslySetInnerHTML={{
+                        __html: reportHeaderData.shortDescription,
+                     }}>
                      </p>
 
                      <div className='flex flex-wrap items-center justify-between gap-4'>
