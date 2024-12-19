@@ -136,6 +136,45 @@ export const createOrder = async (orderData: any) => {
    }
 };
 
+export const createOrderIdFromRazorPay = async (amount: number) => {
+   try {
+      const response = await fetchClientCSR('/rpay/create-order', {
+         method: 'POST',
+         headers: {
+            'Content-Type': 'application/json',
+            ...getAuthHeaders('post'),
+         },
+         body: JSON.stringify({
+            amount: amount * 100,
+         }),
+      });
+
+      if (!response.ok) {
+         throw new Error('Network response was not ok');
+      }
+
+      const data = await response.json();
+      return data.orderId;
+   } catch (error) {
+      console.error('There was a problem while creating order:', error);
+   }
+};
+
+export const verifyPayments = async (body: any) => {
+   try {
+      const response = await fetchClientCSR('/rpay/verify', {
+         method: 'POST',
+         body: JSON.stringify(body),
+         headers: { 'Content-Type': 'application/json',
+            ...getAuthHeaders('post'),
+          },
+      });
+      return response;
+   } catch (error) {
+      console.error('There was a problem while verifying payments:', error);
+   }
+};
+
 // Update order status
 export const updateOrderStatus = async (orderId: number, status: string) => {
    try {

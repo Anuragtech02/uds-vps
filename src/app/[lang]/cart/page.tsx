@@ -14,7 +14,7 @@ import {
 import {
    createOrderIdFromRazorPay,
    verifyPayments,
-} from '@/utils/api/services';
+} from '@/utils/api/csr-services';
 import {
    ICartItem,
    changeLicenseOfReport,
@@ -23,18 +23,10 @@ import {
    removeItemFromCart,
    resetCart,
 } from '@/utils/cart-utils.util';
+import { CURRENCIES } from '@/utils/constants';
 import { useRouter } from 'next/navigation';
 import Script from 'next/script';
 import { useEffect, useState } from 'react';
-
-const CURRENCIES: {
-   [key: string]: { symbol: string; name: string };
-} = {
-   USD: { symbol: '$', name: 'USD' },
-   INR: { symbol: '₹', name: 'INR' },
-   GBP: { symbol: '£', name: 'GBP' },
-   JPY: { symbol: '¥', name: 'JPY' }
-};
 
 const CurrencySelector = ({ selectedCurrency, onCurrencyChange }: {
    selectedCurrency: string;
@@ -73,7 +65,7 @@ const Cart = () => {
          const response = await fetch(`https://free.ratesdb.com/v1/rates?from=USD`, {
             headers: {
                'Content-Type': 'application/json',
-               
+
             }
          });
          const data = await response.json();

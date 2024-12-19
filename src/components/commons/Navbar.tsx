@@ -28,14 +28,15 @@ interface INavbarProps {
    }>;
 }
 
-const MobileMenuItem: React.FC<{ item: MenuItem; depth: number }> = ({
+const MobileMenuItem: React.FC<{ item: MenuItem; depth: number, onClick: () => void; }> = ({
    item,
    depth,
+   onClick,
 }) => {
    const [isOpen, setIsOpen] = useState(false);
 
    return (
-      <li className={`w-full ${depth > 0 ? 'pl-4' : ''}`}>
+      <li className={`w-full ${depth > 0 ? 'pl-4' : ''}`} onClick={depth == 0 ? () => onClick() : undefined}>
          {item.children && item.children.length > 0 ? (
             <>
                <div
@@ -48,13 +49,15 @@ const MobileMenuItem: React.FC<{ item: MenuItem; depth: number }> = ({
                   />
                </div>
                {isOpen && (
-                  <LocalizedLink href={item.url}>
+                  <LocalizedLink href={item.url}
+                  >
                      <ul className='w-full'>
                         {item.children.map((child, index) => (
                            <MobileMenuItem
                               key={index}
                               item={child}
                               depth={depth + 1}
+                              onClick={onClick}
                            />
                         ))}
                      </ul>
@@ -269,15 +272,22 @@ const Navbar: React.FC<INavbarProps> = ({ header, mainMenu, industries }) => {
                            key={index}
                            item={{
                               ...item,
-                              children: industries.map(({ slug, name }) => ({
+                              children: industries
+                                    .filter(
+                                       (industry) =>
+                                          !exclude.includes(
+                                             industry.name.toLowerCase(),
+                                          ),
+                                    ).map(({ slug, name }) => ({
                                  title: name,
                                  url: `/reports?industries=${slug}&page=1`,
                               })),
                            }}
                            depth={0}
+                           onClick={() => setIsMobileMenuOpen(false)}
                         />
                      ) : (
-                        <MobileMenuItem key={index} item={item} depth={0} />
+                        <MobileMenuItem key={index} item={item} depth={0} onClick={() => setIsMobileMenuOpen(false)} />
                      ),
                   )}
                </ul>

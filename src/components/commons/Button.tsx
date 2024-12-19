@@ -22,7 +22,7 @@ interface ButtonProps {
    className?: string;
    disabled?: boolean;
    type?: 'button' | 'submit' | 'reset';
-   onClick?: () => void;
+   onClick?: (e: any) => void;
 }
 
 const Button: FC<ButtonProps> = ({
@@ -33,6 +33,7 @@ const Button: FC<ButtonProps> = ({
    disabled,
    type = 'button',
    className,
+   onClick,
    ...props
 }) => {
    return (
@@ -46,6 +47,7 @@ const Button: FC<ButtonProps> = ({
          }`}
          disabled={disabled}
          type={type}
+         onClick={onClick}
          {...props}
       >
          <span className='flex items-center justify-center'>

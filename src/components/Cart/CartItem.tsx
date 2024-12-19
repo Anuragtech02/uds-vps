@@ -1,5 +1,6 @@
 import { FC } from 'react';
 import { IoCloseCircle } from 'react-icons/io5';
+import { LocalizedLink } from '../commons/LocalizedLink';
 
 interface CartItemProps {
    name: string;
@@ -58,7 +59,9 @@ const CartItem: FC<CartItemProps> = ({
             />
             
             <h5 className="text-gray-900 font-medium flex-1 line-clamp-2">
-               {name}
+               <LocalizedLink href={`/reports/${report?.slug}`} className='hover:underline'>
+                  {name}
+               </LocalizedLink>
             </h5>
          </div>
 
@@ -91,9 +94,9 @@ const CartItem: FC<CartItemProps> = ({
                {formatPrice(price)}
             </div>
 
-            <div className="text-gray-900 font-medium text-right min-w-[80px]">
+            {/* <div className="text-gray-900 font-medium text-right min-w-[80px]">
                {formatPrice(price * quantity)}
-            </div>
+            </div> */}
          </div>
       </div>
    );

@@ -15,7 +15,7 @@ import {
 import {
    createOrderIdFromRazorPay,
    verifyPayments,
-} from '@/utils/api/services';
+} from '@/utils/api/csr-services';
 import {
    ICartItem,
    changeLicenseOfReport,
@@ -24,18 +24,10 @@ import {
    removeItemFromCart,
    resetCart,
 } from '@/utils/cart-utils.util';
+import { CURRENCIES } from '@/utils/constants';
 import { useRouter } from 'next/navigation';
 import Script from 'next/script';
 import { useEffect, useState } from 'react';
-
-const CURRENCIES: {
-   [key: string]: { symbol: string; name: string };
-} = {
-   USD: { symbol: '$', name: 'USD' },
-   INR: { symbol: '₹', name: 'INR' },
-   GBP: { symbol: '£', name: 'GBP' },
-   JPY: { symbol: '¥', name: 'JPY' }
-};
 
 const CurrencySelector = ({ selectedCurrency, onCurrencyChange }: {
    selectedCurrency: string;
@@ -142,17 +134,18 @@ const Cart = () => {
 
    const processPayment = async (e: React.MouseEvent) => {
       e.preventDefault();
+      console.log("first")
       try {
          const orderId: string = await createOrderIdFromRazorPay(totalCost);
          const createdOrder = await createOrder({
             reports: cartData?.map((item: any) => item?.report?.id),
             orderId,
             taxAmount: {
-               currency: 'INR',
+               currency: selectedCurrency,
                amount: 0,
             },
             totalAmount: {
-               currency: 'INR',
+               currency: selectedCurrency,
                amount: totalCost,
             },
          });
@@ -162,7 +155,7 @@ const Cart = () => {
          const options = {
             key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
             amount: totalCost * 100,
-            currency: 'INR',
+            currency: selectedCurrency,
             name: 'Univdatos',
             description: 'Please complete the payment to purchase the product',
             order_id: orderId,
@@ -178,7 +171,7 @@ const Cart = () => {
                   paymentId: response.razorpay_payment_id,
                   order: strapiOrderId,
                   amount: {
-                     currency: 'INR',
+                     currency: selectedCurrency,
                      amount: totalCost,
                   },
                });
@@ -242,15 +235,18 @@ const Cart = () => {
             <div className="rounded-xl border border-gray-200 p-6">
                {/* Cart Headers */}
                <div className="flex items-center text-gray-600 font-medium pb-2 border-b border-gray-200">
-                  <div className="flex-grow">
+                  <div className="w-[40%]">
                      <span>Product</span>
                   </div>
-                  <div className="w-32 text-right">
+                  <div className='w-1/2 sm:w-1/5'>
+                     <span>License</span>
+                  </div>
+                  <div className="w-32 text-right ml-auto">
                      <span>Price</span>
                   </div>
-                  <div className="w-32 text-right">
+                  {/* <div className="w-32 text-right ml-auto">
                      <span>Subtotal</span>
-                  </div>
+                  </div> */}
                </div>
 
                {/* Cart Items */}
@@ -283,7 +279,7 @@ const Cart = () => {
             <div className="flex justify-end">
                <Button
                   variant="secondary"
-                  onClick={() => processPayment}
+                  onClick={(e) => processPayment(e)}
                   className="min-w-[200px]"
                >
                   Proceed to Checkout

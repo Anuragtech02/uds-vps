@@ -13,6 +13,10 @@ import {
 import { usePathname } from 'next/navigation';
 import CustomResearchCTA from './CustomResearchCTA';
 import { LocalizedLink } from './LocalizedLink';
+import { Suspense } from 'react';
+import { BiLoaderCircle } from 'react-icons/bi';
+import Popup from '../Popup';
+import DemoRequestForm from '../Home/DemoRequestForm';
 
 const socials = [];
 const invalidRoutes = [
@@ -127,7 +131,7 @@ const Footer = ({ footer, quickLinks }: any) => {
                      <p className='mb-4 text-lg text-white'>CONTACT</p>
                      <p className='mb-2'>{footer?.phoneNumber}</p>
                      <p className='mb-4'>{footer?.email}</p>
-                     <LocalizedLink href='?popup=report-enquiry'>
+                     <LocalizedLink href='?popup=demo-request'>
                         <Button
                            variant='light'
                            className='border border-blue-9 !bg-blue-1 text-blue-9'
@@ -178,6 +182,17 @@ const Footer = ({ footer, quickLinks }: any) => {
                </div>
             </div>
          </footer>
+         <Suspense
+            fallback={
+               <div className='flex h-32 items-center justify-center'>
+                  <BiLoaderCircle className='h-8 w-8 animate-spin text-gray-400' />
+               </div>
+            }
+         >
+            <Popup name='demo-request' title='Request a Demo'>
+               <DemoRequestForm />
+            </Popup>
+         </Suspense>
       </>
    );
 };

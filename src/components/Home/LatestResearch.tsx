@@ -7,57 +7,11 @@ import Slider from 'react-slick';
 import Button from '../commons/Button';
 import PreBookCTA from '../commons/PreBookCTA';
 
-const sampleData = [
-   {
-      title: 'Global Tech Summit 2024',
-      year: '2023-2024',
-      image: null,
-   },
-   {
-      title: 'Global Tech Summit 2024',
-      year: '2023-2024',
-      image: null,
-   },
-   {
-      title: 'Global Tech Summit 2024',
-      year: '2023-2024',
-      image: null,
-   },
-   {
-      title: 'Global Tech Summit 2024',
-      year: '2023-2024',
-      image: null,
-   },
-   {
-      title: 'Global Tech Summit 2024',
-      year: '2023-2024',
-      image: null,
-   },
-   {
-      title: 'Global Tech Summit 2024',
-      year: '2023-2024',
-      image: null,
-   },
-   {
-      title: 'Global Tech Summit 2024',
-      year: '2023-2024',
-      image: null,
-   },
-   {
-      title: 'Global Tech Summit 2024',
-      year: '2023-2024',
-      image: null,
-   },
-   {
-      title: 'Global Tech Summit 2024',
-      year: '2023-2024',
-      image: null,
-   },
-];
 
-const LatestResearch: React.FC<{ data: any; reports: any }> = ({
+const LatestResearch: React.FC<{ data: any; reports: any, upcomingReports: any }> = ({
    data,
    reports,
+   upcomingReports,
 }) => {
       const settings = {
          dots: false,
@@ -160,15 +114,19 @@ const LatestResearch: React.FC<{ data: any; reports: any }> = ({
                   ))}
                </Slider>
             </div>
-            <div className='h-8'></div>
-            <PreBookCTA
-               title={
-                  latestResearchSection.latestResearchSectionCTABanner.title
-               }
-               ctaButton={
-                  latestResearchSection.latestResearchSectionCTABanner.ctaButton
-               }
-            />
+            {upcomingReports?.length > 0 && (
+               <>
+                  <div className='h-8'></div>
+                  <PreBookCTA
+                     title={
+                        latestResearchSection.latestResearchSectionCTABanner.title
+                     }
+                     ctaButton={
+                        latestResearchSection.latestResearchSectionCTABanner.ctaButton
+                     }
+                  />
+               </>
+            )}
          </div>
       </section>
    );

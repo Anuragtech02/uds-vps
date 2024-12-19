@@ -25,7 +25,7 @@ const PreBookCTA: React.FC<{
                   __html: title,
                }}
             ></h2>
-            <LocalizedLink href={ctaButton?.link || ''}>
+            <LocalizedLink href={ctaButton?.link || '/contact'}>
                <Button
                   size='large'
                   variant='light'

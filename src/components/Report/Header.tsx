@@ -211,15 +211,17 @@ const Header: React.FC<{ data: any }> = ({ data }) => {
                <div className='container'>
                   <div className='flex flex-col items-start justify-between gap-4 md:flex-row md:items-center md:gap-6'>
                      <div className='hidden md:flex flex-col divide-x lg:flex-row justify-start items-center'>
-                        <StrapiImage
-                           media={{
-                              url: 'https://udsweb.s3.ap-south-1.amazonaws.com/logo_dark_7353437088.svg',
-                              width: 120,
-                              height: 50,
-                           }}
-                           objectFit='contain'
-                           className='!h-[25px] !object-contain lg:block hidden pr-2 lg:pr-6'
-                        />
+                        <LocalizedLink href='/'>
+                           <StrapiImage
+                              media={{
+                                 url: 'https://udsweb.s3.ap-south-1.amazonaws.com/logo_dark_7353437088.svg',
+                                 width: 120,
+                                 height: 50,
+                              }}
+                              objectFit='contain'
+                              className='!h-[25px] !object-contain lg:block hidden pr-2 lg:pr-6'
+                           />
+                        </LocalizedLink>
                         <div className='pl-2 lg:pl-6'>
                            <h5 className='w-full overflow-hidden truncate text-ellipsis font-bold sm:text-wrap  lg:w-[100%]' dangerouslySetInnerHTML={{
                               __html: reportHeaderData.title?.split(":")?.[0] || reportHeaderData.title,
