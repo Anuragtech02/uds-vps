@@ -2,6 +2,7 @@
 export const runtime = 'edge';
 import CartItem from '@/components/Cart/CartItem';
 import CostCalculations from '@/components/Cart/CostCalculations';
+import BillingDetails from '@/components/Checkout/BillingDetails';
 import Button from '@/components/commons/Button';
 import { useCartStore } from '@/stores/cart.store';
 import { useSelectedLicenseStore } from '@/stores/selectedLicense.store';
@@ -214,11 +215,13 @@ const Cart = () => {
    };
 
    return (
-      <div className="container mx-auto px-4 pt-40">
+      <div className="container mx-auto px-4 pt-48 flex flex-col md:flex-row justify-between items-start [&>div]:flex-1 gap-6 pb-10">
          <Script
             id="razorpay-checkout-js"
             src="https://checkout.razorpay.com/v1/checkout.js"
          />
+
+         <BillingDetails />
          
          <div className="mt-5 w-full space-y-6 rounded-xl bg-white p-6">
             <div className="flex justify-between items-center">

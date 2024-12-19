@@ -125,6 +125,15 @@
    padding-left: 1.5rem !important;
 }
 
+@media screen and (max-width: 768px) {
+   /* List styling */
+   .report-content ul,
+   .report-content ol {
+      padding-left: 0.5rem !important;
+      padding-left: 0.5rem !important;
+   }
+}
+
 .report-content ul {
    list-style-type: disc !important;
 }
