@@ -104,7 +104,7 @@ const ReportEnquiryForm: React.FC<ReportEnquiryFormProps> = ({
                className='mt-2 space-y-6 text-sm md:space-y-8'
             >
                <div className='flex flex-col items-center gap-4 md:flex-row'>
-                  <div className='shrink grow basis-0 space-y-1'>
+                  <div className='shrink grow basis-0 w-full sm:w-auto space-y-1'>
                      <label htmlFor='name'>Full Name*</label>
                      <input
                         type='text'
@@ -117,7 +117,7 @@ const ReportEnquiryForm: React.FC<ReportEnquiryFormProps> = ({
                         className='w-full rounded-md border border-s-300 p-3'
                      />
                   </div>
-                  <div className='shrink grow basis-0 space-y-1'>
+                  <div className='shrink grow basis-0 w-full sm:w-auto space-y-1'>
                      <CustomPhoneInput
                         value={phone}
                         onChange={handlePhoneChange}
@@ -126,7 +126,7 @@ const ReportEnquiryForm: React.FC<ReportEnquiryFormProps> = ({
                   </div>
                </div>
                <div className='flex flex-col items-center gap-4 md:flex-row'>
-                  <div className='shrink grow basis-0 space-y-1'>
+                  <div className='shrink grow basis-0 w-full sm:w-auto space-y-1'>
                      <label htmlFor='email'>Business Email*</label>
                      <input
                         type='email'
@@ -139,7 +139,7 @@ const ReportEnquiryForm: React.FC<ReportEnquiryFormProps> = ({
                         className='w-full rounded-md border border-s-300 p-3'
                      />
                   </div>
-                  <div className='shrink grow basis-0 space-y-1'>
+                  <div className='shrink grow basis-0 w-full sm:w-auto space-y-1'>
                      <label htmlFor='company'>Company*</label>
                      <input
                         type='text'

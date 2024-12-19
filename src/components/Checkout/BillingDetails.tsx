@@ -2,7 +2,7 @@ import Button from '../commons/Button';
 
 const BillingDetails = () => {
    return (
-      <div>
+      <div className='w-full'>
          <form action='' className='space-y-6 text-sm md:space-y-8'>
             <p className='text-2xl font-bold text-s-600'>Billing Details</p>
             <div className='flex flex-col gap-4 md:flex-row lg:items-center'>
