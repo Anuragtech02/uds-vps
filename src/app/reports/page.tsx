@@ -8,6 +8,7 @@ import Link from 'next/link';
 import ReportListLoading from '@/components/ReportStore/ReportListLoading';
 import Pagination from '@/components/ReportStore/Pagination';
 import ViewToggle from '@/components/Report/ViewToggle';
+import SelectedFilters from '@/components/Report/SelectedFitlers';
 
 interface SearchParams {
    // filter?: string;
@@ -94,7 +95,8 @@ const ReportStore: FC<ReportStoreProps> = async ({ searchParams }) => {
         </div>
         <div className="flex-1">
           <div className="mb-4 flex justify-between items-center">
-            <h4>All Reports</h4>
+            {/* <h4>All Reports</h4> */}
+            <SelectedFilters industries={filters} industriesData={industriesData} />
             <ViewToggle currentView={viewType} />
           </div>
           <Suspense fallback={<ReportListLoading />}>
