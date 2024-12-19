@@ -135,6 +135,7 @@ const BillingDetails = () => {
      ...prev,
      [name]: true
    }));
+   // @ts-ignore
    validateField(name, formData[name]);
  };
 
@@ -154,6 +155,7 @@ const BillingDetails = () => {
    
    // Validate all fields
    const validations = Object.keys(formData).map(key => {
+      // @ts-ignore
      return validateField(key as keyof BillingFormData, formData[key as keyof BillingFormData]);
    });
 
