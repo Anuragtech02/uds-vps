@@ -239,7 +239,7 @@ const Cart = () => {
                      <span>Product</span>
                   </div>
                   <div className='w-1/2 sm:w-1/5'>
-                     <span>License</span>
+                     <span>Select License</span>
                   </div>
                   <div className="w-32 text-right ml-auto">
                      <span>Price</span>

@@ -8,6 +8,7 @@ import { useSelectedLicenseStore } from '@/stores/selectedLicense.store';
 import {
    createOrder,
    createPayment,
+   getCurrencyRates,
    updateOrderStatus,
    updatePaymentStatus,
 } from '@/utils/api/csr-services';
@@ -54,7 +55,7 @@ const CurrencySelector = ({ selectedCurrency, onCurrencyChange }: {
 const Cart = () => {
    const [cartData, setCartData] = useState<ICartItem[]>([]);
    const [totalCost, setTotalCost] = useState(0);
-   const [selectedCurrency, setSelectedCurrency] = useState('INR');
+   const [selectedCurrency, setSelectedCurrency] = useState('USD');
    const [exchangeRates, setExchangeRates] = useState<any>({});
    const router = useRouter();
    const cartStore = useCartStore();
@@ -62,13 +63,7 @@ const Cart = () => {
 
    const fetchRates = async () => {
       try {
-         const response = await fetch(`https://free.ratesdb.com/v1/rates?from=USD`, {
-            headers: {
-               'Content-Type': 'application/json',
-
-            }
-         });
-         const data = await response.json();
+         const data = await getCurrencyRates(); 
          
          // Set exchange rates with USD as base
          setExchangeRates({ ...data.data.rates, USD: 1 });
@@ -86,8 +81,7 @@ const Cart = () => {
       if (!exchangeRates[selectedCurrency]) return amount;
 
       // Convert from INR to selected currency using USD as base
-      const inrToUsd = exchangeRates.INR ? 1 / exchangeRates.INR : 0;
-      const amountInUsd = amount * inrToUsd;
+      const amountInUsd = amount;
       const rate = exchangeRates[selectedCurrency];
       
       return Number((amountInUsd * rate).toFixed(2));
@@ -140,17 +134,18 @@ const Cart = () => {
 
    const processPayment = async (e: React.MouseEvent) => {
       e.preventDefault();
+      console.log("first")
       try {
          const orderId: string = await createOrderIdFromRazorPay(totalCost);
          const createdOrder = await createOrder({
             reports: cartData?.map((item: any) => item?.report?.id),
             orderId,
             taxAmount: {
-               currency: 'INR',
+               currency: selectedCurrency,
                amount: 0,
             },
             totalAmount: {
-               currency: 'INR',
+               currency: selectedCurrency,
                amount: totalCost,
             },
          });
@@ -160,7 +155,7 @@ const Cart = () => {
          const options = {
             key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
             amount: totalCost * 100,
-            currency: 'INR',
+            currency: selectedCurrency,
             name: 'Univdatos',
             description: 'Please complete the payment to purchase the product',
             order_id: orderId,
@@ -176,7 +171,7 @@ const Cart = () => {
                   paymentId: response.razorpay_payment_id,
                   order: strapiOrderId,
                   amount: {
-                     currency: 'INR',
+                     currency: selectedCurrency,
                      amount: totalCost,
                   },
                });
@@ -240,15 +235,18 @@ const Cart = () => {
             <div className="rounded-xl border border-gray-200 p-6">
                {/* Cart Headers */}
                <div className="flex items-center text-gray-600 font-medium pb-2 border-b border-gray-200">
-                  <div className="flex-grow">
+                  <div className="w-[40%]">
                      <span>Product</span>
                   </div>
-                  <div className="w-32 text-right">
+                  <div className='w-1/2 sm:w-1/5'>
+                     <span>Select License</span>
+                  </div>
+                  <div className="w-32 text-right ml-auto">
                      <span>Price</span>
                   </div>
-                  <div className="w-32 text-right">
+                  {/* <div className="w-32 text-right ml-auto">
                      <span>Subtotal</span>
-                  </div>
+                  </div> */}
                </div>
 
                {/* Cart Items */}
@@ -281,7 +279,7 @@ const Cart = () => {
             <div className="flex justify-end">
                <Button
                   variant="secondary"
-                  onClick={() => processPayment}
+                  onClick={(e) => processPayment(e)}
                   className="min-w-[200px]"
                >
                   Proceed to Checkout

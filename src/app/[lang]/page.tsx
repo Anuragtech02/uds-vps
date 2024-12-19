@@ -97,7 +97,7 @@ async function Home() {
          <Hero data={homePage} />
          <RecentResearch data={homePage} />
          <Testimonials data={homePage} />
-         <LatestResearch data={homePage} reports={latestReportList} />
+         <LatestResearch data={homePage} reports={latestReportList} upcomingReports={upcomingReportList} />
          <MediaCitation mediaCitation={mediaCitation} />
          <UpcomingReports
             data={{ upcomingReports: upcomingReportList, homePage }}

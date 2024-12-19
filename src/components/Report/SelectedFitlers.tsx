@@ -12,15 +12,16 @@ const SelectedFilters = ({ industries, industriesData }: {
 
   return (
     <div>
-      <div className="flex items-center">
-        <div className="overflow-hidden">
-          <p className="truncate max-w-[220px] sm:max-w-[500px]">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center">
+        <div className="overflow-hidden max-w-[220px] sm:max-w-[500px] xl:max-w-[700px]">
+          <p className="truncate">
             {selectedIndustryNames.length > 0 
               ? selectedIndustryNames.join(', ')
               : 'All'}
+            <span className="ml-1">Reports</span>
           </p>
-          <span>Reports</span>
         </div>
+        <p className='block sm:hidden'>Reports</p>
       </div>
     </div>
   );

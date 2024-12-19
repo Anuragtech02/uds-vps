@@ -107,25 +107,25 @@ const ReportStore: FC<ReportStoreProps> = async ({ searchParams }) => {
                   : 'grid-cols-1 md:grid-cols-2 xl:grid-cols-2'
               }`}
             >
-              {reportsList?.data && reportsList.data.length > 0 ? (
+                {reportsList?.data && reportsList.data.length > 0 ? (
                 reportsList.data.map((report: Report) => (
                   <ReportStoreItem
-                    key={report.attributes.slug}
-                    title={report.attributes.title}
-                    date={new Date(
-                      report.attributes.oldPublishedAt || report.attributes.publishedAt,
-                    ).toLocaleDateString()}
-                    slug={report.attributes.slug}
-                    description={report.attributes.shortDescription}
-                    viewType={viewType}
-                    highlightImageUrl={report.attributes.highlightImage?.data?.attributes?.url}
+                  key={report.attributes.slug}
+                  title={report.attributes.title}
+                  date={new Date(
+                    report.attributes.oldPublishedAt || report.attributes.publishedAt,
+                  ).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+                  slug={report.attributes.slug}
+                  description={report.attributes.shortDescription}
+                  viewType={viewType}
+                  highlightImageUrl={report.attributes.highlightImage?.data?.attributes?.url}
                   />
                 ))
-              ) : (
+                ) : (
                 <p className="rounded bg-gray-100 p-4 text-2xl font-bold text-gray-600">
                   No reports found
                 </p>
-              )}
+                )}
             </div>
           </Suspense>
         </div>

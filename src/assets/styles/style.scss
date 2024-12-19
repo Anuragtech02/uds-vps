@@ -135,8 +135,12 @@
    ol, li ol {
       list-style-type: lower-alpha !important;
       
-      ol, li ol {
+     li ol {
          list-style-type: lower-roman !important;
+
+         li ol {
+            list-style-type: decimal !important;
+         }
       }
    }
 }
