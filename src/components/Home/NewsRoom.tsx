@@ -51,10 +51,10 @@ const NewsRoom: React.FC<{
                         >
                            <div className='relative aspect-video w-full rounded-md'>
                               <Image
-                                 src={blog?.thumbnailImage?.data?.attributes?.url || newPlaceHolder}
+                                 src={newsPlaceholder}
                                  alt='news'
                                  fill
-                                 className='rounded-xl'
+                                 className='rounded-xl object-cover'
                               />
                            </div>
                            <div className='flex flex-wrap gap-2 py-4'>
@@ -86,7 +86,7 @@ const NewsRoom: React.FC<{
                                  <CalendarSvg />{' '}
                                  {new Date(
                                     blog.oldPublishedAt || blog.publishedAt,
-                                 ).toLocaleDateString()}
+                                 ).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
                               </p>
                               <p className='flex items-center gap-2'>
                                  <UserSvg />{' '}
@@ -111,24 +111,21 @@ const NewsRoom: React.FC<{
                                     src={newsPlaceholder}
                                     alt='news'
                                     fill
-                                    className='rounded-xl'
+                                    className='rounded-xl object-cover'
                                  />
                               </div>
                               <div className='md:w-2/3'>
-                                 <div className='my-2 flex items-center'>
-                                    <p className='font-medium'>Univdatos</p>
-                                 </div>
                                  <h4 className='mb-2 text-xl font-semibold'>
                                     {news.title.length > 60
                                        ? news.title.substring(0, 60) + '...'
                                        : news.title}
                                  </h4>
-                                 <p className='my-2 flex items-center gap-2'>
+                                  <p className='my-2 flex items-center gap-2'>
                                     <CalendarSvg />
                                     {new Date(
                                       news.oldPublishedAt || news.publishedAt,
-                                    ).toLocaleDateString()}
-                                 </p>
+                                    ).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+                                  </p>
                               </div>
                            </div>
                         </LocalizedLink>

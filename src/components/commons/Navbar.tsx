@@ -203,13 +203,18 @@ const Navbar: React.FC<INavbarProps> = ({ header, mainMenu, industries }) => {
                />
             </LocalizedLink>
             {isMobile ? (
-               <button
-                  title='open'
-                  onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                  className='text-white'
-               >
-                  <BiMenu size={24} />
-               </button>
+               <div className='flex items-center gap-2'>
+                  <div className='max-w-[100px] [&>div]:w-full [&>div]:mt-0 [&>div]:py-1'>
+                     <ClientSearchHero placeholder='Search here...' variant='light' onlyIcon />
+                  </div>
+                  <button
+                     title='open'
+                     onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                     className='text-white'
+                  >
+                     <BiMenu size={24} />
+                  </button>
+               </div>
             ) : (
                <>
                   <ul className='flex flex-wrap items-center gap-1 text-white'>

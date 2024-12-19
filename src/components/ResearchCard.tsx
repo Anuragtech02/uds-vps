@@ -34,11 +34,6 @@ const ResearchCard: FC<ResearchCardProps> = ({
          <div className='relative aspect-square w-full overflow-hidden rounded-xl bg-[#d1e0ff]/20'>
             <Image src={image} alt={title} fill className='object-contain' />
          </div>
-         {type === 'latest' && (
-            <div className='my-2 inline-block rounded-full bg-blue-9 px-2 py-1 text-xs'>
-               {year}
-            </div>
-         )}
          <p
             className={`my-2 line-clamp-2 overflow-hidden font-bold hover:underline ${type === 'latest' ? 'text-base' : 'text-xl'}`}
          >
@@ -48,7 +43,6 @@ const ResearchCard: FC<ResearchCardProps> = ({
                            }}></span>
             </LocalizedLink>
          </p>
-         {type === 'upcoming' && (
             <div className='flex flex-col gap-2 text-sm'>
                <p className='line-clamp-2 text-s-500'>{description}</p>
                <p
@@ -75,7 +69,6 @@ const ResearchCard: FC<ResearchCardProps> = ({
                   </Button>
                </LocalizedLink>
             </div>
-         )}
          {/* {type === 'latest' && (
                <p className='mt-2 flex items-center gap-2 text-xs uppercase'>
                   <LocalizedLink href={`/reports/${sku || 1254}`}>View Report </LocalizedLink>{' '}

@@ -78,10 +78,10 @@ const RecentResearch: React.FC<{ data: any }> = ({ data }) => {
                }}
             />
             <div className='my-8 md:my-10'>
-               <div className='grid grid-cols-2 md:grid-cols-5'>
+               <div className='grid grid-cols-2 gap-4 md:grid-cols-5'>
                   {reports?.map((report: any, index: number) => {
                      return (
-                        <div key={index} className='pr-4'>
+                        <div key={index}>
                            <ResearchCard
                               key={index}
                               type='latest'
@@ -89,7 +89,8 @@ const RecentResearch: React.FC<{ data: any }> = ({ data }) => {
                               slug={report?.slug}
                               year={getYear(report)}
                               image={report?.highlightImage?.data?.attributes?.formats?.small?.url || sampleImage}
-                           />
+                              date={new Date(report?.oldPublishedAt || report?.publishedAt).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })}
+                              />
                         </div>
                      );
                   })}

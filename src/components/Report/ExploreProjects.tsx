@@ -158,9 +158,7 @@ const ExploreProjects = ({ reports }: { reports: any[] }) => {
                               ?.getFullYear()
                               .toString()}
                            description={data?.shortDescription}
-                           date={new Date(
-                              data?.publishedAt ?? new Date().getTime(),
-                           ).toDateString()}
+                           date={new Date(data?.oldPublishedAt || data?.publishedAt).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })}
                            slug={data?.slug}
                            image={
                               data?.highlightImage?.data?.attributes?.url ||

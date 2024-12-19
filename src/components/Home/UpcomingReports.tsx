@@ -134,7 +134,7 @@ const UpcomingReports: React.FC<{ data: any }> = ({ data }) => {
       ],
    };
 
-   return data?.upcomingReports?.length &&  (
+   return data?.upcomingReports?.length > 0 &&  (
       <section className='block min-h-max pb-12 md:pb-20'>
          <div className='container'>
             <h2>
@@ -151,9 +151,7 @@ const UpcomingReports: React.FC<{ data: any }> = ({ data }) => {
                            slug={data.slug}
                            year={data.year}
                            description={data.description}
-                           date={new Date(
-                              data.publishedAt,
-                           ).toLocaleDateString()}
+                           date={new Date(data?.oldPublishedAt || data?.publishedAt).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })}
                            sku={data.sku}
                            image={data?.highlightImage || sampleImage}
                         />

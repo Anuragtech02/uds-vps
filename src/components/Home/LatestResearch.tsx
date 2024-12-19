@@ -16,7 +16,7 @@ const LatestResearch: React.FC<{ data: any; reports: any, upcomingReports: any }
       const settings = {
          dots: false,
          infinite: true,
-         slidesToShow: 4.2,
+         slidesToShow: 4,
          slidesToScroll: 1,
          arrows: false,
          dynamicHeight: false,
@@ -27,7 +27,7 @@ const LatestResearch: React.FC<{ data: any; reports: any, upcomingReports: any }
             {
                breakpoint: 1200,
                settings: {
-                  slidesToShow: 3.2,
+                  slidesToShow: 3,
                   // slidesToScroll: 1,
                   infinite: true,
                   dots: false,
@@ -36,7 +36,7 @@ const LatestResearch: React.FC<{ data: any; reports: any, upcomingReports: any }
             {
                breakpoint: 1024,
                settings: {
-                  slidesToShow: 3.2,
+                  slidesToShow: 3,
                   // slidesToScroll: 1,
                   infinite: true,
                   dots: false,
@@ -101,7 +101,7 @@ const LatestResearch: React.FC<{ data: any; reports: any, upcomingReports: any }
             <div className='my-8 md:my-10'>
                <Slider {...settings}>
                   {reports.map((report: any, index: number) => (
-                     <div key={index} className='pr-4'>
+                      <div key={index} className='pr-4'>
                         <ResearchCard
                            key={index}
                            type='latest'
@@ -109,8 +109,9 @@ const LatestResearch: React.FC<{ data: any; reports: any, upcomingReports: any }
                            slug={report?.slug}
                            year={getYear(report)}
                            image={report?.highlightImage?.data?.attributes?.formats?.small?.url || sampleImage}
+                           date={new Date(report?.oldPublishedAt || report?.publishedAt).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })}
                         />
-                     </div>
+                      </div>
                   ))}
                </Slider>
             </div>
