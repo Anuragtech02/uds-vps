@@ -71,7 +71,7 @@ const SearchResults = () => {
    const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
 
    return (
-      <div className='space-y-4 md:space-y-6'>
+      <div className='space-y-4 md:space-y-6 pb-4'>
          <div className='flex items-center gap-4'>
             <div
                className={`cursor-pointer border border-s-300 ${
