@@ -1,5 +1,4 @@
 'use client';
-export const runtime = 'edge';
 import CartItem from '@/components/Cart/CartItem';
 import CostCalculations from '@/components/Cart/CostCalculations';
 import BillingDetails from '@/components/Checkout/BillingDetails';
