@@ -19,6 +19,8 @@ interface CheckoutContextType {
   setPhone: (phone: string) => void;
   errors: Partial<BillingFormData>;
   setErrors: (errors: Partial<BillingFormData>) => void;
+  touched: Partial<Record<keyof BillingFormData, boolean>>;
+  setTouched: (touched: Partial<Record<keyof BillingFormData, boolean>>) => void;
 }
 
 const CheckoutContext = createContext<CheckoutContextType | undefined>(undefined);
@@ -38,6 +40,7 @@ export function CheckoutProvider({ children }: { children: ReactNode }) {
   
   const [phone, setPhone] = useState('');
   const [errors, setErrors] = useState<Partial<BillingFormData>>({});
+  const [touched, setTouched] = useState<Partial<Record<keyof BillingFormData, boolean>>>({});
 
   return (
     <CheckoutContext.Provider 
@@ -47,7 +50,9 @@ export function CheckoutProvider({ children }: { children: ReactNode }) {
         phone,
         setPhone,
         errors,
-        setErrors
+        setErrors,
+        touched,
+        setTouched
       }}
     >
       {children}
