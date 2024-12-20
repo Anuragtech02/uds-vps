@@ -5,7 +5,8 @@ import BlogItem from '@/components/Blog/BlogItem';
 import { LocalizedLink } from '@/components/commons/LocalizedLink';
 import Pagination from '@/components/ReportStore/Pagination';
 import { getBlogsListingPage, getIndustries } from '@/utils/api/services';
-import Link from 'next/link';
+import newsPlaceholder from '@/assets/img/thumbnail_news.jpg';
+
 interface blogsItem {
    id: number;
    title: string;
@@ -120,7 +121,12 @@ const Blog = async ({
                         <BlogItem
                            key={i}
                            title={blog?.title}
-                           thumbnailImage={blog?.thumbnailImage}
+                           thumbnailImage={{
+                              url: newsPlaceholder.src || blog?.thumbnailImage?.url,
+                              altContent: blog?.thumbnailImage?.altContent,
+                              width: blog?.thumbnailImage?.width,
+                              height: blog?.thumbnailImage?.height, 
+                           }}
                            shortDescription={blog?.shortDescription}
                            date={new Intl.DateTimeFormat('en-IN', {
                               day: '2-digit',

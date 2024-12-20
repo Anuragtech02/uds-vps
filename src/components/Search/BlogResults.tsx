@@ -1,6 +1,6 @@
-import Link from 'next/link';
 import BlogItem from '../Blog/BlogItem';
-import { LocalizedLink } from '../commons/LocalizedLink';
+import newsPlaceholder from '@/assets/img/thumbnail_news.jpg';
+
 
 const BlogResults = ({ blogs }: { blogs: Array<any> }) => {
    return (
@@ -8,7 +8,7 @@ const BlogResults = ({ blogs }: { blogs: Array<any> }) => {
          {blogs?.map((blog: any) => (
             <BlogItem
                key={blog.id}
-               thumbnailImage={blog?.thumbnailImage}
+               thumbnailImage={newsPlaceholder.src || blog?.thumbnailImage}
                date={new Date(blog?.oldPublishedAt || blog?.publishedAt).toDateString()}
                title={blog?.title}
                shortDescription={blog?.shortDescription}
