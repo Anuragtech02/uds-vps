@@ -12,7 +12,7 @@ const FAQItem = (data: { title: string; description: string }) => {
          onClick={() => setIsOpen(!isOpen)}
       >
          <div className='flex w-full items-center justify-between'>
-            <p className='text-lg font-semibold text-blue-1'>{data.title}</p>
+            <p className='text-lg font-semibold text-blue-1' dangerouslySetInnerHTML={{__html: data.title}}></p>
             {!isOpen ? (
                <BiChevronDown className='shrink-0 text-2xl text-blue-1' />
             ) : (

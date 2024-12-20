@@ -25,6 +25,7 @@ import {
    removeItemFromCart,
    resetCart,
 } from '@/utils/cart-utils.util';
+import { BillingFormData, CheckoutProvider, useCheckout } from '@/utils/CheckoutContext';
 import { CURRENCIES } from '@/utils/constants';
 import { useRouter } from 'next/navigation';
 import Script from 'next/script';
@@ -54,6 +55,7 @@ const CurrencySelector = ({ selectedCurrency, onCurrencyChange }: {
 };
 
 const Cart = () => {
+   const { formData, phone, setErrors } = useCheckout();
    const [cartData, setCartData] = useState<ICartItem[]>([]);
    const [totalCost, setTotalCost] = useState(0);
    const [selectedCurrency, setSelectedCurrency] = useState('USD');
@@ -61,6 +63,27 @@ const Cart = () => {
    const router = useRouter();
    const cartStore = useCartStore();
    const licenseStore = useSelectedLicenseStore();
+
+
+  const validateForm = () => {
+   const newErrors: Partial<BillingFormData> = {};
+   
+   // Validate required fields
+   if (!formData.firstName) newErrors.firstName = 'First name is required';
+   if (!formData.lastName) newErrors.lastName = 'Last name is required';
+   if (!formData.email) newErrors.email = 'Email is required';
+   else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+     newErrors.email = 'Invalid email format';
+   }
+   if (!formData.country) newErrors.country = 'Country is required';
+   if (!formData.state) newErrors.state = 'State is required';
+   if (!formData.city) newErrors.city = 'City is required';
+   if (!formData.address) newErrors.address = 'Address is required';
+   if (!phone) newErrors.phone = 'Phone number is required';
+
+   setErrors(newErrors);
+   return Object.keys(newErrors).length === 0;
+ };
 
    const fetchRates = async () => {
       try {
@@ -133,9 +156,13 @@ const Cart = () => {
       changeLicenseOfReport(reportId, newLicense);
    };
 
-   const processPayment = async (e: React.MouseEvent) => {
+   const handleCheckout = async (e: any) => {
       e.preventDefault();
-      console.log("first")
+      
+      if (!validateForm()) {
+      alert("Please fill in all required fields correctly.");
+        return;
+      }     
       try {
          const orderId: string = await createOrderIdFromRazorPay(totalCost);
          const createdOrder = await createOrder({
@@ -215,81 +242,83 @@ const Cart = () => {
    };
 
    return (
-      <div className="container mx-auto px-4 pt-48 flex flex-col md:flex-row justify-between items-start [&>div]:flex-1 gap-6 pb-10">
-         <Script
-            id="razorpay-checkout-js"
-            src="https://checkout.razorpay.com/v1/checkout.js"
-         />
+      <CheckoutProvider>
+         <form onSubmit={(e) => handleCheckout(e)} className="container mx-auto px-4 pt-48 flex flex-col md:flex-row justify-between items-start [&>div]:flex-1 gap-6 pb-10">
+            <Script
+               id="razorpay-checkout-js"
+               src="https://checkout.razorpay.com/v1/checkout.js"
+            />
 
-         <BillingDetails />
-         
-         <div className="mt-5 w-full space-y-6 rounded-xl bg-white p-6">
-            <div className="flex justify-between items-center">
-               <h1 className="text-2xl md:text-3xl font-semibold text-gray-900">
-                  Cart
-               </h1>
-               <CurrencySelector 
-                  selectedCurrency={selectedCurrency}
-                  onCurrencyChange={handleCurrencyChange}
-               />
-            </div>
-
-            {/* Cart Items Container */}
-            <div className="rounded-xl border border-gray-200 p-6">
-               {/* Cart Headers */}
-               <div className="flex items-center text-gray-600 font-medium pb-2 border-b border-gray-200">
-                  <div className="w-[40%]">
-                     <span>Product</span>
-                  </div>
-                  <div className='w-1/2 sm:w-1/5'>
-                     <span>Select License</span>
-                  </div>
-                  <div className="w-32 text-right ml-auto">
-                     <span>Price</span>
-                  </div>
-                  {/* <div className="w-32 text-right ml-auto">
-                     <span>Subtotal</span>
-                  </div> */}
-               </div>
-
-               {/* Cart Items */}
-               <div className="divide-y divide-gray-200">
-                  {cartData.map((item: any, i) => (
-                     <CartItem
-                        key={i}
-                        {...item}
-                        handleRemoveItem={handleRemoveItem}
-                        handleChangeQuantity={handleChangeQuantity}
-                        handleChangeLicense={handleChangeLicense}
-                        convertPrice={convertPrice}
+               <BillingDetails />
+               
+               <div className="mt-5 w-full space-y-6 rounded-xl bg-white p-6">
+                  <div className="flex justify-between items-center">
+                     <h1 className="text-2xl md:text-3xl font-semibold text-gray-900">
+                        Cart
+                     </h1>
+                     <CurrencySelector 
                         selectedCurrency={selectedCurrency}
-                        currencySymbol={CURRENCIES[selectedCurrency].symbol}
+                        onCurrencyChange={handleCurrencyChange}
                      />
-                  ))}
+                  </div>
+
+                  {/* Cart Items Container */}
+                  <div className="rounded-xl border border-gray-200 p-6">
+                     {/* Cart Headers */}
+                     <div className="flex items-center text-gray-600 font-medium pb-2 border-b border-gray-200">
+                        <div className="w-[40%]">
+                           <span>Product</span>
+                        </div>
+                        <div className='w-1/2 sm:w-1/5'>
+                           <span>Select License</span>
+                        </div>
+                        <div className="w-32 text-right ml-auto">
+                           <span>Price</span>
+                        </div>
+                        {/* <div className="w-32 text-right ml-auto">
+                           <span>Subtotal</span>
+                        </div> */}
+                     </div>
+
+                     {/* Cart Items */}
+                     <div className="divide-y divide-gray-200">
+                        {cartData.map((item: any, i) => (
+                           <CartItem
+                              key={i}
+                              {...item}
+                              handleRemoveItem={handleRemoveItem}
+                              handleChangeQuantity={handleChangeQuantity}
+                              handleChangeLicense={handleChangeLicense}
+                              convertPrice={convertPrice}
+                              selectedCurrency={selectedCurrency}
+                              currencySymbol={CURRENCIES[selectedCurrency].symbol}
+                           />
+                        ))}
+                     </div>
+                  </div>
+
+                  {/* Cost Calculations */}
+                  <div className="rounded-xl border border-gray-200 p-6">
+                     <CostCalculations 
+                        cost={convertPrice(totalCost) as number} 
+                        city="Mumbai" 
+                        currency={CURRENCIES[selectedCurrency]}
+                     />
+                  </div>
+
+                  {/* Checkout Button */}
+                  <div className="flex justify-end">
+                     <Button
+                        variant="secondary"
+                        className="min-w-[200px]"
+                        type='submit'
+                        >
+                        Proceed to Checkout
+                     </Button>
+                  </div>
                </div>
-            </div>
-
-            {/* Cost Calculations */}
-            <div className="rounded-xl border border-gray-200 p-6">
-               <CostCalculations 
-                  cost={convertPrice(totalCost) as number} 
-                  city="Mumbai" 
-                  currency={CURRENCIES[selectedCurrency]}
-               />
-            </div>
-
-            {/* Checkout Button */}
-            <div className="flex justify-end">
-               <Button
-                  variant="secondary"
-                  onClick={(e) => processPayment(e)}
-                  className="min-w-[200px]"
-               >
-                  Proceed to Checkout
-               </Button>
-            </div>
-         </div>
-      </div>
+         </form>
+      </CheckoutProvider>
    );
 };
 

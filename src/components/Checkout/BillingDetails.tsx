@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Button from '../commons/Button';
 import CustomPhoneInput from '../CustomPhoneInput';
+import { useCheckout } from '@/utils/CheckoutContext';
 
 interface State {
  name: string;
@@ -27,24 +28,13 @@ interface BillingFormData {
 }
 
 const BillingDetails = () => {
- const [phone, setPhone] = useState('');
- const [formData, setFormData] = useState<BillingFormData>({
-   firstName: '',
-   lastName: '',
-   email: '',
-   country: '',
-   state: '',
-   city: '',
-   address: '',
-   orderNotes: ''
- });
-
  const [countries, setCountries] = useState<Country[]>([]);
  const [states, setStates] = useState<State[]>([]);
  const [loadingCountries, setLoadingCountries] = useState(false);
  const [loadingStates, setLoadingStates] = useState(false);
- const [errors, setErrors] = useState<Partial<BillingFormData>>({});
  const [touched, setTouched] = useState<Partial<Record<keyof BillingFormData, boolean>>>({});
+
+ const { formData, setFormData, phone, setPhone, errors } = useCheckout();
 
  useEffect(() => {
    const fetchCountries = async () => {
@@ -64,10 +54,6 @@ const BillingDetails = () => {
        setCountries(formattedCountries);
      } catch (error) {
        console.error('Error fetching countries:', error);
-       setErrors(prev => ({
-         ...prev,
-         country: 'Failed to load countries'
-       }));
      } finally {
        setLoadingCountries(false);
      }
@@ -92,44 +78,6 @@ const BillingDetails = () => {
    }
  };  // Update states when country chang
 
- const validateField = (name: keyof BillingFormData, value: string) => {
-   const error: string | undefined = (() => {
-     switch (name) {
-       case 'firstName':
-       case 'lastName':
-         if (!value.trim()) return 'This field is required';
-         if (value.length < 2) return 'Must be at least 2 characters';
-         if (!/^[a-zA-Z\s]*$/.test(value)) return 'Only letters are allowed';
-         break;
-       
-
-       
-       case 'email':
-         if (!value) return 'Email is required';
-         if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) return 'Enter a valid email address';
-         break;
-       
-       case 'address':
-         if (!value.trim()) return 'Address is required';
-         if (value.length < 10) return 'Address must be at least 10 characters long';
-         break;
-
-       case 'state':
-       case 'city':
-         if (!value.trim()) return 'This field is required';
-         break;
-     }
-     return undefined;
-   })();
-
-   setErrors(prev => ({
-     ...prev,
-     [name]: error
-   }));
-   
-   return !error;
- };
-
  const handleBlur = (name: keyof BillingFormData) => {
    setTouched(prev => ({
      ...prev,
@@ -140,40 +88,12 @@ const BillingDetails = () => {
  };
 
  const handleChange = (name: keyof BillingFormData, value: string) => {
-   setFormData(prev => ({
-     ...prev,
-     [name]: value
-   }));
+  setFormData({
+    ...formData,
+    [name]: value
+  });
+};
 
-   if (touched[name]) {
-     validateField(name, value);
-   }
- };
-
- const handleSubmit = (e: React.FormEvent) => {
-   e.preventDefault();
-   
-   // Validate all fields
-   const validations = Object.keys(formData).map(key => {
-      // @ts-ignore
-     return validateField(key as keyof BillingFormData, formData[key as keyof BillingFormData]);
-   });
-
-   setTouched(
-     Object.keys(formData).reduce((acc, key) => ({
-       ...acc,
-       [key]: true
-     }), {})
-   );
-
-   if (validations.every(Boolean)) {
-     console.log('Form submitted:', {
-       ...formData,
-       mobileNumber: phone
-     });
-     // Add your submission logic here
-   }
- };
 
  const inputClassName = (fieldName: keyof BillingFormData) => `
    w-full rounded-md border p-3
@@ -184,7 +104,7 @@ const BillingDetails = () => {
 
  return (
    <div>
-     <form onSubmit={handleSubmit} className="space-y-6 text-sm md:space-y-8">
+     <div className="space-y-6 text-sm md:space-y-8">
        <p className="text-2xl font-bold text-s-600">Billing Details</p>
        
        <div className="flex flex-col gap-4 md:flex-row lg:items-start">
@@ -351,7 +271,7 @@ const BillingDetails = () => {
            Submit
          </button>
        </div>
-     </form>
+     </div>
    </div>
  );
 };

@@ -6,6 +6,7 @@ import { FaArrowRightLong } from 'react-icons/fa6';
 import Slider from 'react-slick';
 import Button from '../commons/Button';
 import PreBookCTA from '../commons/PreBookCTA';
+import { SLICK_COMMON_SETTINGS } from '@/utils/constants';
 
 
 const LatestResearch: React.FC<{ data: any; reports: any, upcomingReports: any }> = ({
@@ -13,58 +14,7 @@ const LatestResearch: React.FC<{ data: any; reports: any, upcomingReports: any }
    reports,
    upcomingReports,
 }) => {
-      const settings = {
-         dots: false,
-         infinite: true,
-         slidesToShow: 4,
-         slidesToScroll: 1,
-         arrows: false,
-         dynamicHeight: false,
-         autoplay: true,
-         autoplaySpeed: 3000,
-         ease: 'linear',
-         responsive: [
-            {
-               breakpoint: 1200,
-               settings: {
-                  slidesToShow: 3,
-                  // slidesToScroll: 1,
-                  infinite: true,
-                  dots: false,
-               },
-            },
-            {
-               breakpoint: 1024,
-               settings: {
-                  slidesToShow: 3,
-                  // slidesToScroll: 1,
-                  infinite: true,
-                  dots: false,
-               },
-            },
-            {
-               breakpoint: 786,
-               settings: {
-                  slidesToShow: 2,
-                  // slidesToScroll: 2,
-               },
-            },
-            {
-               breakpoint: 600,
-               settings: {
-                  slidesToShow: 2,
-                  // slidesToScroll: 2,
-               },
-            },
-            {
-               breakpoint: 480,
-               settings: {
-                  slidesToShow: 1,
-                  // slidesToScroll: 1,
-               },
-            },
-         ],
-   };
+   const settings = SLICK_COMMON_SETTINGS;
 
    const latestResearchSection = {
       latestResearchSectionTitle:
