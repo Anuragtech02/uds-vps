@@ -20,7 +20,7 @@ interface NewsItemProps {
 const NewsItem: FC<NewsItemProps> = ({ title, date, slug, thumbnailImage }) => {
    return (
       <div className='flex h-full flex-col gap-4 rounded-xl border border-s-300 bg-white p-6'>
-         <div className='relative aspect-video rounded-md'>
+         <div className='relative rounded-md h-[100px]'>
             {/* <StrapiImage media={thumbnailImage} objectFit='fill' /> */}
             <Image src={thumbnailNewsPlaceholder.src} alt={title} fill className='rounded-md' objectFit='cover' />
          </div>

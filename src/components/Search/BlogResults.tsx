@@ -8,7 +8,11 @@ const BlogResults = ({ blogs }: { blogs: Array<any> }) => {
          {blogs?.map((blog: any) => (
             <BlogItem
                key={blog.id}
-               thumbnailImage={newsPlaceholder.src || blog?.thumbnailImage}
+               thumbnailImage={{url: newsPlaceholder.src || blog?.thumbnailImage, 
+               altContent: blog?.title,
+               width: 100,
+               height: 100
+               }}
                date={new Date(blog?.oldPublishedAt || blog?.publishedAt).toDateString()}
                title={blog?.title}
                shortDescription={blog?.shortDescription}
