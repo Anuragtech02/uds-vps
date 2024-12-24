@@ -4,7 +4,7 @@ import BlogItem from '@/components/Blog/BlogItem';
 import { LocalizedLink } from '@/components/commons/LocalizedLink';
 import Pagination from '@/components/ReportStore/Pagination';
 import { getBlogsListingPage, getIndustries } from '@/utils/api/services';
-import Link from 'next/link';
+
 interface blogsItem {
    id: number;
    title: string;
@@ -41,31 +41,40 @@ const ITEMS_PER_PAGE = 10;
 const Blog = async ({
    searchParams,
 }: {
-   searchParams: {
-      filter?: string;
-      page?: string;
-   };
+   searchParams: any
 }): Promise<JSX.Element> => {
-   const filters = searchParams.filter?.split(',').filter(Boolean) || [];
-   const currentPage = parseInt(searchParams.page || '1', 10);
+   const industryFilters =
+   searchParams.industries?.split(',').filter(Boolean) || [];
+   const geographyFilters =
+      searchParams.geographies?.split(',').filter(Boolean) || [];
+   const currentPage = parseInt((searchParams.page || '1'), 10);
+
+   const filters = industryFilters.concat(geographyFilters);
    const filtersQuery = filters.reduce(
-      (acc, filter) => {
-         acc[`industriesSlug_${filter}`] = filter;
+      (acc: any, filter: any) => {
+         if (industryFilters.includes(filter)) {
+            acc[`industriesSlug_${filter}`] = filter;
+         } else if (geographyFilters.includes(filter)) {
+            acc[`geograpriesSlug_${filter}`] = filter;
+         }
          return acc;
       },
       {} as Record<string, string>,
    );
-   let blogListData: Awaited<ReturnType<typeof getBlogsListingPage>>;
-   let industriesData: Awaited<ReturnType<typeof getIndustries>>;
 
-   try {
-      [blogListData, industriesData] = await Promise.all([
-         getBlogsListingPage(currentPage, ITEMS_PER_PAGE, filtersQuery),
-         getIndustries(),
-      ]);
-   } catch (error) {
-      console.error('Error fetching blogs or industries:', error);
-   }
+   const [blogListData, industriesData] = await Promise.all([
+      getBlogsListingPage(currentPage, ITEMS_PER_PAGE, filtersQuery)
+      .catch((error) => {
+         console.error('Error fetching news:', error);
+         return null;
+      }),
+      getIndustries().catch((error) => {
+         console.error('Error fetching industries:', error);
+         return null;
+      }) ]);
+
+   console.log(industriesData)
+;
    const totalItems = blogListData?.meta?.pagination?.total || 0;
    const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
 
@@ -90,27 +99,13 @@ const Blog = async ({
          }),
       ) ?? [];
 
-   const industries =
-      industriesData?.data?.map(
-         (
-            industry: { attributes: industryItem; id: number },
-            idx: number,
-         ): industryItem => ({
-            id: industry?.id ?? idx,
-            name: industry?.attributes?.name ?? '',
-            createdAt: industry?.attributes?.createdAt ?? '',
-            publishedAt: industry?.attributes?.publishedAt ?? '',
-            slug: industry?.attributes?.slug ?? '',
-         }),
-      ) ?? [];
-
    return (
       <div className='container pt-40'>
          <h1 className='mt-5 text-center font-bold'>Blogs</h1>
 
          <div className='my-10 flex flex-col items-start justify-between gap-6 lg:min-h-[50vh] lg:flex-row'>
             <div className='w-full lg:sticky lg:top-48 lg:w-[350px]'>
-               <BlogFilters industries={industries} filters={filters} />
+               <BlogFilters industries={industriesData?.data} filters={filters} />
             </div>
 
             <div className='flex grow flex-col gap-4 md:gap-6'>

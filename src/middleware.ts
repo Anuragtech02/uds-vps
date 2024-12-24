@@ -33,6 +33,23 @@ export function middleware(request: NextRequest) {
    // Create response
    const response = NextResponse.next();
 
+   if (request.nextUrl.pathname === '/sitemap.xml') {
+      return NextResponse.rewrite(new URL('/sitemap', request.url))
+    }
+    
+    if (request.nextUrl.pathname === '/robots.txt') {
+      const robotsTxt = `User-agent: *
+  Allow: /
+  Sitemap: ${"https://web-server-india.univdatos.com/api"}/sitemap/index.xml`
+  
+      return new Response(robotsTxt, {
+        headers: {
+          'Content-Type': 'text/plain',
+          'Cache-Control': 'public, max-age=0, s-maxage=3600, stale-while-revalidate',
+        },
+      })
+    }
+
    // Handle cookie setting based on locale
    if (currentLocale !== defaultLocale) {
       // Create the cookie value without URL encoding

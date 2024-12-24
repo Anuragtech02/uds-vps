@@ -44,6 +44,16 @@ const Header: React.FC<{ newsArticle: any }> = ({ newsArticle }) => {
       };
    });
 
+   function getIndustryLinkWithParams(industry: any) {
+      const currentParams = new URLSearchParams(window.location.search);
+      
+      const updatedParams = Object.fromEntries(currentParams);
+      const existingIndustries = updatedParams.industries ? updatedParams.industries + ',' : '';
+      updatedParams.industries = existingIndustries + industry.slug;
+
+      return `?${new URLSearchParams(updatedParams).toString()}`;
+   }
+
    return (
       <>
          <div
@@ -60,7 +70,7 @@ const Header: React.FC<{ newsArticle: any }> = ({ newsArticle }) => {
                         {industries?.map((industry: any, index: number) => (
                            <LocalizedLink
                               key={index}
-                              href={`/news?industry=${industry?.slug}`}
+                              href={getIndustryLinkWithParams(industry)}
                            >
                               <div
                                  className='flex items-center gap-2 rounded-full border border-s-300 bg-s-100 px-4 py-1 text-blue-4'
