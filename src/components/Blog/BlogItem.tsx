@@ -2,6 +2,8 @@ import { CalendarSvg } from '../commons/Icons';
 import { FC } from 'react';
 import StrapiImage from '../StrapiImage/StrapiImage';
 import { LocalizedLink } from '../commons/LocalizedLink';
+import thumbnailNewsPlaceholder from '@/assets/img/thumbnail_news.jpg';
+import Image from 'next/image';
 
 interface BlogItemProps {
    title: string;
@@ -26,11 +28,12 @@ const BlogItem: FC<BlogItemProps> = ({
    return (
       <div className='flex w-full flex-col gap-4 rounded-xl bg-white p-6 md:flex-row'>
          <div className='relative aspect-video rounded-md md:w-1/3'>
-            <StrapiImage
+            {/* <StrapiImage
                media={thumbnailImage}
                objectFit='cover'
                className='rounded-md'
-            />
+            /> */}
+             <Image src={thumbnailNewsPlaceholder.src} alt={title} fill className='rounded-md' objectFit='cover' />
          </div>
          <div className='md:w-2/3'>
             <div className='my-2 flex items-center'>
