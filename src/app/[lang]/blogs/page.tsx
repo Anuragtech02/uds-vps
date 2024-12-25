@@ -65,7 +65,7 @@ const Blog = async ({
    const [blogListData, industriesData] = await Promise.all([
       getBlogsListingPage(currentPage, ITEMS_PER_PAGE, filtersQuery)
       .catch((error) => {
-         console.error('Error fetching news:', error);
+         console.error('Error fetching blogs:', error);
          return null;
       }),
       getIndustries().catch((error) => {
@@ -73,8 +73,8 @@ const Blog = async ({
          return null;
       }) ]);
 
-   console.log(industriesData)
-;
+   console.log(industriesData, blogListData);
+   
    const totalItems = blogListData?.meta?.pagination?.total || 0;
    const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
 

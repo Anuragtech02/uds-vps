@@ -125,7 +125,6 @@ export const getNewsListingPage = async (
       ]);
       const paginationQuery = getPaginationQuery(page, limit);
       const filterQuery = getFilterQuery(filters);
-      console.log(filterQuery)
       const sortQuery = 'sort[0]=oldPublishedAt:desc';
       const query = `${populateQuery}&${paginationQuery}&${filterQuery}&${sortQuery}`;
       const response = await fetchClient('/news-articles?' + query, {
@@ -145,8 +144,10 @@ export const getBlogsListingPage = async (
 ) => {
    try {
       const populateQuery = buildPopulateQuery([
+         'industry.name',
          'thumbnailImage.url',
          'author.name',
+         'oldPublishedAt'
       ]);
       const paginationQuery = getPaginationQuery(page, limit);
       const filterQuery = getFilterQuery(filters);
