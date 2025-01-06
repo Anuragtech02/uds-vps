@@ -38,36 +38,23 @@ export const SUPPORTED_LOCALES = [
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-   // reactStrictMode: true,
    images: {
       domains: ['udsweb.s3.ap-south-1.amazonaws.com'],
    },
    async redirects() {
       return [
-         // Handle product tag redirects for localized routes
+         // Handle invalid paths for valid locales (exclude product-tag from invalid paths)
          {
-            source: '/:locale(' + SUPPORTED_LOCALES.join('|') + ')/product-tag/:slug*',
-            destination: '/api/product-tag/:slug*',
-            permanent: true,
-         },
-         // Handle product tag redirects for non-localized routes
-         {
-            source: '/product-tag/:slug*',
-            destination: '/api/product-tag/:slug*',
-            permanent: true,
-         },
-         // Handle invalid paths for valid locales
-         {
-            source: '/:locale(' + SUPPORTED_LOCALES.join('|') + ')/:invalidPath((?!not-found|' +
+            source: '/:locale(' + SUPPORTED_LOCALES.join('|') + ')/:invalidPath((?!not-found|product-tag|' +
                      validRoutes.join('|') + '|' +
                      validRoutes.map(route => `${route}/.*`).join('|') +
                      ').*)',
             destination: '/:locale/not-found',
             permanent: false
          },
-         // Handle completely invalid paths (including invalid locales)
+         // Handle completely invalid paths (including invalid locales, but exclude product-tag)
          {
-            source: '/:invalidPath((?!_next|api|favicon.ico|reports?|not-found|$|' + 
+            source: '/:invalidPath((?!_next|api|favicon.ico|reports?|product-tag|not-found|$|' + 
                      SUPPORTED_LOCALES.join('|') + '|' +
                      validRoutes.join('|') + '|' +
                      validRoutes.map(route => `${route}/.*`).join('|') +
