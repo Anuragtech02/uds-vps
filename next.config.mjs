@@ -19,7 +19,7 @@ const validRoutes = [
    'terms-and-conditions',
    'disclaimer',
    'legal',
-   'not-found'  // Add not-found as a valid route
+   'not-found'
 ];
 
 export const SUPPORTED_LOCALES = [
@@ -44,6 +44,18 @@ const nextConfig = {
    },
    async redirects() {
       return [
+         // Handle product tag redirects for localized routes
+         {
+            source: '/:locale(' + SUPPORTED_LOCALES.join('|') + ')/product-tag/:slug*',
+            destination: '/api/product-tag/:slug*',
+            permanent: true,
+         },
+         // Handle product tag redirects for non-localized routes
+         {
+            source: '/product-tag/:slug*',
+            destination: '/api/product-tag/:slug*',
+            permanent: true,
+         },
          // Handle invalid paths for valid locales
          {
             source: '/:locale(' + SUPPORTED_LOCALES.join('|') + ')/:invalidPath((?!not-found|' +
