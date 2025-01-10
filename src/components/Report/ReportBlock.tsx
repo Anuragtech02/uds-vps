@@ -212,7 +212,6 @@ const ReportBlock: React.FC<ReportBlockProps> = ({ data }) => {
             <p className='hover:underline hover:blue-5'>
                <LocalizedLink href='/'>
                   Home
-                  
                </LocalizedLink>
             </p>
             <span>
