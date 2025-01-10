@@ -4,6 +4,11 @@ import React, { useEffect, useMemo, useRef } from 'react';
 interface Logo {
   attributes: {
     url: string;
+    formats: {
+      [key: string]: {
+         url: string;
+      };
+    }
     alternativeText: string;
   };
 }
