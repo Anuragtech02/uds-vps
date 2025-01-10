@@ -73,7 +73,7 @@ const Blog = async ({
          return null;
       }) ]);
 
-   console.log(industriesData, blogListData);
+   // console.log(industriesData, blogListData);
    
    const totalItems = blogListData?.meta?.pagination?.total || 0;
    const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);

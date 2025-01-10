@@ -9,7 +9,7 @@ import { IoIosSearch } from 'react-icons/io';
 
 const Blog = async (data: any) => {
    const { slug } = data?.params;
-   console.log(slug, 'here');
+   // console.log(slug, 'here');
    let blogDetails: Awaited<ReturnType<typeof getBlogDetails>>;
 
    try {

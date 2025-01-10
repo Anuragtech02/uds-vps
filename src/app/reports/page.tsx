@@ -62,7 +62,7 @@ const ReportStore: FC<ReportStoreProps> = async ({ searchParams }) => {
     {} as Record<string, string>,
   );
 
-  console.log(filtersQuery)
+  // console.log(filtersQuery)
 
    const [reportsList, industriesData] = await Promise.all([
       getAllReports(currentPage, ITEMS_PER_PAGE, filtersQuery).catch(

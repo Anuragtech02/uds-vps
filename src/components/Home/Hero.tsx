@@ -88,12 +88,6 @@ const Hero: React.FC<{ data: any }> = ({ data }) => {
                   </div>
                </div>
                <div className='relative w-full md:w-[40%]'>
-                  <img
-                     src={reportIllustration.src}
-                     className='absolute bottom-0 right-[60%] z-[5] aspect-[2/3] w-[150px] sm:w-[180px] md:-bottom-12 md:block md:w-[150px] lg:-bottom-20 lg:right-[70%] xl:w-[240px]'
-                     alt=''
-                  />
-
                   <div className='relative mx-auto aspect-square w-[80%] overflow-hidden rounded-xl pb-10 md:ml-auto md:pb-0'>
                      <StrapiImage media={heroSection.heroImage} />
                   </div>

@@ -33,8 +33,6 @@ const BrandsMarquee: React.FC<BrandsMarqueeProps> = ({ logos }) => {
       container.style.animationDuration = `${animationDuration}s`;
     }
   }, [animationDuration]);
-
-  console.log({logos})
   
   return (
    <div className="relative w-full overflow-hidden bg-white py-6">

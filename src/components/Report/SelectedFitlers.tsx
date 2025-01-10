@@ -4,7 +4,6 @@ const SelectedFilters = ({ industries, industriesData }: {
     industries: string[];
     industriesData: {data: { attributes: { slug: string; name: string; }; }[]};
 }) => {
-  console.log(industriesData)
   // Get industry names from slugs using industriesData
   const selectedIndustryNames = industries.map(slug => 
     industriesData.data.find(ind => ind.attributes.slug === slug)?.attributes.name || slug
