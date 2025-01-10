@@ -408,3 +408,20 @@
       padding-left: 0 !important;
    }
 }
+
+@keyframes marquee {
+   0% {
+     transform: translateX(0);
+   }
+   100% {
+     transform: translateX(-50%);
+   }
+ }
+ 
+ .marquee-container {
+   animation: marquee linear infinite;
+ }
+ 
+ .marquee-container:hover {
+   animation-play-state: paused;
+ }
