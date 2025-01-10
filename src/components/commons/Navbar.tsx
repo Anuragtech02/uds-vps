@@ -4,6 +4,43 @@ import Link from 'next/link';
 import { BiChevronDown, BiChevronRight, BiMenu, BiX } from 'react-icons/bi';
 import { LocalizedLink } from './LocalizedLink';
 import ClientSearchHero from '../Home/ClientSearchHero';
+// Import all the SVGs
+import aerospaceAndDefenseIcon from '@/assets/icons/industries/aerospace-and-defense.svg';
+import agricultureIcon from '@/assets/icons/industries/agriculture.svg';
+import artificialIntelligenceAnalyticsIcon from '@/assets/icons/industries/artificial-intelligence-analytics.svg';
+import automotiveIcon from '@/assets/icons/industries/automotive.svg';
+import bankingIcon from '@/assets/icons/industries/banking.svg';
+import buildingMaterialIcon from '@/assets/icons/industries/building-material.svg';
+import chemicalIcon from '@/assets/icons/industries/chemical.svg';
+import consumerGoodIcon from '@/assets/icons/industries/consumer-good.svg';
+import electronicsSemiconductorIcon from '@/assets/icons/industries/electronics-semiconductor.svg';
+import energyAndPowerIcon from '@/assets/icons/industries/energy-and-power.svg';
+import healthcareIcon from '@/assets/icons/industries/healthcare.svg';
+import mediaEntertainmentIcon from '@/assets/icons/industries/media-entertainment.svg';
+import miningMachineryIcon from '@/assets/icons/industries/mining-machinery.svg';
+import telecomItIcon from '@/assets/icons/industries/telecom-it.svg';
+
+// Create an object mapping industry slugs to their respective icons
+const industryIcons: {
+   [key: string]: { src: string; alt: string };
+} = {
+  "aerospace-and-defence": aerospaceAndDefenseIcon,
+  "agriculture": agricultureIcon,
+  "artificial-intelligence-analytics": artificialIntelligenceAnalyticsIcon,
+  "automotive": automotiveIcon,
+  "banking-financial-services-and-insurance": bankingIcon,
+  "building-material-and-construction": buildingMaterialIcon,
+  "chemical": chemicalIcon,
+  "consumer-goods": consumerGoodIcon,
+  "electronics-semiconductor": electronicsSemiconductorIcon,
+  "energy-and-power": energyAndPowerIcon,
+  "healthcare": healthcareIcon,
+  "media-entertainment": mediaEntertainmentIcon,
+  "mining-machinery": miningMachineryIcon,
+  "telecom-it": telecomItIcon,
+};
+
+
 
 interface MenuItem {
    title: string;
@@ -49,8 +86,7 @@ const MobileMenuItem: React.FC<{ item: MenuItem; depth: number, onClick: () => v
                   />
                </div>
                {isOpen && (
-                  <LocalizedLink href={item.url}
-                  >
+                  <LocalizedLink href={item.url}>
                      <ul className='w-full'>
                         {item.children.map((child, index) => (
                            <MobileMenuItem
@@ -67,8 +103,15 @@ const MobileMenuItem: React.FC<{ item: MenuItem; depth: number, onClick: () => v
          ) : (
             <LocalizedLink
                href={item.url ?? ''}
-               className='block w-full px-2 py-3 text-white hover:bg-blue-2'
+               className='flex w-full items-center px-2 py-3 text-white hover:bg-blue-2'
             >
+               {depth > 0 && item.url?.includes('industries=') && (
+                  <img 
+                     src={industryIcons[item.url.split('industries=')[1].split('&')[0]]?.src} 
+                     alt=""
+                     className="w-5 h-5 mr-2"
+                  />
+               )}
                <span className='break-words'>{item.title}</span>
             </LocalizedLink>
          )}
@@ -103,13 +146,20 @@ const DesktopMenuItem: React.FC<{ item: MenuItem; depth: number }> = ({
             {isOpen && (
                <div className='absolute left-0 top-full z-50 pt-2'>
                   <div className='rounded-md border border-s-400 bg-white p-6 shadow-md'>
-                     <div className='grid min-w-[300px] grid-cols-1 gap-4 lg:min-w-[600px] lg:grid-cols-2'>
+                     <div style={{ columnCount: 2 }} className='min-w-[300px] lg:min-w-[600px]'>
                         {item.children?.map((child, index) => (
                            <LocalizedLink
                               key={index}
                               href={child.url ?? ''}
-                              className='break-words text-s-800 hover:text-blue-600'
+                              className='flex items-center break-words text-s-800 hover:text-blue-600 py-2'
                            >
+                              {child.url?.includes('industries=') && (
+                                 <img 
+                                    src={industryIcons[child.url.split('industries=')[1].split('&')[0]]?.src} 
+                                    alt=""
+                                    className="w-5 h-5 mr-2"
+                                 />
+                              )}
                               {child.title}
                            </LocalizedLink>
                         ))}
