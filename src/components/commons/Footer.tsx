@@ -131,6 +131,7 @@ const Footer = ({ footer, quickLinks }: any) => {
                      <p className='mb-4 text-lg text-white'>CONTACT</p>
                      <p className='mb-2'>{footer?.phoneNumber}</p>
                      <p className='mb-4'>{footer?.email}</p>
+                     <p className='mb-4'>4th & 5th Floor, C80B, Sector 8, Noida, Uttar Pradesh- 201301, India</p>
                      <LocalizedLink href='?popup=demo-request'>
                         <Button
                            variant='light'
