@@ -73,12 +73,15 @@ const MobileMenuItem: React.FC<{ item: MenuItem; depth: number, onClick: () => v
    const [isOpen, setIsOpen] = useState(false);
 
    return (
-      <li className={`w-full ${depth > 0 ? 'pl-4' : ''}`} onClick={depth == 0 ? () => onClick() : undefined}>
+      <li className={`w-full ${depth > 0 ? 'pl-4' : ''}`}>
          {item.children && item.children.length > 0 ? (
             <>
                <div
                   className='flex w-full items-center justify-between px-2 py-3 text-white hover:bg-blue-2'
-                  onClick={() => setIsOpen(!isOpen)}
+                  onClick={(e) => {
+                     e.stopPropagation(); // Prevent event from bubbling up
+                     setIsOpen(!isOpen);
+                  }}
                >
                   <span className='break-words pr-2'>{item.title}</span>
                   <BiChevronDown
@@ -86,7 +89,7 @@ const MobileMenuItem: React.FC<{ item: MenuItem; depth: number, onClick: () => v
                   />
                </div>
                {isOpen && (
-                  <LocalizedLink href={item.url}>
+                  <div>
                      <ul className='w-full'>
                         {item.children.map((child, index) => (
                            <MobileMenuItem
@@ -97,13 +100,17 @@ const MobileMenuItem: React.FC<{ item: MenuItem; depth: number, onClick: () => v
                            />
                         ))}
                      </ul>
-                  </LocalizedLink>
+                  </div>
                )}
             </>
          ) : (
             <LocalizedLink
                href={item.url ?? ''}
                className='flex w-full items-center px-2 py-3 text-white hover:bg-blue-2'
+               onClick={(e) => {
+                  e.stopPropagation();
+                  onClick();
+               }}
             >
                {depth > 0 && item.url?.includes('industries=') && (
                   <img 
