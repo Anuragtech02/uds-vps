@@ -316,6 +316,25 @@ const CartPage = () => {
                      </Button>
                   </div>
                </div>
+                 {/* Assistance Section */}
+               <div className="mt-6 w-full rounded-xl bg-white p-6 block sm:hidden">
+                  <h2 className="text-2xl font-semibold text-gray-800 mb-4">Need assistance?</h2>
+                  <p className="text-gray-600 mb-4">Call us or write to us:</p>
+                  <div className="space-y-2">
+                        <p className="text-gray-700">
+                        <span className="font-medium">Phone:</span>{" "}
+                        <a href="tel:+1-888-689-0688" className="text-blue-600 hover:text-blue-800">
+                        +1 9787330253
+                        </a>
+                        </p>
+                        <p className="text-gray-700">
+                        <span className="font-medium">Email:</span>{" "}
+                        <a href="mailto:sales@univdatos.com" className="text-blue-600 hover:text-blue-800">
+                              sales@univdatos.com
+                        </a>
+                        </p>
+                  </div>
+               </div>
          </form>
       </CheckoutProvider>
    );
