@@ -38,14 +38,14 @@ const RecentResearch: React.FC<{ data: any }> = ({ data }) => {
    }
 
    return (
-      <section className='min-h-full pt-10 md:pt-20'>
+      <section className='min-h-full pt-10 md:pt-8 pb-0'>
          <div className='container'>
             <h2
                dangerouslySetInnerHTML={{
                   __html: recentResearchSection.recentResearchSectionTitle,
                }}
             />
-            <div className='my-8 md:my-10'>
+            <div className='my-8 md:my-10 md:mb-0'>
                <div className='grid grid-cols-2 gap-4 md:grid-cols-5'>
                   {reports?.map((report: any, index: number) => {
                      return (

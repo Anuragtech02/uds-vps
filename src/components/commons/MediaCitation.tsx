@@ -19,7 +19,7 @@ const MediaCitation: React.FC<{ mediaCitation: any }> = ({ mediaCitation }) => {
    }, [shuffleCitations]);
 
    return (
-      <section className='bg-s-50 py-20 md:min-h-max'>
+      <section className='bg-s-50 py-8 md:min-h-max'>
          <div className='container'>
             <div className='pb-10 text-center md:pb-16'>
                <h2

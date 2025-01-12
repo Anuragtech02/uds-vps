@@ -15,13 +15,13 @@ const Testimonials: React.FC<{ data: any }> = ({ data }) => {
 
    return (
       <section className='min-h-full flex-col overflow-x-hidden'>
-         <div className='bg-s-50'>
-            <div className='container py-10'>
+         <div className='bg-white'>
+            <div className='container pt-8'>
                <h2>
                   Brands that <span>trust us!</span>
                </h2>
             </div>
-            <div className='my-4 bg-white py-6 md:my-10 md:py-10'>
+            <div className='my-4 bg-white py-6 md:my-0 md:py-10'>
                <BrandsMarquee logos={bankLogos} />
             </div>
          </div>

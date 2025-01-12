@@ -41,7 +41,7 @@ const LatestResearch: React.FC<{ data: any; reports: any, upcomingReports: any }
    }
 
    return (
-      <section className='min-h-full py-10 md:py-20'>
+      <section className='min-h-full py-4 md:py-8 !pt-2'>
          <div className='container'>
             <h2
                dangerouslySetInnerHTML={{

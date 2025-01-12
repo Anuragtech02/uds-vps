@@ -38,7 +38,7 @@ const NewsRoom: React.FC<{
    };
 }> = ({ data }) => {
    return (
-      <section className='min-h-max py-12 md:py-20'>
+      <section className='min-h-max py-4 md:py-10'>
          <div className='container'>
             <div className='my-6 flex flex-col items-stretch gap-4 lg:my-10 lg:mt-0 lg:flex-row'>
                <div className='md:w-1/2'>
