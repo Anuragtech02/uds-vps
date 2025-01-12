@@ -68,7 +68,7 @@ const Footer = ({ footer, quickLinks }: any) => {
                </div>
             </div>
             <div className='container mx-auto px-4'>
-               <div className='grid grid-cols-1 gap-8 pt-12 text-blue-9 md:grid-cols-5'>
+               <div className='grid grid-cols-1 gap-4 sm:gap-8 pt-12 text-blue-9 md:grid-cols-5'>
                   {/* Company Info */}
                   <div className='col-span-1 md:col-span-2'>
                      <Image
@@ -130,7 +130,7 @@ const Footer = ({ footer, quickLinks }: any) => {
                   <div>
                      <p className='mb-4 text-lg text-white'>CONTACT</p>
                      <p className='mb-2'>{footer?.phoneNumber}</p>
-                     <p className='mb-4'>{footer?.email}</p>
+                     <p className='mb-4 max-w-[200px] break-words'>{footer?.email}</p>
                      <p className='mb-4'>4th & 5th Floor, C80B, Sector 8, Noida, Uttar Pradesh- 201301, India</p>
                      <LocalizedLink href='?popup=demo-request'>
                         <Button
