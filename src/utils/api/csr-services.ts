@@ -1,3 +1,4 @@
+import { buildPopulateQuery } from '../generic-methods';
 import fetchClientCSR from './csr-config';
 
 function getAuthHeaders(type: 'get' | 'search' | 'post' = 'get') {
@@ -279,3 +280,52 @@ export const getCurrencyRates = async () => {
       throw error;
    }
 }
+
+const getPaginationQuery = (page: number = 1, limit: number = 10) => {
+   return `pagination[page]=${page}&pagination[pageSize]=${limit}`;
+};
+
+const getFilterQuery = (
+   filters: Record<string, string | number | boolean> = {},
+) => {
+   return Object.entries(filters)
+      .map(([key, value]) => {
+         if (key.startsWith('industrySlug')) {
+            return `filters[industry][slug][$eq]=${encodeURIComponent(String(value))}`;
+         } else if (key.startsWith('industriesSlug')) {
+            return `filters[industries][slug][$in]=${encodeURIComponent(String(value))}`;
+         } else if (key.startsWith('geographySlug')) {
+            return `filters[geography][slug][$eq]=${encodeURIComponent(String(value))}`;
+         } else if (key.startsWith('geographiesSlug')) {
+            return `filters[geographies][slug][$in]=${encodeURIComponent(String(value))}`;
+         }
+         return `filters[${key}]=${encodeURIComponent(String(value))}`;
+      })
+      .join('&');
+};
+
+export const getBlogsListingPageClient = async (
+   page = 1,
+   limit = 10,
+   filters = {},
+) => {
+   try {
+      const populateQuery = buildPopulateQuery([
+         'industry.name',
+         'thumbnailImage.url',
+         'author.name',
+         'oldPublishedAt'
+      ]);
+      const paginationQuery = getPaginationQuery(page, limit);
+      const filterQuery = getFilterQuery(filters);
+      const sortQuery = 'sort[0]=oldPublishedAt:desc';
+      const query = `${populateQuery}&${paginationQuery}&${filterQuery}&${sortQuery}`;
+      const response = await fetchClientCSR('/blogs?' + query, {
+         headers: getAuthHeaders(),
+      });
+      return await response;
+   } catch (error) {
+      console.error('Error fetching Blogs:', error);
+      throw error;
+   }
+};

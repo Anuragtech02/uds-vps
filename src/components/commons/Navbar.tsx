@@ -107,7 +107,7 @@ const MobileMenuItem: React.FC<{ item: MenuItem; depth: number, onClick: () => v
             <LocalizedLink
                href={item.url ?? ''}
                className='flex w-full items-center px-2 py-3 text-white hover:bg-blue-2'
-               onClick={(e) => {
+               onClick={(e: MouseEvent) => {
                   e.stopPropagation();
                   onClick();
                }}
