@@ -176,6 +176,19 @@ export const getIndustries = async (page = 1, limit = 100) => {
    }
 };
 
+export const getGeographies = async (page = 1, limit = 100) => {
+   try {
+      const paginationQuery = getPaginationQuery(page, limit);
+      const response = await fetchClient('/geographies?' + paginationQuery, {
+         headers: getAuthHeaders(),
+      });
+      return await response;
+   } catch (error) {
+      console.error('Error fetching Geographies:', error);
+      throw error;
+   }
+};
+
 export const getAboutPage = async () => {
    try {
       const populateQuery = buildPopulateQuery([

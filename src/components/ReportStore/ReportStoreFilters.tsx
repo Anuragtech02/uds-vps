@@ -64,12 +64,12 @@ const ReportStoreFilters: React.FC<ReportStoreFiltersProps> = ({
 
    return (
       <div className='relative w-full rounded-xl bg-white p-4 md:px-6'>
-         <h2 className='hidden text-[1.625rem] font-medium lg:block'>
-            Reports by industry
-         </h2>
+         <h4 className='hidden text-[1.3rem] font-medium lg:block'>
+            Filter by Industry
+         </h4>
 
          <div className='flex items-center justify-between gap-4 lg:hidden'>
-            <h2 className='text-[1.25rem] font-medium'>Filters</h2>
+            <h2 className='text-[1.25rem] font-medium'>Industry</h2>
             <span className='text-2xl' onClick={() => setExpanded(!expanded)}>
                {expanded ? <BiChevronUp /> : <BiChevronDown />}
             </span>
