@@ -72,6 +72,16 @@ const nextConfig = {
             permanent: false,
          },
          {
+            source: '/reports/industry/:path*',
+            destination: '/reports?industries=:path*',
+            permanent: true,
+         },
+         {
+            source: '/:locale/reports/industry/:path*',
+            destination: '/:locale/reports?industries=:path*',
+            permanent: true,
+         },
+         {
             source: '/report/:path*',
             destination: '/reports/:path*',
             permanent: true,
