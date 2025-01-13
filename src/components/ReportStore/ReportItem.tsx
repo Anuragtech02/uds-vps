@@ -12,7 +12,7 @@ interface ReportStoreItemProps {
    description: string;
    slug: string;
    viewType?: string;
-   highlightImageUrl: string,
+   highlightImageUrl: string;
 }
 
 const ReportStoreItem: FC<ReportStoreItemProps> = ({
@@ -34,10 +34,9 @@ const ReportStoreItem: FC<ReportStoreItemProps> = ({
             />
          </div>
          <div className='grow space-y-3 md:w-2/3'>
-            <h4 className='line-clamp-3 overflow-hidden text-xl font-semibold hover:underline'>
+            <h4 className='line-clamp-3 overflow-hidden text-lg font-semibold hover:underline'>
                <LocalizedLink href={`/reports/${slug}`} className='w-full'>
-                  <span dangerouslySetInnerHTML={{ __html: title }}>
-                  </span>
+                  <span dangerouslySetInnerHTML={{ __html: title }}></span>
                </LocalizedLink>
             </h4>
             {viewType === 'list' && (
