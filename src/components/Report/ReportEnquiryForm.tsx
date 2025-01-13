@@ -1,16 +1,23 @@
 'use client';
-import { useState, FormEvent, useCallback } from 'react';
+import { useState, FormEvent, useEffect } from 'react';
 import CustomPhoneInput from '../CustomPhoneInput';
-import {
-   GoogleReCaptchaProvider,
-   GoogleReCaptcha,
-} from 'react-google-recaptcha-v3';
 import { submitContactForm } from '@/utils/api/csr-services';
 import Button from '../commons/Button';
+import Script from 'next/script';
 
 interface ReportEnquiryFormProps {
    reportId: number;
    reportTitle: string;
+}
+
+declare global {
+   interface Window {
+      turnstile: {
+         render: (container: string | HTMLElement, options: any) => string;
+         reset: (widgetId: string) => void;
+      };
+      onloadTurnstileCallback: () => void;
+   }
 }
 
 const ReportEnquiryForm: React.FC<ReportEnquiryFormProps> = ({
@@ -27,7 +34,34 @@ const ReportEnquiryForm: React.FC<ReportEnquiryFormProps> = ({
    const [isSubmitting, setIsSubmitting] = useState(false);
    const [submitError, setSubmitError] = useState<string | null>(null);
    const [submitSuccess, setSubmitSuccess] = useState(false);
-   const [captchaToken, setCaptchaToken] = useState<string | null>(null);
+   const [turnstileToken, setTurnstileToken] = useState<string>('');
+
+   useEffect(() => {
+      // Define the callback function that will be called when Turnstile is loaded
+      window.onloadTurnstileCallback = function () {
+         window.turnstile.render('#turnstile-container', {
+            sitekey: process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || '',
+            callback: function (token: string) {
+               console.log('Challenge Success', token);
+               setTurnstileToken(token);
+               setSubmitError(null);
+            },
+            'expired-callback': function () {
+               setTurnstileToken('');
+               setSubmitError('Verification expired. Please verify again.');
+            },
+            'error-callback': function () {
+               setSubmitError('Error during verification. Please try again.');
+            },
+         });
+      };
+
+      return () => {
+         // Clean up the global callback
+         // @ts-expect-error - window.onloadTurnstileCallback is defined
+         delete window.onloadTurnstileCallback;
+      };
+   }, []);
 
    const handleInputChange = (
       e: React.ChangeEvent<
@@ -44,18 +78,14 @@ const ReportEnquiryForm: React.FC<ReportEnquiryFormProps> = ({
       setPhone(phone);
    };
 
-   const handleVerify = useCallback((token: string) => {
-      setCaptchaToken(token);
-   }, []);
-
    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       setIsSubmitting(true);
       setSubmitError(null);
       setSubmitSuccess(false);
 
-      if (!captchaToken) {
-         setSubmitError('reCAPTCHA verification failed. Please try again.');
+      if (!turnstileToken) {
+         setSubmitError('Please complete the verification');
          setIsSubmitting(false);
          return;
       }
@@ -64,8 +94,8 @@ const ReportEnquiryForm: React.FC<ReportEnquiryFormProps> = ({
          const response = await submitContactForm({
             ...formFields,
             mobileNumber: phone,
-            // report: reportId,
-            captchaToken,
+            reportId,
+            cfTurnstileResponse: turnstileToken,
          });
 
          if (!response.ok) {
@@ -81,8 +111,10 @@ const ReportEnquiryForm: React.FC<ReportEnquiryFormProps> = ({
             message: '',
          });
          setPhone('');
-         // Reset CAPTCHA token
-         setCaptchaToken(null);
+         // Reset Turnstile
+         if (window.turnstile) {
+            window.turnstile.reset('#turnstile-container');
+         }
       } catch (error) {
          setSubmitError('An error occurred. Please try again.');
       } finally {
@@ -91,9 +123,13 @@ const ReportEnquiryForm: React.FC<ReportEnquiryFormProps> = ({
    };
 
    return (
-      <GoogleReCaptchaProvider
-         reCaptchaKey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || ''}
-      >
+      <>
+         <Script
+            src='https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onloadTurnstileCallback'
+            async
+            defer
+         />
+
          <div className='pt-6 font-medium'>
             <p>
                Requesting For: <strong>{reportTitle}</strong>
@@ -104,7 +140,7 @@ const ReportEnquiryForm: React.FC<ReportEnquiryFormProps> = ({
                className='mt-2 space-y-6 text-sm md:space-y-8'
             >
                <div className='flex flex-col items-center gap-4 md:flex-row'>
-                  <div className='shrink grow basis-0 w-full sm:w-auto space-y-1'>
+                  <div className='w-full shrink grow basis-0 space-y-1 sm:w-auto'>
                      <label htmlFor='name'>Full Name*</label>
                      <input
                         type='text'
@@ -117,7 +153,7 @@ const ReportEnquiryForm: React.FC<ReportEnquiryFormProps> = ({
                         className='w-full rounded-md border border-s-300 p-3'
                      />
                   </div>
-                  <div className='shrink grow basis-0 w-full sm:w-auto space-y-1'>
+                  <div className='w-full shrink grow basis-0 space-y-1 sm:w-auto'>
                      <CustomPhoneInput
                         value={phone}
                         onChange={handlePhoneChange}
@@ -126,7 +162,7 @@ const ReportEnquiryForm: React.FC<ReportEnquiryFormProps> = ({
                   </div>
                </div>
                <div className='flex flex-col items-center gap-4 md:flex-row'>
-                  <div className='shrink grow basis-0 w-full sm:w-auto space-y-1'>
+                  <div className='w-full shrink grow basis-0 space-y-1 sm:w-auto'>
                      <label htmlFor='email'>Business Email*</label>
                      <input
                         type='email'
@@ -139,7 +175,7 @@ const ReportEnquiryForm: React.FC<ReportEnquiryFormProps> = ({
                         className='w-full rounded-md border border-s-300 p-3'
                      />
                   </div>
-                  <div className='shrink grow basis-0 w-full sm:w-auto space-y-1'>
+                  <div className='w-full shrink grow basis-0 space-y-1 sm:w-auto'>
                      <label htmlFor='company'>Company*</label>
                      <input
                         type='text'
@@ -164,11 +200,16 @@ const ReportEnquiryForm: React.FC<ReportEnquiryFormProps> = ({
                      className='min-h-32 w-full rounded-md border border-s-300 p-3'
                   ></textarea>
                </div>
-               <GoogleReCaptcha onVerify={handleVerify} refreshReCaptcha />
+
+               {/* Cloudflare Turnstile */}
+               <div className='space-y-2'>
+                  <div id='turnstile-container'></div>
+               </div>
+
                {submitError && <p className='text-red-500'>{submitError}</p>}
                {submitSuccess && (
                   <p className='text-green-500'>
-                     Thank you for your demo request. We&apos;ll get back to you
+                     Thank you for your enquiry. We&apos;ll get back to you
                      soon!
                   </p>
                )}
@@ -183,7 +224,7 @@ const ReportEnquiryForm: React.FC<ReportEnquiryFormProps> = ({
                </div>
             </form>
          </div>
-      </GoogleReCaptchaProvider>
+      </>
    );
 };
 
