@@ -55,7 +55,7 @@ const TableOfContentItem: React.FC<TableOfContentItemProps> = ({
          >
             <div
                dangerouslySetInnerHTML={{ __html: description }}
-               className='pl-2 [&>ol]:list-decimal [&>ol>li>ol]:list-roman [&>ol>li>ol]:pl-4'
+               className='toc-list pl-2 [&>ol>li>ol]:pl-4'
             ></div>
          </div>
       </li>

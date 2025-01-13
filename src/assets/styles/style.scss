@@ -32,8 +32,7 @@
 
 .report-content h1:first-of-type,
 .report-content h2:first-of-type,
-.report-content h3:first-of-type
-{
+.report-content h3:first-of-type {
    margin-top: 0 !important;
 }
 
@@ -51,7 +50,7 @@
    margin-bottom: 1rem !important;
 }
 
-.blog-content .entry-title{
+.blog-content .entry-title {
    display: none !important;
 }
 
@@ -144,17 +143,99 @@
 
 .report-content ol {
    list-style-type: decimal !important;
-   
-   ol, li ol {
+
+   ol,
+   li ol {
       list-style-type: lower-alpha !important;
-      
-     li ol {
+
+      li ol {
          list-style-type: lower-roman !important;
 
          li ol {
             list-style-type: decimal !important;
          }
       }
+   }
+}
+
+.toc-list {
+   /* Reset default list styling */
+   ol {
+      list-style: none !important;
+      counter-reset: section;
+      padding-left: 1rem;
+
+      /* First level - e.g., 1., 2., 3. */
+      > li {
+         counter-increment: section;
+         position: relative;
+
+         &::before {
+            content: counter(section) '.';
+            position: absolute;
+            left: -1.5rem;
+            color: #000;
+         }
+
+         /* Second level - e.g., 1.1., 1.2., 1.3. */
+         > ol {
+            counter-reset: subsection;
+
+            > li {
+               counter-increment: subsection;
+               padding-left: 0.5rem;
+
+               &::before {
+                  content: counter(section) '.' counter(subsection) '.';
+                  position: absolute;
+                  left: -1.5rem;
+                  color: #000;
+               }
+
+               /* Third level - e.g., 1.1.1., 1.1.2., 1.1.3. */
+               > ol {
+                  counter-reset: subsubsection;
+                  padding-left: 0.5rem;
+
+                  > li {
+                     counter-increment: subsubsection;
+
+                     &::before {
+                        content: counter(section) '.' counter(subsection) '.'
+                           counter(subsubsection) '.';
+                        position: absolute;
+                        left: -2rem;
+                        color: #000;
+                     }
+
+                     /* Fourth level - e.g., 1.1.1.1 */
+                     > ol {
+                        counter-reset: subsubsubsection;
+                        padding-left: 0.5rem;
+
+                        > li {
+                           counter-increment: subsubsubsection;
+
+                           &::before {
+                              content: counter(section) '.' counter(subsection)
+                                 '.' counter(subsubsection) '.'
+                                 counter(subsubsubsection) '.';
+                              position: absolute;
+                              left: -2.5rem;
+                              color: #000;
+                           }
+                        }
+                     }
+                  }
+               }
+            }
+         }
+      }
+   }
+
+   /* Keep the disc style for unordered lists */
+   ul {
+      list-style-type: disc !important;
    }
 }
 
@@ -211,20 +292,20 @@
 //    }
 // }
 
-.report-content figcaption{
+.report-content figcaption {
    display: none !important;
 }
 
-.report-content h3 span strong{
+.report-content h3 span strong {
    font-weight: 600 !important;
 }
 
-.report-content a{
+.report-content a {
    color: #2f71f6 !important;
    text-decoration: underline !important;
 }
 
-.report-content a:hover{
+.report-content a:hover {
    color: #1e51b8 !important;
 }
 
@@ -411,17 +492,17 @@
 
 @keyframes marquee {
    0% {
-     transform: translateX(0);
+      transform: translateX(0);
    }
    100% {
-     transform: translateX(-50%);
+      transform: translateX(-50%);
    }
- }
- 
- .marquee-container {
+}
+
+.marquee-container {
    animation: marquee linear infinite;
- }
- 
- .marquee-container:hover {
+}
+
+.marquee-container:hover {
    animation-play-state: paused;
- }
+}
