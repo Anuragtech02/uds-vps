@@ -24,23 +24,21 @@ import telecomItIcon from '@/assets/icons/industries/telecom-it.svg';
 const industryIcons: {
    [key: string]: { src: string; alt: string };
 } = {
-  "aerospace-and-defence": aerospaceAndDefenseIcon,
-  "agriculture": agricultureIcon,
-  "artificial-intelligence-analytics": artificialIntelligenceAnalyticsIcon,
-  "automotive": automotiveIcon,
-  "banking-financial-services-and-insurance": bankingIcon,
-  "building-material-and-construction": buildingMaterialIcon,
-  "chemical": chemicalIcon,
-  "consumer-goods": consumerGoodIcon,
-  "electronics-semiconductor": electronicsSemiconductorIcon,
-  "energy-and-power": energyAndPowerIcon,
-  "healthcare": healthcareIcon,
-  "media-entertainment": mediaEntertainmentIcon,
-  "mining-machinery": miningMachineryIcon,
-  "telecom-it": telecomItIcon,
+   'aerospace-and-defence': aerospaceAndDefenseIcon,
+   agriculture: agricultureIcon,
+   'artificial-intelligence-analytics': artificialIntelligenceAnalyticsIcon,
+   automotive: automotiveIcon,
+   'banking-financial-services-and-insurance': bankingIcon,
+   'building-material-and-construction': buildingMaterialIcon,
+   chemical: chemicalIcon,
+   'consumer-goods': consumerGoodIcon,
+   'electronics-semiconductor': electronicsSemiconductorIcon,
+   'energy-and-power': energyAndPowerIcon,
+   healthcare: healthcareIcon,
+   'media-entertainment': mediaEntertainmentIcon,
+   'mining-machinery': miningMachineryIcon,
+   'telecom-it': telecomItIcon,
 };
-
-
 
 interface MenuItem {
    title: string;
@@ -65,11 +63,11 @@ interface INavbarProps {
    }>;
 }
 
-const MobileMenuItem: React.FC<{ item: MenuItem; depth: number, onClick: () => void; }> = ({
-   item,
-   depth,
-   onClick,
-}) => {
+const MobileMenuItem: React.FC<{
+   item: MenuItem;
+   depth: number;
+   onClick: () => void;
+}> = ({ item, depth, onClick }) => {
    const [isOpen, setIsOpen] = useState(false);
 
    return (
@@ -113,10 +111,14 @@ const MobileMenuItem: React.FC<{ item: MenuItem; depth: number, onClick: () => v
                }}
             >
                {depth > 0 && item.url?.includes('industries=') && (
-                  <img 
-                     src={industryIcons[item.url.split('industries=')[1].split('&')[0]]?.src} 
-                     alt=""
-                     className="w-5 h-5 mr-2"
+                  <img
+                     src={
+                        industryIcons[
+                           item.url.split('industries=')[1].split('&')[0]
+                        ]?.src
+                     }
+                     alt=''
+                     className='mr-2 h-5 w-5'
                   />
                )}
                <span className='break-words'>{item.title}</span>
@@ -142,7 +144,7 @@ const DesktopMenuItem: React.FC<{ item: MenuItem; depth: number }> = ({
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
          >
-            <div className='flex cursor-pointer items-center px-2 py-2 text-white hover:bg-blue-3 rounded-md'>
+            <div className='flex cursor-pointer items-center rounded-md px-2 py-2 text-white hover:bg-blue-3'>
                <span className='max-w-[200px] whitespace-normal break-words'>
                   {item.title}
                </span>
@@ -153,18 +155,27 @@ const DesktopMenuItem: React.FC<{ item: MenuItem; depth: number }> = ({
             {isOpen && (
                <div className='absolute left-0 top-full z-50 pt-2'>
                   <div className='rounded-md border border-s-400 bg-white p-6 shadow-md'>
-                     <div style={{ columnCount: 2 }} className='min-w-[300px] lg:min-w-[600px]'>
+                     <div
+                        style={{ columnCount: 2 }}
+                        className='min-w-[300px] lg:min-w-[600px]'
+                     >
                         {item.children?.map((child, index) => (
                            <LocalizedLink
                               key={index}
                               href={child.url ?? ''}
-                              className='flex items-center break-words text-s-800 hover:text-blue-600 py-2'
+                              className='flex items-center break-words py-2 text-s-800 hover:text-blue-600'
                            >
                               {child.url?.includes('industries=') && (
-                                 <img 
-                                    src={industryIcons[child.url.split('industries=')[1].split('&')[0]]?.src} 
-                                    alt=""
-                                    className="w-5 h-5 mr-2"
+                                 <img
+                                    src={
+                                       industryIcons[
+                                          child.url
+                                             .split('industries=')[1]
+                                             .split('&')[0]
+                                       ]?.src
+                                    }
+                                    alt=''
+                                    className='mr-2 h-5 w-5'
                                  />
                               )}
                               {child.title}
@@ -251,7 +262,7 @@ const Navbar: React.FC<INavbarProps> = ({ header, mainMenu, industries }) => {
 
    return (
       <div className='container'>
-         <nav className='flex items-center justify-between rounded-md bg-blue-2 px-2 py-2 lg:px-8'>
+         <nav className='flex items-center justify-between rounded-md bg-blue-1 px-2 py-2 lg:px-8'>
             <LocalizedLink href='/' className='flex items-center'>
                <img
                   src={header?.logo?.data?.attributes?.url}
@@ -261,8 +272,12 @@ const Navbar: React.FC<INavbarProps> = ({ header, mainMenu, industries }) => {
             </LocalizedLink>
             {isMobile ? (
                <div className='flex items-center gap-2'>
-                  <div className='max-w-[100px] [&>div]:w-full [&>div]:mt-0 [&>div]:py-1'>
-                     <ClientSearchHero placeholder='Search here...' variant='light' onlyIcon />
+                  <div className='max-w-[100px] [&>div]:mt-0 [&>div]:w-full [&>div]:py-1'>
+                     <ClientSearchHero
+                        placeholder='Search here...'
+                        variant='light'
+                        onlyIcon
+                     />
                   </div>
                   <button
                      title='open'
@@ -304,8 +319,11 @@ const Navbar: React.FC<INavbarProps> = ({ header, mainMenu, industries }) => {
                      {/* <LocalizedLink href={header?.ctaButton?.link ?? ''}>
                         <Button>{header?.ctaButton?.title}</Button>
                      </LocalizedLink> */}
-                      <div className='max-w-[190px] [&>div]:w-full [&>div]:mt-0'>
-                        <ClientSearchHero placeholder='Search here...' variant='light' />
+                     <div className='max-w-[190px] [&>div]:mt-0 [&>div]:w-full'>
+                        <ClientSearchHero
+                           placeholder='Search here...'
+                           variant='light'
+                        />
                      </div>
                   </div>
                </>
@@ -335,21 +353,27 @@ const Navbar: React.FC<INavbarProps> = ({ header, mainMenu, industries }) => {
                            item={{
                               ...item,
                               children: industries
-                                    .filter(
-                                       (industry) =>
-                                          !exclude.includes(
-                                             industry.name.toLowerCase(),
-                                          ),
-                                    ).map(({ slug, name }) => ({
-                                 title: name,
-                                 url: `/reports?industries=${slug}&page=1`,
-                              })),
+                                 .filter(
+                                    (industry) =>
+                                       !exclude.includes(
+                                          industry.name.toLowerCase(),
+                                       ),
+                                 )
+                                 .map(({ slug, name }) => ({
+                                    title: name,
+                                    url: `/reports?industries=${slug}&page=1`,
+                                 })),
                            }}
                            depth={0}
                            onClick={() => setIsMobileMenuOpen(false)}
                         />
                      ) : (
-                        <MobileMenuItem key={index} item={item} depth={0} onClick={() => setIsMobileMenuOpen(false)} />
+                        <MobileMenuItem
+                           key={index}
+                           item={item}
+                           depth={0}
+                           onClick={() => setIsMobileMenuOpen(false)}
+                        />
                      ),
                   )}
                </ul>
