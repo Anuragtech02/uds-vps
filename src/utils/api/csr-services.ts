@@ -16,6 +16,15 @@ function getAuthHeaders(type: 'get' | 'search' | 'post' = 'get') {
    return undefined;
 }
 
+export interface ContactFormData {
+   fullName: string;
+   businessEmail: string;
+   company: string;
+   message: string;
+   mobileNumber: string;
+   cfTurnstileResponse: string;
+}
+
 export const searchContent = async (
    query: string,
    page: number,
@@ -166,9 +175,10 @@ export const verifyPayments = async (body: any) => {
       const response = await fetchClientCSR('/rpay/verify', {
          method: 'POST',
          body: JSON.stringify(body),
-         headers: { 'Content-Type': 'application/json',
+         headers: {
+            'Content-Type': 'application/json',
             ...getAuthHeaders('post'),
-          },
+         },
       });
       return response;
    } catch (error) {
@@ -279,7 +289,7 @@ export const getCurrencyRates = async () => {
       console.error('Error fetching currency rates:', error);
       throw error;
    }
-}
+};
 
 const getPaginationQuery = (page: number = 1, limit: number = 10) => {
    return `pagination[page]=${page}&pagination[pageSize]=${limit}`;
@@ -314,7 +324,7 @@ export const getBlogsListingPageClient = async (
          'industry.name',
          'thumbnailImage.url',
          'author.name',
-         'oldPublishedAt'
+         'oldPublishedAt',
       ]);
       const paginationQuery = getPaginationQuery(page, limit);
       const filterQuery = getFilterQuery(filters);
@@ -340,7 +350,7 @@ export const getNewsListingPageClient = async (
          'industry.name',
          'thumbnailImage.url',
          'author.name',
-         'oldPublishedAt'
+         'oldPublishedAt',
       ]);
       const paginationQuery = getPaginationQuery(page, limit);
       const filterQuery = getFilterQuery(filters);
