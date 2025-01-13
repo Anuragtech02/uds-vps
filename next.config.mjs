@@ -19,21 +19,23 @@ const validRoutes = [
    'terms-and-conditions',
    'disclaimer',
    'legal',
-   'not-found'
+   'not-found',
+   'company-profile',
+   'custom-research',
 ];
 
 export const SUPPORTED_LOCALES = [
-  'en',
-  'ru',
-  'ar',
-  'de',
-  'fr',
-  'zh-TW',
-  'ja',
-  'ko',
-  'vi',
-  'it',
-  'pl',
+   'en',
+   'ru',
+   'ar',
+   'de',
+   'fr',
+   'zh-TW',
+   'ja',
+   'ko',
+   'vi',
+   'it',
+   'pl',
 ];
 
 /** @type {import('next').NextConfig} */
@@ -45,22 +47,29 @@ const nextConfig = {
       return [
          // Handle invalid paths for valid locales (exclude product-tag from invalid paths)
          {
-            source: '/:locale(' + SUPPORTED_LOCALES.join('|') + ')/:invalidPath((?!not-found|product-tag|' +
-                     validRoutes.join('|') + '|' +
-                     validRoutes.map(route => `${route}/.*`).join('|') +
-                     ').*)',
+            source:
+               '/:locale(' +
+               SUPPORTED_LOCALES.join('|') +
+               ')/:invalidPath((?!not-found|product-tag|' +
+               validRoutes.join('|') +
+               '|' +
+               validRoutes.map((route) => `${route}/.*`).join('|') +
+               ').*)',
             destination: '/:locale/not-found',
-            permanent: false
+            permanent: false,
          },
          // Handle completely invalid paths (including invalid locales, but exclude product-tag)
          {
-            source: '/:invalidPath((?!_next|api|favicon.ico|reports?|product-tag|not-found|$|' + 
-                     SUPPORTED_LOCALES.join('|') + '|' +
-                     validRoutes.join('|') + '|' +
-                     validRoutes.map(route => `${route}/.*`).join('|') +
-                     ').*)',
+            source:
+               '/:invalidPath((?!_next|api|favicon.ico|reports?|product-tag|not-found|$|' +
+               SUPPORTED_LOCALES.join('|') +
+               '|' +
+               validRoutes.join('|') +
+               '|' +
+               validRoutes.map((route) => `${route}/.*`).join('|') +
+               ').*)',
             destination: '/en/not-found',
-            permanent: false
+            permanent: false,
          },
          {
             source: '/report/:path*',
@@ -70,6 +79,26 @@ const nextConfig = {
          {
             source: '/:locale/report/:path*',
             destination: '/:locale/reports/:path*',
+            permanent: true,
+         },
+         {
+            source: '/custom-research',
+            destination: '/services',
+            permanent: true,
+         },
+         {
+            source: '/:locale/custom-research',
+            destination: '/:locale/services',
+            permanent: true,
+         },
+         {
+            source: '/company-profile/:path*',
+            destination: '/',
+            permanent: true,
+         },
+         {
+            source: '/:locale/company-profile/:path*',
+            destination: '/:locale/',
             permanent: true,
          },
       ];
