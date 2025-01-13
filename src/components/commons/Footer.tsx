@@ -1,14 +1,12 @@
 'use client';
-import Link from 'next/link';
 import Image from 'next/image';
-import logo from '@/assets/img/logo.png';
 import earth from '@/assets/img/earth.png';
 import Button from './Button';
 import {
    FaInstagram,
    FaLinkedin,
    FaFacebook,
-   FaTwitter,
+   FaXTwitter,
 } from 'react-icons/fa6';
 import { usePathname } from 'next/navigation';
 import CustomResearchCTA from './CustomResearchCTA';
@@ -161,7 +159,7 @@ const Footer = ({ footer, quickLinks }: any) => {
                         rel='noopener noreferrer'
                         className='hover:text-gray-300'
                      >
-                        <FaTwitter key='FaTwitter' />
+                        <FaXTwitter key='FaTwitter' />
                      </a>
                      <a
                         href={`https://www.linkedin.com/company/univ-datos-market-insight/`}
