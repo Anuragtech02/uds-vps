@@ -37,7 +37,10 @@ const getDiscountPercentage = (index: number): number => {
    }
 };
 
-const calculateDiscountedPrice = (price: number, discountPercentage: number): number => {
+const calculateDiscountedPrice = (
+   price: number,
+   discountPercentage: number,
+): number => {
    return Math.round(price * (1 - discountPercentage / 100));
 };
 
@@ -54,7 +57,10 @@ const CollapsibleLicenseOptions: React.FC<CollapsibleLicenseOptionsProps> = ({
       <div className='mt-3 flex flex-col gap-2'>
          {variants?.map((license: License, index: number) => {
             const discountPercentage = getDiscountPercentage(index);
-            const discountedPrice = calculateDiscountedPrice(license.price.amount, discountPercentage);
+            const discountedPrice = calculateDiscountedPrice(
+               license.price.amount,
+               discountPercentage,
+            );
 
             return (
                <div
@@ -86,7 +92,7 @@ const CollapsibleLicenseOptions: React.FC<CollapsibleLicenseOptionsProps> = ({
                            </div>
                         </div>
                         <div className='flex flex-col items-end'>
-                           <p className='text-sm text-gray-500 line-through'>
+                           <p className='text-sm text-red-500 line-through'>
                               {formatCurrency(
                                  license.price.amount,
                                  license.price.currency,
@@ -111,7 +117,7 @@ const CollapsibleLicenseOptions: React.FC<CollapsibleLicenseOptionsProps> = ({
                         dangerouslySetInnerHTML={{
                            __html: license?.description,
                         }}
-                        className='report-content border-t border-s-200 bg-gray-50 px-4 py-3 text-sm [&>p]:mb-0 [&>ul]:!list-disc [&>ul>li]:!mb-0'
+                        className='report-content border-t border-s-200 bg-gray-50 px-4 py-3 text-sm [&>p]:mb-0 [&>ul>li]:!mb-0 [&>ul]:!list-disc'
                      ></div>
                   )}
                </div>

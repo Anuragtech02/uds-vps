@@ -103,8 +103,8 @@ const Header: React.FC<{ data: any }> = ({ data }) => {
          selectedLicenses.selectedLicenses?.[parseInt(data?.id)];
       if (!selectedLicense) {
          // select single user by default
-         selectedLicense = data?.attributes?.variants?.find(
-            (variant: any) => variant?.title?.includes("Single User"),
+         selectedLicense = data?.attributes?.variants?.find((variant: any) =>
+            variant?.title?.includes('Single User'),
          );
       }
       addToCart({ id: data?.id, ...data?.attributes }, selectedLicense);
@@ -128,17 +128,19 @@ const Header: React.FC<{ data: any }> = ({ data }) => {
                   </div> */}
                   <div className='flex w-full flex-col justify-center gap-4 font-semibold'>
                      <div className='flex items-start justify-between gap-6'>
-                        <h1 className='h3 font-bold lg:w-2/3' dangerouslySetInnerHTML={
-                           {
+                        <h1
+                           className='h3 font-bold lg:w-2/3'
+                           dangerouslySetInnerHTML={{
                               __html: reportHeaderData.title,
-                           }
-                        }>
-                        </h1>
+                           }}
+                        ></h1>
                      </div>
-                     <p className='font-medium text-s-700 md:text-lg' dangerouslySetInnerHTML={{
-                        __html: reportHeaderData.shortDescription,
-                     }}>
-                     </p>
+                     <p
+                        className='font-medium text-s-700 md:text-lg'
+                        dangerouslySetInnerHTML={{
+                           __html: reportHeaderData.shortDescription,
+                        }}
+                     ></p>
 
                      <div className='flex flex-wrap items-center justify-between gap-4'>
                         <div className='flex flex-wrap items-center gap-4'>
@@ -171,7 +173,10 @@ const Header: React.FC<{ data: any }> = ({ data }) => {
                                  className='text-md text-blue-4'
                                  suppressHydrationWarning
                               >
-                                 {getMonthDate(reportHeaderData?.oldPublishedAt || reportHeaderData.updatedAt)}
+                                 {getMonthDate(
+                                    reportHeaderData?.oldPublishedAt ||
+                                       reportHeaderData.updatedAt,
+                                 )}
                               </p>
                            </div>
                         </div>
@@ -209,28 +214,38 @@ const Header: React.FC<{ data: any }> = ({ data }) => {
             >
                <div className='container'>
                   <div className='flex flex-col items-start justify-between gap-4 md:flex-row md:items-center md:gap-6'>
-                     <div className='hidden md:flex flex-col divide-x lg:flex-row justify-start items-center'>
+                     <div className='hidden flex-col items-center justify-start divide-x md:flex lg:flex-row'>
                         <LocalizedLink href='/'>
                            <StrapiImage
                               media={{
-                                 url: 'https://udsweb.s3.ap-south-1.amazonaws.com/logo_dark_7353437088.svg',
+                                 url: 'https://udsweb.s3.ap-south-1.amazonaws.com/UDS_Logo_no_BG_4f5a475221.png',
                                  width: 120,
                                  height: 50,
                               }}
                               objectFit='contain'
-                              className='!h-[25px] !object-contain lg:block hidden pr-2 lg:pr-6'
+                              className='hidden !h-[25px] !object-contain pr-2 lg:block lg:pr-6'
                            />
                         </LocalizedLink>
                         <div className='pl-2 lg:pl-6'>
-                           <h5 className='w-full overflow-hidden truncate text-ellipsis font-bold sm:text-wrap  lg:w-[100%]' dangerouslySetInnerHTML={{
-                              __html: reportHeaderData.title?.split(":")?.[0] || reportHeaderData.title,
-                           }}>
-                           </h5>
-                           <p className='text-xs'>Last Updated: {getMonthDate(reportHeaderData?.oldPublishedAt || reportHeaderData.updatedAt)}</p>
+                           <h5
+                              className='w-full overflow-hidden truncate text-ellipsis font-bold sm:text-wrap lg:w-[100%]'
+                              dangerouslySetInnerHTML={{
+                                 __html:
+                                    reportHeaderData.title?.split(':')?.[0] ||
+                                    reportHeaderData.title,
+                              }}
+                           ></h5>
+                           <p className='text-xs'>
+                              Last Updated:{' '}
+                              {getMonthDate(
+                                 reportHeaderData?.oldPublishedAt ||
+                                    reportHeaderData.updatedAt,
+                              )}
+                           </p>
                         </div>
                      </div>
                      <div className='flex w-full items-center gap-2 md:max-w-max md:justify-end'>
-                        <div className='text-right text-sm lg:block hidden'>
+                        <div className='hidden text-right text-sm lg:block'>
                            <p>contact@univdatos.com</p>
                            <p>+19787330253</p>
                         </div>
@@ -251,7 +266,10 @@ const Header: React.FC<{ data: any }> = ({ data }) => {
                                  className='w-full'
                                  onClick={handleBuyNow}
                               >
-                                 {reportHeaderData.heroSectionSecondaryCTA.title}
+                                 {
+                                    reportHeaderData.heroSectionSecondaryCTA
+                                       .title
+                                 }
                               </Button>
                            </div>
                         </div>

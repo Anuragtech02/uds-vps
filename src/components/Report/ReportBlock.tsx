@@ -196,8 +196,8 @@ const ReportBlock: React.FC<ReportBlockProps> = ({ data }) => {
       let selectedLicense = selectedLicenses.selectedLicenses[reportData.id];
       if (!selectedLicense) {
          // select single user by default
-         selectedLicense = variants.find(
-            (variant) => variant.title?.includes("Single User"),
+         selectedLicense = variants.find((variant) =>
+            variant.title?.includes('Single User'),
          );
       }
 
@@ -209,25 +209,23 @@ const ReportBlock: React.FC<ReportBlockProps> = ({ data }) => {
    return (
       <div className='container py-10 md:py-16 md:pt-10'>
          <div className='flex items-center gap-2 pb-10 md:text-lg'>
-            <p className='hover:underline hover:blue-5'>
-               <LocalizedLink href='/'>
-                  Home
-               </LocalizedLink>
+            <p className='hover:blue-5 hover:underline'>
+               <LocalizedLink href='/'>Home</LocalizedLink>
             </p>
             <span>
                <BiChevronRight />
             </span>
-               <p className='hover:underline hover:blue-5'>
-                  <LocalizedLink href='/reports'>
-                        Report Store
-                  </LocalizedLink>
-               </p>
+            <p className='hover:blue-5 hover:underline'>
+               <LocalizedLink href='/reports'>Report Store</LocalizedLink>
+            </p>
             <span>
                <BiChevronRight />
             </span>
-            <p className='hover:underline hover:blue-5'>
-               <LocalizedLink href={`/reports/?industries=${reportData.industry.slug}`} >
-               {reportData.industry.name}
+            <p className='hover:blue-5 hover:underline'>
+               <LocalizedLink
+                  href={`/reports/?industries=${reportData.industry.slug}`}
+               >
+                  {reportData.industry.name}
                </LocalizedLink>
             </p>
          </div>
@@ -235,22 +233,28 @@ const ReportBlock: React.FC<ReportBlockProps> = ({ data }) => {
             <div className='sticky top-[100px] hidden flex-[0.23] flex-col gap-6 lg:flex'>
                <div className='w-full rounded-md border border-s-400 bg-white'>
                   <ul className='list-none p-0'>
-                     {reportIndex.filter((idx) => idx.title === 'FAQs' ? reportData.faqList?.length > 0 : true ).map((item, index) => (
-                        <li
-                           key={index}
-                           className={`cursor-pointer px-4 py-2 transition-all duration-150 ${
-                              selectedIndex === index
-                                 ? 'border-y border-s-300 bg-blue-2 font-semibold text-white'
-                                 : ''
-                           }`}
-                           onClick={() => {
-                              setSelectedIndex(index);
-                              scrollIntoView(item.id);
-                           }}
-                        >
-                           {item.title}
-                        </li>
-                     ))}
+                     {reportIndex
+                        .filter((idx) =>
+                           idx.title === 'FAQs'
+                              ? reportData.faqList?.length > 0
+                              : true,
+                        )
+                        .map((item, index) => (
+                           <li
+                              key={index}
+                              className={`cursor-pointer px-4 py-2 transition-all duration-150 ${
+                                 selectedIndex === index
+                                    ? 'border-y border-s-300 bg-blue-2 font-semibold text-white'
+                                    : ''
+                              }`}
+                              onClick={() => {
+                                 setSelectedIndex(index);
+                                 scrollIntoView(item.id);
+                              }}
+                           >
+                              {item.title}
+                           </li>
+                        ))}
                   </ul>
                </div>
                <div className='w-full rounded-md border border-s-400 bg-white px-4 py-6 pt-4'>
@@ -264,9 +268,6 @@ const ReportBlock: React.FC<ReportBlockProps> = ({ data }) => {
                   />
                </div>
                <div className='relative mt-3'>
-                  <div className='absolute -top-4 left-0 rounded-md bg-red-500 px-2 py-1 text-xs font-medium text-white'>
-                     Upto 20% off
-                  </div>
                   <Button
                      className='w-full py-3'
                      variant='secondary'
@@ -290,9 +291,9 @@ const ReportBlock: React.FC<ReportBlockProps> = ({ data }) => {
             </div>
             <div className='flex-[0.77]'>
                <ReportBlockData data={reportData} />
-               {
-                data?.attributes?.faqList?.length > 0 && (<ReportFAQs data={data} />)
-               }
+               {data?.attributes?.faqList?.length > 0 && (
+                  <ReportFAQs data={data} />
+               )}
             </div>
          </div>
          <Popup name='report-enquiry' title='Report Enquiry'>
