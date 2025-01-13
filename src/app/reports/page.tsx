@@ -13,6 +13,9 @@ import ReportListLoading from '@/components/ReportStore/ReportListLoading';
 import Pagination from '@/components/ReportStore/Pagination';
 import ViewToggle from '@/components/Report/ViewToggle';
 import SelectedFilters from '@/components/Report/SelectedFitlers';
+import { absoluteUrl } from '@/utils/generic-methods';
+import { Metadata } from 'next';
+import { LOGO_URL_DARK } from '@/utils/constants';
 
 interface SearchParams {
    industries?: string;
@@ -40,6 +43,68 @@ interface Report {
 
 interface ReportStoreProps {
    searchParams: SearchParams;
+}
+
+export async function generateMetadata(): Promise<Metadata> {
+   const title =
+      'UnivDatos Report Store - Market Research Reports & Industry Analysis';
+   const description =
+      'Browse our comprehensive collection of market research reports, industry analysis, and insights across various sectors. Find detailed reports to drive your business decisions.';
+
+   return {
+      title,
+      description,
+
+      openGraph: {
+         title,
+         description,
+         type: 'website',
+         url: absoluteUrl('/reports'),
+         images: [
+            {
+               url: LOGO_URL_DARK,
+               width: 1200,
+               height: 630,
+               alt: 'UnivDatos Report Store',
+            },
+         ],
+         siteName: 'UnivDatos',
+      },
+
+      twitter: {
+         card: 'summary_large_image',
+         title,
+         description,
+         images: [LOGO_URL_DARK],
+      },
+
+      keywords:
+         'market research reports, industry analysis, market insights, research reports, business intelligence, industry trends, market data, sector analysis',
+
+      alternates: {
+         canonical: absoluteUrl('/reports'),
+      },
+
+      other: {
+         'script:ld+json': [
+            JSON.stringify({
+               '@context': 'https://schema.org',
+               '@type': 'CollectionPage',
+               name: title,
+               description,
+               url: absoluteUrl('/reports'),
+               publisher: {
+                  '@type': 'Organization',
+                  name: 'UnivDatos',
+                  logo: {
+                     '@type': 'ImageObject',
+                     url: absoluteUrl('/logo.svg'),
+                  },
+               },
+            }),
+         ],
+      },
+   };
 }
 
 const ITEMS_PER_PAGE = 10;

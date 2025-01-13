@@ -10,8 +10,8 @@ export const SUPPORTED_LOCALES = [
    'vi',
    'it',
    'pl',
-   "zh-CN",
-   "es",
+   'zh-CN',
+   'es',
 ] as const;
 
 export const DEFAULT_LOCALE = 'en' as const;
@@ -26,6 +26,13 @@ export const CURRENCIES: {
    JPY: { symbol: '¥', name: 'JPY' },
 };
 
+export const LOGO_URL_LIGHT =
+   'https://udsweb.s3.ap-south-1.amazonaws.com/UDS_LOGO_White_fb96f6add9.png';
+export const LOGO_URL_DARK =
+   'https://udsweb.s3.ap-south-1.amazonaws.com/FUDS_Logo_no_BG_4f5a475221.png';
+export const SEARCH_IMAGE_URL =
+   'http://localhost:3000/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fthumbnail_news.35db6797.jpg';
+
 export const SLICK_COMMON_SETTINGS = {
    dots: false,
    infinite: true,
@@ -35,7 +42,7 @@ export const SLICK_COMMON_SETTINGS = {
    dynamicHeight: false,
    autoplay: true,
    autoplaySpeed: 0,
-   pauseOnFocus: true, 
+   pauseOnFocus: true,
    speed: 8000,
    cssEase: 'linear',
    pauseOnHover: true,
