@@ -24,32 +24,39 @@ import {
    removeItemFromCart,
    resetCart,
 } from '@/utils/cart-utils.util';
-import { BillingFormData, CheckoutProvider, useCheckout } from '@/utils/CheckoutContext';
+import {
+   BillingFormData,
+   CheckoutProvider,
+   useCheckout,
+} from '@/utils/CheckoutContext';
 import { CURRENCIES } from '@/utils/constants';
 import { useRouter } from 'next/navigation';
 import Script from 'next/script';
 import { useEffect, useState } from 'react';
 
-const CurrencySelector = ({ selectedCurrency, onCurrencyChange }: {
+const CurrencySelector = ({
+   selectedCurrency,
+   onCurrencyChange,
+}: {
    selectedCurrency: string;
    onCurrencyChange: (currency: string) => void;
 }) => {
    return (
-     <div className="flex items-center space-x-2">
-       <span className="text-sm text-gray-600">Currency:</span>
-       <select
-         aria-label="Currency Selector"
-         value={selectedCurrency}
-         onChange={(e) => onCurrencyChange(e.target.value)}
-         className="border border-gray-200 rounded-md px-2 py-1 text-sm"
-       >
-         {Object.keys(CURRENCIES).map((currency) => (
-           <option key={currency} value={currency}>
-             {CURRENCIES[currency].symbol} {currency}
-           </option>
-         ))}
-       </select>
-     </div>
+      <div className='flex items-center space-x-2'>
+         <span className='text-sm text-gray-600'>Currency:</span>
+         <select
+            aria-label='Currency Selector'
+            value={selectedCurrency}
+            onChange={(e) => onCurrencyChange(e.target.value)}
+            className='rounded-md border border-gray-200 px-2 py-1 text-sm'
+         >
+            {Object.keys(CURRENCIES).map((currency) => (
+               <option key={currency} value={currency}>
+                  {CURRENCIES[currency].symbol} {currency}
+               </option>
+            ))}
+         </select>
+      </div>
    );
 };
 
@@ -63,31 +70,30 @@ const CartPage = () => {
    const cartStore = useCartStore();
    const licenseStore = useSelectedLicenseStore();
 
+   const validateForm = () => {
+      const newErrors: Partial<BillingFormData> = {};
 
-    const validateForm = () => {
-        const newErrors: Partial<BillingFormData> = {};
-        
-        // Validate required fields
-        if (!formData.firstName) newErrors.firstName = 'First name is required';
-        if (!formData.lastName) newErrors.lastName = 'Last name is required';
-        if (!formData.email) newErrors.email = 'Email is required';
-        else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-            newErrors.email = 'Invalid email format';
-        }
-        if (!formData.country) newErrors.country = 'Country is required';
-        if (!formData.state) newErrors.state = 'State is required';
-        if (!formData.city) newErrors.city = 'City is required';
-        if (!formData.address) newErrors.address = 'Address is required';
-        if (!phone) newErrors.phone = 'Phone number is required';
+      // Validate required fields
+      if (!formData.firstName) newErrors.firstName = 'First name is required';
+      if (!formData.lastName) newErrors.lastName = 'Last name is required';
+      if (!formData.email) newErrors.email = 'Email is required';
+      else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+         newErrors.email = 'Invalid email format';
+      }
+      if (!formData.country) newErrors.country = 'Country is required';
+      if (!formData.state) newErrors.state = 'State is required';
+      if (!formData.city) newErrors.city = 'City is required';
+      if (!formData.address) newErrors.address = 'Address is required';
+      if (!phone) newErrors.phone = 'Phone number is required';
 
-        setErrors(newErrors);
-        return Object.keys(newErrors).length === 0; 
-    };
+      setErrors(newErrors);
+      return Object.keys(newErrors).length === 0;
+   };
 
    const fetchRates = async () => {
       try {
-         const data = await getCurrencyRates(); 
-         
+         const data = await getCurrencyRates();
+
          // Set exchange rates with USD as base
          setExchangeRates({ ...data.data.rates, USD: 1 });
       } catch (error) {
@@ -106,14 +112,18 @@ const CartPage = () => {
       // Convert from INR to selected currency using USD as base
       const amountInUsd = amount;
       const rate = exchangeRates[selectedCurrency];
-      
+
       return Number((amountInUsd * rate).toFixed(2));
    };
 
    const updateTotalCost = (cart: any[]) => {
       setTotalCost(
          cart.reduce((acc, item) => {
-            return acc + (item?.selectedLicense?.price?.amount || 0) * (item.quantity || 1);
+            return (
+               acc +
+               (item?.selectedLicense?.price?.amount || 0) *
+                  (item.quantity || 1)
+            );
          }, 0),
       );
    };
@@ -148,7 +158,9 @@ const CartPage = () => {
 
    const handleChangeLicense = (reportId: number, newLicense: any) => {
       const updatedCart = cartData.map((item: any) =>
-         item?.report?.id === reportId ? { ...item, selectedLicense: newLicense } : item,
+         item?.report?.id === reportId
+            ? { ...item, selectedLicense: newLicense }
+            : item,
       );
       setCartData(updatedCart);
       updateTotalCost(updatedCart);
@@ -157,11 +169,11 @@ const CartPage = () => {
 
    const handleCheckout = async (e: any) => {
       e.preventDefault();
-      
+
       if (!validateForm()) {
-      alert("Please fill in all required fields correctly.");
-        return;
-      }     
+         alert('Please fill in all required fields correctly.');
+         return;
+      }
       try {
          const orderId: string = await createOrderIdFromRazorPay(totalCost);
          const createdOrder = await createOrder({
@@ -178,7 +190,7 @@ const CartPage = () => {
          });
 
          const strapiOrderId = createdOrder?.data?.id;
-         
+
          const options = {
             key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
             amount: totalCost * 100,
@@ -242,99 +254,112 @@ const CartPage = () => {
 
    return (
       <CheckoutProvider>
-         <form onSubmit={(e) => handleCheckout(e)} className="container mx-auto px-4 pt-48 flex flex-col md:flex-row justify-between items-start [&>div]:flex-1 gap-6 pb-10">
+         <form
+            onSubmit={(e) => handleCheckout(e)}
+            className='container mx-auto flex flex-col items-start justify-between gap-6 px-4 pb-10 pt-48 md:flex-row [&>div]:flex-1'
+         >
             <Script
-               id="razorpay-checkout-js"
-               src="https://checkout.razorpay.com/v1/checkout.js"
+               id='razorpay-checkout-js'
+               src='https://checkout.razorpay.com/v1/checkout.js'
             />
 
-               <BillingDetails />
-               
-               <div className="mt-5 w-full space-y-6 rounded-xl bg-white p-6">
-                  <div className="flex justify-between items-center">
-                     <h1 className="text-2xl md:text-3xl font-semibold text-gray-900">
-                        Cart
-                     </h1>
-                     <CurrencySelector 
-                        selectedCurrency={selectedCurrency}
-                        onCurrencyChange={handleCurrencyChange}
-                     />
-                  </div>
+            <BillingDetails />
 
-                  {/* Cart Items Container */}
-                  <div className="rounded-xl border border-gray-200 p-6">
-                     {/* Cart Headers */}
-                     <div className="flex items-center text-gray-600 font-medium pb-2 border-b border-gray-200">
-                        <div className="w-[40%]">
-                           <span>Product</span>
-                        </div>
-                        <div className='w-1/2 sm:w-1/5'>
-                           <span>Select License</span>
-                        </div>
-                        <div className="w-32 text-right ml-auto">
-                           <span>Price</span>
-                        </div>
-                        {/* <div className="w-32 text-right ml-auto">
+            <div className='mt-5 w-full space-y-6 rounded-xl bg-white p-6'>
+               <div className='flex items-center justify-between'>
+                  <h1 className='text-2xl font-semibold text-gray-900 md:text-3xl'>
+                     Cart
+                  </h1>
+                  <CurrencySelector
+                     selectedCurrency={selectedCurrency}
+                     onCurrencyChange={handleCurrencyChange}
+                  />
+               </div>
+
+               {/* Cart Items Container */}
+               <div className='rounded-xl border border-gray-200 p-6'>
+                  {/* Cart Headers */}
+                  <div className='flex items-center border-b border-gray-200 pb-2 font-medium text-gray-600'>
+                     <div className='w-[40%]'>
+                        <span>Product</span>
+                     </div>
+                     <div className='w-1/2 sm:w-1/5'>
+                        <span>Select License</span>
+                     </div>
+                     <div className='ml-auto w-32 text-right'>
+                        <span>Price</span>
+                     </div>
+                     {/* <div className="w-32 text-right ml-auto">
                            <span>Subtotal</span>
                         </div> */}
-                     </div>
-
-                     {/* Cart Items */}
-                     <div className="divide-y divide-gray-200">
-                        {cartData.map((item: any, i) => (
-                           <CartItem
-                              key={i}
-                              {...item}
-                              handleRemoveItem={handleRemoveItem}
-                              handleChangeQuantity={handleChangeQuantity}
-                              handleChangeLicense={handleChangeLicense}
-                              convertPrice={convertPrice}
-                              selectedCurrency={selectedCurrency}
-                              currencySymbol={CURRENCIES[selectedCurrency].symbol}
-                           />
-                        ))}
-                     </div>
                   </div>
 
-                  {/* Cost Calculations */}
-                  <div className="rounded-xl border border-gray-200 p-6">
-                     <CostCalculations 
-                        cost={convertPrice(totalCost) as number} 
-                        city="Mumbai" 
-                        currency={CURRENCIES[selectedCurrency]}
-                     />
-                  </div>
-
-                  {/* Checkout Button */}
-                  <div className="flex justify-end">
-                     <Button
-                        variant="secondary"
-                        className="min-w-[200px]"
-                        type='submit'
-                        >
-                        Proceed to Checkout
-                     </Button>
+                  {/* Cart Items */}
+                  <div className='divide-y divide-gray-200'>
+                     {cartData.map((item: any, i) => (
+                        <CartItem
+                           key={i}
+                           {...item}
+                           handleRemoveItem={handleRemoveItem}
+                           handleChangeQuantity={handleChangeQuantity}
+                           handleChangeLicense={handleChangeLicense}
+                           convertPrice={convertPrice}
+                           selectedCurrency={selectedCurrency}
+                           currencySymbol={CURRENCIES[selectedCurrency].symbol}
+                        />
+                     ))}
                   </div>
                </div>
-                 {/* Assistance Section */}
-               <div className="mt-6 w-full rounded-xl bg-white p-6 block sm:hidden">
-                  <h2 className="text-2xl font-semibold text-gray-800 mb-4">Need assistance?</h2>
-                  <p className="text-gray-600 mb-4">Call us or write to us:</p>
-                  <div className="space-y-2">
-                        <p className="text-gray-700">
-                        <span className="font-medium">Phone:</span>{" "}
-                        <a href="tel:+1-888-689-0688" className="text-blue-600 hover:text-blue-800">
+
+               {/* Cost Calculations */}
+               <div className='rounded-xl border border-gray-200 p-6'>
+                  <CostCalculations
+                     cost={convertPrice(totalCost) as number}
+                     city='Mumbai'
+                     currency={CURRENCIES[selectedCurrency]}
+                  />
+               </div>
+
+               {/* Checkout Button */}
+               <div className='flex justify-end'>
+                  <Button
+                     variant='secondary'
+                     className='min-w-[200px]'
+                     type='submit'
+                  >
+                     Proceed to Checkout
+                  </Button>
+               </div>
+            </div>
+            {/* Assistance Section */}
+            <div className='mt-6 block w-full rounded-xl bg-white p-6 sm:hidden'>
+               <h2 className='mb-4 text-2xl font-semibold text-gray-800'>
+                  Need assistance?
+               </h2>
+               <p className='mb-4 font-bold text-gray-600'>
+                  Call us or write to us:
+               </p>
+               <div className='space-y-2'>
+                  <p className='text-gray-700'>
+                     <span className='font-medium'>Phone:</span>{' '}
+                     <a
+                        href='tel:+1-888-689-0688'
+                        className='font-bold text-blue-600 hover:text-blue-800'
+                     >
                         +1 9787330253
-                        </a>
-                        </p>
-                        <p className="text-gray-700">
-                        <span className="font-medium">Email:</span>{" "}
-                        <a href="mailto:sales@univdatos.com" className="text-blue-600 hover:text-blue-800">
-                              sales@univdatos.com
-                        </a>
-                        </p>
-                  </div>
+                     </a>
+                  </p>
+                  <p className='text-gray-700'>
+                     <span className='font-medium'>Email:</span>{' '}
+                     <a
+                        href='mailto:sales@univdatos.com'
+                        className='font-bold text-blue-600 hover:text-blue-800'
+                     >
+                        sales@univdatos.com
+                     </a>
+                  </p>
                </div>
+            </div>
          </form>
       </CheckoutProvider>
    );

@@ -32,13 +32,6 @@ const News = async (props: any) => {
             <div className='flex flex-col gap-6 py-12 md:gap-10 md:py-20 lg:flex-row'>
                <div className='flex-[0.7]'>
                   <NewsBody newsArticle={newsArticleData} />
-                  {/* Client-side Related News Section */}
-                  {industries?.data?.length > 0 && (
-                     <RelatedNews
-                        currentNewsId={currentNewsId}
-                        industries={industries}
-                     />
-                  )}
                </div>
                <div className='flex-[0.3] space-y-4 md:space-y-6'>
                   <div className='w-full [&>div]:w-full'>
@@ -47,6 +40,13 @@ const News = async (props: any) => {
                   <NewsSidebar />
                </div>
             </div>
+            {/* Client-side Related News Section */}
+            {industries?.data?.length > 0 && (
+               <RelatedNews
+                  currentNewsId={currentNewsId}
+                  industries={industries}
+               />
+            )}
          </div>
       </div>
    );

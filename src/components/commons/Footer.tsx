@@ -15,6 +15,7 @@ import { Suspense } from 'react';
 import { BiLoaderCircle } from 'react-icons/bi';
 import Popup from '../Popup';
 import DemoRequestForm from '../Home/DemoRequestForm';
+import { FaPinterest, FaYoutube } from 'react-icons/fa';
 
 const socials = [];
 const invalidRoutes = [
@@ -66,7 +67,7 @@ const Footer = ({ footer, quickLinks }: any) => {
                </div>
             </div>
             <div className='container mx-auto px-4'>
-               <div className='grid grid-cols-1 gap-4 sm:gap-8 pt-12 text-blue-9 md:grid-cols-5'>
+               <div className='grid grid-cols-1 gap-4 pt-12 text-blue-9 sm:gap-8 md:grid-cols-5'>
                   {/* Company Info */}
                   <div className='col-span-1 md:col-span-2'>
                      <Image
@@ -78,6 +79,56 @@ const Footer = ({ footer, quickLinks }: any) => {
                      <p className='mt-4 text-blue-9 md:w-2/3'>
                         {footer?.companyInfo?.companyDescription}
                      </p>
+                     <div className='mt-4 flex space-x-4 md:mt-8'>
+                        <a
+                           href={`https://www.facebook.com/univdatosmarketinsights/`}
+                           target='_blank'
+                           rel='noopener noreferrer'
+                           className='text-3xl text-white hover:text-gray-300'
+                        >
+                           <FaFacebook key='FaFacebook' />
+                        </a>
+                        <a
+                           href={`https://x.com/univ_datos`}
+                           target='_blank'
+                           rel='noopener noreferrer'
+                           className='text-3xl text-white hover:text-gray-300'
+                        >
+                           <FaXTwitter key='FaTwitter' />
+                        </a>
+                        <a
+                           href={`https://www.linkedin.com/company/univ-datos-market-insight/`}
+                           target='_blank'
+                           rel='noopener noreferrer'
+                           className='text-3xl text-white hover:text-gray-300'
+                        >
+                           <FaLinkedin key='FaLinkedin' />
+                        </a>
+                        <a
+                           href={`https://www.instagram.com/univdatosmarketinsights/?hl=en`}
+                           target='_blank'
+                           rel='noopener noreferrer'
+                           className='text-3xl text-white hover:text-gray-300'
+                        >
+                           <FaInstagram key='FaInstagram' />
+                        </a>
+                        <a
+                           href={`https://www.youtube.com/@univdatosmarketinsights1114`}
+                           target='_blank'
+                           rel='noopener noreferrer'
+                           className='text-3xl text-white hover:text-gray-300'
+                        >
+                           <FaYoutube key='FaYoutube' />
+                        </a>
+                        <a
+                           href={`https://in.pinterest.com/univdatosmarketinsights/`}
+                           target='_blank'
+                           rel='noopener noreferrer'
+                           className='text-3xl text-white hover:text-gray-300'
+                        >
+                           <FaPinterest key='FaPinterest' />
+                        </a>
+                     </div>
                   </div>
 
                   {/* Quick Links */}
@@ -127,9 +178,22 @@ const Footer = ({ footer, quickLinks }: any) => {
                   {/* Contact */}
                   <div>
                      <p className='mb-4 text-lg text-white'>CONTACT</p>
-                     <p className='mb-2'>{footer?.phoneNumber}</p>
-                     <p className='mb-4 max-w-[200px] break-words'>{footer?.email}</p>
-                     <p className='mb-4'>4th & 5th Floor, C80B, Sector 8, Noida, Uttar Pradesh- 201301, India</p>
+                     <p className='mb-2'>
+                        4th & 5th Floor, C80B, Sector 8, Noida, Uttar Pradesh-
+                        201301, India
+                     </p>
+                     <a
+                        href={`tel:${footer?.phoneNumber?.replace(/ /g, '')}`}
+                        className='mb-2 block'
+                     >
+                        {footer?.phoneNumber}
+                     </a>
+                     <a
+                        href={`mailto:${footer?.email}`}
+                        className='mb-4 block max-w-[200px] break-words'
+                     >
+                        {footer?.email}
+                     </a>
                      <LocalizedLink href='?popup=demo-request'>
                         <Button
                            variant='light'
@@ -142,42 +206,8 @@ const Footer = ({ footer, quickLinks }: any) => {
                </div>
 
                {/* Copyright and Social Icons */}
-               <div className='mt-12 flex flex-col items-center justify-between border-t border-gray-700 pt-8 md:flex-row'>
+               <div className='mt-12 flex flex-col items-center justify-start border-t border-gray-700 pt-8 md:flex-row'>
                   <p>{footer?.copyRightText}</p>
-                  <div className='mt-4 flex space-x-4 md:mt-0'>
-                     <a
-                        href={`https://www.facebook.com/univdatosmarketinsights/`}
-                        target='_blank'
-                        rel='noopener noreferrer'
-                        className='hover:text-gray-300'
-                     >
-                        <FaFacebook key='FaFacebook' />
-                     </a>
-                     <a
-                        href={`https://x.com/iuniv_datos`}
-                        target='_blank'
-                        rel='noopener noreferrer'
-                        className='hover:text-gray-300'
-                     >
-                        <FaXTwitter key='FaTwitter' />
-                     </a>
-                     <a
-                        href={`https://www.linkedin.com/company/univ-datos-market-insight/`}
-                        target='_blank'
-                        rel='noopener noreferrer'
-                        className='hover:text-gray-300'
-                     >
-                        <FaLinkedin key='FaLinkedin' />
-                     </a>
-                     <a
-                        href={`https://www.instagram.com/univdatosmarketinsights/?hl=en`}
-                        target='_blank'
-                        rel='noopener noreferrer'
-                        className='hover:text-gray-300'
-                     >
-                        <FaInstagram key='FaInstagram' />
-                     </a>
-                  </div>
                </div>
             </div>
          </footer>

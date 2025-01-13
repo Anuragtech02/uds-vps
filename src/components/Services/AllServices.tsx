@@ -8,7 +8,7 @@ const AllServices = ({ services }: any) => {
             <div
                key={index}
                id={service?.slug}
-               className='space-y-8 rounded-md border border-s-300 bg-white p-8 scroll-mt-40'
+               className='scroll-mt-40 space-y-8 rounded-md border border-s-300 bg-white p-8'
             >
                {/* Rest of your component remains the same */}
                <div
@@ -36,6 +36,7 @@ const AllServices = ({ services }: any) => {
                      dangerouslySetInnerHTML={{
                         __html: service?.description,
                      }}
+                     className='![&>ol>li>ul>li>p]:ml-0'
                   />
                </div>
             </div>

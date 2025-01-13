@@ -292,24 +292,29 @@ const Navbar: React.FC<INavbarProps> = ({ header, mainMenu, industries }) => {
                   <ul className='flex flex-wrap items-center gap-1 text-white'>
                      {mainMenu.map((item, index) =>
                         item.title?.toLowerCase()?.includes('industr') ? (
-                           <DesktopMenuItem
+                           <a
+                              title='industries'
+                              href={item.url ?? ''}
                               key={index}
-                              item={{
-                                 ...item,
-                                 children: industries
-                                    .filter(
-                                       (industry) =>
-                                          !exclude.includes(
-                                             industry.name.toLowerCase(),
-                                          ),
-                                    )
-                                    .map(({ slug, name }) => ({
-                                       title: name,
-                                       url: `/reports?industries=${slug}&page=1`,
-                                    })),
-                              }}
-                              depth={0}
-                           />
+                           >
+                              <DesktopMenuItem
+                                 item={{
+                                    ...item,
+                                    children: industries
+                                       .filter(
+                                          (industry) =>
+                                             !exclude.includes(
+                                                industry.name.toLowerCase(),
+                                             ),
+                                       )
+                                       .map(({ slug, name }) => ({
+                                          title: name,
+                                          url: `/reports?industries=${slug}&page=1`,
+                                       })),
+                                 }}
+                                 depth={0}
+                              />
+                           </a>
                         ) : (
                            <DesktopMenuItem key={index} item={item} depth={0} />
                         ),

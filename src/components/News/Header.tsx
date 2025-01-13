@@ -44,20 +44,20 @@ const Header: React.FC<{ newsArticle: any }> = ({ newsArticle }) => {
       };
    });
 
-   function getIndustryLinkWithParams(industry: any) {
-      const currentParams = new URLSearchParams(window.location.search);
-      
-      const updatedParams = Object.fromEntries(currentParams);
-      const existingIndustries = updatedParams.industries ? updatedParams.industries + ',' : '';
-      updatedParams.industries = existingIndustries + industry.slug;
+   // function getIndustryLinkWithParams(industry: any) {
+   //    const currentParams = new URLSearchParams(window.location.search);
 
-      return `?${new URLSearchParams(updatedParams).toString()}`;
-   }
+   //    const updatedParams = Object.fromEntries(currentParams);
+   //    const existingIndustries = updatedParams.industries ? updatedParams.industries + ',' : '';
+   //    updatedParams.industries = existingIndustries + industry.slug;
+
+   //    return `?${new URLSearchParams(updatedParams).toString()}`;
+   // }
 
    return (
       <>
          <div
-            className={`w-full bg-white py-4 transition-all duration-300 mt-[140px] sm:mt-[160px] sm:pt-[20px]`}
+            className={`mt-[140px] w-full bg-white py-4 transition-all duration-300 sm:mt-[160px] sm:pt-[20px]`}
             ref={headerRef1}
          >
             <div className='container'>
@@ -70,15 +70,13 @@ const Header: React.FC<{ newsArticle: any }> = ({ newsArticle }) => {
                         {industries?.map((industry: any, index: number) => (
                            <LocalizedLink
                               key={index}
-                              href={getIndustryLinkWithParams(industry)}
+                              href={`/news?industries=${industry?.slug}`}
                            >
-                              <div
-                                 className='flex items-center gap-2 rounded-full border border-s-300 bg-s-100 px-4 py-1 text-blue-4'
-                              >
+                              <div className='flex items-center gap-2 rounded-full border border-s-300 bg-s-100 px-4 py-1 text-blue-4'>
                                  <TagIcon /> {industry?.name}
                               </div>
                            </LocalizedLink>
-                           ))}
+                        ))}
                      </div>
                      <div className='flex justify-between border-y border-s-300 py-4'>
                         {author?.name && (
@@ -91,7 +89,9 @@ const Header: React.FC<{ newsArticle: any }> = ({ newsArticle }) => {
                                  alt=''
                                  className='h-12 w-12 rounded-full'
                               /> */}
-                             <p className='text-s-600'>Author: {author?.name}</p>
+                              <p className='text-s-600'>
+                                 Author: {author?.name}
+                              </p>
                            </div>
                         )}
 

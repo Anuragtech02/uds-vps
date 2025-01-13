@@ -55,7 +55,7 @@ const Header: React.FC<{ blog: any }> = ({ blog }) => {
    return (
       <>
          <div
-            className={`w-full bg-white py-4 transition-all duration-300 mt-[140px] sm:mt-[160px] sm:pt-[20px]`}
+            className={`mt-[140px] w-full bg-white py-4 transition-all duration-300 sm:mt-[160px] sm:pt-[20px]`}
             ref={headerRef1}
          >
             <div className='container'>
@@ -66,13 +66,11 @@ const Header: React.FC<{ blog: any }> = ({ blog }) => {
                      </h1>
                      <div className='mx-auto flex flex-wrap justify-center gap-3'>
                         {industries.map((industry: any, index: number) => (
-                           <LocalizedLink 
+                           <LocalizedLink
                               key={index}
-                              href={`/blogs?industry=${industry?.slug}`}
+                              href={`/blogs?industries=${industry?.slug}`}
                            >
-                              <div
-                                 className='flex items-center gap-2 rounded-full border border-s-300 bg-s-100 px-4 py-1 text-blue-4'
-                                 >
+                              <div className='flex items-center gap-2 rounded-full border border-s-300 bg-s-100 px-4 py-1 text-blue-4'>
                                  <TagIcon /> {industry?.name}
                               </div>
                            </LocalizedLink>
@@ -89,7 +87,9 @@ const Header: React.FC<{ blog: any }> = ({ blog }) => {
                                  alt=''
                                  className='h-12 w-12 rounded-full'
                               /> */}
-                              <p className='text-s-600'>Author: {author?.name}</p>
+                              <p className='text-s-600'>
+                                 Author: {author?.name}
+                              </p>
                            </div>
                         )}
 

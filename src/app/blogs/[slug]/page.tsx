@@ -33,13 +33,6 @@ const Blog = async (data: any) => {
             <div className='flex flex-col gap-6 py-12 md:gap-10 md:py-20 lg:flex-row'>
                <div className='flex-[0.7]'>
                   <BlogBody blog={blog} />
-                  {/* Client-side Related Blogs Section */}
-                  {industries?.data?.length > 0 && (
-                     <RelatedBlogs
-                        currentBlogId={currentBlogId}
-                        industries={industries}
-                     />
-                  )}
                </div>
                <div className='flex-[0.3] space-y-4 md:space-y-6'>
                   <div className='w-full [&>div]:w-full'>
@@ -48,6 +41,13 @@ const Blog = async (data: any) => {
                   <BlogSidebar />
                </div>
             </div>
+            {/* Client-side Related Blogs Section */}
+            {industries?.data?.length > 0 && (
+               <RelatedBlogs
+                  currentBlogId={currentBlogId}
+                  industries={industries}
+               />
+            )}
          </div>
       </div>
    );

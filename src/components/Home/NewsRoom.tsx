@@ -75,7 +75,7 @@ const NewsRoom: React.FC<{
                                     </div>
                                  ))}
                            </div>
-                           <h4 className='mb-2 text-2xl font-semibold'>
+                           <h4 className='mb-2 text-xl font-semibold sm:text-2xl'>
                               {blog.title}
                            </h4>
                            <p className='text-sm text-s-800'>
@@ -86,7 +86,11 @@ const NewsRoom: React.FC<{
                                  <CalendarSvg />{' '}
                                  {new Date(
                                     blog.oldPublishedAt || blog.publishedAt,
-                                 ).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+                                 ).toLocaleDateString('en-US', {
+                                    month: 'long',
+                                    day: 'numeric',
+                                    year: 'numeric',
+                                 })}
                               </p>
                               <p className='flex items-center gap-2'>
                                  <UserSvg />{' '}
@@ -120,12 +124,16 @@ const NewsRoom: React.FC<{
                                        ? news.title.substring(0, 60) + '...'
                                        : news.title}
                                  </h4>
-                                  <p className='my-2 flex items-center gap-2'>
+                                 <p className='my-2 flex items-center gap-2'>
                                     <CalendarSvg />
                                     {new Date(
-                                      news.oldPublishedAt || news.publishedAt,
-                                    ).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
-                                  </p>
+                                       news.oldPublishedAt || news.publishedAt,
+                                    ).toLocaleDateString('en-US', {
+                                       month: 'long',
+                                       day: 'numeric',
+                                       year: 'numeric',
+                                    })}
+                                 </p>
                               </div>
                            </div>
                         </LocalizedLink>
