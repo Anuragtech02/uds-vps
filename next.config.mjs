@@ -1,20 +1,5 @@
 import { setupDevPlatform } from '@cloudflare/next-on-pages/next-dev';
 
-// export const SUPPORTED_LOCALES = [
-//    'en',
-//    'ru',
-//    'ar',
-//    'de',
-//    'fr',
-//    'zh-TW',
-//    'zh-CN',
-//    'ja',
-//    'ko',
-//    'vi',
-//    'it',
-//    'pl',
-// ];
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
    images: {
@@ -22,31 +7,6 @@ const nextConfig = {
    },
    async redirects() {
       return [
-         // {
-         //    source: '/get-a-free-sample-form-php/:path*',
-         //    has: [
-         //       {
-         //          type: 'query',
-         //          key: 'product_id',
-         //       },
-         //    ],
-         //    permanent: false,
-         //    destination: '/reports/:path*', // This will be handled by middleware
-         // },
-         // {
-         //    source:
-         //       '/:locale(' +
-         //       SUPPORTED_LOCALES.join('|') +
-         //       ')/get-a-free-sample-form-php/:path*',
-         //    has: [
-         //       {
-         //          type: 'query',
-         //          key: 'product_id',
-         //       },
-         //    ],
-         //    permanent: false,
-         //    destination: '/:locale/reports/:path*', // This will be handled by middleware
-         // },
          {
             source: '/reports/industry/:slug-market-research-reports',
             destination: '/reports?industries=:slug',

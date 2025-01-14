@@ -19,18 +19,44 @@ export async function middleware(request: NextRequest) {
    if (
       pathname.startsWith('/_next') ||
       pathname.startsWith('/api') ||
-      pathname.includes('.') ||
       pathname.startsWith('/blogs/') ||
       pathname.startsWith('/news/')
    ) {
       return NextResponse.next();
    }
 
+   if (request.nextUrl.pathname === '/sitemap.xml') {
+      return NextResponse.redirect(
+         `${process.env.API_URL}/sitemap/index.xml`,
+         { status: 301 }, // Adding explicit 301 permanent redirect
+      );
+   }
+
+   if (request.nextUrl.pathname === '/robots.txt') {
+      const robotsTxt = `User-agent: *
+   Allow: /
+   
+   # Disallow specific paths
+   Disallow: /api/
+   Disallow: /_next/
+   Disallow: /static/
+   
+   # Sitemap
+   Sitemap: ${process.env.NEXT_PUBLIC_API_URL}/sitemap/index.xml`;
+
+      return new Response(robotsTxt, {
+         headers: {
+            'Content-Type': 'text/plain',
+            'Cache-Control': 'public, max-age=86400, s-maxage=86400', // Cache for 24 hours
+         },
+      });
+   }
+
    // Extract potential locale and slug
    const pathParts = pathname.split('/').filter(Boolean);
    const potentialLocale = pathParts[0];
    const hasLocale = locales.some(
-      (loc) => loc.toLowerCase() === potentialLocale.toLowerCase(),
+      (loc) => loc.toLowerCase() === potentialLocale?.toLowerCase(),
    );
    const slug = hasLocale ? pathParts[1] : pathParts[0];
 
@@ -203,24 +229,9 @@ export async function middleware(request: NextRequest) {
       }
    }
 
+   console.log('path name', request.nextUrl.pathname);
+
    // Rest of your existing middleware code...
-   if (request.nextUrl.pathname === '/sitemap.xml') {
-      return NextResponse.rewrite(new URL('/sitemap', request.url));
-   }
-
-   if (request.nextUrl.pathname === '/robots.txt') {
-      const robotsTxt = `User-agent: *
-Allow: /
-Sitemap: ${'https://web-server-india.univdatos.com/api'}/sitemap/index.xml`;
-
-      return new Response(robotsTxt, {
-         headers: {
-            'Content-Type': 'text/plain',
-            'Cache-Control':
-               'public, max-age=0, s-maxage=3600, stale-while-revalidate',
-         },
-      });
-   }
 
    // Check if the pathname starts with a locale
    const pathnameHasLocale = locales.some(
