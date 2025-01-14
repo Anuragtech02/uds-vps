@@ -1,6 +1,0 @@
-# Redirect industry reports to new format
-/reports/* / 301
-
-# Force trailing slash for all pages
-/* /:splat/ 301!
-
