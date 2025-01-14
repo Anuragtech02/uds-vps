@@ -6,6 +6,7 @@ import {
    SUPPORTED_LOCALES,
    validRoutes,
 } from './utils/constants';
+import companyProfileMapping from './utils/company-profile-mappings.json';
 
 export const locales = SUPPORTED_LOCALES;
 export const defaultLocale = DEFAULT_LOCALE;

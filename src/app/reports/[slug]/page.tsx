@@ -8,123 +8,162 @@ import { SUPPORTED_LOCALES } from '@/utils/constants';
 import { absoluteUrl } from '@/utils/generic-methods';
 import { Metadata } from 'next';
 import { cookies } from 'next/headers';
-import { notFound } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 
 export const dynamic = 'force-dynamic'; // Forces dynamic rendering, bypassing all static optimizations
 
 export async function generateMetadata({
-  params,
+   params,
 }: {
-  params: {
-    slug: string;
-  };
+   params: {
+      slug: string;
+   };
 }): Promise<Metadata> {
-  const reportDataList = await getReportsPageBySlug(params.slug);
-  const reportPage = reportDataList.data?.length > 0 ? reportDataList.data[0] : null;
+   const reportDataList = await getReportsPageBySlug(params.slug);
+   const reportPage =
+      reportDataList.data?.length > 0 ? reportDataList.data[0] : null;
 
-  if (!reportPage) {
-    return {
-      title: 'Report Not Found',
-      description: 'The requested report could not be found.',
-    };
-  }
+   if (!reportPage) {
+      return {
+         title: 'Report Not Found',
+         description: 'The requested report could not be found.',
+      };
+   }
 
-  const { attributes } = reportPage;
-  const seo = attributes?.seo;
+   const { attributes } = reportPage;
+   const seo = attributes?.seo;
 
-  // Create languages map for alternates
-  const languagesMap: Record<string, string> = {};
-  
-  // Add all language alternates if available
-  // if (seo?.alternateLanguages) {
-  //   Object.entries(seo.alternateLanguages).forEach(([locale, url]) => {
-  //     languagesMap[locale] = url as string;
-  //   });
-  // }
+   // Create languages map for alternates
+   const languagesMap: Record<string, string> = {};
 
-  SUPPORTED_LOCALES.filter(locale => locale !== 'en').forEach((locale) => {
-    languagesMap[locale] = absoluteUrl(`/${locale}/reports/${params.slug}`);
-  });
+   // Add all language alternates if available
+   // if (seo?.alternateLanguages) {
+   //   Object.entries(seo.alternateLanguages).forEach(([locale, url]) => {
+   //     languagesMap[locale] = url as string;
+   //   });
+   // }
 
-  // Base metadata object
-  const metadata: Metadata = {
-    title: seo?.metaTitle || attributes?.title,
-    description: seo?.metaDescription || attributes?.shortDescription,
-    
-    openGraph: {
-      title: seo?.metaSocial?.find((social: any) => social.socialNetwork === 'facebook')?.title || seo?.metaTitle || attributes?.title,
-      description: seo?.metaSocial?.find((social: any) => social.socialNetwork === 'facebook')?.description || seo?.metaDescription || attributes?.shortDescription,
-      type: 'article',
-      url: absoluteUrl(`/reports/${params.slug}`),
-      images: [
-        {
-          url: seo?.metaSocial?.find((social: any) => social.socialNetwork === 'facebook')?.image?.url || 
-               seo?.metaImage?.url || 
+   SUPPORTED_LOCALES.filter((locale) => locale !== 'en').forEach((locale) => {
+      languagesMap[locale] = absoluteUrl(`/${locale}/reports/${params.slug}`);
+   });
+
+   // Base metadata object
+   const metadata: Metadata = {
+      title: seo?.metaTitle || attributes?.title,
+      description: seo?.metaDescription || attributes?.shortDescription,
+
+      openGraph: {
+         title:
+            seo?.metaSocial?.find(
+               (social: any) => social.socialNetwork === 'facebook',
+            )?.title ||
+            seo?.metaTitle ||
+            attributes?.title,
+         description:
+            seo?.metaSocial?.find(
+               (social: any) => social.socialNetwork === 'facebook',
+            )?.description ||
+            seo?.metaDescription ||
+            attributes?.shortDescription,
+         type: 'article',
+         url: absoluteUrl(`/reports/${params.slug}`),
+         images: [
+            {
+               url:
+                  seo?.metaSocial?.find(
+                     (social: any) => social.socialNetwork === 'facebook',
+                  )?.image?.url ||
+                  seo?.metaImage?.url ||
+                  attributes?.highlightImage?.data?.attributes?.url,
+               width: 1200,
+               height: 630,
+               alt: attributes?.title,
+            },
+         ],
+         siteName: 'UnivDatos',
+      },
+
+      twitter: {
+         card: 'summary_large_image',
+         title:
+            seo?.metaSocial?.find(
+               (social: any) => social.socialNetwork === 'twitter',
+            )?.title ||
+            seo?.metaTitle ||
+            attributes?.title,
+         description:
+            seo?.metaSocial?.find(
+               (social: any) => social.socialNetwork === 'twitter',
+            )?.description ||
+            seo?.metaDescription ||
+            attributes?.shortDescription,
+         images: [
+            seo?.metaSocial?.find(
+               (social: any) => social.socialNetwork === 'twitter',
+            )?.image?.url ||
+               seo?.metaImage?.url ||
                attributes?.highlightImage?.data?.attributes?.url,
-          width: 1200,
-          height: 630,
-          alt: attributes?.title
-        }
-      ],
-      siteName: 'UnivDatos',
-    },
+         ],
+      },
 
-    twitter: {
-      card: 'summary_large_image',
-      title: seo?.metaSocial?.find((social: any) => social.socialNetwork === 'twitter')?.title || seo?.metaTitle || attributes?.title,
-      description: seo?.metaSocial?.find((social: any) => social.socialNetwork === 'twitter')?.description || seo?.metaDescription || attributes?.shortDescription,
-      images: [
-        seo?.metaSocial?.find((social: any) => social.socialNetwork === 'twitter')?.image?.url || 
-        seo?.metaImage?.url || 
-        attributes?.highlightImage?.data?.attributes?.url
-      ],
-    },
+      keywords: seo?.keywords || '',
 
-    keywords: seo?.keywords || '',
-    
-    alternates: {
-      canonical: seo?.canonicalURL || absoluteUrl(`/reports/${params.slug}`),
-      languages: languagesMap,
-    },
+      alternates: {
+         canonical: seo?.canonicalURL || absoluteUrl(`/reports/${params.slug}`),
+         languages: languagesMap,
+      },
 
-    other: {
-      'script:ld+json': [
-        JSON.stringify({
-          '@context': 'https://schema.org',
-          '@type': 'Article',
-          headline: attributes?.title,
-          description: attributes?.shortDescription,
-          image: attributes?.highlightImage?.data?.attributes?.url,
-          datePublished: attributes?.oldPublishedAt,
-          author: {
-            '@type': 'Organization',
-            name: 'UnivDatos'
-          },
-          publisher: {
-            '@type': 'Organization',
-            name: 'UnivDatos',
-            logo: {
-              '@type': 'ImageObject',
-              url: absoluteUrl('/logo.png')
-            }
-          },
-          ...seo?.structuredData
-        })
-      ]
-    }
-  };
+      other: {
+         'script:ld+json': [
+            JSON.stringify({
+               '@context': 'https://schema.org',
+               '@type': 'Article',
+               headline: attributes?.title,
+               description: attributes?.shortDescription,
+               image: attributes?.highlightImage?.data?.attributes?.url,
+               datePublished: attributes?.oldPublishedAt,
+               author: {
+                  '@type': 'Organization',
+                  name: 'UnivDatos',
+               },
+               publisher: {
+                  '@type': 'Organization',
+                  name: 'UnivDatos',
+                  logo: {
+                     '@type': 'ImageObject',
+                     url: absoluteUrl('/logo.png'),
+                  },
+               },
+               ...seo?.structuredData,
+            }),
+         ],
+      },
+   };
 
-  // Add extra scripts if defined
-  if (seo?.extraScripts) {
-    metadata.other = {
-      ...metadata.other,
-      ...seo.extraScripts
-    };
-  }
+   // Add extra scripts if defined
+   if (seo?.extraScripts) {
+      metadata.other = {
+         ...metadata.other,
+         ...seo.extraScripts,
+      };
+   }
 
-  return metadata;
+   return metadata;
 }
- 
+
+export async function isCompanyProfile(slug: string) {
+   const profile = await import('@/utils/company-profile-mappings.json', {
+      assert: { type: 'json' },
+   });
+
+   const data = profile.default as Array<string>;
+
+   if (data.includes(slug)) {
+      return true;
+   }
+
+   return false;
+}
 
 const page: React.FC<{
    params: {
@@ -139,7 +178,12 @@ const page: React.FC<{
       });
    } catch (err) {
       console.log(err);
-      notFound();
+      const hasCompanyProfile = await isCompanyProfile(params.slug);
+      if (!hasCompanyProfile) {
+         notFound();
+      } else {
+         redirect(`/`);
+      }
    }
 
    let reportPage =

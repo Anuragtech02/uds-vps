@@ -48,12 +48,12 @@ const nextConfig = {
             permanent: true,
          },
          {
-            source: '/company-profile/:path*',
+            source: '/reports/company-profile/:path*',
             destination: '/',
             permanent: true,
          },
          {
-            source: '/:locale/company-profile/:path*',
+            source: '/:locale//reportscompany-profile/:path*',
             destination: '/:locale/',
             permanent: true,
          },
@@ -65,6 +65,26 @@ const nextConfig = {
          {
             source: '/:locale/terms-and-condition',
             destination: '/:locale/terms-and-conditions',
+            permanent: true,
+         },
+         {
+            source: '/category/news/:slug',
+            destination: '/news?industries=:slug',
+            permanent: true,
+         },
+         {
+            source: '/:locale/category/news/:slug',
+            destination: '/:locale/news?industries=:slug',
+            permanent: true,
+         },
+         {
+            source: '/category/blogs/:slug',
+            destination: '/blogs?industries=:slug',
+            permanent: true,
+         },
+         {
+            source: '/:locale/category/blogs/:slug',
+            destination: '/:locale/blogs?industries=:slug',
             permanent: true,
          },
       ];
