@@ -57,32 +57,6 @@ const nextConfig = {
             destination: '/:locale/reports?industries=:slug',
             permanent: true,
          },
-         // Handle invalid paths for valid locales (exclude product-tag from invalid paths)
-         {
-            source:
-               '/:locale(' +
-               SUPPORTED_LOCALES.join('|') +
-               ')/:invalidPath((?!not-found|product-tag|' +
-               validRoutes.join('|') +
-               '|' +
-               validRoutes.map((route) => `${route}/.*`).join('|') +
-               ').*)',
-            destination: '/:locale/not-found',
-            permanent: false,
-         },
-         // Handle completely invalid paths (including invalid locales, but exclude product-tag)
-         {
-            source:
-               '/:invalidPath((?!_next|api|favicon.ico|reports?|product-tag|not-found|$|' +
-               SUPPORTED_LOCALES.join('|') +
-               '|' +
-               validRoutes.join('|') +
-               '|' +
-               validRoutes.map((route) => `${route}/.*`).join('|') +
-               ').*)',
-            destination: '/en/not-found',
-            permanent: false,
-         },
          {
             source: '/reports/industry/:path*',
             destination: '/reports?industries=:path*',
@@ -122,6 +96,32 @@ const nextConfig = {
             source: '/:locale/company-profile/:path*',
             destination: '/:locale/',
             permanent: true,
+         },
+         // Handle invalid paths for valid locales (exclude product-tag from invalid paths)
+         {
+            source:
+               '/:locale(' +
+               SUPPORTED_LOCALES.join('|') +
+               ')/:invalidPath((?!not-found|product-tag|' +
+               validRoutes.join('|') +
+               '|' +
+               validRoutes.map((route) => `${route}/.*`).join('|') +
+               ').*)',
+            destination: '/:locale/not-found',
+            permanent: false,
+         },
+         // Handle completely invalid paths (including invalid locales, but exclude product-tag)
+         {
+            source:
+               '/:invalidPath((?!_next|api|favicon.ico|reports?|product-tag|not-found|$|' +
+               SUPPORTED_LOCALES.join('|') +
+               '|' +
+               validRoutes.join('|') +
+               '|' +
+               validRoutes.map((route) => `${route}/.*`).join('|') +
+               ').*)',
+            destination: '/en/not-found',
+            permanent: false,
          },
       ];
    },
