@@ -1,5 +1,5 @@
 # Redirect industry reports to new format
-/reports/industry/:industry-name-market-research-reports/ /reports?industries=:industry-name 301
+/reports/industry/:industry-name-market-research-reports/ /reports?industries=consumer-goods 301
 
 # Force trailing slash for all pages
 /* /:splat/ 301!
