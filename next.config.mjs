@@ -47,6 +47,16 @@ const nextConfig = {
    },
    async redirects() {
       return [
+         {
+            source: '/reports/industry/:slug-market-research-reports',
+            destination: '/reports?industries=:slug',
+            permanent: true,
+         },
+         {
+            source: '/:locale/reports/industry/:slug-market-research-reports',
+            destination: '/:locale/reports?industries=:slug',
+            permanent: true,
+         },
          // Handle invalid paths for valid locales (exclude product-tag from invalid paths)
          {
             source:

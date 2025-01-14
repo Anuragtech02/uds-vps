@@ -14,8 +14,6 @@ const Header: React.FC<{ data: any }> = ({ data }) => {
    const reportHeaderData = {
       title: data.attributes.title,
       shortDescription: data.attributes.shortDescription,
-      medusaID: data.attributes.medusaID,
-      reportID: data.attributes.reportID,
       geography: {
          name: data.attributes.geography.data.attributes.name,
          slug: data.attributes.geography.data.attributes.slug,
