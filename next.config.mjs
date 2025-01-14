@@ -1,46 +1,19 @@
 import { setupDevPlatform } from '@cloudflare/next-on-pages/next-dev';
 
-const validRoutes = [
-   'about-us',
-   'blogs',
-   'cart',
-   'checkout',
-   'contact-us',
-   'login',
-   'news',
-   'payment-failure',
-   'payment-success',
-   'privacy-policy',
-   'profile',
-   'reports',
-   'search',
-   'services',
-   'signup',
-   'terms-and-conditions',
-   'disclaimer',
-   'legal',
-   'not-found',
-   'company-profile',
-   'custom-research',
-   'sitemap.xml',
-   'robots.txt',
-   'get-a-free-sample-form-php',
-];
-
-export const SUPPORTED_LOCALES = [
-   'en',
-   'ru',
-   'ar',
-   'de',
-   'fr',
-   'zh-TW',
-   'zh-CN',
-   'ja',
-   'ko',
-   'vi',
-   'it',
-   'pl',
-];
+// export const SUPPORTED_LOCALES = [
+//    'en',
+//    'ru',
+//    'ar',
+//    'de',
+//    'fr',
+//    'zh-TW',
+//    'zh-CN',
+//    'ja',
+//    'ko',
+//    'vi',
+//    'it',
+//    'pl',
+// ];
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -124,31 +97,15 @@ const nextConfig = {
             destination: '/:locale/',
             permanent: true,
          },
-         // Handle invalid paths for valid locales (exclude product-tag from invalid paths)
          {
-            source:
-               '/:locale(' +
-               SUPPORTED_LOCALES.join('|') +
-               ')/:invalidPath((?!not-found|product-tag|' +
-               validRoutes.join('|') +
-               '|' +
-               validRoutes.map((route) => `${route}/.*`).join('|') +
-               ').*)',
-            destination: '/:locale/not-found',
-            permanent: false,
+            source: '/terms-and-condition',
+            destination: '/terms-and-conditions',
+            permanent: true,
          },
-         // Handle completely invalid paths (including invalid locales, but exclude product-tag)
          {
-            source:
-               '/:invalidPath((?!_next|api|favicon.ico|reports?|product-tag|not-found|$|' +
-               SUPPORTED_LOCALES.join('|') +
-               '|' +
-               validRoutes.join('|') +
-               '|' +
-               validRoutes.map((route) => `${route}/.*`).join('|') +
-               ').*)',
-            destination: '/en/not-found',
-            permanent: false,
+            source: '/:locale/terms-and-condition',
+            destination: '/:locale/terms-and-conditions',
+            permanent: true,
          },
       ];
    },

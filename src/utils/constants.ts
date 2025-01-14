@@ -14,6 +14,28 @@ export const SUPPORTED_LOCALES = [
    'es',
 ] as const;
 
+export const validRoutes = [
+   'about-us',
+   'blogs',
+   'cart',
+   'checkout',
+   'contact-us',
+   'login',
+   'news',
+   'payment-failure',
+   'payment-success',
+   'privacy-policy',
+   'profile',
+   'reports',
+   'search',
+   'services',
+   'signup',
+   'terms-and-conditions',
+   'disclaimer',
+   'legal',
+   'not-found',
+];
+
 export const DEFAULT_LOCALE = 'en' as const;
 
 export const CURRENCIES: {

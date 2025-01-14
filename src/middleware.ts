@@ -1,7 +1,11 @@
 // middleware.ts
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import { DEFAULT_LOCALE, SUPPORTED_LOCALES } from './utils/constants';
+import {
+   DEFAULT_LOCALE,
+   SUPPORTED_LOCALES,
+   validRoutes,
+} from './utils/constants';
 
 export const locales = SUPPORTED_LOCALES;
 export const defaultLocale = DEFAULT_LOCALE;
@@ -10,6 +14,30 @@ export async function middleware(request: NextRequest) {
    const pathname = request.nextUrl.pathname;
    const currentHost = request.headers.get('host') || '';
    const searchParams = request.nextUrl.searchParams;
+
+   // Skip non-page requests
+   if (
+      pathname.startsWith('/_next') ||
+      pathname.startsWith('/api') ||
+      pathname.includes('.') ||
+      pathname.startsWith('/blogs/') ||
+      pathname.startsWith('/news/')
+   ) {
+      return NextResponse.next();
+   }
+
+   // Extract potential locale and slug
+   const pathParts = pathname.split('/').filter(Boolean);
+   const potentialLocale = pathParts[0];
+   const hasLocale = locales.some(
+      (loc) => loc.toLowerCase() === potentialLocale.toLowerCase(),
+   );
+   const slug = hasLocale ? pathParts[1] : pathParts[0];
+
+   // If it's a known valid route, skip processing
+   if (validRoutes.includes(slug)) {
+      return NextResponse.next();
+   }
 
    // Check if it's a product-tag URL
    const productTagMatch = pathname.match(
@@ -116,13 +144,63 @@ export async function middleware(request: NextRequest) {
       }
    }
 
-   // Skip non-page requests
-   if (
-      pathname.startsWith('/_next') ||
-      pathname.startsWith('/api') ||
-      pathname.includes('.')
-   ) {
-      return NextResponse.next();
+   if (slug) {
+      try {
+         // First, check in blogs collection
+         const blogsResponse = await fetch(
+            `${process.env.API_URL}/blogs?filters[slug][$eq]=${slug}`,
+            {
+               headers: {
+                  Authorization: `Bearer ${process.env.API_TOKEN}`,
+               },
+            },
+         );
+
+         const blogsData = await blogsResponse.json();
+
+         // If found in blogs, redirect to blogs path
+         if (blogsData.data && blogsData.data.length > 0) {
+            const redirectUrl = hasLocale
+               ? `/${potentialLocale}/blogs/${slug}`
+               : `/blogs/${slug}`;
+            return NextResponse.redirect(
+               new URL(redirectUrl, request.url),
+               301,
+            );
+         }
+
+         // If not found in blogs, check news collection
+         const newsResponse = await fetch(
+            `${process.env.API_URL}/news-articles?filters[slug][$eq]=${slug}`,
+            {
+               headers: {
+                  Authorization: `Bearer ${process.env.API_TOKEN}`,
+               },
+            },
+         );
+
+         const newsData = await newsResponse.json();
+
+         // If found in news, redirect to news path
+         if (newsData.data && newsData.data.length > 0) {
+            const redirectUrl = hasLocale
+               ? `/${potentialLocale}/news/${slug}`
+               : `/news/${slug}`;
+            return NextResponse.redirect(
+               new URL(redirectUrl, request.url),
+               301,
+            );
+         }
+
+         // If not found in either collection, redirect to 404
+         const notFoundUrl = hasLocale
+            ? `/${potentialLocale}/not-found`
+            : '/en/not-found';
+         return NextResponse.redirect(new URL(notFoundUrl, request.url));
+      } catch (error) {
+         console.error('Error processing legacy URL redirect:', error);
+         return NextResponse.redirect(new URL('/en/not-found', request.url));
+      }
    }
 
    // Rest of your existing middleware code...
