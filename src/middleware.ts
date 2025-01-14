@@ -10,6 +10,41 @@ import {
 export const locales = SUPPORTED_LOCALES;
 export const defaultLocale = DEFAULT_LOCALE;
 
+function setLocaleCookies(
+   response: NextResponse,
+   locale: string,
+   currentHost: string,
+) {
+   if (locale !== defaultLocale) {
+      const cookieValue = `/en/${locale}`;
+
+      response.headers.append(
+         'Set-Cookie',
+         `googtrans=${cookieValue}; path=/; SameSite=Lax`,
+      );
+
+      if (!currentHost.includes('localhost')) {
+         response.headers.append(
+            'Set-Cookie',
+            `googtrans=${cookieValue}; path=/; domain=.${currentHost}; SameSite=Lax`,
+         );
+      }
+   } else {
+      response.headers.append(
+         'Set-Cookie',
+         'googtrans=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT',
+      );
+
+      if (!currentHost.includes('localhost')) {
+         response.headers.append(
+            'Set-Cookie',
+            `googtrans=; path=/; domain=.${currentHost}; expires=Thu, 01 Jan 1970 00:00:00 GMT`,
+         );
+      }
+   }
+   return response;
+}
+
 export async function middleware(request: NextRequest) {
    const pathname = request.nextUrl.pathname;
    const currentHost = request.headers.get('host') || '';
@@ -52,17 +87,28 @@ export async function middleware(request: NextRequest) {
       });
    }
 
+   // Check if the pathname starts with a locale
+   const pathnameHasLocale = locales.some(
+      (locale) =>
+         pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`,
+   );
+
+   // Get the current locale from the pathname if it exists
+   const currentLocale = pathnameHasLocale
+      ? pathname.split('/')[1]
+      : defaultLocale;
+
+   // Create response
+   const nxtResponse = NextResponse;
+
    // Extract potential locale and slug
    const pathParts = pathname.split('/').filter(Boolean);
-   const potentialLocale = pathParts[0];
-   const hasLocale = locales.some(
-      (loc) => loc.toLowerCase() === potentialLocale?.toLowerCase(),
-   );
-   const slug = hasLocale ? pathParts[1] : pathParts[0];
+   const potentialLocale = currentLocale;
+   const slug = pathnameHasLocale ? pathParts[1] : pathParts[0];
 
    // If it's a known valid route, skip processing
    if (validRoutes.includes(slug)) {
-      return NextResponse.next();
+      return setLocaleCookies(nxtResponse.next(), potentialLocale, currentHost);
    }
 
    // Check if it's a product-tag URL
@@ -93,7 +139,7 @@ export async function middleware(request: NextRequest) {
                   ? `/${locale}/reports/${reportSlug}`
                   : `/reports/${reportSlug}`;
 
-            return NextResponse.redirect(new URL(redirectUrl, request.url));
+            return nxtResponse.redirect(new URL(redirectUrl, request.url));
          }
 
          // If tag not found, redirect to 404
@@ -102,10 +148,10 @@ export async function middleware(request: NextRequest) {
                ? `/${locale}/not-found`
                : '/en/not-found';
 
-         return NextResponse.redirect(new URL(notFoundUrl, request.url));
+         return nxtResponse.redirect(new URL(notFoundUrl, request.url));
       } catch (error) {
          console.error('Error processing tag redirect:', error);
-         return NextResponse.redirect(new URL('/not-found', request.url));
+         return nxtResponse.redirect(new URL('/not-found', request.url));
       }
    }
 
@@ -113,12 +159,7 @@ export async function middleware(request: NextRequest) {
    if (pathname.includes('/get-a-free-sample-form-php')) {
       const pathParts = pathname.split('/').filter(Boolean);
       const potentialLocale = pathParts[0];
-      const hasLocale = locales.includes(
-         potentialLocale as (typeof locales)[number],
-      );
-      const currentLocale = hasLocale ? potentialLocale : defaultLocale;
-
-      console.log(currentLocale, hasLocale, potentialLocale, defaultLocale);
+      const currentLocale = pathnameHasLocale ? potentialLocale : defaultLocale;
 
       const productId = searchParams.get('product_id')?.trim();
 
@@ -145,27 +186,27 @@ export async function middleware(request: NextRequest) {
             if (data.data && data.data.length > 0) {
                const reportSlug = data.data[0].attributes.slug;
                // Construct redirect URL with locale if present
-               const redirectUrl = hasLocale
+               const redirectUrl = pathnameHasLocale
                   ? `/${currentLocale}/reports/${reportSlug}?popup=report-enquiry`
                   : `/reports/${reportSlug}?popup=report-enquiry`;
 
-               return NextResponse.redirect(new URL(redirectUrl, request.url));
+               return nxtResponse.redirect(new URL(redirectUrl, request.url));
             }
             // If product ID not found, redirect to 404 with proper locale
-            const notFoundUrl = hasLocale
+            const notFoundUrl = pathnameHasLocale
                ? `/${currentLocale}/not-found`
                : '/en/not-found';
 
-            return NextResponse.redirect(new URL(notFoundUrl, request.url));
+            return nxtResponse.redirect(new URL(notFoundUrl, request.url));
          } catch (error) {
             console.error(
                'Error processing legacy product ID redirect:',
                error,
             );
-            const errorUrl = hasLocale
+            const errorUrl = pathnameHasLocale
                ? `/${currentLocale}/not-found`
                : '/en/not-found';
-            return NextResponse.redirect(new URL(errorUrl, request.url));
+            return nxtResponse.redirect(new URL(errorUrl, request.url));
          }
       }
    }
@@ -184,15 +225,19 @@ export async function middleware(request: NextRequest) {
 
          const blogsData = await blogsResponse.json();
 
-         // If found in blogs, redirect to blogs path
          if (blogsData.data && blogsData.data.length > 0) {
-            const redirectUrl = hasLocale
+            const redirectUrl = pathnameHasLocale
                ? `/${potentialLocale}/blogs/${slug}`
                : `/blogs/${slug}`;
-            return NextResponse.redirect(
+
+            // Create redirect response
+            const response = NextResponse.redirect(
                new URL(redirectUrl, request.url),
                301,
             );
+
+            // Set locale cookies on the redirect
+            return setLocaleCookies(response, potentialLocale, currentHost);
          }
 
          // If not found in blogs, check news collection
@@ -208,75 +253,79 @@ export async function middleware(request: NextRequest) {
          const newsData = await newsResponse.json();
 
          // If found in news, redirect to news path
+
          if (newsData.data && newsData.data.length > 0) {
-            const redirectUrl = hasLocale
+            const redirectUrl = pathnameHasLocale
                ? `/${potentialLocale}/news/${slug}`
                : `/news/${slug}`;
-            return NextResponse.redirect(
+
+            const response = NextResponse.redirect(
                new URL(redirectUrl, request.url),
                301,
             );
+            return setLocaleCookies(response, potentialLocale, currentHost);
          }
 
          // If not found in either collection, redirect to 404
-         const notFoundUrl = hasLocale
+         const notFoundUrl = pathnameHasLocale
             ? `/${potentialLocale}/not-found`
             : '/en/not-found';
-         return NextResponse.redirect(new URL(notFoundUrl, request.url));
+
+         const response = NextResponse.redirect(
+            new URL(notFoundUrl, request.url),
+         );
+         return setLocaleCookies(response, potentialLocale, currentHost);
       } catch (error) {
          console.error('Error processing legacy URL redirect:', error);
-         return NextResponse.redirect(new URL('/en/not-found', request.url));
+         return nxtResponse.redirect(new URL('/en/not-found', request.url));
       }
    }
 
-   console.log('path name', request.nextUrl.pathname);
+   // if (currentLocale !== defaultLocale) {
+   //    const cookieValue = `/en/${currentLocale}`;
+   //    console.log(
+   //       'Changing locale',
+   //       currentLocale,
+   //       pathnameHasLocale,
+   //       cookieValue,
+   //    );
 
-   // Rest of your existing middleware code...
+   //    // Create a single response
+   //    const response = NextResponse.next();
 
-   // Check if the pathname starts with a locale
-   const pathnameHasLocale = locales.some(
-      (locale) =>
-         pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`,
-   );
+   //    // Add headers to the same response object
+   //    response.headers.append(
+   //       'Set-Cookie',
+   //       `googtrans=${cookieValue}; path=/; SameSite=Lax`,
+   //    );
 
-   // Get the current locale from the pathname if it exists
-   const currentLocale = pathnameHasLocale
-      ? pathname.split('/')[1]
-      : defaultLocale;
+   //    if (!currentHost.includes('localhost')) {
+   //       response.headers.append(
+   //          'Set-Cookie',
+   //          `googtrans=${cookieValue}; path=/; domain=.${currentHost}; SameSite=Lax`,
+   //       );
+   //    }
 
-   // Create response
-   const response = NextResponse.next();
+   //    return response;
+   // } else {
+   //    // Create a single response for default locale
+   //    const response = NextResponse.next();
 
-   // Handle cookie setting based on locale
-   if (currentLocale !== defaultLocale) {
-      const cookieValue = `/en/${currentLocale}`;
+   //    // Add headers to the same response object
+   //    response.headers.append(
+   //       'Set-Cookie',
+   //       'googtrans=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT',
+   //    );
 
-      response.headers.append(
-         'Set-Cookie',
-         `googtrans=${cookieValue}; path=/; SameSite=Lax`,
-      );
+   //    if (!currentHost.includes('localhost')) {
+   //       response.headers.append(
+   //          'Set-Cookie',
+   //          `googtrans=; path=/; domain=.${currentHost}; expires=Thu, 01 Jan 1970 00:00:00 GMT`,
+   //       );
+   //    }
 
-      if (!currentHost.includes('localhost')) {
-         response.headers.append(
-            'Set-Cookie',
-            `googtrans=${cookieValue}; path=/; domain=.${currentHost}; SameSite=Lax`,
-         );
-      }
-   } else {
-      response.headers.append(
-         'Set-Cookie',
-         'googtrans=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT',
-      );
-
-      if (!currentHost.includes('localhost')) {
-         response.headers.append(
-            'Set-Cookie',
-            `googtrans=; path=/; domain=.${currentHost}; expires=Thu, 01 Jan 1970 00:00:00 GMT`,
-         );
-      }
-   }
-
-   return response;
+   //    return response;
+   // }
 }
 
 export const config = {
