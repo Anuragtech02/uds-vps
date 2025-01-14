@@ -22,6 +22,8 @@ const validRoutes = [
    'not-found',
    'company-profile',
    'custom-research',
+   'sitemap.xml',
+   'robots.txt',
 ];
 
 export const SUPPORTED_LOCALES = [

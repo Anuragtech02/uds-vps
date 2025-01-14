@@ -85,7 +85,7 @@ const CollapsibleLicenseOptions: React.FC<CollapsibleLicenseOptionsProps> = ({
                            <div>
                               <label
                                  htmlFor={`license-${index}`}
-                                 className='block text-base font-semibold'
+                                 className='block text-sm font-semibold'
                               >
                                  {license.title}
                               </label>
