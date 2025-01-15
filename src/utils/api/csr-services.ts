@@ -83,28 +83,14 @@ export const login = async (data: any) => {
    }
 };
 
-export const submitContactForm = async (data: any) => {
+export const submitForm = async (
+   type: 'contact' | 'enquiry' | 'demo' | 'callback',
+   data: any,
+) => {
    try {
-      const response = await fetchClientCSR('/contact-form-submissions', {
+      const response = await fetchClientCSR(`/${type}-form-submissions`, {
          method: 'POST',
          body: JSON.stringify({ data }),
-         headers: {
-            'Content-Type': 'application/json',
-            ...getAuthHeaders('post'),
-         },
-      });
-      return response.data;
-   } catch (error) {
-      console.error('Error submitting contact form:', error);
-      throw error;
-   }
-};
-
-export const submitEnquiryForm = async (data: any) => {
-   try {
-      const response = await fetchClientCSR('/enquiry-form-submissions', {
-         method: 'POST',
-         body: JSON.stringify(data),
          headers: {
             'Content-Type': 'application/json',
             ...getAuthHeaders('post'),

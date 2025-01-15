@@ -1,9 +1,9 @@
 'use client';
 import { useState, FormEvent, useEffect } from 'react';
 import CustomPhoneInput from '../CustomPhoneInput';
-import { submitContactForm } from '@/utils/api/csr-services';
 import Button from '../commons/Button';
 import Script from 'next/script';
+import { submitForm } from '@/utils/api/csr-services';
 
 interface ReportEnquiryFormProps {
    reportId: number;
@@ -90,17 +90,20 @@ const ReportEnquiryForm: React.FC<ReportEnquiryFormProps> = ({
          return;
       }
 
-      try {
-         const response = await submitContactForm({
-            ...formFields,
-            mobileNumber: phone,
-            reportId,
-            cfTurnstileResponse: turnstileToken,
-         });
+      const requestData = {
+         ...formFields,
+         mobileNumber: phone,
+         reportId,
+      };
 
-         if (!response.ok) {
-            throw new Error('Failed to submit form');
-         }
+      try {
+         const response = await submitForm('enquiry', {
+            ...requestData,
+            rawData: {
+               ...requestData,
+               cfTurnstileResponse: turnstileToken,
+            },
+         });
 
          setSubmitSuccess(true);
          // Reset form fields

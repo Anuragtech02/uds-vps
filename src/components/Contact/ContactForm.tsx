@@ -4,6 +4,7 @@ import Button from '../commons/Button';
 import CustomPhoneInput from '../CustomPhoneInput';
 import countryList from '@/assets/utils/countries.json';
 import Script from 'next/script';
+import { submitForm } from '@/utils/api/csr-services';
 
 declare global {
    interface Window {
@@ -17,8 +18,9 @@ declare global {
 
 const ContactForm = () => {
    const [formFields, setFormFields] = useState({
-      name: '',
-      email: '',
+      fullName: '',
+      businessEmail: '',
+      company: '',
       message: '',
       country: '',
    });
@@ -81,25 +83,28 @@ const ContactForm = () => {
       setIsSubmitting(true);
       setError(null);
 
+      const requestData = {
+         ...formFields,
+         mobileNumber: phone,
+      };
+
       try {
-         const response = await fetch('/api/contact', {
-            method: 'POST',
-            headers: {
-               'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-               ...formFields,
-               phone,
+         const response = await submitForm('contact', {
+            ...requestData,
+            rawData: {
+               ...requestData,
                cfTurnstileResponse: turnstileToken,
-            }),
+            },
          });
 
-         if (!response.ok) {
-            throw new Error('Failed to submit form');
-         }
-
          setSuccess(true);
-         setFormFields({ name: '', email: '', message: '', country: '' });
+         setFormFields({
+            fullName: '',
+            businessEmail: '',
+            message: '',
+            country: '',
+            company: '',
+         });
          setPhone('');
          // Reset Turnstile after successful submission
          if (window.turnstile) {
@@ -129,13 +134,13 @@ const ContactForm = () => {
 
                <div className='flex flex-col gap-4 md:flex-row md:items-center'>
                   <div className='shrink grow basis-0 space-y-1'>
-                     <label htmlFor='name'>Full Name*</label>
+                     <label htmlFor='fullName'>Full Name*</label>
                      <input
                         type='text'
-                        id='name'
-                        name='name'
+                        id='fullName'
+                        name='fullName'
                         required
-                        value={formFields.name}
+                        value={formFields.fullName}
                         onChange={handleInputChange}
                         placeholder='Enter your full name'
                         className='w-full rounded-md border border-s-300 p-3'
@@ -151,15 +156,15 @@ const ContactForm = () => {
 
                <div className='flex flex-col gap-4 md:flex-row md:items-center'>
                   <div className='shrink grow basis-0 space-y-1'>
-                     <label htmlFor='email'>Business Email*</label>
+                     <label htmlFor='businessEmail'>Business Email*</label>
                      <input
                         type='email'
-                        id='email'
-                        name='email'
+                        id='businessEmail'
+                        name='businessEmail'
                         required
-                        value={formFields.email}
+                        value={formFields.businessEmail}
                         onChange={handleInputChange}
-                        placeholder='Enter your email'
+                        placeholder='Enter your business email'
                         className='w-full rounded-md border border-s-300 p-3'
                      />
                   </div>
@@ -181,6 +186,22 @@ const ContactForm = () => {
                            </option>
                         ))}
                      </select>
+                  </div>
+               </div>
+
+               <div className='flex flex-col gap-4 md:flex-row md:items-center'>
+                  <div className='shrink grow basis-0 space-y-1'>
+                     <label htmlFor='company'>Company*</label>
+                     <input
+                        type='text'
+                        id='company'
+                        name='company'
+                        required
+                        value={formFields.company}
+                        onChange={handleInputChange}
+                        placeholder='Enter your company name'
+                        className='w-full rounded-md border border-s-300 p-3'
+                     />
                   </div>
                </div>
 
