@@ -93,7 +93,7 @@ const ReportEnquiryForm: React.FC<ReportEnquiryFormProps> = ({
       const requestData = {
          ...formFields,
          mobileNumber: phone,
-         reportId,
+         report: reportId,
       };
 
       try {
