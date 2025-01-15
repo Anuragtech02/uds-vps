@@ -20,6 +20,7 @@ import {
 import { useRouter } from 'next/navigation';
 import ReportFAQs from './ReportFAQs';
 import { LocalizedLink } from '../commons/LocalizedLink';
+import MobileReportBlock from './MobileReportIndex';
 
 // Define type for report variants
 export interface Variant {
@@ -296,6 +297,14 @@ const ReportBlock: React.FC<ReportBlockProps> = ({ data }) => {
                )}
             </div>
          </div>
+         <MobileReportBlock
+            reportIndex={reportIndex}
+            variants={variants}
+            selectedLicense={selectedLicense}
+            setSelectedLicense={setSelectedLicense}
+            rightSectionHeading={reportData.rightSectionHeading}
+         />
+
          <Popup name='report-enquiry' title='Report Enquiry'>
             <ReportEnquiryForm
                reportTitle={reportData.title}

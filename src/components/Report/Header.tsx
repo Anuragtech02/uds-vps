@@ -113,6 +113,7 @@ const Header: React.FC<{ data: any }> = ({ data }) => {
       <>
          <div
             className={`w-full bg-white py-4 transition-all duration-300`}
+            id='report-header'
             ref={headerRef1}
          >
             <div className='container'>
