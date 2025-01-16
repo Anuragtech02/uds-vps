@@ -29,7 +29,7 @@ const AllServices = ({ services }: any) => {
                         <p
                            className='text-lg text-gray-700'
                            dangerouslySetInnerHTML={{
-                              __html: service?.description,
+                              __html: service?.shortDescription,
                            }}
                         ></p>
                      )}
