@@ -25,20 +25,25 @@ const AllServices = ({ services }: any) => {
                      <h2 className='text-2xl font-bold md:text-4xl'>
                         {service?.title}
                      </h2>
-                     <p className='text-lg text-gray-700'>
-                        {service?.shortDescription}
-                     </p>
+                     {service?.shortDescription?.length > 0 && (
+                        <p className='text-lg text-gray-700'>
+                           {service?.shortDescription}
+                        </p>
+                     )}
                   </div>
                </div>
-
-               <div className='prose report-content max-w-none border-t pt-8'>
+               {service?.description?.length > 0 && (
                   <div
-                     dangerouslySetInnerHTML={{
-                        __html: service?.description,
-                     }}
-                     className='![&>ol>li>ul>li>p]:ml-0'
-                  />
-               </div>
+                     className={`prose report-content max-w-none border-t pt-8`}
+                  >
+                     <div
+                        dangerouslySetInnerHTML={{
+                           __html: service?.description,
+                        }}
+                        className='![&>ol>li>ul>li>p]:ml-0'
+                     />
+                  </div>
+               )}
             </div>
          ))}
       </div>
