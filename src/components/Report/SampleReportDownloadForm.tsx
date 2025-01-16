@@ -1,9 +1,9 @@
 'use client';
 import { useState, FormEvent, useEffect } from 'react';
 import CustomPhoneInput from '../CustomPhoneInput';
-import { submitContactForm } from '@/utils/api/csr-services';
 import Button from '../commons/Button';
 import Script from 'next/script';
+import { submitForm } from '@/utils/api/csr-services';
 
 interface SampleReportDownloadFormProps {
    reportId: number;
@@ -89,11 +89,15 @@ const SampleReportDownloadForm: React.FC<SampleReportDownloadFormProps> = ({
       }
 
       try {
-         const response = await submitContactForm({
+         const response = await submitForm('enquiry', {
             ...formFields,
             mobileNumber: phone,
             reportId,
-            cfTurnstileResponse: turnstileToken,
+            rawData: {
+               ...formFields,
+               mobileNumber: phone,
+               cfTurnstileResponse: turnstileToken,
+            },
          });
 
          if (!response.ok) {
