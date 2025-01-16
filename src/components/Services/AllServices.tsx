@@ -26,9 +26,12 @@ const AllServices = ({ services }: any) => {
                         {service?.title}
                      </h2>
                      {service?.shortDescription?.length > 0 && (
-                        <p className='text-lg text-gray-700'>
-                           {service?.shortDescription}
-                        </p>
+                        <p
+                           className='text-lg text-gray-700'
+                           dangerouslySetInnerHTML={{
+                              __html: service?.description,
+                           }}
+                        ></p>
                      )}
                   </div>
                </div>
