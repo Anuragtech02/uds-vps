@@ -21,13 +21,11 @@ const AllServices = ({ services }: any) => {
                         className='h-[300px] w-full rounded-md object-cover'
                      />
                   </div>
-                  <div className='flex w-full flex-col justify-center space-y-4 md:w-3/5'>
-                     <h2 className='text-2xl font-bold md:text-4xl'>
-                        {service?.title}
-                     </h2>
+                  <div className='flex w-full flex-col justify-start space-y-4 md:w-3/5'>
+                     <h2 className='text-3xl font-bold'>{service?.title}</h2>
                      {service?.shortDescription?.length > 0 && (
                         <p
-                           className='text-lg text-gray-700'
+                           className='report-content text-gray-700'
                            dangerouslySetInnerHTML={{
                               __html: service?.shortDescription,
                            }}
