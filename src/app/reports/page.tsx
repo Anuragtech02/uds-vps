@@ -161,7 +161,7 @@ const ReportStore: FC<ReportStoreProps> = async ({ searchParams }) => {
             currentFilters={filters}
          />
 
-         <div className='my-10 flex flex-col items-start justify-between gap-6 lg:min-h-[50vh] lg:flex-row'>
+         <div className='mb-10 mt-4 flex flex-col items-start justify-between gap-6 lg:min-h-[50vh] lg:flex-row'>
             {/* Main Content */}
             <div className='flex-1'>
                <div className='flex items-center justify-between'>

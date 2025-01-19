@@ -16,6 +16,7 @@ import SelectedFilters from '@/components/Report/SelectedFitlers';
 import { absoluteUrl } from '@/utils/generic-methods';
 import { LOGO_URL_DARK } from '@/utils/constants';
 import { Metadata } from 'next';
+import FilterBar from '@/components/ReportStore/FilterBar';
 
 interface SearchParams {
    industries?: string;
@@ -154,34 +155,20 @@ const ReportStore: FC<ReportStoreProps> = async ({ searchParams }) => {
       <div className='container pt-40'>
          <h1 className='mt-5 text-center font-bold'>Report Store</h1>
 
-         <div className='my-10 flex flex-col items-start justify-between gap-6 lg:min-h-[50vh] lg:flex-row'>
-            {/* Left Sidebar - Industry Filters */}
-            <div className='w-full lg:sticky lg:top-48 lg:w-[300px]'>
-               <Suspense fallback={<div>Loading filters...</div>}>
-                  <ReportStoreFilters
-                     filters={filters}
-                     industries={industriesData?.data || []}
-                  />
-               </Suspense>
-            </div>
+         <FilterBar
+            industries={industriesData?.data || []}
+            geographies={geographiesData?.data || []}
+            currentFilters={filters}
+         />
 
-            <div className='block w-full lg:sticky lg:top-48 lg:hidden lg:w-[300px]'>
-               <Suspense fallback={<div>Loading filters...</div>}>
-                  <GeographyFilters
-                     filters={filters}
-                     geographies={geographiesData?.data || []}
-                  />
-               </Suspense>
-            </div>
-
+         <div className='mb-10 mt-4 flex flex-col items-start justify-between gap-6 lg:min-h-[50vh] lg:flex-row'>
             {/* Main Content */}
             <div className='flex-1'>
-               <div className='mb-4 flex items-center justify-between'>
-                  <SelectedFilters
-                     industries={industryFilters}
-                     geographies={geographyFilters}
-                     industriesData={industriesData}
-                     geographiesData={geographiesData}
+               <div className='flex items-center justify-between'>
+                  <Pagination
+                     searchParams={searchParams}
+                     currentPage={currentPage}
+                     totalPages={totalPages}
                   />
                   <ViewToggle currentView={viewType} />
                </div>
@@ -190,7 +177,7 @@ const ReportStore: FC<ReportStoreProps> = async ({ searchParams }) => {
                      className={`grid gap-4 ${
                         viewType === 'list'
                            ? 'grid-cols-1'
-                           : 'grid-cols-1 2xl:grid-cols-2'
+                           : 'grid-cols-1 lg:grid-cols-2'
                      }`}
                   >
                      {reportsList?.data && reportsList.data.length > 0 ? (
@@ -223,25 +210,13 @@ const ReportStore: FC<ReportStoreProps> = async ({ searchParams }) => {
                   </div>
                </Suspense>
             </div>
-
-            {/* Right Sidebar - Geography Filters */}
-            <div className='hidden w-full lg:sticky lg:top-48 lg:block lg:w-[300px]'>
-               <Suspense fallback={<div>Loading filters...</div>}>
-                  <GeographyFilters
-                     filters={filters}
-                     geographies={geographiesData?.data || []}
-                  />
-               </Suspense>
-            </div>
          </div>
 
-         {totalPages > 1 && (
-            <Pagination
-               searchParams={searchParams}
-               currentPage={currentPage}
-               totalPages={totalPages}
-            />
-         )}
+         <Pagination
+            searchParams={searchParams}
+            currentPage={currentPage}
+            totalPages={totalPages}
+         />
       </div>
    );
 };
