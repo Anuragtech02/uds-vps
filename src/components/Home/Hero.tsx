@@ -53,7 +53,7 @@ const Hero: React.FC<{ data: any }> = ({ data }) => {
    return (
       <section className='relative bg-white pt-16 md:pt-20'>
          <div className='container'>
-            <div className='flex flex-col-reverse items-center gap-6 py-16 md:flex-row md:py-32'>
+            <div className='flex flex-col-reverse items-center gap-6 py-16 pb-10 md:flex-row md:py-32 md:pb-16'>
                <div className='md:w-[60%]'>
                   <h1>
                      {getHeadingTextSplit().first}
