@@ -19,6 +19,7 @@ import healthcareIcon from '@/assets/icons/industries/healthcare.svg';
 import mediaEntertainmentIcon from '@/assets/icons/industries/media-entertainment.svg';
 import miningMachineryIcon from '@/assets/icons/industries/mining-machinery.svg';
 import telecomItIcon from '@/assets/icons/industries/telecom-it.svg';
+import { LOGO_URL_LIGHT } from '@/utils/constants';
 
 // Create an object mapping industry slugs to their respective icons
 const industryIcons: {
@@ -263,9 +264,9 @@ const Navbar: React.FC<INavbarProps> = ({ header, mainMenu, industries }) => {
    return (
       <div className='container'>
          <nav className='flex items-center justify-between rounded-md bg-blue-1 px-2 py-2 lg:px-8'>
-            <LocalizedLink href='/' className='flex items-center'>
+            <LocalizedLink href='/' className='flex items-center lg:hidden'>
                <img
-                  src={header?.logo?.data?.attributes?.url}
+                  src={LOGO_URL_LIGHT}
                   alt='logo'
                   className='h-10 w-24 object-contain md:h-16 md:w-32'
                />
@@ -324,12 +325,13 @@ const Navbar: React.FC<INavbarProps> = ({ header, mainMenu, industries }) => {
                      {/* <LocalizedLink href={header?.ctaButton?.link ?? ''}>
                         <Button>{header?.ctaButton?.title}</Button>
                      </LocalizedLink> */}
-                     <div className='max-w-[190px] [&>div]:mt-0 [&>div]:w-full'>
+                     {/* <div className='max-w-[190px] [&>div]:mt-0 [&>div]:w-full'>
                         <ClientSearchHero
                            placeholder='Search here...'
                            variant='light'
                         />
-                     </div>
+                     </div> */}
+                     <div className='gtranslate_wrapper !relative'></div>
                   </div>
                </>
             )}

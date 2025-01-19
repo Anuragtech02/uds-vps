@@ -2,8 +2,6 @@ export const runtime = 'edge';
 
 import { FC, Suspense } from 'react';
 import ReportStoreItem from '@/components/ReportStore/ReportItem';
-import ReportStoreFilters from '@/components/ReportStore/ReportStoreFilters';
-import GeographyFilters from '@/components/ReportStore/GeographFilters';
 import {
    getAllReports,
    getIndustries,
@@ -12,7 +10,6 @@ import {
 import ReportListLoading from '@/components/ReportStore/ReportListLoading';
 import Pagination from '@/components/ReportStore/Pagination';
 import ViewToggle from '@/components/Report/ViewToggle';
-import SelectedFilters from '@/components/Report/SelectedFitlers';
 import { absoluteUrl } from '@/utils/generic-methods';
 import { LOGO_URL_DARK } from '@/utils/constants';
 import { Metadata } from 'next';
