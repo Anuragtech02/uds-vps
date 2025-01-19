@@ -35,7 +35,7 @@ const About = async () => {
 
    return (
       <>
-         <Hero hero={hero} />
+         <Hero hero={hero} services={servicesList} />
          <AllServices services={servicesList} />
       </>
    );
