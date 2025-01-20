@@ -155,6 +155,7 @@ const ReportBlock: React.FC<ReportBlockProps> = ({ data }) => {
 
    const [selectedIndex, setSelectedIndex] = useState<number>(0);
    const [selectedLicense, setSelectedLicense] = useState<number | null>(null);
+   const [activeSection, setActiveSection] = useState('report-data'); // default to first section
    const selectedLicenses = useSelectedLicenseStore();
    const router = useRouter();
 
@@ -207,6 +208,65 @@ const ReportBlock: React.FC<ReportBlockProps> = ({ data }) => {
       router.push('/cart');
    };
 
+   useEffect(() => {
+      const observer = new IntersectionObserver(
+         (entries) => {
+            entries.forEach((entry) => {
+               // Specifically handle when scrolling up from table-of-content
+               if (
+                  entry.target.id === 'table-of-content' &&
+                  !entry.isIntersecting &&
+                  entry.boundingClientRect.top > 0
+               ) {
+                  // Checking if we're scrolling up
+                  setActiveSection('report-data');
+                  setSelectedIndex(0);
+                  return;
+               }
+            });
+
+            // Regular intersection handling for all other cases
+            const mostVisible = entries.reduce((max, entry) => {
+               return entry.intersectionRatio > max.intersectionRatio
+                  ? entry
+                  : max;
+            });
+
+            if (mostVisible.intersectionRatio > 0) {
+               setActiveSection(mostVisible.target.id);
+               const newIndex = reportIndex.findIndex(
+                  (item) => item.id === mostVisible.target.id,
+               );
+               if (newIndex !== -1) {
+                  setSelectedIndex(newIndex);
+               }
+            }
+         },
+         {
+            threshold: [0, 0.2, 0.4, 0.6, 0.8],
+            rootMargin: '-20% 0px -20% 0px',
+         },
+      );
+
+      // Observe all sections
+      reportIndex.forEach(({ id }) => {
+         const element = document.getElementById(id);
+         if (element) {
+            observer.observe(element);
+         }
+      });
+
+      // Cleanup
+      return () => {
+         reportIndex.forEach(({ id }) => {
+            const element = document.getElementById(id);
+            if (element) {
+               observer.unobserve(element);
+            }
+         });
+      };
+   }, []);
+
    return (
       <div className='container py-10 md:py-16 md:pt-10'>
          <div className='flex items-center gap-2 pb-10 md:text-lg'>
@@ -244,7 +304,7 @@ const ReportBlock: React.FC<ReportBlockProps> = ({ data }) => {
                            <li
                               key={index}
                               className={`cursor-pointer px-4 py-2 transition-all duration-150 ${
-                                 selectedIndex === index
+                                 item.id === activeSection
                                     ? 'border-y border-s-300 bg-blue-2 font-semibold text-white'
                                     : ''
                               }`}

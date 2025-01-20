@@ -114,7 +114,6 @@ const ReportBlockData: React.FC<ReportBlockDataProps> = ({ data }) => {
                __html: rmData,
             }}
          />
-
       </div>
    );
 };

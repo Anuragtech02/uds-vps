@@ -96,7 +96,7 @@ const Stats: React.FC<{ data: StatData[] }> = ({ data }) => {
                   </h3>
                   <img
                      src={stat.icon.url}
-                     className='absolute bottom-0 right-0 aspect-square h-20'
+                     className='absolute bottom-0 right-0 aspect-square h-14'
                      alt=''
                   />
                </div>

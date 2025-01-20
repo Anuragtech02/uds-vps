@@ -40,7 +40,7 @@
 .report-content h2,
 .report-content h3,
 .report-content h4 {
-   // margin-bottom: 1rem !important;
+   margin-bottom: 0.5rem !important;
 }
 
 .blog-content h1,
@@ -113,7 +113,7 @@
 
 /* Image styling */
 .report-content img {
-   max-width: 100% !important;
+   max-width: max(100%, 600px) !important;
    width: 100%;
    height: auto !important;
    display: block !important;
