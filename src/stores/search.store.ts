@@ -5,6 +5,7 @@ export const useSearchStore = create<{
    query: string;
    setQuery: (query: string) => void;
    toggleGlobalSearch: () => void;
+   closeSearch: () => void;
 }>((set) => ({
    isGlobalSearchVisible: false,
    query: '',
@@ -13,4 +14,5 @@ export const useSearchStore = create<{
       set((state: any) => ({
          isGlobalSearchVisible: !state.isGlobalSearchVisible,
       })),
+   closeSearch: () => set({ isGlobalSearchVisible: false }),
 }));

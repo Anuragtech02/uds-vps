@@ -51,7 +51,6 @@ const AdvancedSearch: React.FC<AdvancedSearchProps> = ({ isOpen, onClose }) => {
             setHasSearched(false);
          }
       }, 300);
-
       return () => clearTimeout(debounceTimer);
    }, [query]);
 
@@ -86,25 +85,29 @@ const AdvancedSearch: React.FC<AdvancedSearchProps> = ({ isOpen, onClose }) => {
       }
    };
 
-   const handleSearch = (searchQuery: string) => {
+   const handleSearch = async (searchQuery: string) => {
       if (!searchQuery) return;
+
+      // Update recent searches
       const updatedSearches = [
          searchQuery,
          ...recentSearches.filter((s) => s !== searchQuery),
       ].slice(0, MAX_RECENT_SEARCHES);
       saveRecentSearches(updatedSearches);
 
+      // Clear the search query and close the modal
+      setQuery('');
       onClose();
-      setTimeout(() => {
-         router.push(`/search?q=${encodeURIComponent(searchQuery)}`);
-      }, 100);
+
+      // Navigate to search page
+      await router.push(`/search?q=${encodeURIComponent(searchQuery)}`);
    };
 
-   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+   const handleKeyDown = async (e: React.KeyboardEvent<HTMLInputElement>) => {
       if (e.key === 'Enter') {
-         handleSearch(query);
-         onClose();
+         await handleSearch(query);
       } else if (e.key === 'Escape') {
+         setQuery('');
          onClose();
       }
    };
@@ -114,6 +117,11 @@ const AdvancedSearch: React.FC<AdvancedSearchProps> = ({ isOpen, onClose }) => {
          (search) => search !== searchToDelete,
       );
       saveRecentSearches(updatedSearches);
+   };
+
+   const handleModalClose = () => {
+      setQuery('');
+      onClose();
    };
 
    const renderContent = () => {
@@ -196,10 +204,7 @@ const AdvancedSearch: React.FC<AdvancedSearchProps> = ({ isOpen, onClose }) => {
    return (
       <div
          className='fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-4'
-         onClick={() => {
-            setQuery('');
-            onClose();
-         }}
+         onClick={handleModalClose}
       >
          <div className='w-full max-w-2xl rounded-lg bg-white shadow-xl'>
             <div
@@ -219,9 +224,7 @@ const AdvancedSearch: React.FC<AdvancedSearchProps> = ({ isOpen, onClose }) => {
                {query.length > 0 && (
                   <button
                      title='Clear search'
-                     onClick={() => {
-                        setQuery('');
-                     }}
+                     onClick={() => setQuery('')}
                      className='text-2xl text-gray-400 hover:text-gray-600'
                   >
                      <IoIosClose />

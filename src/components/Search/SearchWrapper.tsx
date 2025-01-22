@@ -6,7 +6,10 @@ import { useSearchStore } from '@/stores/search.store';
 
 const SearchWrapper = () => {
    const searchStore = useSearchStore();
-   const closeSearch = () => searchStore?.toggleGlobalSearch();
+
+   function closeSearch() {
+      searchStore?.closeSearch();
+   }
 
    return (
       <AdvancedSearch
