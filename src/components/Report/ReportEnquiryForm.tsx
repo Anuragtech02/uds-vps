@@ -142,7 +142,7 @@ const ReportEnquiryForm: React.FC<ReportEnquiryFormProps> = ({
                onSubmit={handleSubmit}
                className='mt-2 space-y-6 text-sm md:space-y-8'
             >
-               <div className='flex flex-col items-center gap-4 md:flex-row'>
+               <div className='flex flex-col gap-4 sm:items-center md:flex-row'>
                   <div className='w-full shrink grow basis-0 space-y-1 sm:w-auto'>
                      <label htmlFor='name'>Full Name*</label>
                      <input

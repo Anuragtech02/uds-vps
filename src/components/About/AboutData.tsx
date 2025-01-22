@@ -33,7 +33,7 @@ const AboutData = ({ about }: any) => {
                   </div> */}
                   <div className='flex flex-col-reverse items-center gap-8 pt-8 md:flex-row md:pt-12'>
                      <div
-                        className='space-y-4 md:w-1/2'
+                        className='space-y-4 text-lg md:w-1/2'
                         dangerouslySetInnerHTML={{
                            __html: researchSectionDescription,
                         }}

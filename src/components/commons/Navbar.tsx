@@ -290,7 +290,7 @@ const Navbar: React.FC<INavbarProps> = ({ header, mainMenu, industries }) => {
                </div>
             ) : (
                <>
-                  <ul className='flex flex-wrap items-center gap-1 text-white'>
+                  <ul className='flex flex-wrap items-center gap-4 text-white'>
                      {mainMenu.map((item, index) =>
                         item.title?.toLowerCase()?.includes('industr') ? (
                            <a

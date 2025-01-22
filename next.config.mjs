@@ -3,7 +3,10 @@ import { setupDevPlatform } from '@cloudflare/next-on-pages/next-dev';
 /** @type {import('next').NextConfig} */
 const nextConfig = {
    images: {
-      domains: ['udsweb.s3.ap-south-1.amazonaws.com'],
+      domains: [
+         'udsweb.s3.ap-south-1.amazonaws.com',
+         'univdatos-cms.s3.ap-south-1.amazonaws.com',
+      ],
    },
    async redirects() {
       return [
@@ -53,7 +56,7 @@ const nextConfig = {
             permanent: true,
          },
          {
-            source: '/:locale//reportscompany-profile/:path*',
+            source: '/:locale/reports/company-profile/:path*',
             destination: '/:locale/',
             permanent: true,
          },

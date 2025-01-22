@@ -8,6 +8,12 @@ import { useRouter, useSearchParams } from 'next/navigation';
 
 const ITEMS_PER_PAGE = 10;
 
+interface SearchResult {
+   report?: any[];
+   'news-article'?: any[];
+   blog?: any[];
+}
+
 const SkeletonLoader = () => (
    <div className='animate-pulse space-y-4'>
       {[...Array(5)].map((_, index) => (
@@ -22,7 +28,7 @@ const SearchResults = () => {
    );
    const [isLoading, setIsLoading] = useState(false);
    const [hasSearched, setHasSearched] = useState(false);
-   const [data, setData] = useState<any>({});
+   const [data, setData] = useState<SearchResult>({});
    const [currentPage, setCurrentPage] = useState(1);
    const [totalItems, setTotalItems] = useState(0);
 
@@ -32,15 +38,29 @@ const SearchResults = () => {
    const fetchResults = async (page: number) => {
       setIsLoading(true);
       setHasSearched(true);
+
+      // Get all search parameters
       const searchQuery = searchParams.get('q') || '';
+      const industries = searchParams.get('industries') || '';
+      const geographies = searchParams.get('geographies') || '';
+      const sortBy = searchParams.get('sortBy') || 'relevance';
+
       try {
          const data = await searchContent(
             encodeURIComponent(searchQuery),
             page,
             ITEMS_PER_PAGE,
+            {
+               industries: industries.split(',').filter(Boolean),
+               geographies: geographies.split(',').filter(Boolean),
+               sortBy,
+            },
          );
+
          setData(data.results);
          setTotalItems(data.total);
+
+         // Set active tab based on which type has results
          if (data.results?.report?.length > 0) {
             setActiveTab('reports');
          } else if (data.results?.['news-article']?.length > 0) {
@@ -60,7 +80,7 @@ const SearchResults = () => {
       const page = parseInt(searchParams.get('page') || '1', 10);
       setCurrentPage(page);
       fetchResults(page);
-   }, [searchParams]);
+   }, [searchParams]); // This will now react to all search parameter changes
 
    const handlePageChange = (newPage: number) => {
       const currentParams = new URLSearchParams(searchParams.toString());
@@ -68,36 +88,53 @@ const SearchResults = () => {
       router.push(`?${currentParams.toString()}`);
    };
 
+   const handleTabChange = (tab: 'reports' | 'news' | 'blogs') => {
+      setActiveTab(tab);
+      // Reset page when changing tabs
+      const currentParams = new URLSearchParams(searchParams.toString());
+      currentParams.set('page', '1');
+      router.push(`?${currentParams.toString()}`);
+   };
+
    const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
 
+   const getResultCount = (type: 'reports' | 'news' | 'blogs') => {
+      switch (type) {
+         case 'reports':
+            return data?.report?.length || 0;
+         case 'news':
+            return data?.['news-article']?.length || 0;
+         case 'blogs':
+            return data?.blog?.length || 0;
+      }
+   };
+
    return (
-      <div className='space-y-4 md:space-y-6 pb-4'>
+      <div className='space-y-4 pb-4 md:space-y-6'>
          <div className='flex items-center gap-4'>
-            <div
-               className={`cursor-pointer border border-s-300 ${
-                  activeTab === 'reports' ? 'bg-blue-9' : ''
-               } rounded-md px-4 py-2 text-sm`}
-               onClick={() => setActiveTab('reports')}
+            <button
+               className={`cursor-pointer rounded-md border border-s-300 px-4 py-2 text-sm ${activeTab === 'reports' ? 'bg-blue-50 text-blue-600' : 'hover:bg-gray-50'} ${getResultCount('reports') === 0 ? 'cursor-not-allowed opacity-50' : ''}`}
+               onClick={() => handleTabChange('reports')}
+               disabled={getResultCount('reports') === 0}
             >
-               Reports
-            </div>
-            <div
-               className={`cursor-pointer border border-s-300 ${
-                  activeTab === 'news' ? 'bg-blue-9' : ''
-               } rounded-md px-4 py-2 text-sm`}
-               onClick={() => setActiveTab('news')}
+               Reports ({getResultCount('reports')})
+            </button>
+            <button
+               className={`cursor-pointer rounded-md border border-s-300 px-4 py-2 text-sm ${activeTab === 'news' ? 'bg-blue-50 text-blue-600' : 'hover:bg-gray-50'} ${getResultCount('news') === 0 ? 'cursor-not-allowed opacity-50' : ''}`}
+               onClick={() => handleTabChange('news')}
+               disabled={getResultCount('news') === 0}
             >
-               News
-            </div>
-            <div
-               className={`cursor-pointer border border-s-300 ${
-                  activeTab === 'blogs' ? 'bg-blue-9' : ''
-               } rounded-md px-4 py-2 text-sm`}
-               onClick={() => setActiveTab('blogs')}
+               News ({getResultCount('news')})
+            </button>
+            <button
+               className={`cursor-pointer rounded-md border border-s-300 px-4 py-2 text-sm ${activeTab === 'blogs' ? 'bg-blue-50 text-blue-600' : 'hover:bg-gray-50'} ${getResultCount('blogs') === 0 ? 'cursor-not-allowed opacity-50' : ''}`}
+               onClick={() => handleTabChange('blogs')}
+               disabled={getResultCount('blogs') === 0}
             >
-               Blogs
-            </div>
+               Blogs ({getResultCount('blogs')})
+            </button>
          </div>
+
          <div>
             {isLoading ? (
                <SkeletonLoader />
@@ -109,26 +146,48 @@ const SearchResults = () => {
                   {activeTab === 'news' && (
                      <NewsResults news={data?.['news-article']} />
                   )}
-                  {activeTab === 'blogs' && <BlogResults blogs={data?.blog} />}
+                  {activeTab === 'blogs' && (
+                     <BlogResults blogs={data?.blog as any} />
+                  )}
+
+                  {!hasSearched && (
+                     <p className='mt-8 text-center text-gray-500'>
+                        Enter a search term to see results
+                     </p>
+                  )}
+
+                  {hasSearched &&
+                     Object.values(data).every((arr) => !arr?.length) && (
+                        <div className='mt-8 text-center'>
+                           <p className='text-lg text-gray-600'>
+                              No results found
+                           </p>
+                           <p className='mt-2 text-gray-500'>
+                              Try adjusting your search terms or filters
+                           </p>
+                        </div>
+                     )}
                </>
             )}
          </div>
+
          {!isLoading && totalPages > 1 && (
-            <div className='mt-4 flex items-center justify-center space-x-2'>
+            <div className='mt-4 flex items-center justify-center space-x-4'>
                <button
                   onClick={() => handlePageChange(currentPage - 1)}
                   disabled={currentPage === 1}
-                  className='rounded-md border px-4 py-2 disabled:opacity-50'
+                  className='flex items-center justify-center rounded-md border border-gray-300 bg-white px-3 py-2 text-sm font-medium text-gray-700 shadow-sm transition-colors hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50'
                >
                   Previous
                </button>
-               <span>
-                  {currentPage} of {totalPages}
+               <span className='text-sm text-gray-700'>
+                  Page <span className='font-medium'>{currentPage}</span> of{' '}
+                  <span className='font-medium'>{totalPages}</span>
                </span>
                <button
                   onClick={() => handlePageChange(currentPage + 1)}
                   disabled={currentPage === totalPages}
-                  className='rounded-md border px-4 py-2 disabled:opacity-50'
+                  className='flex items-center justify-center rounded-md border border-gray-300 bg-white px-3 py-2 text-sm font-medium text-gray-700 shadow-sm transition-colors hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50'
                >
                   Next
                </button>

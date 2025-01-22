@@ -27,11 +27,11 @@ const Topbar = ({ header, industries }: ITopbarProps) => {
                <img
                   src={header?.logo?.data?.attributes?.url}
                   alt='logo'
-                  className='h-10 w-24 object-contain md:h-16 md:w-36'
+                  className='h-10 w-24 object-contain md:h-[80px] md:w-[200px]'
                />
             </LocalizedLink>
             <div className='hidden flex-1 lg:block'>
-               <div className='mx-auto max-w-[85%] [&>div>span]:block [&>div>span]:bg-[#C1CFEA] [&>div>span]:p-2 [&>div]:mt-0 [&>div]:w-full [&>div]:overflow-hidden [&>div]:rounded-md [&>div]:border-blue-1 [&>div]:p-0'>
+               <div className='mx-auto max-w-[95%] [&>div>span]:block [&>div>span]:bg-[#C1CFEA] [&>div>span]:p-2 [&>div]:mt-0 [&>div]:w-full [&>div]:overflow-hidden [&>div]:rounded-md [&>div]:border-blue-1 [&>div]:p-0'>
                   <ClientSearchHero
                      placeholder='Search for reports, blogs, news, industries and more...'
                      variant='light'
@@ -77,9 +77,13 @@ const Topbar = ({ header, industries }: ITopbarProps) => {
                      <FaCircleUser />
                   </span>
                </LocalizedLink> */}
-               <LocalizedLink href='/cart'>
-                  <span className='cursor-pointer text-xl'>
+               <LocalizedLink href='/cart' className='relative'>
+                  <span className='block cursor-pointer rounded-md border border-blue-4 p-2 text-3xl'>
                      <IoMdCart />
+                     {/* Tooltip for cart items */}
+                     <span className='absolute -right-2 -top-2 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs text-white'>
+                        0
+                     </span>
                   </span>
                </LocalizedLink>
             </div>

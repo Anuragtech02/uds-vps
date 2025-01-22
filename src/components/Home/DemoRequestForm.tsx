@@ -127,7 +127,7 @@ const DemoRequestForm = () => {
                onSubmit={handleSubmit}
                className='space-y-6 text-sm md:space-y-8'
             >
-               <div className='flex flex-col items-center gap-4 md:flex-row'>
+               <div className='flex flex-col items-center gap-4 md:flex-row [&>div]:w-full sm:[&>div]:w-auto'>
                   <div className='shrink grow basis-0 space-y-1'>
                      <label htmlFor='name'>Full Name*</label>
                      <input
@@ -149,7 +149,7 @@ const DemoRequestForm = () => {
                      />
                   </div>
                </div>
-               <div className='flex flex-col items-center gap-4 md:flex-row'>
+               <div className='flex flex-col items-center gap-4 md:flex-row [&>div]:w-full sm:[&>div]:w-auto'>
                   <div className='shrink grow basis-0 space-y-1'>
                      <label htmlFor='email'>Business Email*</label>
                      <input

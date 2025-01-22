@@ -29,14 +29,32 @@ export const searchContent = async (
    query: string,
    page: number,
    limit = 10,
+   options?: {
+      industries?: string[];
+      geographies?: string[];
+      sortBy?: string;
+   },
 ) => {
    try {
-      const response = await fetchClientCSR('/search?q=' + query, {
+      const params = new URLSearchParams({
+         q: query,
+         page: page.toString(),
+         limit: limit.toString(),
+         ...(options?.industries?.length
+            ? { industries: options.industries.join(',') }
+            : {}),
+         ...(options?.geographies?.length
+            ? { geographies: options.geographies.join(',') }
+            : {}),
+         ...(options?.sortBy ? { sortBy: options.sortBy } : {}),
+      });
+
+      const response = await fetchClientCSR(`/search?${params.toString()}`, {
          headers: getAuthHeaders('search'),
       });
       return await response;
    } catch (error) {
-      console.error('Error fetching News:', error);
+      console.error('Error fetching search results:', error);
       throw error;
    }
 };
