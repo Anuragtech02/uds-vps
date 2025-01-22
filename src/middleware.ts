@@ -56,7 +56,7 @@ const INDUSTRY_MAP: {
    'healthcare-news': 'healthcare',
    'telecom-it-news': 'telecom-it',
    'artificial-intelligence': 'artificial-intelligence-analytics',
-   'electronics-semiconductor': 'electronics-and-semiconductor',
+   'electronics-semiconductor': 'electronics-semiconductor',
    'media-entertainment-blog': 'media-entertainment',
    'agriculture-food-tech': 'agriculture',
    'consumer-goods': 'consumer-goods',
