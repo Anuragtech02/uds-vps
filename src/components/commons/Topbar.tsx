@@ -6,6 +6,7 @@ import { IoIosSearch, IoMdCart } from 'react-icons/io';
 import { IoMail } from 'react-icons/io5';
 import { LocalizedLink } from './LocalizedLink';
 import ClientSearchHero from '../Home/ClientSearchHero';
+import CartIcon from './CartIcon';
 interface ITopbarProps {
    header: {
       phoneNumber: string;
@@ -77,15 +78,7 @@ const Topbar = ({ header, industries }: ITopbarProps) => {
                      <FaCircleUser />
                   </span>
                </LocalizedLink> */}
-               <LocalizedLink href='/cart' className='relative'>
-                  <span className='block cursor-pointer rounded-md border border-blue-4 p-2 text-3xl'>
-                     <IoMdCart />
-                     {/* Tooltip for cart items */}
-                     <span className='absolute -right-2 -top-2 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs text-white'>
-                        0
-                     </span>
-                  </span>
-               </LocalizedLink>
+               <CartIcon />
             </div>
          </div>
       </div>

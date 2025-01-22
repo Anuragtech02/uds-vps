@@ -58,7 +58,7 @@ const INDUSTRY_MAP: {
    'artificial-intelligence': 'artificial-intelligence-analytics',
    'electronics-semiconductor': 'electronics-and-semiconductor',
    'media-entertainment-blog': 'media-entertainment',
-   'agriculture-food-tech': 'agriculture-food',
+   'agriculture-food-tech': 'agriculture',
    'consumer-goods': 'consumer-goods',
    'advance-materials-chemicals': 'chemical',
    'telecom-it': 'telecom-it',

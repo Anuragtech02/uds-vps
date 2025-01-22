@@ -49,6 +49,7 @@ export const getHomePage = async () => {
          'testimonialSectionTestimonials.name',
          'upcomingReportsSectionCTABanner.ctaButton.link',
          'mediaSectionLogos.url',
+         'seo.metaImage.url',
       ]);
       const response = await fetchClient('/home-page?' + populateQuery, {
          headers: getAuthHeaders(),

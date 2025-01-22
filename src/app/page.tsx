@@ -16,24 +16,117 @@ import {
 } from '@/utils/api/services';
 import { Metadata } from 'next';
 import RecentResearch from '@/components/Home/RecentResearch';
-import { getRecentReports } from '@/utils/cache-recent-reports.utils';
+import { absoluteUrl } from '@/utils/generic-methods';
+import { SUPPORTED_LOCALES } from '@/utils/constants';
 
-export async function generateMetadata({
-   params,
-}: {
-   params: {
-      slug: string;
-   };
-}): Promise<Metadata> {
+export async function generateMetadata(): Promise<Metadata> {
    const homePage = await getHomePage();
+   const { attributes } = homePage.data;
+   const seo = attributes?.seo;
 
-   return {
-      title: homePage.data.attributes.heroMainHeading,
-      description: homePage.data.attributes.heroMainHeading,
-      // openGraph: {
-      //    images: [reportPage.attributes.highlightImage.data.attributes.url],
-      // },
+   // Create languages map for alternates
+   const languagesMap: Record<string, string> = {};
+
+   // Add all supported locales except English
+   SUPPORTED_LOCALES.filter((locale) => locale !== 'en').forEach((locale) => {
+      languagesMap[locale] = absoluteUrl(`/${locale}`);
+   });
+
+   const metadata: Metadata = {
+      title: seo?.metaTitle || attributes?.heroMainHeading,
+      description: seo?.metaDescription || attributes?.heroSubHeading,
+
+      openGraph: {
+         title:
+            seo?.metaSocial?.find(
+               (social: any) => social.socialNetwork === 'facebook',
+            )?.title ||
+            seo?.metaTitle ||
+            attributes?.heroMainHeading,
+         description:
+            seo?.metaSocial?.find(
+               (social: any) => social.socialNetwork === 'facebook',
+            )?.description ||
+            seo?.metaDescription ||
+            attributes?.heroSubHeading,
+         type: 'website',
+         url: absoluteUrl('/'),
+         images: [
+            {
+               url:
+                  seo?.metaSocial?.find(
+                     (social: any) => social.socialNetwork === 'facebook',
+                  )?.image?.url ||
+                  seo?.metaImage?.url ||
+                  absoluteUrl('/logo.png'),
+               width: 1200,
+               height: 630,
+               alt: attributes?.heroMainHeading,
+            },
+         ],
+         siteName: 'UnivDatos',
+      },
+
+      twitter: {
+         card: 'summary_large_image',
+         title:
+            seo?.metaSocial?.find(
+               (social: any) => social.socialNetwork === 'twitter',
+            )?.title ||
+            seo?.metaTitle ||
+            attributes?.heroMainHeading,
+         description:
+            seo?.metaSocial?.find(
+               (social: any) => social.socialNetwork === 'twitter',
+            )?.description ||
+            seo?.metaDescription ||
+            attributes?.heroSubHeading,
+         images: [
+            seo?.metaSocial?.find(
+               (social: any) => social.socialNetwork === 'twitter',
+            )?.image?.url ||
+               seo?.metaImage?.url ||
+               absoluteUrl('/logo.png'),
+         ],
+      },
+
+      keywords: seo?.keywords || '',
+
+      alternates: {
+         canonical: seo?.canonicalURL || absoluteUrl('/'),
+         languages: languagesMap,
+      },
+
+      other: {
+         'script:ld+json': [
+            JSON.stringify({
+               '@context': 'https://schema.org',
+               '@type': 'Organization',
+               name: 'UnivDatos',
+               url: absoluteUrl('/'),
+               logo: absoluteUrl('/logo.png'),
+               description: attributes?.heroSubHeading,
+               sameAs: [
+                  // Add your social media URLs here
+                  'https://twitter.com/univdatos',
+                  'https://www.linkedin.com/company/univdatos',
+                  // Add more social media links as needed
+               ],
+               ...seo?.structuredData,
+            }),
+         ],
+      },
    };
+
+   // Add extra scripts if defined
+   if (seo?.extraScripts) {
+      metadata.other = {
+         ...metadata.other,
+         ...seo.extraScripts,
+      };
+   }
+
+   return metadata;
 }
 
 async function Home() {
@@ -81,7 +174,7 @@ async function Home() {
       title: report?.attributes?.title,
       shortDescription: report?.attributes?.shortDescription,
       publishedAt: report?.attributes?.publishedAt,
-      highlightImage: report?.attributes?.highlightImage
+      highlightImage: report?.attributes?.highlightImage,
    }));
 
    const latestReportList = latestReports?.data?.map((report: any) => ({
@@ -90,7 +183,7 @@ async function Home() {
       title: report?.attributes?.title,
       shortDescription: report?.attributes?.shortDescription,
       publishedAt: report?.attributes?.publishedAt,
-      highlightImage: report?.attributes?.highlightImage
+      highlightImage: report?.attributes?.highlightImage,
    }));
 
    return (
@@ -98,7 +191,11 @@ async function Home() {
          <Hero data={homePage} />
          <RecentResearch data={homePage} />
          <Testimonials data={homePage} />
-         <LatestResearch data={homePage} reports={latestReportList} upcomingReports={upcomingReportList} />
+         <LatestResearch
+            data={homePage}
+            reports={latestReportList}
+            upcomingReports={upcomingReportList}
+         />
          <MediaCitation mediaCitation={mediaCitation} />
          <UpcomingReports
             data={{ upcomingReports: upcomingReportList, homePage }}
@@ -116,5 +213,5 @@ async function Home() {
 }
 
 export default function Page() {
-   return <Home  />;
+   return <Home />;
 }

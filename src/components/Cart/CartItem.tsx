@@ -50,6 +50,7 @@ const CartItem: FC<CartItemProps> = ({
                title='Remove item'
                onClick={() => handleRemoveItem(report?.id)}
                className='text-gray-500 transition-colors hover:text-gray-700'
+               type='button'
             >
                <IoCloseCircle className='h-5 w-5' />
             </button>
