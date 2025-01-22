@@ -5,6 +5,7 @@ import Header from '@/components/News/Header';
 import RelatedNews from '@/components/News/RelatedNews';
 import { getNewsBySlug } from '@/utils/api/services';
 import ClientSearchHero from '@/components/Home/ClientSearchHero';
+import { redirect } from 'next/navigation';
 
 const News = async (props: any) => {
    const { slug } = props?.params;
@@ -14,10 +15,12 @@ const News = async (props: any) => {
       newsArticle = await getNewsBySlug(slug);
    } catch (error) {
       console.error('Error fetching news details:', error);
+      // redirect to not found page
+      redirect('/en/not-found');
    }
 
    if (!newsArticle?.data?.length) {
-      return <p>Not found</p>;
+      redirect('/en/not-found');
    }
 
    let newsArticleData = newsArticle?.data?.[0]?.attributes;

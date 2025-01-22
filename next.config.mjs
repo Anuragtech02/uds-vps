@@ -70,26 +70,26 @@ const nextConfig = {
             destination: '/:locale/terms-and-conditions',
             permanent: true,
          },
-         {
-            source: '/category/news/:slug',
-            destination: '/news?industries=:slug',
-            permanent: true,
-         },
-         {
-            source: '/:locale/category/news/:slug',
-            destination: '/:locale/news?industries=:slug',
-            permanent: true,
-         },
-         {
-            source: '/category/blogs/:slug',
-            destination: '/blogs?industries=:slug',
-            permanent: true,
-         },
-         {
-            source: '/:locale/category/blogs/:slug',
-            destination: '/:locale/blogs?industries=:slug',
-            permanent: true,
-         },
+         // {
+         //    source: '/category/news/:slug',
+         //    destination: '/news?industries=:slug',
+         //    permanent: true,
+         // },
+         // {
+         //    source: '/:locale/category/news/:slug',
+         //    destination: '/:locale/news?industries=:slug',
+         //    permanent: true,
+         // },
+         // {
+         //    source: '/category/blog/:slug',
+         //    destination: '/blogs?industries=:slug',
+         //    permanent: true,
+         // },
+         // {
+         //    source: '/:locale/category/blog/:slug',
+         //    destination: '/:locale/blogs?industries=:slug',
+         //    permanent: true,
+         // },
       ];
    },
 };

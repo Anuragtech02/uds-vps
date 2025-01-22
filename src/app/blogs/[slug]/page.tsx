@@ -6,6 +6,7 @@ import Header from '@/components/Blog/Header';
 import RelatedBlogs from '@/components/Blog/RelatedBlogs';
 import ClientSearchHero from '@/components/Home/ClientSearchHero';
 import { getBlogDetails } from '@/utils/api/services';
+import { redirect } from 'next/navigation';
 
 const Blog = async (data: any) => {
    const { slug } = data?.params;
@@ -18,7 +19,7 @@ const Blog = async (data: any) => {
    }
 
    if (!blogDetails?.data?.length) {
-      return <p>Not found</p>;
+      redirect('/en/not-found');
    }
 
    let blog = blogDetails?.data?.[0]?.attributes;

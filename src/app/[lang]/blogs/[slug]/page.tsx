@@ -6,19 +6,21 @@ import Header from '@/components/Blog/Header';
 import RelatedBlogs from '@/components/Blog/RelatedBlogs';
 import ClientSearchHero from '@/components/Home/ClientSearchHero';
 import { getBlogDetails } from '@/utils/api/services';
+import { redirect } from 'next/navigation';
 
 const Blog = async (data: any) => {
-   const { slug } = data?.params;
+   const { slug, locale } = data?.params;
    let blogDetails: Awaited<ReturnType<typeof getBlogDetails>>;
 
    try {
       blogDetails = await getBlogDetails(slug);
    } catch (error) {
       console.error('Error fetching blog details:', error);
+      redirect(`/${locale}/not-found`);
    }
 
    if (!blogDetails?.data?.length) {
-      return <p>Not found</p>;
+      redirect(`/${locale}/not-found`);
    }
 
    let blog = blogDetails?.data?.[0]?.attributes;

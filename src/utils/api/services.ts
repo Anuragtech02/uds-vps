@@ -100,7 +100,7 @@ export const getAllReports = async (page = 1, limit = 10, filters = {}) => {
       const filterQuery = getFilterQuery(filters);
       const sortQuery = 'sort[0]=oldPublishedAt:desc';
       const query = `${populateQuery}&${paginationQuery}&${filterQuery}&${sortQuery}`;
-      
+
       const response = await fetchClient('/reports?' + query, {
          headers: getAuthHeaders(),
       });
@@ -121,7 +121,7 @@ export const getNewsListingPage = async (
          'industry.name',
          'thumbnailImage.url',
          'author.name',
-         'oldPublishedAt'
+         'oldPublishedAt',
       ]);
       const paginationQuery = getPaginationQuery(page, limit);
       const filterQuery = getFilterQuery(filters);
@@ -147,7 +147,7 @@ export const getBlogsListingPage = async (
          'industry.name',
          'thumbnailImage.url',
          'author.name',
-         'oldPublishedAt'
+         'oldPublishedAt',
       ]);
       const paginationQuery = getPaginationQuery(page, limit);
       const filterQuery = getFilterQuery(filters);
@@ -322,7 +322,8 @@ export const getNewsBySlug = async (slug: string) => {
             headers: getAuthHeaders(),
          },
       );
-      return await response;
+      console.log(response);
+      return response;
    } catch (error) {
       console.error('Error fetching news article by slug:', error);
       throw error;
@@ -382,46 +383,46 @@ export const getPrivacyPolicy = async () => {
    try {
       const response = await fetchClient('/privacy-policy', {
          headers: getAuthHeaders(),
-      },);
+      });
       return await response;
    } catch (error) {
       console.error('Error fetching privacy policy:', error);
       throw error;
    }
-}
+};
 
 export const getTermsAndConditions = async () => {
    try {
-      const response = await fetchClient('/t-and-c',{
+      const response = await fetchClient('/t-and-c', {
          headers: getAuthHeaders(),
-      },);
+      });
       return await response;
    } catch (error) {
       console.error('Error fetching terms and conditions:', error);
       throw error;
    }
-}
+};
 
 export const getLegal = async () => {
    try {
-      const response = await fetchClient('/legal',{
+      const response = await fetchClient('/legal', {
          headers: getAuthHeaders(),
-      },);
+      });
       return await response;
    } catch (error) {
       console.error('Error fetching legal:', error);
       throw error;
    }
-}
+};
 
 export const getDisclaimer = async () => {
    try {
-      const response = await fetchClient('/disclaimer',{
+      const response = await fetchClient('/disclaimer', {
          headers: getAuthHeaders(),
-      },);
+      });
       return await response;
    } catch (error) {
       console.error('Error fetching disclaimer:', error);
       throw error;
    }
-}
+};

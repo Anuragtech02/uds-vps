@@ -46,12 +46,31 @@ function setLocaleCookies(
    return response;
 }
 
+const INDUSTRY_MAP: {
+   [key: string]: string;
+} = {
+   'energy-power': 'energy-and-power',
+   'consumer-goods-news': 'consumer-goods',
+   'automotive-news': 'automotive',
+   'electronics-semiconductor-news': 'electronics-semiconductor',
+   'healthcare-news': 'healthcare',
+   'telecom-it-news': 'telecom-it',
+   'artificial-intelligence': 'artificial-intelligence-analytics',
+   'electronics-semiconductor': 'electronics-and-semiconductor',
+   'media-entertainment-blog': 'media-entertainment',
+   'agriculture-food-tech': 'agriculture-food',
+   'consumer-goods': 'consumer-goods',
+   'advance-materials-chemicals': 'chemical',
+   'telecom-it': 'telecom-it',
+   healthcare: 'healthcare',
+   automotive: 'automotive',
+};
+
 export async function middleware(request: NextRequest) {
    const pathname = request.nextUrl.pathname;
    const currentHost = request.headers.get('host') || '';
    const searchParams = request.nextUrl.searchParams;
 
-   // Skip non-page requests
    if (
       pathname.startsWith('/_next') ||
       pathname.startsWith('/api') ||
@@ -105,10 +124,41 @@ export async function middleware(request: NextRequest) {
    // Extract potential locale and slug
    const pathParts = pathname.split('/').filter(Boolean);
    const potentialLocale = currentLocale;
-   const slug = pathnameHasLocale ? pathParts[1] : pathParts[0];
+   const slug = pathParts[pathParts.length - 1];
+   const pathSlug = pathnameHasLocale ? pathParts[1] : pathParts[0];
+
+   if (
+      pathname.startsWith('/category/blog') ||
+      pathname.startsWith(`/${potentialLocale}/category/blog`)
+   ) {
+      console.log('Redirecting blog category:', slug);
+      const industrySlugFromMap = INDUSTRY_MAP[slug] || slug;
+      console.log(industrySlugFromMap);
+      const newDestination = pathnameHasLocale
+         ? `/${potentialLocale}/blogs?industries=${industrySlugFromMap}`
+         : `/blogs?industries=${industrySlugFromMap}`;
+
+      return nxtResponse.redirect(new URL(newDestination, request.url), {
+         status: 301,
+      });
+   }
+
+   if (
+      pathname.startsWith('/category/news') ||
+      pathname.startsWith(`/${potentialLocale}/category/news`)
+   ) {
+      const industrySlugFromMap = INDUSTRY_MAP[slug] || slug;
+      const newDestination = pathnameHasLocale
+         ? `/${potentialLocale}/news?industries=${industrySlugFromMap}`
+         : `/news?industries=${industrySlugFromMap}`;
+
+      return nxtResponse.redirect(new URL(newDestination, request.url), {
+         status: 301,
+      });
+   }
 
    // If it's a known valid route, skip processing
-   if (validRoutes.includes(slug)) {
+   if (validRoutes.includes(pathSlug)) {
       return setLocaleCookies(nxtResponse.next(), potentialLocale, currentHost);
    }
 
