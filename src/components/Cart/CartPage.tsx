@@ -62,7 +62,6 @@ const CurrencySelector = ({
 
 const CartPage = () => {
    const { formData, phone, setErrors } = useCheckout();
-   const [cartData, setCartData] = useState<ICartItem[]>([]);
    const [totalCost, setTotalCost] = useState(0);
    const [selectedCurrency, setSelectedCurrency] = useState('USD');
    const [exchangeRates, setExchangeRates] = useState<any>({});
@@ -130,7 +129,7 @@ const CartPage = () => {
 
    useEffect(() => {
       const cart = getCart();
-      setCartData(cart);
+      cartStore.updateCart(cart);
       updateTotalCost(cart);
    }, []);
 
@@ -139,30 +138,30 @@ const CartPage = () => {
    };
 
    const handleChangeQuantity = (reportId: number, quantity: number) => {
-      const updatedCart = cartData.map((item: any) =>
+      const updatedCart = cartStore.reports.map((item: any) =>
          item?.report?.id === reportId ? { ...item, quantity } : item,
       );
-      setCartData(updatedCart);
+      cartStore.updateCart(updatedCart);
       updateTotalCost(updatedCart);
       changeQuantityOfReport(reportId, quantity);
    };
 
    const handleRemoveItem = (reportId: number) => {
-      const updatedCart = cartData?.filter(
+      const updatedCart = cartStore.reports?.filter(
          (item: any) => item?.report?.id !== reportId,
       );
-      setCartData(updatedCart);
+      cartStore.updateCart(updatedCart);
       updateTotalCost(updatedCart);
       removeItemFromCart(reportId);
    };
 
    const handleChangeLicense = (reportId: number, newLicense: any) => {
-      const updatedCart = cartData.map((item: any) =>
+      const updatedCart = cartStore.reports.map((item: any) =>
          item?.report?.id === reportId
             ? { ...item, selectedLicense: newLicense }
             : item,
       );
-      setCartData(updatedCart);
+      cartStore.updateCart(updatedCart);
       updateTotalCost(updatedCart);
       changeLicenseOfReport(reportId, newLicense);
    };
@@ -177,7 +176,7 @@ const CartPage = () => {
       try {
          const orderId: string = await createOrderIdFromRazorPay(totalCost);
          const createdOrder = await createOrder({
-            reports: cartData?.map((item: any) => item?.report?.id),
+            reports: cartStore.reports?.map((item: any) => item?.report?.id),
             orderId,
             taxAmount: {
                currency: selectedCurrency,
@@ -283,7 +282,7 @@ const CartPage = () => {
                      <div className='w-[40%]'>
                         <span>Product</span>
                      </div>
-                     <div className='w-1/2 sm:w-1/5'>
+                     <div className='w-1/2 sm:w-2/5'>
                         <span>Select License</span>
                      </div>
                      <div className='ml-auto w-32 text-right'>
@@ -295,20 +294,28 @@ const CartPage = () => {
                   </div>
 
                   {/* Cart Items */}
-                  <div className='divide-y divide-gray-200'>
-                     {cartData.map((item: any, i) => (
-                        <CartItem
-                           key={i}
-                           {...item}
-                           handleRemoveItem={handleRemoveItem}
-                           handleChangeQuantity={handleChangeQuantity}
-                           handleChangeLicense={handleChangeLicense}
-                           convertPrice={convertPrice}
-                           selectedCurrency={selectedCurrency}
-                           currencySymbol={CURRENCIES[selectedCurrency].symbol}
-                        />
-                     ))}
-                  </div>
+                  {cartStore.reports.length === 0 ? (
+                     <div className='py-8 text-center text-gray-500'>
+                        No items in cart yet. Checkout our reports!
+                     </div>
+                  ) : (
+                     <div className='divide-y divide-gray-200'>
+                        {cartStore.reports.map((item: any, i) => (
+                           <CartItem
+                              key={i}
+                              {...item}
+                              handleRemoveItem={handleRemoveItem}
+                              handleChangeQuantity={handleChangeQuantity}
+                              handleChangeLicense={handleChangeLicense}
+                              convertPrice={convertPrice}
+                              selectedCurrency={selectedCurrency}
+                              currencySymbol={
+                                 CURRENCIES[selectedCurrency].symbol
+                              }
+                           />
+                        ))}
+                     </div>
+                  )}
                </div>
 
                {/* Cost Calculations */}
