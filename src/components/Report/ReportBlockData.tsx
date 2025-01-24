@@ -63,13 +63,13 @@ const ReportBlockData: React.FC<ReportBlockDataProps> = ({ data }) => {
       <div className='space-y-6 text-s-700 md:px-4'>
          <div
             id='report-data'
-            className='report-content'
+            className='report-content section-anchor'
             dangerouslySetInnerHTML={{
                __html: data.description,
             }}
          />
 
-         <div>
+         <div className='section-anchor'>
             <div className='mb-4 flex items-center justify-between'>
                <h2 className='text-2xl font-semibold text-blue-2'>
                   Table of Contents
@@ -109,7 +109,7 @@ const ReportBlockData: React.FC<ReportBlockDataProps> = ({ data }) => {
 
          <div
             id='research-methodology'
-            className='report-content !mt-12'
+            className='report-content section-anchor !pt-12'
             dangerouslySetInnerHTML={{
                __html: rmData,
             }}

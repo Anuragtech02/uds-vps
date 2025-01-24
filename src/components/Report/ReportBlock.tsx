@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Button from '../commons/Button';
 import ReportBlockData from './ReportBlockData';
 import Link from 'next/link';
@@ -116,6 +116,100 @@ const reportIndex = [
    { title: 'FAQs', id: 'faq-section' },
 ];
 
+const useScrollSpy = (sectionIds: string[]) => {
+   const [activeSection, setActiveSection] = useState(sectionIds[0]);
+   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+   const headerHeight = useRef(100);
+
+   // Get dynamic header height
+   useEffect(() => {
+      const header = document.querySelector('header');
+      headerHeight.current = header?.clientHeight || 100;
+   }, []);
+
+   // Intersection Observer setup
+   useEffect(() => {
+      const observers: IntersectionObserver[] = [];
+      const sectionMap = new Map<string, number>();
+
+      const handleIntersect =
+         (id: string) => (entries: IntersectionObserverEntry[]) => {
+            entries.forEach((entry) => {
+               sectionMap.set(id, entry.intersectionRatio);
+            });
+
+            // Find section with highest visibility
+            let maxRatio = 0;
+            let currentSection = activeSection;
+            sectionMap.forEach((ratio, sectionId) => {
+               if (ratio > maxRatio) {
+                  maxRatio = ratio;
+                  currentSection = sectionId;
+               }
+            });
+
+            if (maxRatio > 0 && currentSection !== activeSection) {
+               setActiveSection(currentSection);
+            }
+         };
+
+      sectionIds.forEach((id) => {
+         const element = document.getElementById(id);
+         if (element) {
+            const observer = new IntersectionObserver(handleIntersect(id), {
+               root: null,
+               rootMargin: `-${headerHeight.current}px 0px 0px 0px`,
+               threshold: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1],
+            });
+            observer.observe(element);
+            observers.push(observer);
+         }
+      });
+
+      return () => {
+         observers.forEach((observer) => observer.disconnect());
+      };
+   }, [sectionIds, activeSection]);
+
+   // Scroll listener fallback
+   useEffect(() => {
+      const handleScroll = () => {
+         if (timeoutRef.current) clearTimeout(timeoutRef.current);
+
+         timeoutRef.current = setTimeout(() => {
+            const scrollPosition = window.scrollY + headerHeight.current + 10;
+            let currentSection = sectionIds[0];
+
+            for (const sectionId of sectionIds) {
+               const element = document.getElementById(sectionId);
+               if (element && element.offsetTop <= scrollPosition) {
+                  currentSection = sectionId;
+               } else {
+                  break;
+               }
+            }
+
+            setActiveSection(currentSection);
+         }, 100);
+      };
+
+      window.addEventListener('scroll', handleScroll);
+      return () => window.removeEventListener('scroll', handleScroll);
+   }, [sectionIds]);
+
+   return activeSection;
+};
+
+const scrollToSection = (id: string) => {
+   const element = document.getElementById(id);
+   if (element) {
+      element.scrollIntoView({
+         behavior: 'smooth',
+         block: 'start',
+      });
+   }
+};
+
 const ReportBlock: React.FC<ReportBlockProps> = ({ data }) => {
    const reportData: ReportData = {
       id: data.id,
@@ -155,9 +249,11 @@ const ReportBlock: React.FC<ReportBlockProps> = ({ data }) => {
 
    const [selectedIndex, setSelectedIndex] = useState<number>(0);
    const [selectedLicense, setSelectedLicense] = useState<number | null>(null);
-   const [activeSection, setActiveSection] = useState('report-data'); // default to first section
    const selectedLicenses = useSelectedLicenseStore();
    const router = useRouter();
+
+   const sectionIds = reportIndex.map((item) => item.id);
+   const activeSection = useScrollSpy(sectionIds);
 
    useEffect(() => {
       if (selectedLicense === null || isNaN(selectedLicense)) return;
@@ -183,16 +279,6 @@ const ReportBlock: React.FC<ReportBlockProps> = ({ data }) => {
       }
    }, []);
 
-   const scrollIntoView = (id: string) => {
-      const element = document.getElementById(id);
-      if (element) {
-         const yOffset = -200; // Adjust this value to provide padding/margin from top
-         const y =
-            element.getBoundingClientRect().top + window.pageYOffset + yOffset;
-         window.scrollTo({ top: y, behavior: 'smooth' });
-      }
-   };
-
    const handleBuyNow = () => {
       // @ts-ignore
       let selectedLicense = selectedLicenses.selectedLicenses[reportData.id];
@@ -208,64 +294,41 @@ const ReportBlock: React.FC<ReportBlockProps> = ({ data }) => {
       router.push('/cart');
    };
 
-   useEffect(() => {
-      const observer = new IntersectionObserver(
-         (entries) => {
-            entries.forEach((entry) => {
-               // Specifically handle when scrolling up from table-of-content
-               if (
-                  entry.target.id === 'table-of-content' &&
-                  !entry.isIntersecting &&
-                  entry.boundingClientRect.top > 0
-               ) {
-                  // Checking if we're scrolling up
-                  setActiveSection('report-data');
-                  setSelectedIndex(0);
-                  return;
-               }
-            });
+   // useEffect(() => {
+   //    const header = document.getElementById('report-header');
+   //    const headerHeight = header?.clientHeight || 80;
 
-            // Regular intersection handling for all other cases
-            const mostVisible = entries.reduce((max, entry) => {
-               return entry.intersectionRatio > max.intersectionRatio
-                  ? entry
-                  : max;
-            });
+   //    const observer = new IntersectionObserver(
+   //       (entries) => {
+   //          entries.forEach((entry) => {
+   //             if (entry.isIntersecting) {
+   //                setActiveSection(entry.target.id);
+   //                const newIndex = reportIndex.findIndex(
+   //                   (item) => item.id === entry.target.id,
+   //                );
+   //                if (newIndex !== -1) setSelectedIndex(newIndex);
+   //             }
+   //          });
+   //       },
+   //       {
+   //          rootMargin: `-${headerHeight}px 0px 0px 0px`, // Compensate for header height
+   //          threshold: 0.5,
+   //       },
+   //    );
 
-            if (mostVisible.intersectionRatio > 0) {
-               setActiveSection(mostVisible.target.id);
-               const newIndex = reportIndex.findIndex(
-                  (item) => item.id === mostVisible.target.id,
-               );
-               if (newIndex !== -1) {
-                  setSelectedIndex(newIndex);
-               }
-            }
-         },
-         {
-            threshold: [0, 0.2, 0.4, 0.6, 0.8],
-            rootMargin: '-20% 0px -20% 0px',
-         },
-      );
+   //    // Observe all sections
+   //    reportIndex.forEach(({ id }) => {
+   //       const element = document.getElementById(id);
+   //       if (element) observer.observe(element);
+   //    });
 
-      // Observe all sections
-      reportIndex.forEach(({ id }) => {
-         const element = document.getElementById(id);
-         if (element) {
-            observer.observe(element);
-         }
-      });
-
-      // Cleanup
-      return () => {
-         reportIndex.forEach(({ id }) => {
-            const element = document.getElementById(id);
-            if (element) {
-               observer.unobserve(element);
-            }
-         });
-      };
-   }, []);
+   //    return () => {
+   //       reportIndex.forEach(({ id }) => {
+   //          const element = document.getElementById(id);
+   //          if (element) observer.unobserve(element);
+   //       });
+   //    };
+   // }, []);
 
    return (
       <div className='container py-10 md:py-16 md:pt-10'>
@@ -310,7 +373,7 @@ const ReportBlock: React.FC<ReportBlockProps> = ({ data }) => {
                               }`}
                               onClick={() => {
                                  setSelectedIndex(index);
-                                 scrollIntoView(item.id);
+                                 scrollToSection(item.id);
                               }}
                            >
                               {item.title}

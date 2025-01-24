@@ -514,3 +514,13 @@
 .marquee-container:hover {
    animation-play-state: paused;
 }
+.section-anchor {
+   scroll-margin-top: 100px; /* Match your header height */
+}
+@media screen and (max-width: 768px) {
+   .report-content #report-data {
+      padding-top: 20px;
+      margin-top: -20px;
+      scroll-margin-top: 140px;
+   }
+}

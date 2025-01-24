@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { BiChevronDown, BiChevronUp } from 'react-icons/bi';
 
 interface License {
@@ -53,6 +53,79 @@ const calculateDiscountedPrice = (
    return Math.round(price * (1 - discountPercentage / 100));
 };
 
+// Add this hook for mobile scroll tracking
+const useMobileScrollSpy = (sectionIds: string[]) => {
+   const [activeSection, setActiveSection] = useState(sectionIds[0]);
+   const headerHeight = useRef(0);
+
+   const updateHeaderHeight = useCallback(() => {
+      const header1 = document.getElementById('report-header');
+      const header2 = document.querySelector('.mobile-second-header');
+      headerHeight.current =
+         (header1?.clientHeight || 0) + (header2?.clientHeight || 0) + 20;
+      console.log('Updated header height:', headerHeight.current);
+   }, []);
+
+   useEffect(() => {
+      const observer = new IntersectionObserver(
+         (entries) => {
+            entries.forEach((entry) => {
+               // Special handling for report-data section
+               if (entry.target.id === 'report-data') {
+                  // Use lower threshold for report-data detection
+                  if (entry.intersectionRatio > 0.05) {
+                     setActiveSection(entry.target.id);
+                  }
+               }
+               // Normal handling for other sections
+               else if (entry.isIntersecting && entry.intersectionRatio > 0.1) {
+                  setActiveSection(entry.target.id);
+               }
+            });
+         },
+         {
+            rootMargin: `-${headerHeight.current}px 0px 0px 0px`,
+            threshold: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1],
+         },
+      );
+
+      // Initial height calculation
+      updateHeaderHeight();
+
+      // Resize observer for header changes
+      const resizeObserver = new ResizeObserver(() => {
+         updateHeaderHeight();
+         sectionIds.forEach((id) => {
+            const element = document.getElementById(id);
+            element && observer.unobserve(element);
+            element && observer.observe(element);
+         });
+      });
+
+      // Observe headers and sections
+      const header1 = document.getElementById('report-header');
+      const header2 = document.querySelector('.mobile-second-header');
+      header1 && resizeObserver.observe(header1);
+      header2 && resizeObserver.observe(header2);
+
+      // Observe content sections
+      sectionIds.forEach((id) => {
+         const element = document.getElementById(id);
+         if (element) {
+            observer.observe(element);
+            resizeObserver.observe(element);
+         }
+      });
+
+      return () => {
+         resizeObserver.disconnect();
+         observer.disconnect();
+      };
+   }, [sectionIds, updateHeaderHeight]);
+
+   return activeSection;
+};
+
 const MobileReportBlock: React.FC<MobileReportBlockProps> = ({
    reportIndex,
    variants,
@@ -61,18 +134,26 @@ const MobileReportBlock: React.FC<MobileReportBlockProps> = ({
    rightSectionHeading,
 }) => {
    const [isLicenseOpen, setIsLicenseOpen] = useState(false);
-   const [activeTab, setActiveTab] = useState(reportIndex[0].id);
    const [showSecondHeader, setShowSecondHeader] = useState(false);
+   const sectionIds = reportIndex.map((item) => item.id);
+   const activeTab = useMobileScrollSpy(sectionIds);
 
-   const scrollToSection = (id: string) => {
+   // Improved scroll function with dynamic header height
+   const scrollToSection = useCallback((id: string) => {
+      const header1 = document.getElementById('report-header');
+      const header2 = document.querySelector('.mobile-second-header');
+      const totalHeaderHeight =
+         (header1?.clientHeight || 0) + (header2?.clientHeight || 0) + 10;
+
       const element = document.getElementById(id);
       if (element) {
-         const yOffset = -120;
-         const y =
-            element.getBoundingClientRect().top + window.pageYOffset + yOffset;
-         window.scrollTo({ top: y, behavior: 'smooth' });
+         const top = element.offsetTop - totalHeaderHeight;
+         window.scrollTo({
+            top,
+            behavior: 'smooth',
+         });
       }
-   };
+   }, []);
 
    const toggleLicense = (index: number) => {
       setSelectedLicense(selectedLicense === index ? null : index);
@@ -101,7 +182,6 @@ const MobileReportBlock: React.FC<MobileReportBlockProps> = ({
                         <button
                            key={item.id}
                            onClick={() => {
-                              setActiveTab(item.id);
                               scrollToSection(item.id);
                            }}
                            className={`flex-1 border-b-2 px-4 py-3 text-sm font-medium ${
