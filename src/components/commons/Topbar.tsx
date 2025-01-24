@@ -51,7 +51,14 @@ const Topbar = ({ header, industries }: ITopbarProps) => {
                <div className='flex flex-col items-start gap-1 text-xs md:text-base'>
                   <p className='flex items-center gap-2'>
                      <FaPhoneAlt />
-                     <span className='text-sm'>{header?.phoneNumber}</span>
+                     <span className='text-sm'>
+                        <a
+                           href={`tel:${header?.phoneNumber} ?? ''}`}
+                           className='text-sm'
+                        >
+                           {header?.phoneNumber}
+                        </a>
+                     </span>
                   </p>
                   <p className='flex items-center gap-2'>
                      <IoMail />
@@ -65,19 +72,6 @@ const Topbar = ({ header, industries }: ITopbarProps) => {
                      </span>
                   </p>
                </div>
-               {/* <span
-                  className='cursor-pointer text-xl'
-                  onClick={() => {
-                     searchStore?.toggleGlobalSearch();
-                  }}
-               >
-                  <IoIosSearch />
-               </span> */}
-               {/* <LocalizedLink href='/login'>
-                  <span className='text-xl'>
-                     <FaCircleUser />
-                  </span>
-               </LocalizedLink> */}
                <CartIcon />
             </div>
          </div>

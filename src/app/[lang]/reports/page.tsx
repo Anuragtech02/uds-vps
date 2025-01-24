@@ -174,7 +174,7 @@ const ReportStore: FC<ReportStoreProps> = async ({ searchParams }) => {
                      className={`grid gap-4 ${
                         viewType === 'list'
                            ? 'grid-cols-1'
-                           : 'grid-cols-1 lg:grid-cols-2'
+                           : 'grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3'
                      }`}
                   >
                      {reportsList?.data && reportsList.data.length > 0 ? (
