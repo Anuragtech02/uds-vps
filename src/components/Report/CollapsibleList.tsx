@@ -50,9 +50,9 @@ const CollapsibleLicenseOptions: React.FC<CollapsibleLicenseOptionsProps> = ({
    setSelectedLicense,
 }) => {
    const toggleLicense = (index: number) => {
-      setSelectedLicense(selectedLicense === index ? null : index);
+      // Always set the selected license (radio buttons shouldn't toggle)
+      setSelectedLicense(index);
    };
-
    return (
       <div className='mt-3 flex flex-col gap-2'>
          {variants?.map((license: License, index: number) => {
@@ -82,14 +82,12 @@ const CollapsibleLicenseOptions: React.FC<CollapsibleLicenseOptionsProps> = ({
                               onChange={() => toggleLicense(index)}
                               id={`license-${index}`}
                            />
-                           <div>
-                              <label
-                                 htmlFor={`license-${index}`}
-                                 className='block text-sm font-semibold'
-                              >
-                                 {license.title}
-                              </label>
-                           </div>
+                           <label
+                              htmlFor={`license-${index}`}
+                              className='block cursor-pointer text-sm font-semibold'
+                           >
+                              {license.title}
+                           </label>
                         </div>
                         <div className='flex flex-col items-end'>
                            <p className='text-sm text-red-500 line-through'>

@@ -63,7 +63,6 @@ const useMobileScrollSpy = (sectionIds: string[]) => {
       const header2 = document.querySelector('.mobile-second-header');
       headerHeight.current =
          (header1?.clientHeight || 0) + (header2?.clientHeight || 0) + 20;
-      console.log('Updated header height:', headerHeight.current);
    }, []);
 
    useEffect(() => {

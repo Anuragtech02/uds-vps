@@ -40,7 +40,7 @@ const Topbar = ({ header, industries }: ITopbarProps) => {
                </div>
             </div>
             <div className='gtranslate_wrapper !relative lg:hidden'></div>
-            <div className='flex items-center gap-6'>
+            <div className='flex items-center gap-2 sm:gap-6'>
                {/* <select title='Industry' id='' className='hidden md:block'>
                   {industries?.map((industry) => (
                      <option key={industry?.slug} value={industry?.slug}>

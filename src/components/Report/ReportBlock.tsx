@@ -21,6 +21,7 @@ import { useRouter } from 'next/navigation';
 import ReportFAQs from './ReportFAQs';
 import { LocalizedLink } from '../commons/LocalizedLink';
 import MobileReportBlock from './MobileReportIndex';
+import Breadcrumbs from './Breadcrumbs';
 
 // Define type for report variants
 export interface Variant {
@@ -332,27 +333,12 @@ const ReportBlock: React.FC<ReportBlockProps> = ({ data }) => {
 
    return (
       <div className='container py-10 md:py-16 md:pt-10'>
-         <div className='flex items-center gap-2 pb-10 md:text-lg'>
-            <p className='hover:blue-5 hover:underline'>
-               <LocalizedLink href='/'>Home</LocalizedLink>
-            </p>
-            <span>
-               <BiChevronRight />
-            </span>
-            <p className='hover:blue-5 hover:underline'>
-               <LocalizedLink href='/reports'>Report Store</LocalizedLink>
-            </p>
-            <span>
-               <BiChevronRight />
-            </span>
-            <p className='hover:blue-5 hover:underline'>
-               <LocalizedLink
-                  href={`/reports/?industries=${reportData.industry.slug}`}
-               >
-                  {reportData.industry.name}
-               </LocalizedLink>
-            </p>
-         </div>
+         <Breadcrumbs
+            industry={{
+               name: reportData.industry.name,
+               slug: reportData.industry.slug,
+            }}
+         />
          <div className='flex flex-col items-start gap-4 lg:flex-row'>
             <div className='sticky top-[100px] hidden flex-[0.23] flex-col gap-6 lg:flex'>
                <div className='w-full rounded-md border border-s-400 bg-white'>
