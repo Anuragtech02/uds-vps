@@ -1,44 +1,43 @@
 import React, { useState, useEffect } from 'react';
 import Button from './Button';
-import Link from 'next/link';
-import { BiChevronDown, BiChevronRight, BiMenu, BiX } from 'react-icons/bi';
+import { BiChevronDown, BiMenu, BiX } from 'react-icons/bi';
 import { LocalizedLink } from './LocalizedLink';
 import ClientSearchHero from '../Home/ClientSearchHero';
-// Import all the SVGs
-import aerospaceAndDefenseIcon from '@/assets/icons/industries/aerospace-and-defense.svg';
-import agricultureIcon from '@/assets/icons/industries/agriculture.svg';
-import artificialIntelligenceAnalyticsIcon from '@/assets/icons/industries/artificial-intelligence-analytics.svg';
-import automotiveIcon from '@/assets/icons/industries/automotive.svg';
-import bankingIcon from '@/assets/icons/industries/banking.svg';
-import buildingMaterialIcon from '@/assets/icons/industries/building-material.svg';
-import chemicalIcon from '@/assets/icons/industries/chemical.svg';
-import consumerGoodIcon from '@/assets/icons/industries/consumer-good.svg';
-import electronicsSemiconductorIcon from '@/assets/icons/industries/electronics-semiconductor.svg';
-import energyAndPowerIcon from '@/assets/icons/industries/energy-and-power.svg';
-import healthcareIcon from '@/assets/icons/industries/healthcare.svg';
-import mediaEntertainmentIcon from '@/assets/icons/industries/media-entertainment.svg';
-import miningMachineryIcon from '@/assets/icons/industries/mining-machinery.svg';
-import telecomItIcon from '@/assets/icons/industries/telecom-it.svg';
+
 import { LOGO_URL_LIGHT } from '@/utils/constants';
+import AerospaceAndDefense from '../icons/industries/aerospace-and-defense';
+import AgricultureIcon from '../icons/industries/agriculture';
+import ArtificialInitelligenceAnalytics from '../icons/industries/artificial-intelligence-analytics';
+import Automotive from '../icons/industries/automotive';
+import Banking from '../icons/industries/banking';
+import BuildingMaterial from '../icons/industries/building-material';
+import Chemical from '../icons/industries/chemical';
+import ConsumerGoods from '../icons/industries/consumer-good';
+import ElectronicsAndSemiconductor from '../icons/industries/electronics-semiconductor';
+import EnergyAndPower from '../icons/industries/energy-and-power';
+import Healthcare from '../icons/industries/healthcare';
+import MediaEntertainment from '../icons/industries/media-entertainment';
+import MinigMachinery from '../icons/industries/mining-machinery';
+import TelecomeIT from '../icons/industries/telecom-it';
 
 // Create an object mapping industry slugs to their respective icons
 const industryIcons: {
-   [key: string]: { src: string; alt: string };
+   [key: string]: React.ReactNode;
 } = {
-   'aerospace-and-defence': aerospaceAndDefenseIcon,
-   agriculture: agricultureIcon,
-   'artificial-intelligence-analytics': artificialIntelligenceAnalyticsIcon,
-   automotive: automotiveIcon,
-   'banking-financial-services-and-insurance': bankingIcon,
-   'building-material-and-construction': buildingMaterialIcon,
-   chemical: chemicalIcon,
-   'consumer-goods': consumerGoodIcon,
-   'electronics-semiconductor': electronicsSemiconductorIcon,
-   'energy-and-power': energyAndPowerIcon,
-   healthcare: healthcareIcon,
-   'media-entertainment': mediaEntertainmentIcon,
-   'mining-machinery': miningMachineryIcon,
-   'telecom-it': telecomItIcon,
+   'aerospace-and-defence': <AerospaceAndDefense />,
+   agriculture: <AgricultureIcon />,
+   'artificial-intelligence-analytics': <ArtificialInitelligenceAnalytics />,
+   automotive: <Automotive />,
+   'banking-financial-services-and-insurance': <Banking />,
+   'building-material-and-construction': <BuildingMaterial />,
+   chemical: <Chemical />,
+   'consumer-goods': <ConsumerGoods />,
+   'electronics-semiconductor': <ElectronicsAndSemiconductor />,
+   'energy-and-power': <EnergyAndPower />,
+   healthcare: <Healthcare />,
+   'media-entertainment': <MediaEntertainment />,
+   'mining-machinery': <MinigMachinery />,
+   'telecom-it': <TelecomeIT />,
 };
 
 interface MenuItem {
@@ -112,15 +111,13 @@ const MobileMenuItem: React.FC<{
                }}
             >
                {depth > 0 && item.url?.includes('industries=') && (
-                  <img
-                     src={
+                  <div className='mr-2'>
+                     {
                         industryIcons[
                            item.url.split('industries=')[1].split('&')[0]
-                        ]?.src
+                        ]
                      }
-                     alt=''
-                     className='mr-2 h-5 w-5'
-                  />
+                  </div>
                )}
                <span className='break-words'>{item.title}</span>
             </LocalizedLink>
@@ -167,17 +164,15 @@ const DesktopMenuItem: React.FC<{ item: MenuItem; depth: number }> = ({
                               className='flex items-center break-words py-2 text-s-800 hover:text-blue-600'
                            >
                               {child.url?.includes('industries=') && (
-                                 <img
-                                    src={
+                                 <div className='mr-2'>
+                                    {
                                        industryIcons[
                                           child.url
                                              .split('industries=')[1]
                                              .split('&')[0]
-                                       ]?.src
+                                       ]
                                     }
-                                    alt=''
-                                    className='mr-2 h-5 w-5'
-                                 />
+                                 </div>
                               )}
                               {child.title}
                            </LocalizedLink>
