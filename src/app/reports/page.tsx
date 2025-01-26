@@ -2,8 +2,6 @@ export const runtime = 'edge';
 
 import { FC, Suspense } from 'react';
 import ReportStoreItem from '@/components/ReportStore/ReportItem';
-import ReportStoreFilters from '@/components/ReportStore/ReportStoreFilters';
-import GeographyFilters from '@/components/ReportStore/GeographFilters';
 import {
    getAllReports,
    getIndustries,
@@ -12,7 +10,6 @@ import {
 import ReportListLoading from '@/components/ReportStore/ReportListLoading';
 import Pagination from '@/components/ReportStore/Pagination';
 import ViewToggle from '@/components/Report/ViewToggle';
-import SelectedFilters from '@/components/Report/SelectedFitlers';
 import { absoluteUrl } from '@/utils/generic-methods';
 import { Metadata } from 'next';
 import { LOGO_URL_DARK } from '@/utils/constants';
@@ -23,6 +20,7 @@ interface SearchParams {
    geographies?: string;
    page?: string;
    viewType?: string;
+   sortBy?: string;
 }
 
 interface Report {
@@ -117,6 +115,7 @@ const ReportStore: FC<ReportStoreProps> = async ({ searchParams }) => {
    const geographyFilters =
       searchParams.geographies?.split(',').filter(Boolean) || [];
    const currentPage = parseInt(searchParams.page || '1', 10);
+   const sortBy = searchParams.sortBy || 'relevance';
 
    const filters = industryFilters.concat(geographyFilters);
    const filtersQuery = filters.reduce(
@@ -131,8 +130,9 @@ const ReportStore: FC<ReportStoreProps> = async ({ searchParams }) => {
       {} as Record<string, string>,
    );
 
+   // Add sort parameter to getAllReports call
    const [reportsList, industriesData, geographiesData] = await Promise.all([
-      getAllReports(currentPage, ITEMS_PER_PAGE, filtersQuery).catch(
+      getAllReports(currentPage, ITEMS_PER_PAGE, filtersQuery, sortBy).catch(
          (error) => {
             console.error('Error fetching reports:', error);
             return null;
@@ -152,19 +152,21 @@ const ReportStore: FC<ReportStoreProps> = async ({ searchParams }) => {
    const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
 
    return (
-      <div className='container pt-40'>
+      <div className='container pt-40 sm:pt-48'>
          <h1 className='mt-5 text-center font-bold'>Report Store</h1>
 
          <FilterBar
             industries={industriesData?.data || []}
             geographies={geographiesData?.data || []}
             currentFilters={filters}
+            sortBy={sortBy}
+            redirectPath='/reports'
          />
 
          <div className='mb-10 mt-4 flex flex-col items-start justify-between gap-6 lg:min-h-[50vh] lg:flex-row'>
             {/* Main Content */}
             <div className='flex-1'>
-               <div className='flex items-center justify-between'>
+               <div className='hidden flex-col items-start justify-between sm:flex sm:flex-row sm:items-center'>
                   <Pagination
                      searchParams={searchParams}
                      currentPage={currentPage}
@@ -174,7 +176,7 @@ const ReportStore: FC<ReportStoreProps> = async ({ searchParams }) => {
                </div>
                <Suspense fallback={<ReportListLoading />}>
                   <div
-                     className={`grid gap-4 ${
+                     className={`mt-4 grid gap-4 sm:mt-0 ${
                         viewType === 'list'
                            ? 'grid-cols-1'
                            : 'grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3'

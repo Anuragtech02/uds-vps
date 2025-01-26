@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { FiSliders } from 'react-icons/fi'; // or use FaFilter from 'react-icons/fa'
 import { BiChevronDown } from 'react-icons/bi';
 import { IoCloseOutline } from 'react-icons/io5';
@@ -17,20 +17,30 @@ interface FilterBarProps {
    industries: FilterItem[];
    geographies: FilterItem[];
    currentFilters: string[];
+   sortBy?: string;
+   redirectPath?: string;
 }
 
 const FilterBar: React.FC<FilterBarProps> = ({
    industries,
    geographies,
    currentFilters,
+   sortBy,
+   redirectPath = '/reports',
 }) => {
    const router = useRouter();
+   const params = useParams();
    const [industryDropdown, setIndustryDropdown] = useState(false);
    const [geographyDropdown, setGeographyDropdown] = useState(false);
+   const [sortDropdown, setSortDropdown] = useState(false);
+   const locale = (params?.locale as string) || 'en';
+
    const industryRef = useRef<HTMLDivElement>(null);
    const geographyRef = useRef<HTMLDivElement>(null);
+   const sortRef = useRef<HTMLDivElement>(null);
 
    // Handle click outside to close dropdowns
+
    useEffect(() => {
       const handleClickOutside = (event: MouseEvent) => {
          if (
@@ -45,12 +55,36 @@ const FilterBar: React.FC<FilterBarProps> = ({
          ) {
             setGeographyDropdown(false);
          }
+         if (
+            sortRef.current &&
+            !sortRef.current.contains(event.target as Node)
+         ) {
+            setSortDropdown(false);
+         }
       };
 
       document.addEventListener('mousedown', handleClickOutside);
       return () =>
          document.removeEventListener('mousedown', handleClickOutside);
    }, []);
+
+   const handleSort = (value: string) => {
+      const currentParams = new URLSearchParams(window.location.search);
+      const updatedParams: Record<string, string> = {
+         page: '1',
+         sortBy: value,
+      };
+
+      ['industries', 'geographies', 'viewType'].forEach((param) => {
+         if (currentParams.get(param)) {
+            updatedParams[param] = currentParams.get(param) as string;
+         }
+      });
+
+      const path = locale ? `/${locale}${redirectPath}` : redirectPath;
+      router.push(`${path}?${new URLSearchParams(updatedParams).toString()}`);
+      setSortDropdown(false);
+   };
 
    const handleToggleFilter = (
       slug: string,
@@ -84,7 +118,8 @@ const FilterBar: React.FC<FilterBarProps> = ({
             updatedParams.geographies = updatedGeographies.join(',');
       }
 
-      router.push(`/reports?${new URLSearchParams(updatedParams).toString()}`);
+      const path = locale ? `/${locale}${redirectPath}` : redirectPath;
+      router.push(`${path}?${new URLSearchParams(updatedParams).toString()}`);
    };
 
    const removeFilter = (slug: string) => {
@@ -110,7 +145,8 @@ const FilterBar: React.FC<FilterBarProps> = ({
          if (updated.length) updatedParams.geographies = updated.join(',');
       }
 
-      router.push(`/reports?${new URLSearchParams(updatedParams).toString()}`);
+      const path = locale ? `/${locale}${redirectPath}` : redirectPath;
+      router.push(`${path}?${new URLSearchParams(updatedParams).toString()}`);
    };
 
    const getFilterName = (slug: string) => {
@@ -124,7 +160,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
    };
 
    return (
-      <div className='sticky top-40 z-30 mt-10 rounded-lg bg-white py-4 shadow-sm'>
+      <div className='top-44 z-30 mt-10 rounded-lg bg-white py-4 shadow-sm sm:sticky'>
          <div className='container flex flex-col items-start gap-6 lg:flex-row lg:items-center'>
             {/* Added Filter Label */}
             <div className='flex items-center gap-2 text-gray-600'>
@@ -206,6 +242,47 @@ const FilterBar: React.FC<FilterBarProps> = ({
                                  {name}
                               </label>
                            </div>
+                        ))}
+                     </div>
+                  )}
+               </div>
+
+               {/* Sort Dropdown */}
+               <div className='relative' ref={sortRef}>
+                  <button
+                     onClick={() => {
+                        setSortDropdown(!sortDropdown);
+                        setIndustryDropdown(false);
+                        setGeographyDropdown(false);
+                     }}
+                     className='flex items-center gap-2 rounded-lg border px-4 py-2 hover:bg-gray-50'
+                  >
+                     Sort By <BiChevronDown className='h-5 w-5' />
+                  </button>
+                  {sortDropdown && (
+                     <div className='absolute top-full mt-2 w-48 rounded-lg bg-white p-2 shadow-lg'>
+                        {[
+                           { value: 'relevance', label: 'Most Relevant' },
+                           {
+                              value: 'oldPublishedAt:desc',
+                              label: 'Newest First',
+                           },
+                           {
+                              value: 'oldPublishedAt:asc',
+                              label: 'Oldest First',
+                           },
+                        ].map((option) => (
+                           <button
+                              key={option.value}
+                              onClick={() => handleSort(option.value)}
+                              className={`w-full px-4 py-2 text-left hover:bg-gray-50 ${
+                                 sortBy === option.value
+                                    ? 'bg-blue-50 text-blue-600'
+                                    : ''
+                              }`}
+                           >
+                              {option.label}
+                           </button>
                         ))}
                      </div>
                   )}
