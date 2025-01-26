@@ -51,7 +51,7 @@ export const CURRENCIES: {
 export const LOGO_URL_LIGHT =
    'https://udsweb.s3.ap-south-1.amazonaws.com/UDS_LOGO_White_fb96f6add9.png';
 export const LOGO_URL_DARK =
-   'https://udsweb.s3.ap-south-1.amazonaws.com/FUDS_Logo_no_BG_4f5a475221.png';
+   'https://udsweb.s3.ap-south-1.amazonaws.com/UDS_Logo_no_BG_fa9627d31f.png';
 export const SEARCH_IMAGE_URL =
    'http://localhost:3000/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fthumbnail_news.35db6797.jpg';
 
