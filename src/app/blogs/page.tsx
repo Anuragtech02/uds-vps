@@ -4,7 +4,11 @@ import { LocalizedLink } from '@/components/commons/LocalizedLink';
 import ViewToggle from '@/components/Report/ViewToggle';
 import FilterBar from '@/components/ReportStore/FilterBar';
 import Pagination from '@/components/ReportStore/Pagination';
-import { getBlogsListingPage, getIndustries } from '@/utils/api/services';
+import {
+   getBlogsListingPage,
+   getGeographies,
+   getIndustries,
+} from '@/utils/api/services';
 import { LOGO_URL_DARK } from '@/utils/constants';
 import { absoluteUrl } from '@/utils/generic-methods';
 import { Metadata } from 'next';
@@ -139,7 +143,7 @@ const Blog = async ({
       {} as Record<string, string>,
    );
 
-   const [blogListData, industriesData] = await Promise.all([
+   const [blogListData, industriesData, geographiesData] = await Promise.all([
       getBlogsListingPage(
          currentPage,
          ITEMS_PER_PAGE,
@@ -151,6 +155,10 @@ const Blog = async ({
       }),
       getIndustries().catch((error) => {
          console.error('Error fetching industries:', error);
+         return null;
+      }),
+      getGeographies().catch((error) => {
+         console.error('Error fetching geographies:', error);
          return null;
       }),
    ]);
@@ -187,7 +195,7 @@ const Blog = async ({
 
          <FilterBar
             industries={industriesData?.data || []}
-            geographies={[]}
+            geographies={geographiesData?.data || []}
             currentFilters={filters}
             sortBy={sortBy}
             redirectPath='/blogs'

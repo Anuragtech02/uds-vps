@@ -134,8 +134,20 @@ export const getNewsListingPage = async (
    page = 1,
    limit = 10,
    filters = {},
+   sortBy: string = 'relevance',
 ) => {
    try {
+      let sort = '';
+      switch (sortBy) {
+         case 'oldPublishedAt:desc':
+            sort = 'oldPublishedAt:desc';
+            break;
+         case 'oldPublishedAt:asc':
+            sort = 'oldPublishedAt:asc';
+            break;
+         default:
+            sort = 'relevance';
+      }
       const populateQuery = buildPopulateQuery([
          'industry.name',
          'thumbnailImage.url',
@@ -144,7 +156,7 @@ export const getNewsListingPage = async (
       ]);
       const paginationQuery = getPaginationQuery(page, limit);
       const filterQuery = getFilterQuery(filters);
-      const sortQuery = 'sort[0]=oldPublishedAt:desc';
+      const sortQuery = sort !== 'relevance' ? `sort[0]=${sort}` : '';
       const query = `${populateQuery}&${paginationQuery}&${filterQuery}&${sortQuery}`;
       const response = await fetchClient('/news-articles?' + query, {
          headers: getAuthHeaders(),

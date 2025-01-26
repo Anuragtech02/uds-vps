@@ -19,6 +19,7 @@ interface FilterBarProps {
    currentFilters: string[];
    sortBy?: string;
    redirectPath?: string;
+   showGeographyFilter?: boolean;
 }
 
 const FilterBar: React.FC<FilterBarProps> = ({
@@ -26,6 +27,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
    geographies,
    currentFilters,
    sortBy,
+   showGeographyFilter = true,
    redirectPath = '/reports',
 }) => {
    const router = useRouter();
@@ -81,7 +83,8 @@ const FilterBar: React.FC<FilterBarProps> = ({
          }
       });
 
-      const path = locale ? `/${locale}${redirectPath}` : redirectPath;
+      const path =
+         locale && locale !== 'en' ? `/${locale}${redirectPath}` : redirectPath;
       router.push(`${path}?${new URLSearchParams(updatedParams).toString()}`);
       setSortDropdown(false);
    };
@@ -118,7 +121,8 @@ const FilterBar: React.FC<FilterBarProps> = ({
             updatedParams.geographies = updatedGeographies.join(',');
       }
 
-      const path = locale ? `/${locale}${redirectPath}` : redirectPath;
+      const path =
+         locale && locale !== 'en' ? `/${locale}${redirectPath}` : redirectPath;
       router.push(`${path}?${new URLSearchParams(updatedParams).toString()}`);
    };
 
@@ -145,7 +149,8 @@ const FilterBar: React.FC<FilterBarProps> = ({
          if (updated.length) updatedParams.geographies = updated.join(',');
       }
 
-      const path = locale ? `/${locale}${redirectPath}` : redirectPath;
+      const path =
+         locale && locale !== 'en' ? `/${locale}${redirectPath}` : redirectPath;
       router.push(`${path}?${new URLSearchParams(updatedParams).toString()}`);
    };
 
@@ -209,43 +214,47 @@ const FilterBar: React.FC<FilterBarProps> = ({
                </div>
 
                {/* Geography Filter */}
-               <div className='relative' ref={geographyRef}>
-                  <button
-                     onClick={() => {
-                        setGeographyDropdown(!geographyDropdown);
-                        setIndustryDropdown(false);
-                     }}
-                     className='flex items-center gap-2 rounded-lg border px-4 py-2 hover:bg-gray-50'
-                  >
-                     Geography <BiChevronDown className='h-5 w-5' />
-                  </button>
-                  {geographyDropdown && (
-                     <div className='absolute top-full mt-2 max-h-[60vh] w-64 overflow-y-auto rounded-lg bg-white p-4 shadow-lg'>
-                        {geographies.map(({ attributes: { slug, name } }) => (
-                           <div
-                              key={slug}
-                              className='flex items-center gap-3 py-2'
-                           >
-                              <input
-                                 type='checkbox'
-                                 id={`geography-${slug}`}
-                                 checked={currentFilters.includes(slug)}
-                                 onChange={() =>
-                                    handleToggleFilter(slug, 'geography')
-                                 }
-                                 className='rounded'
-                              />
-                              <label
-                                 htmlFor={`geography-${slug}`}
-                                 className='cursor-pointer'
-                              >
-                                 {name}
-                              </label>
-                           </div>
-                        ))}
-                     </div>
-                  )}
-               </div>
+               {showGeographyFilter && (
+                  <div className='relative' ref={geographyRef}>
+                     <button
+                        onClick={() => {
+                           setGeographyDropdown(!geographyDropdown);
+                           setIndustryDropdown(false);
+                        }}
+                        className='flex items-center gap-2 rounded-lg border px-4 py-2 hover:bg-gray-50'
+                     >
+                        Geography <BiChevronDown className='h-5 w-5' />
+                     </button>
+                     {geographyDropdown && (
+                        <div className='absolute top-full mt-2 max-h-[60vh] w-64 overflow-y-auto rounded-lg bg-white p-4 shadow-lg'>
+                           {geographies.map(
+                              ({ attributes: { slug, name } }) => (
+                                 <div
+                                    key={slug}
+                                    className='flex items-center gap-3 py-2'
+                                 >
+                                    <input
+                                       type='checkbox'
+                                       id={`geography-${slug}`}
+                                       checked={currentFilters.includes(slug)}
+                                       onChange={() =>
+                                          handleToggleFilter(slug, 'geography')
+                                       }
+                                       className='rounded'
+                                    />
+                                    <label
+                                       htmlFor={`geography-${slug}`}
+                                       className='cursor-pointer'
+                                    >
+                                       {name}
+                                    </label>
+                                 </div>
+                              ),
+                           )}
+                        </div>
+                     )}
+                  </div>
+               )}
 
                {/* Sort Dropdown */}
                <div className='relative' ref={sortRef}>
