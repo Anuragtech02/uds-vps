@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import Button from '../commons/Button';
 import ReportBlockData from './ReportBlockData';
 import Link from 'next/link';
@@ -117,86 +117,88 @@ const reportIndex = [
    { title: 'FAQs', id: 'faq-section' },
 ];
 
-const useScrollSpy = (sectionIds: string[]) => {
+// Custom hook for middle-screen detection
+const useMiddleScreenScrollSpy = (sectionIds: string[]) => {
    const [activeSection, setActiveSection] = useState(sectionIds[0]);
-   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
-   const headerHeight = useRef(100);
+   const sections = useRef<Array<{ id: string; top: number; bottom: number }>>(
+      [],
+   );
+   const rafId = useRef<number>();
+   const headerHeight = useRef(0);
 
-   // Get dynamic header height
-   useEffect(() => {
-      const header = document.querySelector('header');
-      headerHeight.current = header?.clientHeight || 100;
-   }, []);
+   const calculatePositions = useCallback(() => {
+      headerHeight.current =
+         document.querySelector('header')?.clientHeight || 0;
 
-   // Intersection Observer setup
-   useEffect(() => {
-      const observers: IntersectionObserver[] = [];
-      const sectionMap = new Map<string, number>();
+      sections.current = sectionIds.map((id) => {
+         const el = document.getElementById(id);
+         if (!el) return { id, top: 0, bottom: 0 };
 
-      const handleIntersect =
-         (id: string) => (entries: IntersectionObserverEntry[]) => {
-            entries.forEach((entry) => {
-               sectionMap.set(id, entry.intersectionRatio);
-            });
-
-            // Find section with highest visibility
-            let maxRatio = 0;
-            let currentSection = activeSection;
-            sectionMap.forEach((ratio, sectionId) => {
-               if (ratio > maxRatio) {
-                  maxRatio = ratio;
-                  currentSection = sectionId;
-               }
-            });
-
-            if (maxRatio > 0 && currentSection !== activeSection) {
-               setActiveSection(currentSection);
-            }
+         const rect = el.getBoundingClientRect();
+         return {
+            id,
+            top: rect.top + window.scrollY - headerHeight.current,
+            bottom: rect.bottom + window.scrollY - headerHeight.current,
          };
+      });
+   }, [sectionIds]);
 
-      sectionIds.forEach((id) => {
-         const element = document.getElementById(id);
-         if (element) {
-            const observer = new IntersectionObserver(handleIntersect(id), {
-               root: null,
-               rootMargin: `-${headerHeight.current}px 0px 0px 0px`,
-               threshold: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1],
-            });
-            observer.observe(element);
-            observers.push(observer);
+   const handleScroll = useCallback(() => {
+      const scrollPosition = window.scrollY + window.innerHeight / 2;
+      let closestSection = activeSection;
+      let smallestDistance = Infinity;
+
+      sections.current.forEach(({ id, top, bottom }) => {
+         if (scrollPosition >= top && scrollPosition <= bottom) {
+            const distance = Math.abs(scrollPosition - (top + bottom) / 2);
+            if (distance < smallestDistance) {
+               smallestDistance = distance;
+               closestSection = id;
+            }
          }
       });
 
-      return () => {
-         observers.forEach((observer) => observer.disconnect());
-      };
-   }, [sectionIds, activeSection]);
+      if (closestSection !== activeSection) {
+         setActiveSection(closestSection);
+      }
+   }, [activeSection]);
 
-   // Scroll listener fallback
    useEffect(() => {
-      const handleScroll = () => {
-         if (timeoutRef.current) clearTimeout(timeoutRef.current);
+      // Initial calculation
+      calculatePositions();
 
-         timeoutRef.current = setTimeout(() => {
-            const scrollPosition = window.scrollY + headerHeight.current + 10;
-            let currentSection = sectionIds[0];
-
-            for (const sectionId of sectionIds) {
-               const element = document.getElementById(sectionId);
-               if (element && element.offsetTop <= scrollPosition) {
-                  currentSection = sectionId;
-               } else {
-                  break;
-               }
-            }
-
-            setActiveSection(currentSection);
-         }, 100);
+      // Throttled scroll handler
+      const scrollThrottle = () => {
+         if (!rafId.current) {
+            rafId.current = requestAnimationFrame(() => {
+               handleScroll();
+               rafId.current = undefined;
+            });
+         }
       };
 
-      window.addEventListener('scroll', handleScroll);
-      return () => window.removeEventListener('scroll', handleScroll);
-   }, [sectionIds]);
+      // Resize observer
+      const resizeObserver = new ResizeObserver(() => {
+         calculatePositions();
+         handleScroll();
+      });
+
+      // Observe all sections
+      sectionIds.forEach((id) => {
+         const el = document.getElementById(id);
+         if (el) resizeObserver.observe(el);
+      });
+
+      window.addEventListener('scroll', scrollThrottle);
+      window.addEventListener('resize', calculatePositions);
+
+      return () => {
+         window.removeEventListener('scroll', scrollThrottle);
+         window.removeEventListener('resize', calculatePositions);
+         resizeObserver.disconnect();
+         if (rafId.current) cancelAnimationFrame(rafId.current);
+      };
+   }, [calculatePositions, handleScroll, sectionIds]);
 
    return activeSection;
 };
@@ -204,9 +206,14 @@ const useScrollSpy = (sectionIds: string[]) => {
 const scrollToSection = (id: string) => {
    const element = document.getElementById(id);
    if (element) {
-      element.scrollIntoView({
+      const headerOffset = 200; // Add margin from top
+      const elementPosition = element.getBoundingClientRect().top;
+      const offsetPosition =
+         elementPosition + window.pageYOffset - headerOffset;
+
+      window.scrollTo({
+         top: offsetPosition,
          behavior: 'smooth',
-         block: 'start',
       });
    }
 };
@@ -254,7 +261,7 @@ const ReportBlock: React.FC<ReportBlockProps> = ({ data }) => {
    const router = useRouter();
 
    const sectionIds = reportIndex.map((item) => item.id);
-   const activeSection = useScrollSpy(sectionIds);
+   const activeSection = useMiddleScreenScrollSpy(sectionIds);
 
    useEffect(() => {
       if (selectedLicense === null || isNaN(selectedLicense)) return;

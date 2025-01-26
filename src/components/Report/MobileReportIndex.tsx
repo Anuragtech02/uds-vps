@@ -56,71 +56,85 @@ const calculateDiscountedPrice = (
 // Add this hook for mobile scroll tracking
 const useMobileScrollSpy = (sectionIds: string[]) => {
    const [activeSection, setActiveSection] = useState(sectionIds[0]);
+   const sections = useRef<Array<{ id: string; top: number; bottom: number }>>(
+      [],
+   );
+   const rafId = useRef<number>();
    const headerHeight = useRef(0);
 
-   const updateHeaderHeight = useCallback(() => {
-      const header1 = document.getElementById('report-header');
-      const header2 = document.querySelector('.mobile-second-header');
+   const calculatePositions = useCallback(() => {
       headerHeight.current =
-         (header1?.clientHeight || 0) + (header2?.clientHeight || 0) + 20;
-   }, []);
+         document.querySelector('header')?.clientHeight || 0;
 
-   useEffect(() => {
-      const observer = new IntersectionObserver(
-         (entries) => {
-            entries.forEach((entry) => {
-               // Special handling for report-data section
-               if (entry.target.id === 'report-data') {
-                  // Use lower threshold for report-data detection
-                  if (entry.intersectionRatio > 0.05) {
-                     setActiveSection(entry.target.id);
-                  }
-               }
-               // Normal handling for other sections
-               else if (entry.isIntersecting && entry.intersectionRatio > 0.1) {
-                  setActiveSection(entry.target.id);
-               }
-            });
-         },
-         {
-            rootMargin: `-${headerHeight.current}px 0px 0px 0px`,
-            threshold: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1],
-         },
-      );
+      sections.current = sectionIds.map((id) => {
+         const el = document.getElementById(id);
+         if (!el) return { id, top: 0, bottom: 0 };
 
-      // Initial height calculation
-      updateHeaderHeight();
-
-      // Resize observer for header changes
-      const resizeObserver = new ResizeObserver(() => {
-         updateHeaderHeight();
-         sectionIds.forEach((id) => {
-            const element = document.getElementById(id);
-            element && observer.unobserve(element);
-            element && observer.observe(element);
-         });
+         const rect = el.getBoundingClientRect();
+         return {
+            id,
+            top: rect.top + window.scrollY - headerHeight.current,
+            bottom: rect.bottom + window.scrollY - headerHeight.current,
+         };
       });
+   }, [sectionIds]);
 
-      // Observe headers and sections
-      const header1 = document.getElementById('report-header');
-      const header2 = document.querySelector('.mobile-second-header');
-      header1 && resizeObserver.observe(header1);
-      header2 && resizeObserver.observe(header2);
+   const handleScroll = useCallback(() => {
+      const scrollPosition = window.scrollY + window.innerHeight / 2;
+      let closestSection = activeSection;
+      let smallestDistance = Infinity;
 
-      // Observe content sections
-      sectionIds.forEach((id) => {
-         const element = document.getElementById(id);
-         if (element) {
-            observer.observe(element);
-            resizeObserver.observe(element);
+      sections.current.forEach(({ id, top, bottom }) => {
+         if (scrollPosition >= top && scrollPosition <= bottom) {
+            const distance = Math.abs(scrollPosition - (top + bottom) / 2);
+            if (distance < smallestDistance) {
+               smallestDistance = distance;
+               closestSection = id;
+            }
          }
       });
 
-      return () => {
-         resizeObserver.disconnect();
-         observer.disconnect();
+      if (closestSection !== activeSection) {
+         setActiveSection(closestSection);
+      }
+   }, [activeSection]);
+
+   useEffect(() => {
+      // Initial calculation
+      calculatePositions();
+
+      // Throttled scroll handler
+      const scrollThrottle = () => {
+         if (!rafId.current) {
+            rafId.current = requestAnimationFrame(() => {
+               handleScroll();
+               rafId.current = undefined;
+            });
+         }
       };
-   }, [sectionIds, updateHeaderHeight]);
+
+      // Resize observer
+      const resizeObserver = new ResizeObserver(() => {
+         calculatePositions();
+         handleScroll();
+      });
+
+      // Observe all sections
+      sectionIds.forEach((id) => {
+         const el = document.getElementById(id);
+         if (el) resizeObserver.observe(el);
+      });
+
+      window.addEventListener('scroll', scrollThrottle);
+      window.addEventListener('resize', calculatePositions);
+
+      return () => {
+         window.removeEventListener('scroll', scrollThrottle);
+         window.removeEventListener('resize', calculatePositions);
+         resizeObserver.disconnect();
+         if (rafId.current) cancelAnimationFrame(rafId.current);
+      };
+   }, [calculatePositions, handleScroll, sectionIds]);
 
    return activeSection;
 };
