@@ -255,18 +255,20 @@ const CartPage = () => {
       <CheckoutProvider>
          <form
             onSubmit={(e) => handleCheckout(e)}
-            className='container mx-auto flex flex-col items-start justify-between gap-6 px-4 pb-10 pt-48 md:flex-row [&>div]:flex-1'
+            className='container mx-auto flex flex-col items-start justify-between gap-6 px-4 pb-10 pt-48 lg:flex-row'
          >
             <Script
                id='razorpay-checkout-js'
                src='https://checkout.razorpay.com/v1/checkout.js'
             />
 
-            <BillingDetails />
+            <div className='w-full lg:w-[40%]'>
+               <BillingDetails />
+            </div>
 
-            <div className='mt-5 w-full space-y-6 rounded-xl bg-white p-6'>
+            <div className='mt-5 space-y-6 rounded-xl bg-white p-6 lg:w-[60%]'>
                <div className='flex items-center justify-between'>
-                  <h1 className='text-2xl font-semibold text-gray-900 md:text-3xl'>
+                  <h1 className='text-2xl font-semibold text-gray-900 lg:text-3xl'>
                      Cart
                   </h1>
                   <CurrencySelector

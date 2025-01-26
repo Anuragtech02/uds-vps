@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useState, useEffect } from 'react';
 import { IoCloseCircle } from 'react-icons/io5';
 import { LocalizedLink } from '../commons/LocalizedLink';
 
@@ -28,11 +28,21 @@ const CartItem: FC<CartItemProps> = ({
    selectedCurrency,
    currencySymbol,
 }) => {
+   const [showTooltip, setShowTooltip] = useState(false);
+   const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | null>(null);
+
    let name = report?.title,
       price = selectedLicense?.price?.amount,
       img =
          report?.highlightImage?.data?.attributes?.url ||
          '/api/placeholder/64/64';
+
+   useEffect(() => {
+      return () => {
+         if (timeoutId) clearTimeout(timeoutId);
+      };
+   }, [timeoutId]);
+
    const formatPrice = (amount: number | undefined) => {
       if (amount === undefined || isNaN(amount)) return `${currencySymbol}0.00`;
       const converted = convertPrice(amount);
@@ -58,7 +68,7 @@ const CartItem: FC<CartItemProps> = ({
             <img
                src={img}
                alt={name}
-               className='h-16 w-16 rounded border border-gray-300 object-cover'
+               className='h-10 w-10 rounded border border-gray-300 object-cover'
             />
 
             <h5 className='line-clamp-2 flex-1 font-medium text-gray-900'>
@@ -82,6 +92,15 @@ const CartItem: FC<CartItemProps> = ({
                         (variant: any) => variant.title === e.target.value,
                      );
                      handleChangeLicense(report.id, newLicense);
+
+                     // Clear existing timeout and show tooltip
+                     if (timeoutId) clearTimeout(timeoutId);
+                     setShowTooltip(true);
+                     const id = setTimeout(() => {
+                        setShowTooltip(false);
+                        setTimeoutId(null);
+                     }, 3000);
+                     setTimeoutId(id);
                   }}
                   className='w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500'
                >
@@ -105,13 +124,18 @@ const CartItem: FC<CartItemProps> = ({
                         d='M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z'
                      />
                   </svg>
-                  <div className='invisible absolute bottom-full left-1/2 z-10 w-64 -translate-x-1/2 rounded-lg bg-gray-900 p-2 text-sm text-white shadow-lg group-hover:visible'>
+                  <div
+                     className={`absolute bottom-full left-1/2 z-10 w-64 -translate-x-1/2 rounded-lg bg-gray-100 p-2 text-sm text-black shadow-lg ${
+                        showTooltip ? 'visible' : 'invisible'
+                     } group-hover:visible`}
+                  >
                      <div
                         dangerouslySetInnerHTML={{
                            __html:
                               selectedLicense?.description ||
                               'No description available',
                         }}
+                        className='report-content text-sm'
                      />
                      <div className='absolute -bottom-1 left-1/2 h-2 w-2 -translate-x-1/2 rotate-45 bg-gray-900'></div>
                   </div>
@@ -120,14 +144,10 @@ const CartItem: FC<CartItemProps> = ({
          </div>
 
          {/* Right section with price and subtotal */}
-         <div className='flex w-full items-center justify-end gap-8 sm:w-2/5'>
+         <div className='flex w-full items-center justify-end gap-8 sm:w-1/5'>
             <div className='font-medium text-gray-900'>
                {formatPrice(price)}
             </div>
-
-            {/* <div className="text-gray-900 font-medium text-right min-w-[80px]">
-               {formatPrice(price * quantity)}
-            </div> */}
          </div>
       </div>
    );
