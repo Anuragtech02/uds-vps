@@ -14,9 +14,9 @@ const Testimonials: React.FC<{ data: any }> = ({ data }) => {
    const bankLogos = data.data.attributes.brandsSecetionBankLogos.data;
 
    return (
-      <section className='min-h-full flex-col overflow-x-hidden'>
-         <div className='bg-white'>
-            <div className='container pt-8'>
+      <section className='min-h-full w-full flex-col overflow-x-hidden'>
+         <div className='w-full bg-white'>
+            <div className='container w-full pt-8'>
                <h2>
                   Brands that <span>trust us!</span>
                </h2>
