@@ -85,7 +85,7 @@ const Stats: React.FC<{ data: StatData[] }> = ({ data }) => {
                   className='relative flex flex-col justify-between rounded-md border border-s-200 bg-white p-4'
                >
                   <p>{stat.title}</p>
-                  <h3 className='mt-6 font-bricolage text-4xl font-bold text-blue-4 md:text-6xl'>
+                  <h3 className='mt-6 font-bricolage text-4xl font-bold text-blue-4 md:text-5xl'>
                      {isVisible ? (
                         <>
                            <Counter end={stat.countTo} duration={2000} />+
@@ -96,7 +96,7 @@ const Stats: React.FC<{ data: StatData[] }> = ({ data }) => {
                   </h3>
                   <img
                      src={stat.icon.url}
-                     className='absolute bottom-0 right-0 aspect-square h-14'
+                     className='absolute bottom-1 right-1 aspect-square h-14'
                      alt=''
                   />
                </div>
