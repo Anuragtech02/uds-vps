@@ -160,7 +160,7 @@ const MobileReportBlock: React.FC<MobileReportBlockProps> = ({
 
       const element = document.getElementById(id);
       if (element) {
-         const top = element.offsetTop - totalHeaderHeight;
+         const top = element.offsetTop - 100;
          window.scrollTo({
             top,
             behavior: 'smooth',
