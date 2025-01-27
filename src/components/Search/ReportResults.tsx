@@ -8,12 +8,20 @@ const ReportResults = ({ reports }: any) => {
          {reports?.map((report: any) => (
             <LocalizedLink href={`/reports/${report?.slug}`} key={report?.id}>
                <ReportStoreItem
-                  date={new Date(report.oldPublishedAt || report.publishedAt || report?.createdAt).toDateString()}
+                  date={new Date(
+                     report.oldPublishedAt ||
+                        report.publishedAt ||
+                        report?.createdAt,
+                  ).toDateString()}
                   title={report?.title}
                   description={report?.shortDescription}
                   key={report?.id}
                   slug={report?.slug}
-                  highlightImageUrl={report?.highlightImage?.small?.url || report?.highlightImage?.url}
+                  highlightImageUrl={
+                     report?.highlightImage?.thumbnail?.url ||
+                     report?.highlightImage?.small?.url ||
+                     report?.highlightImage?.url
+                  }
                />
             </LocalizedLink>
          ))}
