@@ -32,7 +32,7 @@ import {
 import { CURRENCIES } from '@/utils/constants';
 import { useRouter } from 'next/navigation';
 import Script from 'next/script';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 const CurrencySelector = ({
    selectedCurrency,
@@ -61,7 +61,7 @@ const CurrencySelector = ({
 };
 
 const CartPage = () => {
-   const { formData, phone, setErrors } = useCheckout();
+   const { formData, setErrors, errors } = useCheckout();
    const [totalCost, setTotalCost] = useState(0);
    const [selectedCurrency, setSelectedCurrency] = useState('USD');
    const [exchangeRates, setExchangeRates] = useState<any>({});
@@ -69,25 +69,28 @@ const CartPage = () => {
    const cartStore = useCartStore();
    const licenseStore = useSelectedLicenseStore();
 
-   const validateForm = () => {
+   const validateForm = useCallback(() => {
       const newErrors: Partial<BillingFormData> = {};
 
       // Validate required fields
-      if (!formData.firstName) newErrors.firstName = 'First name is required';
-      if (!formData.lastName) newErrors.lastName = 'Last name is required';
-      if (!formData.email) newErrors.email = 'Email is required';
+      if (!formData.firstName?.trim())
+         newErrors.firstName = 'First name is required';
+      if (!formData.lastName?.trim())
+         newErrors.lastName = 'Last name is required';
+      if (!formData.email?.trim()) newErrors.email = 'Email is required';
       else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
          newErrors.email = 'Invalid email format';
       }
-      if (!formData.country) newErrors.country = 'Country is required';
-      if (!formData.state) newErrors.state = 'State is required';
-      if (!formData.city) newErrors.city = 'City is required';
-      if (!formData.address) newErrors.address = 'Address is required';
-      if (!phone) newErrors.phone = 'Phone number is required';
+      if (!formData.country?.trim()) newErrors.country = 'Country is required';
+      if (!formData.state?.trim()) newErrors.state = 'State is required';
+      if (!formData.city?.trim()) newErrors.city = 'City is required';
+      if (!formData.address?.trim()) newErrors.address = 'Address is required';
+      if (!formData.phone?.trim()) newErrors.phone = 'Phone number is required';
 
+      console.log('Validation errors:', newErrors);
       setErrors(newErrors);
       return Object.keys(newErrors).length === 0;
-   };
+   }, [formData, setErrors]);
 
    const fetchRates = async () => {
       try {
@@ -170,9 +173,13 @@ const CartPage = () => {
       e.preventDefault();
 
       if (!validateForm()) {
-         alert('Please fill in all required fields correctly.');
+         const invalidFields = Object.keys(errors).join(', ');
+         alert(
+            `Please fill in all required fields. Missing fields: ${invalidFields}`,
+         );
          return;
       }
+
       try {
          const orderId: string = await createOrderIdFromRazorPay(totalCost);
          const createdOrder = await createOrder({
@@ -185,6 +192,17 @@ const CartPage = () => {
             totalAmount: {
                currency: selectedCurrency,
                amount: totalCost,
+            },
+            billingDetails: {
+               firstName: formData.firstName,
+               lastName: formData.lastName,
+               email: formData.email,
+               phone: formData.phone,
+               country: formData.country,
+               state: formData.state,
+               city: formData.city,
+               address: formData.address,
+               orderNotes: formData.orderNotes || '',
             },
          });
 
@@ -247,130 +265,126 @@ const CartPage = () => {
          });
          paymentObject.open();
       } catch (error) {
-         console.error(error);
+         console.error('Checkout error:', error);
       }
    };
 
    return (
-      <CheckoutProvider>
-         <form
-            onSubmit={(e) => handleCheckout(e)}
-            className='container mx-auto flex flex-col items-start justify-between gap-6 px-4 pb-10 pt-48 lg:flex-row'
-         >
-            <Script
-               id='razorpay-checkout-js'
-               src='https://checkout.razorpay.com/v1/checkout.js'
-            />
+      <form
+         onSubmit={(e) => handleCheckout(e)}
+         className='container mx-auto flex flex-col items-start justify-between gap-6 px-4 pb-10 pt-48 lg:flex-row'
+      >
+         <Script
+            id='razorpay-checkout-js'
+            src='https://checkout.razorpay.com/v1/checkout.js'
+         />
 
-            <div className='w-full lg:w-[40%]'>
-               <BillingDetails />
+         <div className='w-full lg:w-[40%]'>
+            <BillingDetails />
+         </div>
+
+         <div className='mt-5 space-y-6 rounded-xl bg-white p-6 lg:w-[60%]'>
+            <div className='flex items-center justify-between'>
+               <h1 className='text-2xl font-semibold text-gray-900 lg:text-3xl'>
+                  Cart
+               </h1>
+               <CurrencySelector
+                  selectedCurrency={selectedCurrency}
+                  onCurrencyChange={handleCurrencyChange}
+               />
             </div>
 
-            <div className='mt-5 space-y-6 rounded-xl bg-white p-6 lg:w-[60%]'>
-               <div className='flex items-center justify-between'>
-                  <h1 className='text-2xl font-semibold text-gray-900 lg:text-3xl'>
-                     Cart
-                  </h1>
-                  <CurrencySelector
-                     selectedCurrency={selectedCurrency}
-                     onCurrencyChange={handleCurrencyChange}
-                  />
-               </div>
-
-               {/* Cart Items Container */}
-               <div className='rounded-xl border border-gray-200 p-6'>
-                  {/* Cart Headers */}
-                  <div className='flex items-center border-b border-gray-200 pb-2 font-medium text-gray-600'>
-                     <div className='w-[40%]'>
-                        <span>Product</span>
-                     </div>
-                     <div className='w-1/2 sm:w-2/5'>
-                        <span>Select License</span>
-                     </div>
-                     <div className='ml-auto w-32 text-right'>
-                        <span>Price</span>
-                     </div>
-                     {/* <div className="w-32 text-right ml-auto">
+            {/* Cart Items Container */}
+            <div className='rounded-xl border border-gray-200 p-6'>
+               {/* Cart Headers */}
+               <div className='flex items-center border-b border-gray-200 pb-2 font-medium text-gray-600'>
+                  <div className='w-[40%]'>
+                     <span>Product</span>
+                  </div>
+                  <div className='w-1/2 sm:w-2/5'>
+                     <span>Select License</span>
+                  </div>
+                  <div className='ml-auto w-32 text-right'>
+                     <span>Price</span>
+                  </div>
+                  {/* <div className="w-32 text-right ml-auto">
                            <span>Subtotal</span>
                         </div> */}
+               </div>
+
+               {/* Cart Items */}
+               {cartStore.reports.length === 0 ? (
+                  <div className='py-8 text-center text-gray-500'>
+                     No items in cart yet. Checkout our reports!
                   </div>
+               ) : (
+                  <div className='divide-y divide-gray-200'>
+                     {cartStore.reports.map((item: any, i) => (
+                        <CartItem
+                           key={i}
+                           {...item}
+                           handleRemoveItem={handleRemoveItem}
+                           handleChangeQuantity={handleChangeQuantity}
+                           handleChangeLicense={handleChangeLicense}
+                           convertPrice={convertPrice}
+                           selectedCurrency={selectedCurrency}
+                           currencySymbol={CURRENCIES[selectedCurrency].symbol}
+                        />
+                     ))}
+                  </div>
+               )}
+            </div>
 
-                  {/* Cart Items */}
-                  {cartStore.reports.length === 0 ? (
-                     <div className='py-8 text-center text-gray-500'>
-                        No items in cart yet. Checkout our reports!
-                     </div>
-                  ) : (
-                     <div className='divide-y divide-gray-200'>
-                        {cartStore.reports.map((item: any, i) => (
-                           <CartItem
-                              key={i}
-                              {...item}
-                              handleRemoveItem={handleRemoveItem}
-                              handleChangeQuantity={handleChangeQuantity}
-                              handleChangeLicense={handleChangeLicense}
-                              convertPrice={convertPrice}
-                              selectedCurrency={selectedCurrency}
-                              currencySymbol={
-                                 CURRENCIES[selectedCurrency].symbol
-                              }
-                           />
-                        ))}
-                     </div>
-                  )}
-               </div>
+            {/* Cost Calculations */}
+            <div className='rounded-xl border border-gray-200 p-6'>
+               <CostCalculations
+                  cost={convertPrice(totalCost) as number}
+                  city='Mumbai'
+                  currency={CURRENCIES[selectedCurrency]}
+               />
+            </div>
 
-               {/* Cost Calculations */}
-               <div className='rounded-xl border border-gray-200 p-6'>
-                  <CostCalculations
-                     cost={convertPrice(totalCost) as number}
-                     city='Mumbai'
-                     currency={CURRENCIES[selectedCurrency]}
-                  />
-               </div>
-
-               {/* Checkout Button */}
-               <div className='flex justify-end'>
-                  <Button
-                     variant='secondary'
-                     className='min-w-[200px]'
-                     type='submit'
+            {/* Checkout Button */}
+            <div className='flex justify-end'>
+               <Button
+                  variant='secondary'
+                  className='min-w-[200px]'
+                  type='submit'
+               >
+                  Proceed to Checkout
+               </Button>
+            </div>
+         </div>
+         {/* Assistance Section */}
+         <div className='mt-6 block w-full rounded-xl bg-white p-6 sm:hidden'>
+            <h2 className='mb-4 text-2xl font-semibold text-gray-800'>
+               Need assistance?
+            </h2>
+            <p className='mb-4 font-bold text-gray-600'>
+               Call us or write to us:
+            </p>
+            <div className='space-y-2'>
+               <p className='text-gray-700'>
+                  <span className='font-medium'>Phone:</span>{' '}
+                  <a
+                     href='tel:+1-888-689-0688'
+                     className='font-bold text-blue-600 hover:text-blue-800'
                   >
-                     Proceed to Checkout
-                  </Button>
-               </div>
-            </div>
-            {/* Assistance Section */}
-            <div className='mt-6 block w-full rounded-xl bg-white p-6 sm:hidden'>
-               <h2 className='mb-4 text-2xl font-semibold text-gray-800'>
-                  Need assistance?
-               </h2>
-               <p className='mb-4 font-bold text-gray-600'>
-                  Call us or write to us:
+                     +1 9787330253
+                  </a>
                </p>
-               <div className='space-y-2'>
-                  <p className='text-gray-700'>
-                     <span className='font-medium'>Phone:</span>{' '}
-                     <a
-                        href='tel:+1-888-689-0688'
-                        className='font-bold text-blue-600 hover:text-blue-800'
-                     >
-                        +1 9787330253
-                     </a>
-                  </p>
-                  <p className='text-gray-700'>
-                     <span className='font-medium'>Email:</span>{' '}
-                     <a
-                        href='mailto:sales@univdatos.com'
-                        className='font-bold text-blue-600 hover:text-blue-800'
-                     >
-                        sales@univdatos.com
-                     </a>
-                  </p>
-               </div>
+               <p className='text-gray-700'>
+                  <span className='font-medium'>Email:</span>{' '}
+                  <a
+                     href='mailto:sales@univdatos.com'
+                     className='font-bold text-blue-600 hover:text-blue-800'
+                  >
+                     sales@univdatos.com
+                  </a>
+               </p>
             </div>
-         </form>
-      </CheckoutProvider>
+         </div>
+      </form>
    );
 };
 

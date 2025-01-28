@@ -25,6 +25,7 @@ interface BillingFormData {
    city: string;
    address: string;
    orderNotes?: string;
+   phone: string;
 }
 
 const BillingDetails = () => {
@@ -32,11 +33,8 @@ const BillingDetails = () => {
    const [states, setStates] = useState<State[]>([]);
    const [loadingCountries, setLoadingCountries] = useState(false);
    const [loadingStates, setLoadingStates] = useState(false);
-   const [touched, setTouched] = useState<
-      Partial<Record<keyof BillingFormData, boolean>>
-   >({});
 
-   const { formData, setFormData, phone, setPhone, errors, setErrors } =
+   const { formData, setFormData, errors, touched, setTouched, setErrors } =
       useCheckout();
 
    useEffect(() => {
@@ -93,12 +91,15 @@ const BillingDetails = () => {
    const validateField = (name: keyof BillingFormData, value: string) => {
       let error: string | undefined;
 
+      // Get trimmed value for validation
+      const trimmedValue = value.trim();
+
       switch (name) {
          case 'firstName':
          case 'lastName':
-            if (!value.trim()) {
+            if (!trimmedValue) {
                error = 'This field is required';
-            } else if (value.length < 2) {
+            } else if (trimmedValue.length < 2) {
                error = 'Must be at least 2 characters';
             } else if (!/^[a-zA-Z\s]*$/.test(value)) {
                error = 'Only letters are allowed';
@@ -106,31 +107,35 @@ const BillingDetails = () => {
             break;
 
          case 'email':
-            if (!value) {
+            if (!trimmedValue) {
                error = 'Email is required';
-            } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+            } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedValue)) {
                error = 'Enter a valid email address';
             }
             break;
 
          case 'address':
-            if (!value.trim()) {
+            if (!trimmedValue) {
                error = 'Address is required';
-            } else if (value.length < 10) {
+            } else if (trimmedValue.length < 10) {
                error = 'Address must be at least 10 characters long';
+            }
+            break;
+
+         case 'city':
+            if (!trimmedValue) {
+               error = 'This field is required';
             }
             break;
 
          case 'country':
          case 'state':
-         case 'city':
-            if (!value.trim()) {
+            if (!trimmedValue) {
                error = 'This field is required';
             }
             break;
       }
 
-      // @ts-ignore
       setErrors((prev) => ({
          ...prev,
          [name]: error,
@@ -140,14 +145,14 @@ const BillingDetails = () => {
    };
 
    const handleChange = (name: keyof BillingFormData, value: string) => {
-      setFormData({
-         ...formData,
+      setFormData((prev) => ({
+         ...prev,
          [name]: value,
-      });
+      }));
 
-      // Validate on change if the field has been touched
+      // Only trim during validation
       if (touched[name]) {
-         validateField(name, value);
+         validateField(name, value.trim());
       }
    };
 
@@ -158,6 +163,17 @@ const BillingDetails = () => {
       }));
       // @ts-ignore
       validateField(name, formData[name]);
+   };
+
+   const handlePhoneChange = (value: string) => {
+      setFormData((prev) => ({
+         ...prev,
+         phone: value,
+      }));
+
+      if (touched.phone) {
+         validateField('phone', value);
+      }
    };
 
    const inputClassName = (hasError: boolean) => `
@@ -218,8 +234,8 @@ const BillingDetails = () => {
             <div className='flex flex-col gap-4 md:flex-row lg:items-start'>
                <div className='shrink grow basis-0'>
                   <CustomPhoneInput
-                     value={phone}
-                     onChange={(value: string) => setPhone(value)}
+                     value={formData.phone}
+                     onChange={handlePhoneChange}
                      required
                   />
                </div>
