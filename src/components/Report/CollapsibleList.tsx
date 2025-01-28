@@ -49,10 +49,18 @@ const CollapsibleLicenseOptions: React.FC<CollapsibleLicenseOptionsProps> = ({
    selectedLicense,
    setSelectedLicense,
 }) => {
+   const [expandedLicense, setExpandedLicense] = useState<number | null>(null);
+
    const toggleLicense = (index: number) => {
-      // Always set the selected license (radio buttons shouldn't toggle)
-      setSelectedLicense(index);
+      // If clicking the same license that's already selected and expanded
+      if (selectedLicense === index && expandedLicense === index) {
+         setExpandedLicense(null); // Close the expansion
+      } else {
+         setSelectedLicense(index); // Select the license
+         setExpandedLicense(index); // Expand the license
+      }
    };
+
    return (
       <div className='mt-3 flex flex-col gap-2'>
          {variants?.map((license: License, index: number) => {
@@ -81,10 +89,14 @@ const CollapsibleLicenseOptions: React.FC<CollapsibleLicenseOptionsProps> = ({
                               checked={selectedLicense === index}
                               onChange={() => toggleLicense(index)}
                               id={`license-${index}`}
+                              aria-label={`Select ${license.title}`}
                            />
                            <label
-                              htmlFor={`license-${index}`}
                               className='block cursor-pointer text-sm font-semibold'
+                              onClick={(e) => {
+                                 e.preventDefault();
+                                 toggleLicense(index);
+                              }}
                            >
                               {license.title}
                            </label>
@@ -110,7 +122,7 @@ const CollapsibleLicenseOptions: React.FC<CollapsibleLicenseOptionsProps> = ({
                         </div>
                      </div>
                   </div>
-                  {selectedLicense === index && (
+                  {expandedLicense === index && (
                      <div
                         dangerouslySetInnerHTML={{
                            __html: license?.description,

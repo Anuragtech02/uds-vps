@@ -164,13 +164,24 @@ const FilterBar: React.FC<FilterBarProps> = ({
       return slug;
    };
 
+   function getHeaderName() {
+      const names = {
+         reports: 'Reports',
+         news: 'News',
+         blogs: 'Blogs',
+      } as const;
+
+      const key = redirectPath.split('/')[1] as keyof typeof names;
+      return names[key] || 'Reports';
+   }
+
    return (
       <div className='top-44 z-30 mt-10 rounded-lg bg-white py-4 shadow-sm sm:sticky'>
          <div className='container flex flex-col items-start gap-6 lg:flex-row lg:items-center'>
             {/* Added Filter Label */}
             <div className='flex items-center gap-2 text-gray-600'>
                <FiSliders className='h-5 w-5' />
-               <span className='font-medium'>Filter Reports By:</span>
+               <span className='font-medium'>Filter {getHeaderName()} By:</span>
             </div>
 
             <div className='flex flex-wrap items-center gap-4'>
