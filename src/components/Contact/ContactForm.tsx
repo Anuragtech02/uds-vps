@@ -112,6 +112,7 @@ const ContactForm = () => {
          }
       } catch (error) {
          setError('Failed to send message. Please try again.');
+         console.log(error);
       } finally {
          setIsSubmitting(false);
       }
