@@ -85,6 +85,8 @@ const CartPage = () => {
    const router = useRouter();
    const cartStore = useCartStore();
    const licenseStore = useSelectedLicenseStore();
+   const [turnstileToken, setTurnstileToken] = useState<string>('');
+   const [turnstileError, setTurnstileError] = useState<string | null>(null);
 
    const validateForm = useCallback(() => {
       const newErrors: Partial<BillingFormData> = {};
@@ -123,6 +125,33 @@ const CartPage = () => {
    useEffect(() => {
       fetchRates();
    }, []); // Only fetch rates once on component mount
+
+   useEffect(() => {
+      window.onloadTurnstileCallback = function () {
+         window.turnstile.render('#cart-turnstile-container', {
+            sitekey: process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || '',
+            callback: function (token: string) {
+               console.log('Challenge Success', token);
+               setTurnstileToken(token);
+               setTurnstileError(null);
+            },
+            'expired-callback': function () {
+               setTurnstileToken('');
+               setTurnstileError('Verification expired. Please verify again.');
+            },
+            'error-callback': function () {
+               setTurnstileError(
+                  'Error during verification. Please try again.',
+               );
+            },
+         });
+      };
+
+      return () => {
+         // @ts-expect-error - window.onloadTurnstileCallback is defined
+         delete window.onloadTurnstileCallback;
+      };
+   }, []);
 
    const convertPrice = (amount: number | undefined) => {
       if (amount === undefined || isNaN(amount)) return 0;
@@ -189,6 +218,11 @@ const CartPage = () => {
    const handleCheckout = async (e: any) => {
       e.preventDefault();
 
+      if (!turnstileToken) {
+         alert('Please complete the security verification');
+         return;
+      }
+
       if (!validateForm()) {
          const invalidFields = Object.keys(errors).join(', ');
          alert(
@@ -198,7 +232,10 @@ const CartPage = () => {
       }
 
       try {
-         const orderId: string = await createOrderIdFromRazorPay(totalCost);
+         const orderData: any = await createOrderIdFromRazorPay(totalCost);
+         const orderId = orderData?.orderId;
+         const razorpayReceipt = orderData?.razorpayReceipt;
+
          let totalDiscounts = 0;
          cartStore.reports.forEach((item: any) => {
             totalDiscounts +=
@@ -208,6 +245,7 @@ const CartPage = () => {
          const createdOrder = await createOrder({
             reports: cartStore.reports?.map((item: any) => item?.report?.id),
             razorpayOrderId: orderId,
+            razorpayReceipt,
             totalAmount: {
                currency: selectedCurrency,
                amount: totalCost,
@@ -223,6 +261,9 @@ const CartPage = () => {
                city: formData.city,
                address: formData.address,
                orderNotes: formData.orderNotes || '',
+            },
+            rawData: {
+               cfTurnstileResponse: turnstileToken,
             },
          });
 
@@ -286,6 +327,7 @@ const CartPage = () => {
          paymentObject.open();
       } catch (error) {
          console.error('Checkout error:', error);
+         alert('Error processing payment. Please try again later.');
       }
    };
 
@@ -306,11 +348,17 @@ const CartPage = () => {
             src='https://checkout.razorpay.com/v1/checkout.js'
          />
 
+         <Script
+            src='https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onloadTurnstileCallback'
+            async
+            defer
+         />
+
          <div className='w-full lg:w-[40%]'>
             <BillingDetails />
          </div>
 
-         <div className='mt-5 space-y-6 rounded-xl bg-white p-6 lg:w-[60%]'>
+         <div className='mt-5 w-full space-y-6 rounded-xl bg-white p-6 lg:w-[60%]'>
             <div className='flex items-center justify-between'>
                <h1 className='text-2xl font-semibold text-gray-900 lg:text-3xl'>
                   Cart
@@ -390,11 +438,20 @@ const CartPage = () => {
             </div>
 
             {/* Checkout Button */}
-            <div className='flex justify-end'>
+            <div className='flex flex-col items-center justify-between md:flex-row'>
+               <div className='rounded-xl'>
+                  <div className='space-y-2'>
+                     <div id='cart-turnstile-container'></div>
+                     {turnstileError && (
+                        <p className='text-sm text-red-500'>{turnstileError}</p>
+                     )}
+                  </div>
+               </div>
                <Button
                   variant='secondary'
-                  className='min-w-[200px]'
+                  className='mt-4 min-w-[200px] sm:mt-0'
                   type='submit'
+                  disabled={cartStore.reports.length === 0}
                >
                   Proceed to Checkout
                </Button>

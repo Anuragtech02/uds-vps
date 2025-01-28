@@ -168,7 +168,10 @@ export const createOrderIdFromRazorPay = async (amount: number) => {
       }
 
       const data = await response.json();
-      return data.orderId;
+      return {
+         orderId: data.orderId,
+         razorpayReceipt: data.razorpayReceipt,
+      };
    } catch (error) {
       console.error('There was a problem while creating order:', error);
    }
