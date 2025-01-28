@@ -215,6 +215,12 @@ const CartPage = () => {
       changeLicenseOfReport(reportId, newLicense);
    };
 
+   const convertToSmallestUnit = (amount: number, currency: string) => {
+      // Razorpay expects amount in smallest currency unit
+      const amountInSmallestUnit = Math.round(amount * 100); // Convert to paise/cents
+      return amountInSmallestUnit;
+   };
+
    const handleCheckout = async (e: any) => {
       e.preventDefault();
 
@@ -232,16 +238,27 @@ const CartPage = () => {
       }
 
       try {
-         const orderData: any = await createOrderIdFromRazorPay(totalCost);
-         const orderId = orderData?.orderId;
-         const razorpayReceipt = orderData?.razorpayReceipt;
-
          let totalDiscounts = 0;
          cartStore.reports.forEach((item: any) => {
             totalDiscounts +=
                (getDiscountPercentage(item?.selectedLicense?.title) / 100) *
                item?.selectedLicense?.price?.amount;
          });
+         const finalAmount = Number((totalCost - totalDiscounts).toFixed(2));
+
+         // Convert to smallest currency unit for Razorpay
+         const razorpayAmount = convertToSmallestUnit(
+            finalAmount,
+            selectedCurrency,
+         );
+         const orderData: any = await createOrderIdFromRazorPay(razorpayAmount);
+         const orderId = orderData?.orderId;
+         const razorpayReceipt = orderData?.receipt;
+
+         console.log(orderData);
+         console.log('Order ID:', orderId);
+         console.log('Receipt:', razorpayReceipt);
+
          const createdOrder = await createOrder({
             reports: cartStore.reports?.map((item: any) => item?.report?.id),
             razorpayOrderId: orderId,
@@ -250,7 +267,7 @@ const CartPage = () => {
                currency: selectedCurrency,
                amount: totalCost,
             },
-            manualDiscountAmount: totalDiscounts,
+            manualDiscountAmount: Number(totalDiscounts.toFixed(2)),
             billingDetails: {
                firstName: formData.firstName,
                lastName: formData.lastName,
@@ -295,7 +312,8 @@ const CartPage = () => {
 
                const strapiPaymentId = createdPayment?.data?.id;
                const result = await verifyPayments(data);
-               const res = await result?.json();
+               const res = await result;
+               console.log('reslut', res);
 
                if (res.isOk) {
                   await updatePaymentStatus(strapiPaymentId, 'SUCCESS');

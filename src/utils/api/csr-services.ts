@@ -163,14 +163,10 @@ export const createOrderIdFromRazorPay = async (amount: number) => {
          }),
       });
 
-      if (!response.ok) {
-         throw new Error('Network response was not ok');
-      }
-
-      const data = await response.json();
+      const data = await response;
       return {
          orderId: data.orderId,
-         razorpayReceipt: data.razorpayReceipt,
+         receipt: data.receipt,
       };
    } catch (error) {
       console.error('There was a problem while creating order:', error);
