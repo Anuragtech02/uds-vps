@@ -60,6 +60,23 @@ const CurrencySelector = ({
    );
 };
 
+const getDiscountPercentage = (
+   licenseType: 'Single User License' | 'Site License' | 'Global License',
+): number => {
+   if (licenseType === null) return 0;
+
+   switch (licenseType) {
+      case 'Single User License': // Single license
+         return 10;
+      case 'Site License': // Site license
+         return 20;
+      case 'Global License': // Global license
+         return 30;
+      default:
+         return 0;
+   }
+};
+
 const CartPage = () => {
    const { formData, setErrors, errors } = useCheckout();
    const [totalCost, setTotalCost] = useState(0);
@@ -182,17 +199,20 @@ const CartPage = () => {
 
       try {
          const orderId: string = await createOrderIdFromRazorPay(totalCost);
+         let totalDiscounts = 0;
+         cartStore.reports.forEach((item: any) => {
+            totalDiscounts +=
+               (getDiscountPercentage(item?.selectedLicense?.title) / 100) *
+               item?.selectedLicense?.price?.amount;
+         });
          const createdOrder = await createOrder({
             reports: cartStore.reports?.map((item: any) => item?.report?.id),
-            orderId,
-            taxAmount: {
-               currency: selectedCurrency,
-               amount: 0,
-            },
+            razorpayOrderId: orderId,
             totalAmount: {
                currency: selectedCurrency,
                amount: totalCost,
             },
+            manualDiscountAmount: totalDiscounts,
             billingDetails: {
                firstName: formData.firstName,
                lastName: formData.lastName,
@@ -269,6 +289,13 @@ const CartPage = () => {
       }
    };
 
+   function getSelectedReportLicenseTitle(reportId: number) {
+      const report = cartStore.reports.find(
+         (item: any) => item?.report?.id === reportId,
+      );
+      return report?.selectedLicense?.title;
+   }
+
    return (
       <form
          onSubmit={(e) => handleCheckout(e)}
@@ -339,8 +366,26 @@ const CartPage = () => {
             <div className='rounded-xl border border-gray-200 p-6'>
                <CostCalculations
                   cost={convertPrice(totalCost) as number}
-                  city='Mumbai'
-                  currency={CURRENCIES[selectedCurrency]}
+                  city={formData.city}
+                  currency={{
+                     name: selectedCurrency,
+                     symbol: CURRENCIES[selectedCurrency].symbol,
+                  }}
+                  totalDiscounts={cartStore.reports.reduce((acc, item) => {
+                     return (
+                        acc +
+                        (getDiscountPercentage(
+                           getSelectedReportLicenseTitle(item?.report?.id),
+                        ) /
+                           100) *
+                           item?.selectedLicense?.price?.amount
+                     );
+                  }, 0)}
+                  discountPercentages={cartStore.reports.map((item) =>
+                     getDiscountPercentage(
+                        getSelectedReportLicenseTitle(item?.report?.id),
+                     ),
+                  )}
                />
             </div>
 
