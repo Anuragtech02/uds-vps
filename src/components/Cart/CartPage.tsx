@@ -182,6 +182,17 @@ const CartPage = () => {
       updateTotalCost(cart);
    }, []);
 
+   const calculateDiscounts = useCallback(() => {
+      return cartStore.reports.reduce((acc, item) => {
+         const discountPercentage = getDiscountPercentage(
+            getSelectedReportLicenseTitle(item?.report?.id),
+         );
+         const originalPrice = item?.selectedLicense?.price?.amount || 0;
+         const discountAmount = (discountPercentage / 100) * originalPrice;
+         return acc + convertPrice(discountAmount);
+      }, 0);
+   }, [cartStore.reports, convertPrice]);
+
    const handleCurrencyChange = (newCurrency: string) => {
       setSelectedCurrency(newCurrency);
    };
@@ -238,14 +249,10 @@ const CartPage = () => {
       }
 
       try {
-         let totalDiscounts = 0;
-         cartStore.reports.forEach((item: any) => {
-            totalDiscounts +=
-               (getDiscountPercentage(item?.selectedLicense?.title) / 100) *
-               item?.selectedLicense?.price?.amount;
-         });
-         const finalAmount = Number((totalCost - totalDiscounts).toFixed(2));
-
+         const totalDiscounts = calculateDiscounts();
+         const finalAmount = Number(
+            (convertPrice(totalCost) - totalDiscounts).toFixed(2),
+         );
          // Convert to smallest currency unit for Razorpay
          const razorpayAmount = convertToSmallestUnit(
             finalAmount,
@@ -254,10 +261,6 @@ const CartPage = () => {
          const orderData: any = await createOrderIdFromRazorPay(razorpayAmount);
          const orderId = orderData?.orderId;
          const razorpayReceipt = orderData?.receipt;
-
-         console.log(orderData);
-         console.log('Order ID:', orderId);
-         console.log('Receipt:', razorpayReceipt);
 
          const createdOrder = await createOrder({
             reports: cartStore.reports?.map((item: any) => item?.report?.id),
@@ -437,16 +440,7 @@ const CartPage = () => {
                      name: selectedCurrency,
                      symbol: CURRENCIES[selectedCurrency].symbol,
                   }}
-                  totalDiscounts={cartStore.reports.reduce((acc, item) => {
-                     return (
-                        acc +
-                        (getDiscountPercentage(
-                           getSelectedReportLicenseTitle(item?.report?.id),
-                        ) /
-                           100) *
-                           item?.selectedLicense?.price?.amount
-                     );
-                  }, 0)}
+                  totalDiscounts={calculateDiscounts()}
                   discountPercentages={cartStore.reports.map((item) =>
                      getDiscountPercentage(
                         getSelectedReportLicenseTitle(item?.report?.id),
