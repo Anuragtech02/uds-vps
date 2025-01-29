@@ -180,14 +180,14 @@ const ReportEnquiryForm: React.FC<ReportEnquiryFormProps> = ({
             defer
          />
 
-         <div className='relative max-h-[90vh] overflow-y-auto pb-20 pt-6 font-medium'>
+         <div className='max-h-[80vh] overflow-y-auto pt-6 font-medium'>
             <p>
                Requesting For: <strong>{reportTitle}</strong>
             </p>
             <hr className='mb-4 mt-2' />
             <form
                onSubmit={handleSubmit}
-               className='mt-2 space-y-4 text-sm md:space-y-4'
+               className='relative mt-2 space-y-4 text-sm md:space-y-4'
             >
                <div className='flex flex-col gap-4 sm:items-center md:flex-row'>
                   <div className='w-full shrink grow basis-0 space-y-1 sm:w-auto'>
@@ -273,9 +273,10 @@ const ReportEnquiryForm: React.FC<ReportEnquiryFormProps> = ({
                </div>
 
                {/* Cloudflare Turnstile */}
-               <div className='space-y-2'>
+               <div className='space-y-2 pb-1'>
                   <div id={turnstileContainerId}></div>
                </div>
+               {/* <div className='h-20'></div> */}
 
                {submitError && <p className='text-red-500'>{submitError}</p>}
                {submitSuccess && (
@@ -284,7 +285,7 @@ const ReportEnquiryForm: React.FC<ReportEnquiryFormProps> = ({
                      soon!
                   </p>
                )}
-               <div className='absolute bottom-0 left-1/2 w-full -translate-x-1/2'>
+               <div className='sticky bottom-0 w-full'>
                   <Button
                      className='w-full !bg-blue-1 text-white'
                      type='submit'
