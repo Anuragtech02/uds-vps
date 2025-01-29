@@ -1,20 +1,10 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Button from '../commons/Button';
 import CustomPhoneInput from '../CustomPhoneInput';
 import countryList from '@/assets/utils/countries.json';
 import Script from 'next/script';
 import { submitForm } from '@/utils/api/csr-services';
-
-declare global {
-   interface Window {
-      turnstile: {
-         render: (container: string | HTMLElement, options: any) => string;
-         reset: (widgetId: string) => void;
-      };
-      onloadTurnstileCallback: () => void;
-   }
-}
 
 const ContactForm = () => {
    const [formFields, setFormFields] = useState({
@@ -29,29 +19,64 @@ const ContactForm = () => {
    const [isSubmitting, setIsSubmitting] = useState(false);
    const [error, setError] = useState<string | null>(null);
    const [success, setSuccess] = useState(false);
+   const widgetIdRef = useRef<string>('');
+   const turnstileContainerId = 'callback-turnstile-container';
+
+   const cleanupTurnstile = () => {
+      if (widgetIdRef.current && window.turnstile) {
+         try {
+            window.turnstile.remove(widgetIdRef.current);
+            widgetIdRef.current = '';
+         } catch (error) {
+            console.error('Error cleaning up Turnstile:', error);
+         }
+      }
+   };
+
+   const initializeTurnstile = () => {
+      // Clean up existing widget first
+      cleanupTurnstile();
+
+      // Check if container exists
+      const container = document.getElementById(turnstileContainerId);
+      if (!container || !window.turnstile) return;
+
+      try {
+         const newWidgetId = window.turnstile.render(
+            `#${turnstileContainerId}`,
+            {
+               sitekey: process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || '',
+               callback: function (token: string) {
+                  console.log('Challenge Success');
+                  setTurnstileToken(token);
+                  setError(null);
+               },
+               'expired-callback': function () {
+                  setTurnstileToken('');
+                  setError('Verification expired. Please verify again.');
+               },
+               'error-callback': function () {
+                  setError('Error during verification. Please try again.');
+               },
+            },
+         );
+         widgetIdRef.current = newWidgetId;
+      } catch (error) {
+         console.error('Error initializing Turnstile:', error);
+      }
+   };
 
    useEffect(() => {
-      // Define the callback function that will be called when Turnstile is loaded
-      window.onloadTurnstileCallback = function () {
-         window.turnstile.render('#turnstile-container', {
-            sitekey: process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || '',
-            callback: function (token: string) {
-               console.log('Challenge Success', token);
-               setTurnstileToken(token);
-               setError(null);
-            },
-            'expired-callback': function () {
-               setTurnstileToken('');
-               setError('Verification expired. Please verify again.');
-            },
-            'error-callback': function () {
-               setError('Error during verification. Please try again.');
-            },
-         });
-      };
+      // Set up Turnstile callback
+      window.onloadTurnstileCallback = initializeTurnstile;
+
+      // If Turnstile is already loaded, initialize immediately
+      if (window.turnstile) {
+         initializeTurnstile();
+      }
 
       return () => {
-         // Clean up the global callback
+         cleanupTurnstile();
          // @ts-expect-error - window.onloadTurnstileCallback is defined
          delete window.onloadTurnstileCallback;
       };
@@ -220,7 +245,7 @@ const ContactForm = () => {
 
                {/* Cloudflare Turnstile */}
                <div className='space-y-2'>
-                  <div id='turnstile-container'></div>
+                  <div id={turnstileContainerId}></div>
                   {error && <p className='text-sm text-red-500'>{error}</p>}
                </div>
 

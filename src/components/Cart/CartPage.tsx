@@ -32,7 +32,7 @@ import {
 import { CURRENCIES } from '@/utils/constants';
 import { useRouter } from 'next/navigation';
 import Script from 'next/script';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 const CurrencySelector = ({
    selectedCurrency,
@@ -87,6 +87,72 @@ const CartPage = () => {
    const licenseStore = useSelectedLicenseStore();
    const [turnstileToken, setTurnstileToken] = useState<string>('');
    const [turnstileError, setTurnstileError] = useState<string | null>(null);
+   const widgetIdRef = useRef<string>('');
+   const turnstileContainerId = 'callback-turnstile-container';
+
+   const cleanupTurnstile = () => {
+      if (widgetIdRef.current && window.turnstile) {
+         try {
+            window.turnstile.remove(widgetIdRef.current);
+            widgetIdRef.current = '';
+         } catch (error) {
+            console.error('Error cleaning up Turnstile:', error);
+         }
+      }
+   };
+
+   const initializeTurnstile = () => {
+      // Clean up existing widget first
+      cleanupTurnstile();
+
+      // Check if container exists
+      const container = document.getElementById(turnstileContainerId);
+      if (!container || !window.turnstile) return;
+
+      try {
+         const newWidgetId = window.turnstile.render(
+            `#${turnstileContainerId}`,
+            {
+               sitekey: process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || '',
+               callback: function (token: string) {
+                  console.log('Challenge Success');
+                  setTurnstileToken(token);
+                  setTurnstileError(null);
+               },
+               'expired-callback': function () {
+                  setTurnstileToken('');
+                  setTurnstileError(
+                     'Verification expired. Please verify again.',
+                  );
+               },
+               'error-callback': function () {
+                  setTurnstileError(
+                     'Error during verification. Please try again.',
+                  );
+               },
+            },
+         );
+         widgetIdRef.current = newWidgetId;
+      } catch (error) {
+         console.error('Error initializing Turnstile:', error);
+      }
+   };
+
+   useEffect(() => {
+      // Set up Turnstile callback
+      window.onloadTurnstileCallback = initializeTurnstile;
+
+      // If Turnstile is already loaded, initialize immediately
+      if (window.turnstile) {
+         initializeTurnstile();
+      }
+
+      return () => {
+         cleanupTurnstile();
+         // @ts-expect-error - window.onloadTurnstileCallback is defined
+         delete window.onloadTurnstileCallback;
+      };
+   }, []);
 
    const validateForm = useCallback(() => {
       const newErrors: Partial<BillingFormData> = {};
@@ -125,33 +191,6 @@ const CartPage = () => {
    useEffect(() => {
       fetchRates();
    }, []); // Only fetch rates once on component mount
-
-   useEffect(() => {
-      window.onloadTurnstileCallback = function () {
-         window.turnstile.render('#cart-turnstile-container', {
-            sitekey: process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || '',
-            callback: function (token: string) {
-               console.log('Challenge Success', token);
-               setTurnstileToken(token);
-               setTurnstileError(null);
-            },
-            'expired-callback': function () {
-               setTurnstileToken('');
-               setTurnstileError('Verification expired. Please verify again.');
-            },
-            'error-callback': function () {
-               setTurnstileError(
-                  'Error during verification. Please try again.',
-               );
-            },
-         });
-      };
-
-      return () => {
-         // @ts-expect-error - window.onloadTurnstileCallback is defined
-         delete window.onloadTurnstileCallback;
-      };
-   }, []);
 
    const convertPrice = (amount: number | undefined) => {
       if (amount === undefined || isNaN(amount)) return 0;
@@ -453,7 +492,7 @@ const CartPage = () => {
             <div className='flex flex-col items-center justify-between md:flex-row'>
                <div className='rounded-xl'>
                   <div className='space-y-2'>
-                     <div id='cart-turnstile-container'></div>
+                     <div id={turnstileContainerId}></div>
                      {turnstileError && (
                         <p className='text-sm text-red-500'>{turnstileError}</p>
                      )}

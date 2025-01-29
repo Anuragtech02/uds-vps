@@ -1,19 +1,9 @@
 'use client';
-import { useState, FormEvent, useEffect } from 'react';
+import { useState, FormEvent, useEffect, useRef } from 'react';
 import CustomPhoneInput from '../CustomPhoneInput';
 import { submitForm } from '@/utils/api/csr-services';
 import Button from '../commons/Button';
 import Script from 'next/script';
-
-declare global {
-   interface Window {
-      turnstile: {
-         render: (container: string | HTMLElement, options: any) => string;
-         reset: (widgetId: string) => void;
-      };
-      onloadTurnstileCallback: () => void;
-   }
-}
 
 const DemoRequestForm = () => {
    const [formFields, setFormFields] = useState({
@@ -27,29 +17,66 @@ const DemoRequestForm = () => {
    const [submitError, setSubmitError] = useState<string | null>(null);
    const [submitSuccess, setSubmitSuccess] = useState(false);
    const [turnstileToken, setTurnstileToken] = useState<string>('');
+   const widgetIdRef = useRef<string>('');
+   const turnstileContainerId = 'callback-turnstile-container';
+
+   const cleanupTurnstile = () => {
+      if (widgetIdRef.current && window.turnstile) {
+         try {
+            window.turnstile.remove(widgetIdRef.current);
+            widgetIdRef.current = '';
+         } catch (error) {
+            console.error('Error cleaning up Turnstile:', error);
+         }
+      }
+   };
+
+   const initializeTurnstile = () => {
+      // Clean up existing widget first
+      cleanupTurnstile();
+
+      // Check if container exists
+      const container = document.getElementById(turnstileContainerId);
+      if (!container || !window.turnstile) return;
+
+      try {
+         const newWidgetId = window.turnstile.render(
+            `#${turnstileContainerId}`,
+            {
+               sitekey: process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || '',
+               callback: function (token: string) {
+                  console.log('Challenge Success');
+                  setTurnstileToken(token);
+                  setSubmitError(null);
+               },
+               'expired-callback': function () {
+                  setTurnstileToken('');
+                  setSubmitError('Verification expired. Please verify again.');
+               },
+               'error-callback': function () {
+                  setSubmitError(
+                     'Error during verification. Please try again.',
+                  );
+               },
+            },
+         );
+         widgetIdRef.current = newWidgetId;
+      } catch (error) {
+         console.error('Error initializing Turnstile:', error);
+      }
+   };
 
    useEffect(() => {
-      // Define the callback function that will be called when Turnstile is loaded
-      window.onloadTurnstileCallback = function () {
-         window.turnstile.render('#turnstile-container', {
-            sitekey: process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || '',
-            callback: function (token: string) {
-               console.log('Challenge Success', token);
-               setTurnstileToken(token);
-               setSubmitError(null);
-            },
-            'expired-callback': function () {
-               setTurnstileToken('');
-               setSubmitError('Verification expired. Please verify again.');
-            },
-            'error-callback': function () {
-               setSubmitError('Error during verification. Please try again.');
-            },
-         });
-      };
+      // Set up Turnstile callback
+      window.onloadTurnstileCallback = initializeTurnstile;
+
+      // If Turnstile is already loaded, initialize immediately
+      if (window.turnstile) {
+         initializeTurnstile();
+      }
 
       return () => {
-         // Clean up the global callback
+         cleanupTurnstile();
          // @ts-expect-error - window.onloadTurnstileCallback is defined
          delete window.onloadTurnstileCallback;
       };
@@ -191,7 +218,7 @@ const DemoRequestForm = () => {
 
                {/* Cloudflare Turnstile */}
                <div className='space-y-2'>
-                  <div id='turnstile-container'></div>
+                  <div id={turnstileContainerId}></div>
                </div>
 
                {submitError && <p className='text-red-500'>{submitError}</p>}

@@ -1,13 +1,15 @@
 'use client';
-import { useState, FormEvent, useEffect } from 'react';
+import { useState, FormEvent, useEffect, useRef } from 'react';
 import CustomPhoneInput from '../CustomPhoneInput';
 import Button from '../commons/Button';
 import Script from 'next/script';
 import { submitForm } from '@/utils/api/csr-services';
+import countryList from '@/assets/utils/countries.json';
 
 interface ReportEnquiryFormProps {
    reportId: number;
    reportTitle: string;
+   isOpen?: boolean; // Add this prop to track popup state
 }
 
 declare global {
@@ -15,6 +17,7 @@ declare global {
       turnstile: {
          render: (container: string | HTMLElement, options: any) => string;
          reset: (widgetId: string) => void;
+         remove: (widgetId: string) => void;
       };
       onloadTurnstileCallback: () => void;
    }
@@ -23,46 +26,93 @@ declare global {
 const ReportEnquiryForm: React.FC<ReportEnquiryFormProps> = ({
    reportId,
    reportTitle,
+   isOpen = true,
 }) => {
    const [formFields, setFormFields] = useState({
       fullName: '',
       businessEmail: '',
       company: '',
       message: '',
+      country: '',
    });
    const [phone, setPhone] = useState('');
    const [isSubmitting, setIsSubmitting] = useState(false);
    const [submitError, setSubmitError] = useState<string | null>(null);
    const [submitSuccess, setSubmitSuccess] = useState(false);
    const [turnstileToken, setTurnstileToken] = useState<string>('');
+   const widgetIdRef = useRef<string>('');
+   const turnstileContainerId = `turnstile-container-${reportId}`; // Unique container ID
 
+   const cleanupTurnstile = () => {
+      if (widgetIdRef.current && window.turnstile) {
+         try {
+            window.turnstile.remove(widgetIdRef.current);
+            widgetIdRef.current = '';
+         } catch (error) {
+            console.error('Error cleaning up Turnstile:', error);
+         }
+      }
+   };
+
+   const initializeTurnstile = () => {
+      cleanupTurnstile();
+
+      // Check if container exists
+      const container = document.getElementById(turnstileContainerId);
+      if (!container || !window.turnstile) return;
+
+      try {
+         const newWidgetId = window.turnstile.render(
+            `#${turnstileContainerId}`,
+            {
+               sitekey: process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || '',
+               callback: function (token: string) {
+                  console.log('Challenge Success');
+                  setTurnstileToken(token);
+                  setSubmitError(null);
+               },
+               'expired-callback': function () {
+                  setTurnstileToken('');
+                  setSubmitError('Verification expired. Please verify again.');
+               },
+               'error-callback': function () {
+                  setSubmitError(
+                     'Error during verification. Please try again.',
+                  );
+               },
+            },
+         );
+         widgetIdRef.current = newWidgetId;
+      } catch (error) {
+         console.error('Error initializing Turnstile:', error);
+      }
+   };
+
+   // Handle initial load and reopens
    useEffect(() => {
-      // Define the callback function that will be called when Turnstile is loaded
-      window.onloadTurnstileCallback = function () {
-         window.turnstile.render('#turnstile-container', {
-            sitekey: process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || '',
-            callback: function (token: string) {
-               console.log('Challenge Success', token);
-               setTurnstileToken(token);
-               setSubmitError(null);
-            },
-            'expired-callback': function () {
-               setTurnstileToken('');
-               setSubmitError('Verification expired. Please verify again.');
-            },
-            'error-callback': function () {
-               setSubmitError('Error during verification. Please try again.');
-            },
-         });
-      };
+      if (isOpen) {
+         // Reset states
+         setTurnstileToken('');
+         setSubmitError(null);
+         setSubmitSuccess(false);
+
+         // Set up Turnstile callback
+         window.onloadTurnstileCallback = initializeTurnstile;
+
+         // If Turnstile is already loaded, initialize immediately
+         if (window.turnstile) {
+            initializeTurnstile();
+         }
+      }
 
       return () => {
-         // Clean up the global callback
+         cleanupTurnstile();
          // @ts-expect-error - window.onloadTurnstileCallback is defined
          delete window.onloadTurnstileCallback;
       };
-   }, []);
+   }, [isOpen]);
 
+   // Rest of the component remains the same...
    const handleInputChange = (
       e: React.ChangeEvent<
          HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
@@ -112,12 +162,9 @@ const ReportEnquiryForm: React.FC<ReportEnquiryFormProps> = ({
             businessEmail: '',
             company: '',
             message: '',
+            country: '',
          });
          setPhone('');
-         // Reset Turnstile
-         if (window.turnstile) {
-            window.turnstile.reset('#turnstile-container');
-         }
       } catch (error) {
          setSubmitError('An error occurred. Please try again.');
       } finally {
@@ -133,14 +180,14 @@ const ReportEnquiryForm: React.FC<ReportEnquiryFormProps> = ({
             defer
          />
 
-         <div className='pt-6 font-medium'>
+         <div className='relative max-h-[90vh] overflow-y-auto pb-20 pt-6 font-medium'>
             <p>
                Requesting For: <strong>{reportTitle}</strong>
             </p>
             <hr className='mb-4 mt-2' />
             <form
                onSubmit={handleSubmit}
-               className='mt-2 space-y-6 text-sm md:space-y-8'
+               className='mt-2 space-y-4 text-sm md:space-y-4'
             >
                <div className='flex flex-col gap-4 sm:items-center md:flex-row'>
                   <div className='w-full shrink grow basis-0 space-y-1 sm:w-auto'>
@@ -192,6 +239,27 @@ const ReportEnquiryForm: React.FC<ReportEnquiryFormProps> = ({
                      />
                   </div>
                </div>
+
+               <div className='space-y-1'>
+                  <label htmlFor='country'>Country</label>
+                  <select
+                     id='country'
+                     name='country'
+                     value={formFields.country}
+                     onChange={handleInputChange}
+                     className='w-full rounded-md border border-s-300 p-3'
+                  >
+                     <option className='opacity-50' value=''>
+                        Select your country
+                     </option>
+                     {countryList?.map((country) => (
+                        <option key={country.code} value={country.name}>
+                           {country.name}
+                        </option>
+                     ))}
+                  </select>
+               </div>
+
                <div className='space-y-1'>
                   <label htmlFor='message'>Message</label>
                   <textarea
@@ -200,13 +268,13 @@ const ReportEnquiryForm: React.FC<ReportEnquiryFormProps> = ({
                      value={formFields.message}
                      onChange={handleInputChange}
                      placeholder='Enter your message or any specific requirements'
-                     className='min-h-32 w-full rounded-md border border-s-300 p-3'
+                     className='min-h-20 w-full rounded-md border border-s-300 p-3'
                   ></textarea>
                </div>
 
                {/* Cloudflare Turnstile */}
                <div className='space-y-2'>
-                  <div id='turnstile-container'></div>
+                  <div id={turnstileContainerId}></div>
                </div>
 
                {submitError && <p className='text-red-500'>{submitError}</p>}
@@ -216,7 +284,7 @@ const ReportEnquiryForm: React.FC<ReportEnquiryFormProps> = ({
                      soon!
                   </p>
                )}
-               <div>
+               <div className='absolute bottom-0 left-1/2 w-full -translate-x-1/2'>
                   <Button
                      className='w-full !bg-blue-1 text-white'
                      type='submit'
