@@ -1,3 +1,4 @@
+import { CURRENCIES } from '../constants';
 import { buildPopulateQuery } from '../generic-methods';
 import fetchClientCSR from './csr-config';
 
@@ -150,7 +151,10 @@ export const createOrder = async (orderData: any) => {
    }
 };
 
-export const createOrderIdFromRazorPay = async (amount: number) => {
+export const createOrderIdFromRazorPay = async (
+   amount: number,
+   currency: keyof typeof CURRENCIES = 'USD',
+) => {
    try {
       const response = await fetchClientCSR('/rpay/create-order', {
          method: 'POST',
@@ -159,7 +163,8 @@ export const createOrderIdFromRazorPay = async (amount: number) => {
             ...getAuthHeaders('post'),
          },
          body: JSON.stringify({
-            amount: amount * 100,
+            amount: amount,
+            currency: currency,
          }),
       });
 

@@ -77,6 +77,22 @@ const getDiscountPercentage = (
    }
 };
 
+const SUPPORTED_CURRENCIES = ['USD', 'EUR', 'GBP', 'INR', 'JPY']; // Add all supported currencies
+
+const convertToSmallestUnit = (amount: number, currency: string) => {
+   const currencyMultipliers: { [key: string]: number } = {
+      USD: 100, // cents
+      EUR: 100, // cents
+      GBP: 100, // pence
+      JPY: 1, // no decimal places
+      INR: 100, // paise
+      // Add other currencies as needed
+   };
+
+   const multiplier = currencyMultipliers[currency] || 100;
+   return Math.round(amount * multiplier);
+};
+
 const CartPage = () => {
    const { formData, setErrors, errors } = useCheckout();
    const [totalCost, setTotalCost] = useState(0);
@@ -233,6 +249,11 @@ const CartPage = () => {
    }, [cartStore.reports, convertPrice]);
 
    const handleCurrencyChange = (newCurrency: string) => {
+      if (!SUPPORTED_CURRENCIES.includes(newCurrency)) {
+         alert(`Currency ${newCurrency} is not supported`);
+         console.error(`Currency ${newCurrency} is not supported`);
+         return;
+      }
       setSelectedCurrency(newCurrency);
    };
 
@@ -265,12 +286,6 @@ const CartPage = () => {
       changeLicenseOfReport(reportId, newLicense);
    };
 
-   const convertToSmallestUnit = (amount: number, currency: string) => {
-      // Razorpay expects amount in smallest currency unit
-      const amountInSmallestUnit = Math.round(amount * 100); // Convert to paise/cents
-      return amountInSmallestUnit;
-   };
-
    const handleCheckout = async (e: any) => {
       e.preventDefault();
 
@@ -292,12 +307,14 @@ const CartPage = () => {
          const finalAmount = Number(
             (convertPrice(totalCost) - totalDiscounts).toFixed(2),
          );
-         // Convert to smallest currency unit for Razorpay
          const razorpayAmount = convertToSmallestUnit(
             finalAmount,
             selectedCurrency,
          );
-         const orderData: any = await createOrderIdFromRazorPay(razorpayAmount);
+         const orderData: any = await createOrderIdFromRazorPay(
+            razorpayAmount,
+            selectedCurrency,
+         );
          const orderId = orderData?.orderId;
          const razorpayReceipt = orderData?.receipt;
 
@@ -330,10 +347,14 @@ const CartPage = () => {
 
          const options = {
             key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
-            amount: totalCost * 100,
+            amount: razorpayAmount,
             currency: selectedCurrency,
-            name: 'Univdatos',
-            description: 'Please complete the payment to purchase the product',
+            name: 'UnivDatos',
+            description:
+               'Please complete the payment to purchase the report(s) ' +
+               cartStore.reports
+                  .map((item: any) => item?.report?.title)
+                  .join(', '),
             order_id: orderId,
             handler: async function (response: any) {
                const data = {
