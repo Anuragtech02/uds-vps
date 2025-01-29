@@ -10,16 +10,6 @@ interface SampleReportDownloadFormProps {
    reportTitle: string;
 }
 
-declare global {
-   interface Window {
-      turnstile: {
-         render: (container: string | HTMLElement, options: any) => string;
-         reset: (widgetId: string) => void;
-      };
-      onloadTurnstileCallback: () => void;
-   }
-}
-
 const SampleReportDownloadForm: React.FC<SampleReportDownloadFormProps> = ({
    reportId,
    reportTitle,

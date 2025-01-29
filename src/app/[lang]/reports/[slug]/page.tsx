@@ -1,6 +1,5 @@
 export const runtime = 'edge';
 
-import { isCompanyProfile } from '@/app/reports/[slug]/page';
 import ExploreProjects from '@/components/Report/ExploreProjects';
 import Header from '@/components/Report/Header';
 import ReportBlock from '@/components/Report/ReportBlock';
@@ -143,6 +142,20 @@ export async function generateMetadata({
    }
 
    return metadata;
+}
+
+async function isCompanyProfile(slug: string) {
+   const profile = await import('@/utils/company-profile-mappings.json', {
+      assert: { type: 'json' },
+   });
+
+   const data = profile.default as Array<string>;
+
+   if (data.includes(slug)) {
+      return true;
+   }
+
+   return false;
 }
 
 const page: React.FC<{

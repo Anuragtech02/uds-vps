@@ -2,12 +2,10 @@ export const runtime = 'edge';
 import ExploreProjects from '@/components/Report/ExploreProjects';
 import Header from '@/components/Report/Header';
 import ReportBlock from '@/components/Report/ReportBlock';
-import ReportFAQs from '@/components/Report/ReportFAQs';
 import { getAllReports, getReportsPageBySlug } from '@/utils/api/services';
 import { SUPPORTED_LOCALES } from '@/utils/constants';
 import { absoluteUrl } from '@/utils/generic-methods';
 import { Metadata } from 'next';
-import { cookies } from 'next/headers';
 import { notFound, redirect } from 'next/navigation';
 
 export const dynamic = 'force-dynamic'; // Forces dynamic rendering, bypassing all static optimizations
@@ -151,7 +149,7 @@ export async function generateMetadata({
    return metadata;
 }
 
-export async function isCompanyProfile(slug: string) {
+async function isCompanyProfile(slug: string) {
    const profile = await import('@/utils/company-profile-mappings.json', {
       assert: { type: 'json' },
    });
