@@ -421,7 +421,7 @@ const ReportBlock: React.FC<ReportBlockProps> = ({ data }) => {
             rightSectionHeading={reportData.rightSectionHeading}
          />
 
-         <Popup name='report-enquiry' title='Report Enquiry'>
+         <Popup name='report-enquiry' title='Report Enquiry' size='lg'>
             <ReportEnquiryForm
                reportTitle={reportData.title}
                reportId={reportData.id}

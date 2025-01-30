@@ -189,8 +189,9 @@ const ReportEnquiryForm: React.FC<ReportEnquiryFormProps> = ({
                onSubmit={handleSubmit}
                className='relative mt-2 space-y-4 text-sm md:space-y-4'
             >
-               <div className='flex flex-col gap-4 sm:items-center md:flex-row'>
-                  <div className='w-full shrink grow basis-0 space-y-1 sm:w-auto'>
+               {/* New 3-column layout for large screens */}
+               <div className='grid grid-cols-1 gap-4 lg:grid-cols-3'>
+                  <div className='space-y-1'>
                      <label htmlFor='name'>Full Name*</label>
                      <input
                         type='text'
@@ -203,16 +204,16 @@ const ReportEnquiryForm: React.FC<ReportEnquiryFormProps> = ({
                         className='w-full rounded-md border border-s-300 p-3'
                      />
                   </div>
-                  <div className='w-full shrink grow basis-0 space-y-1 sm:w-auto'>
+
+                  <div className='space-y-1'>
                      <CustomPhoneInput
                         value={phone}
                         onChange={handlePhoneChange}
                         required
                      />
                   </div>
-               </div>
-               <div className='flex flex-col items-center gap-4 md:flex-row'>
-                  <div className='w-full shrink grow basis-0 space-y-1 sm:w-auto'>
+
+                  <div className='space-y-1'>
                      <label htmlFor='email'>Business Email*</label>
                      <input
                         type='email'
@@ -225,7 +226,8 @@ const ReportEnquiryForm: React.FC<ReportEnquiryFormProps> = ({
                         className='w-full rounded-md border border-s-300 p-3'
                      />
                   </div>
-                  <div className='w-full shrink grow basis-0 space-y-1 sm:w-auto'>
+
+                  <div className='space-y-1'>
                      <label htmlFor='company'>Company*</label>
                      <input
                         type='text'
@@ -238,26 +240,26 @@ const ReportEnquiryForm: React.FC<ReportEnquiryFormProps> = ({
                         className='w-full rounded-md border border-s-300 p-3'
                      />
                   </div>
-               </div>
 
-               <div className='space-y-1'>
-                  <label htmlFor='country'>Country</label>
-                  <select
-                     id='country'
-                     name='country'
-                     value={formFields.country}
-                     onChange={handleInputChange}
-                     className='w-full rounded-md border border-s-300 p-3'
-                  >
-                     <option className='opacity-50' value=''>
-                        Select your country
-                     </option>
-                     {countryList?.map((country) => (
-                        <option key={country.code} value={country.name}>
-                           {country.name}
+                  <div className='space-y-1'>
+                     <label htmlFor='country'>Country</label>
+                     <select
+                        id='country'
+                        name='country'
+                        value={formFields.country}
+                        onChange={handleInputChange}
+                        className='w-full rounded-md border border-s-300 p-3'
+                     >
+                        <option className='opacity-50' value=''>
+                           Select your country
                         </option>
-                     ))}
-                  </select>
+                        {countryList?.map((country) => (
+                           <option key={country.code} value={country.name}>
+                              {country.name}
+                           </option>
+                        ))}
+                     </select>
+                  </div>
                </div>
 
                <div className='space-y-1'>
@@ -272,19 +274,17 @@ const ReportEnquiryForm: React.FC<ReportEnquiryFormProps> = ({
                   ></textarea>
                </div>
 
-               {/* Cloudflare Turnstile */}
                <div className='space-y-2 pb-1'>
                   <div id={turnstileContainerId}></div>
                </div>
-               {/* <div className='h-20'></div> */}
 
                {submitError && <p className='text-red-500'>{submitError}</p>}
                {submitSuccess && (
                   <p className='text-green-500'>
-                     Thank you for your enquiry. We&apos;ll get back to you
-                     soon!
+                     Thank you for your enquiry. We'll get back to you soon!
                   </p>
                )}
+
                <div className='sticky bottom-0 w-full'>
                   <Button
                      className='w-full !bg-blue-1 text-white'

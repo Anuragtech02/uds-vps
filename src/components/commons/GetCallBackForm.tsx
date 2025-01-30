@@ -101,6 +101,7 @@ const GetCallBackForm = () => {
    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       setIsSubmitting(true);
+      // Clear both messages at the start
       setSubmitError(null);
       setSubmitSuccess(false);
 
@@ -125,21 +126,35 @@ const GetCallBackForm = () => {
             },
          });
 
-         setSubmitSuccess(true);
-         // Reset form fields
-         setFormFields({
-            fullName: '',
-            businessEmail: '',
-            country: '',
-            message: '',
-         });
-         // Reset Turnstile
-         if (window.turnstile) {
-            window.turnstile.reset('#turnstile-container');
+         // Check if the response indicates success
+         if (response?.success) {
+            setSubmitSuccess(true);
+            setSubmitError(null); // Ensure error is cleared
+
+            // Reset form fields
+            setFormFields({
+               fullName: '',
+               businessEmail: '',
+               country: '',
+               message: '',
+            });
+            setPhone('');
+         } else {
+            // Handle unsuccessful response
+            setSubmitSuccess(false);
+            setSubmitError('Form submission failed. Please try again.');
          }
       } catch (error) {
+         // Handle error case
+         setSubmitSuccess(false);
          setSubmitError('An error occurred. Please try again.');
+         console.error('Form submission error:', error);
       } finally {
+         // Always reset Turnstile and submission state
+         if (window.turnstile) {
+            window.turnstile.reset(turnstileContainerId);
+            setTurnstileToken('');
+         }
          setIsSubmitting(false);
       }
    };
@@ -246,12 +261,12 @@ const GetCallBackForm = () => {
                   <div id={turnstileContainerId}></div>
                </div>
 
-               {submitError && (
+               {submitError && !submitSuccess && (
                   <p className='text-sm text-red-500'>{submitError}</p>
                )}
-               {submitSuccess && (
+               {submitSuccess && !submitError && (
                   <p className='text-sm text-green-500'>
-                     Thank you! We&apos;ll get back to you shortly.
+                     Thank you! We'll get back to you shortly.
                   </p>
                )}
 

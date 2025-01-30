@@ -6,11 +6,12 @@ interface PopupProps {
    name: string; // This will be the expected value of the 'popup' parameter
    children: React.ReactNode;
    title: string;
+   size?: 'md' | 'lg';
    onClose?: () => void;
 }
 
 const Popup: React.FC<PopupProps> = (props) => {
-   const { name, title, children, onClose } = props;
+   const { name, title, children, onClose, size = 'md' } = props;
    const searchParams = useSearchParams();
    const router = useRouter();
    const [isOpen, setIsOpen] = useState(false);
@@ -32,7 +33,9 @@ const Popup: React.FC<PopupProps> = (props) => {
 
    return (
       <div className='fixed inset-0 z-[999] flex items-center justify-center bg-black bg-opacity-50'>
-         <div className='m-4 w-full max-w-md rounded-lg bg-white p-6 shadow-lg'>
+         <div
+            className={`m-4 w-full ${size === 'lg' ? 'max-w-2xl' : 'max-w-md'} rounded-lg bg-white p-6 shadow-lg`}
+         >
             <div className='flex items-center justify-between'>
                <h3>{title}</h3>
                <button
