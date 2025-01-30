@@ -266,7 +266,7 @@ const GetCallBackForm = () => {
                )}
                {submitSuccess && !submitError && (
                   <p className='text-sm text-green-500'>
-                     Thank you! We'll get back to you shortly.
+                     Thank you! We&apos;ll get back to you shortly.
                   </p>
                )}
 

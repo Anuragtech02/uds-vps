@@ -281,7 +281,8 @@ const ReportEnquiryForm: React.FC<ReportEnquiryFormProps> = ({
                {submitError && <p className='text-red-500'>{submitError}</p>}
                {submitSuccess && (
                   <p className='text-green-500'>
-                     Thank you for your enquiry. We'll get back to you soon!
+                     Thank you for your enquiry. We&apos;ll get back to you
+                     soon!
                   </p>
                )}
 
