@@ -20,7 +20,7 @@ const ContactForm = () => {
    const [error, setError] = useState<string | null>(null);
    const [success, setSuccess] = useState(false);
    const widgetIdRef = useRef<string>('');
-   const turnstileContainerId = 'callback-turnstile-container';
+   const turnstileContainerId = 'turnstile-container'; // Keep this consistent
 
    const cleanupTurnstile = () => {
       if (widgetIdRef.current && window.turnstile) {
@@ -47,7 +47,6 @@ const ContactForm = () => {
             {
                sitekey: process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || '',
                callback: function (token: string) {
-                  console.log('Challenge Success');
                   setTurnstileToken(token);
                   setError(null);
                },
@@ -77,10 +76,13 @@ const ContactForm = () => {
 
       return () => {
          cleanupTurnstile();
-         // @ts-expect-error - window.onloadTurnstileCallback is defined
-         delete window.onloadTurnstileCallback;
+         // Remove the callback
+         if (window.onloadTurnstileCallback) {
+            // @ts-expect-error - window.onloadTurnstileCallback is defined
+            delete window.onloadTurnstileCallback;
+         }
       };
-   }, []);
+   }, []); // Empty dependency array since we only want this to run once
 
    const handleInputChange = (
       e: React.ChangeEvent<
@@ -102,11 +104,13 @@ const ContactForm = () => {
 
       if (!turnstileToken) {
          setError('Please complete the verification');
+         setSuccess(false); // Reset success state when there's an error
          return;
       }
 
       setIsSubmitting(true);
       setError(null);
+      setSuccess(false); // Reset success state at the start
 
       const requestData = {
          ...formFields,
@@ -131,13 +135,19 @@ const ContactForm = () => {
             company: '',
          });
          setPhone('');
+         setError(null); // Ensure error is cleared on success
+
+         setTimeout(() => {
+            setSuccess(false);
+         }, 5000); // Reset success message after 5 seconds
          // Reset Turnstile after successful submission
          if (window.turnstile) {
             window.turnstile.reset('#turnstile-container');
          }
       } catch (error) {
+         setSuccess(false); // Ensure success is cleared on error
          setError('Failed to send message. Please try again.');
-         console.log(error);
+         console.error(error); // Changed to console.error for better debugging
       } finally {
          setIsSubmitting(false);
       }
@@ -243,26 +253,31 @@ const ContactForm = () => {
                   />
                </div>
 
-               {/* Cloudflare Turnstile */}
-               <div className='space-y-2'>
-                  <div id={turnstileContainerId}></div>
-                  {error && <p className='text-sm text-red-500'>{error}</p>}
-               </div>
+               <div className='flex items-center justify-between'>
+                  <div className='flex flex-col items-start'>
+                     <div id={turnstileContainerId}></div>
 
-               {success && (
-                  <div className='rounded-md bg-green-50 p-4 text-green-800'>
-                     Thank you! Your message has been sent successfully.
+                     {/* Cloudflare Turnstile */}
+                     {error ? (
+                        <div className='rounded-md bg-red-50 p-4 text-red-800'>
+                           {error}
+                        </div>
+                     ) : success ? (
+                        <div className='rounded-md bg-green-50 p-4 text-green-800'>
+                           Thank you! Your message has been sent successfully.
+                        </div>
+                     ) : null}
                   </div>
-               )}
 
-               <div>
-                  <Button
-                     variant='secondary'
-                     type='submit'
-                     disabled={isSubmitting}
-                  >
-                     {isSubmitting ? 'Sending...' : 'Send Message'}
-                  </Button>
+                  <div>
+                     <Button
+                        variant='secondary'
+                        type='submit'
+                        disabled={isSubmitting}
+                     >
+                        {isSubmitting ? 'Sending...' : 'Send Message'}
+                     </Button>
+                  </div>
                </div>
             </form>
          </div>

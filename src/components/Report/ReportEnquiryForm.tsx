@@ -286,7 +286,7 @@ const ReportEnquiryForm: React.FC<ReportEnquiryFormProps> = ({
                   </p>
                )}
 
-               <div className='sticky bottom-0 w-full'>
+               <div className='w-full'>
                   <Button
                      className='w-full !bg-blue-1 text-white'
                      type='submit'
