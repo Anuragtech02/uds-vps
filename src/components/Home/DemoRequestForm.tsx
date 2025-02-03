@@ -132,11 +132,17 @@ const DemoRequestForm = () => {
          });
          setPhone('');
          // Reset Turnstile
+         setTimeout(() => {
+            setSubmitSuccess(false);
+         }, 5000); // Reset success message after 5 seconds
+         // Reset Turnstile after successful submission
          if (window.turnstile) {
             window.turnstile.reset('#turnstile-container');
          }
       } catch (error) {
          setSubmitError('An error occurred. Please try again.');
+         setSubmitSuccess(false); // Ensure success is cleared on error
+         console.error(error); // Changed to console.error for better debugging
       } finally {
          setIsSubmitting(false);
       }
@@ -222,13 +228,15 @@ const DemoRequestForm = () => {
                   <div id={turnstileContainerId}></div>
                </div>
 
-               {submitError && <p className='text-red-500'>{submitError}</p>}
-               {submitSuccess && (
-                  <p className='text-green-500'>
-                     Thank you for your demo request. We&apos;ll get back to you
-                     soon!
-                  </p>
-               )}
+               {submitError ? (
+                  <div className='rounded-md bg-red-50 p-4 text-red-800'>
+                     {submitError}
+                  </div>
+               ) : submitSuccess ? (
+                  <div className='rounded-md bg-green-50 p-4 text-green-800'>
+                     Thank you! Your message has been sent successfully.
+                  </div>
+               ) : null}
                <div>
                   <Button
                      className='w-full !bg-blue-1 text-white'
