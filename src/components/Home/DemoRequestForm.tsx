@@ -118,6 +118,7 @@ const DemoRequestForm = () => {
       try {
          const response = await submitForm('demo', {
             ...formFields,
+            mobile: phone,
             rawData: { ...requestData, cfTurnstileResponse: turnstileToken },
          });
 
