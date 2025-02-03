@@ -404,7 +404,6 @@ const CartPage = () => {
             },
          };
 
-         // @ts-expect-error
          const paymentObject = new window.Razorpay(options);
          paymentObject.on('payment.failed', async function (response: any) {
             console.error(response.error.description);
