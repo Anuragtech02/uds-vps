@@ -8,6 +8,11 @@ import { useCartStore } from '@/stores/cart.store';
 
 const CartIcon = () => {
    const cartStore = useCartStore();
+
+   useEffect(() => {
+      cartStore.updateCart(getCart());
+   }, []);
+
    return (
       <LocalizedLink href='/cart' className='relative'>
          <span className='block cursor-pointer rounded-md border border-blue-4 p-2 text-xl sm:text-3xl'>
