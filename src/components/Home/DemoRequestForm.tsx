@@ -131,13 +131,14 @@ const DemoRequestForm = () => {
             message: '',
          });
          setPhone('');
+         setSubmitError(null); // Ensure error is cleared on success
          // Reset Turnstile
          setTimeout(() => {
             setSubmitSuccess(false);
          }, 5000); // Reset success message after 5 seconds
          // Reset Turnstile after successful submission
          if (window.turnstile) {
-            window.turnstile.reset('#turnstile-container');
+            window.turnstile.reset('#callback-turnstile-container');
          }
       } catch (error) {
          setSubmitError('An error occurred. Please try again.');
