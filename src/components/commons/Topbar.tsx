@@ -1,5 +1,4 @@
 import { useSearchStore } from '@/stores/search.store';
-import Link from 'next/link';
 import { FaPhoneAlt } from 'react-icons/fa';
 import { FaCircleUser } from 'react-icons/fa6';
 import { IoIosSearch, IoMdCart } from 'react-icons/io';

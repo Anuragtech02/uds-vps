@@ -5,6 +5,8 @@ import Script from 'next/script';
 import HandleRTL from '@/components/commons/HandleRTL';
 import { SUPPORTED_LOCALES } from '@/utils/constants';
 import { Bricolage_Grotesque, Manrope } from 'next/font/google';
+import { GoogleTagManager } from '@next/third-parties/google';
+import { GoogleAnalytics } from '@next/third-parties/google';
 
 const bricolageGrotesque = Bricolage_Grotesque({
    subsets: ['latin'],
@@ -41,6 +43,7 @@ export default function RootLayout({
          lang='en'
          className={`${manrope.variable} ${bricolageGrotesque.variable} `}
       >
+         <GoogleTagManager gtmId='GTM-5F572ZK' />
          <body>
             <Appwrapper>{children}</Appwrapper>
             <HandleRTL />
@@ -66,6 +69,7 @@ export default function RootLayout({
                })();`}
             </Script>
          </body>
+         <GoogleAnalytics gaId='GTM-5F572ZK' />
       </html>
    );
 }
