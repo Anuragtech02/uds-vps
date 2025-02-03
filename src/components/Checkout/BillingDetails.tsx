@@ -34,8 +34,15 @@ const BillingDetails = () => {
    const [loadingCountries, setLoadingCountries] = useState(false);
    const [loadingStates, setLoadingStates] = useState(false);
 
-   const { formData, setFormData, errors, touched, setTouched, setErrors } =
-      useCheckout();
+   const {
+      formData,
+      setFormData,
+      errors,
+      touched,
+      setTouched,
+      setErrors,
+      setSelectedCurrency,
+   } = useCheckout();
 
    useEffect(() => {
       const fetchCountries = async () => {
@@ -74,6 +81,20 @@ const BillingDetails = () => {
          state: '', // Reset state when country changes
       }));
 
+      // Set currency based on country code
+      if (value === 'IND') {
+         setSelectedCurrency('INR');
+      } else if (value === 'USA') {
+         setSelectedCurrency('USD');
+      } else if (value === 'GBR') {
+         setSelectedCurrency('GBP');
+      } else if (value === 'JPN') {
+         setSelectedCurrency('JPY');
+      } else if (countries.find((c) => c.code === value)?.name.includes('EU')) {
+         setSelectedCurrency('EUR');
+      } else {
+         setSelectedCurrency('USD'); // Default to USD
+      }
       // Update available states based on selected country
       const selectedCountry = countries.find((c) => c.code === value);
       if (selectedCountry) {

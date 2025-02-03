@@ -94,9 +94,14 @@ const convertToSmallestUnit = (amount: number, currency: string) => {
 };
 
 const CartPage = () => {
-   const { formData, setErrors, errors } = useCheckout();
+   const {
+      formData,
+      setErrors,
+      errors,
+      selectedCurrency,
+      setSelectedCurrency,
+   } = useCheckout();
    const [totalCost, setTotalCost] = useState(0);
-   const [selectedCurrency, setSelectedCurrency] = useState('USD');
    const [exchangeRates, setExchangeRates] = useState<any>({});
    const router = useRouter();
    const cartStore = useCartStore();
@@ -496,6 +501,7 @@ const CartPage = () => {
                <CostCalculations
                   cost={convertPrice(totalCost) as number}
                   city={formData.city}
+                  country={formData.country} // Add this line
                   currency={{
                      name: selectedCurrency,
                      symbol: CURRENCIES[selectedCurrency].symbol,

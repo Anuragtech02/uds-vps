@@ -37,6 +37,8 @@ interface CheckoutContextType {
               prev: Partial<Record<keyof BillingFormData, boolean>>,
            ) => Partial<Record<keyof BillingFormData, boolean>>),
    ) => void;
+   selectedCurrency: string;
+   setSelectedCurrency: (currency: string) => void;
 }
 
 const CheckoutContext = createContext<CheckoutContextType | undefined>(
@@ -55,6 +57,7 @@ export function CheckoutProvider({ children }: { children: ReactNode }) {
       orderNotes: '',
       phone: '',
    });
+   const [selectedCurrency, setSelectedCurrency] = useState('USD');
 
    const [errors, setErrors] = useState<Partial<BillingFormData>>({});
    const [touched, setTouched] = useState<
@@ -85,6 +88,8 @@ export function CheckoutProvider({ children }: { children: ReactNode }) {
             setErrors,
             touched,
             setTouched,
+            selectedCurrency,
+            setSelectedCurrency,
          }}
       >
          {children}

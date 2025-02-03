@@ -3,6 +3,7 @@ import { FC } from 'react';
 interface CostCalculationsProps {
    cost: number;
    city: string;
+   country: string;
    currency: {
       symbol: string;
       name: string;
@@ -14,11 +15,15 @@ interface CostCalculationsProps {
 const CostCalculations: FC<CostCalculationsProps> = ({
    cost,
    city,
+   country,
    currency,
    totalDiscounts,
    discountPercentages,
 }) => {
-   const finalCost = cost - totalDiscounts;
+   const subtotal = cost - totalDiscounts;
+   const taxRate = country === 'IND' ? 0.18 : 0;
+   const taxAmount = subtotal * taxRate;
+   const finalCost = subtotal + taxAmount;
 
    return (
       <>
@@ -47,6 +52,17 @@ const CostCalculations: FC<CostCalculationsProps> = ({
                }).format(totalDiscounts)}
             </p>
          </div>
+         {taxRate > 0 && (
+            <div className='flex justify-between border-b border-s-500 pb-4 pt-4 font-semibold text-s-600 md:text-lg'>
+               <p>GST (18%)</p>
+               <p className='text-md md:text-lg'>
+                  {new Intl.NumberFormat('en-US', {
+                     style: 'currency',
+                     currency: currency.name,
+                  }).format(taxAmount)}
+               </p>
+            </div>
+         )}
          <div className='flex items-center justify-between pt-4 font-semibold text-s-600 md:text-lg'>
             <p className='font-bold md:text-2xl'>Total</p>
             <p className='text-lg md:text-2xl'>
