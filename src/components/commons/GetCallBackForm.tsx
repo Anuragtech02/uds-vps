@@ -126,32 +126,25 @@ const GetCallBackForm = () => {
             },
          });
 
-         // Check if the response indicates success
-         if (response?.success) {
-            setSubmitSuccess(true);
-            setSubmitError(null); // Ensure error is cleared
+         setSubmitSuccess(true);
+         setSubmitError(null); // Ensure error is cleared
 
-            // Reset form fields
-            setFormFields({
-               fullName: '',
-               businessEmail: '',
-               country: '',
-               message: '',
-            });
-            setPhone('');
-            setSubmitError(null); // Ensure error is cleared on success
+         // Reset form fields
+         setFormFields({
+            fullName: '',
+            businessEmail: '',
+            country: '',
+            message: '',
+         });
+         setPhone('');
+         setSubmitError(null); // Ensure error is cleared on success
 
-            setTimeout(() => {
-               setSubmitSuccess(false);
-            }, 5000); // Reset success message after 5 seconds
-            // Reset Turnstile after successful submission
-            if (window.turnstile) {
-               window.turnstile.reset(`#${turnstileContainerId}`);
-            }
-         } else {
-            // Handle unsuccessful response
+         setTimeout(() => {
             setSubmitSuccess(false);
-            setSubmitError('Form submission failed. Please try again.');
+         }, 5000); // Reset success message after 5 seconds
+         // Reset Turnstile after successful submission
+         if (window.turnstile) {
+            window.turnstile.reset(`#${turnstileContainerId}`);
          }
       } catch (error) {
          // Handle error case
