@@ -253,7 +253,7 @@ const ContactForm = () => {
                   />
                </div>
 
-               <div className='flex items-center justify-between'>
+               <div className='flex flex-col items-center justify-between sm:flex-row'>
                   <div className='flex flex-col items-start'>
                      <div id={turnstileContainerId}></div>
 
