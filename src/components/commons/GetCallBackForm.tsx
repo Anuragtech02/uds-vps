@@ -139,6 +139,15 @@ const GetCallBackForm = () => {
                message: '',
             });
             setPhone('');
+            setSubmitError(null); // Ensure error is cleared on success
+
+            setTimeout(() => {
+               setSubmitSuccess(false);
+            }, 5000); // Reset success message after 5 seconds
+            // Reset Turnstile after successful submission
+            if (window.turnstile) {
+               window.turnstile.reset(`#${turnstileContainerId}`);
+            }
          } else {
             // Handle unsuccessful response
             setSubmitSuccess(false);
@@ -260,15 +269,15 @@ const GetCallBackForm = () => {
                <div className='space-y-2'>
                   <div id={turnstileContainerId}></div>
                </div>
-
-               {submitError && !submitSuccess && (
-                  <p className='text-sm text-red-500'>{submitError}</p>
-               )}
-               {submitSuccess && !submitError && (
-                  <p className='text-sm text-green-500'>
-                     Thank you! We&apos;ll get back to you shortly.
-                  </p>
-               )}
+               {submitError ? (
+                  <div className='rounded-md bg-red-50 p-4 text-red-800'>
+                     {submitError}
+                  </div>
+               ) : submitSuccess ? (
+                  <div className='rounded-md bg-green-50 p-4 text-green-800'>
+                     Thank you! Your message has been sent successfully.
+                  </div>
+               ) : null}
 
                <div>
                   <Button
