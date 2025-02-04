@@ -220,7 +220,7 @@ const DemoRequestForm = () => {
                      value={formFields.message}
                      onChange={handleInputChange}
                      placeholder='Enter your message or any specific requirements'
-                     className='min-h-32 w-full rounded-md border border-s-300 p-3'
+                     className='min-h-24 w-full rounded-md border border-s-300 p-3'
                   ></textarea>
                </div>
 

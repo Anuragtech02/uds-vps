@@ -159,11 +159,6 @@ const GetCallBackForm = () => {
          setSubmitError('An error occurred. Please try again.');
          console.error('Form submission error:', error);
       } finally {
-         // Always reset Turnstile and submission state
-         if (window.turnstile) {
-            window.turnstile.reset(turnstileContainerId);
-            setTurnstileToken('');
-         }
          setIsSubmitting(false);
       }
    };
