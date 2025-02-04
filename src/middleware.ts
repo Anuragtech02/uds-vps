@@ -263,6 +263,15 @@ export async function middleware(request: NextRequest) {
    }
 
    if (slug) {
+      if (
+         SUPPORTED_LOCALES.includes(slug as (typeof SUPPORTED_LOCALES)[number])
+      ) {
+         return setLocaleCookies(
+            nxtResponse.next(),
+            potentialLocale,
+            currentHost,
+         );
+      }
       try {
          // First, check in blogs collection
          const blogsResponse = await fetch(
