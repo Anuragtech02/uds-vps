@@ -313,7 +313,7 @@ const CartPage = () => {
          //    (convertPrice(totalCost) - totalDiscounts).toFixed(2),
          // );
          const subtotal = convertPrice(totalCost) - totalDiscounts;
-         const taxRate = selectedCurrency === 'IND' ? 0.18 : 0;
+         const taxRate = selectedCurrency === 'INR' ? 0.18 : 0;
          const taxAmount = subtotal * taxRate;
          const finalAmount = Number((subtotal + taxAmount).toFixed(2));
          const razorpayAmount = convertToSmallestUnit(
