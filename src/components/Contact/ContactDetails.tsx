@@ -21,7 +21,7 @@ const ContactDetails = ({ contactDetails }: any) => {
                            className='flex items-center gap-2'
                         >
                            <StrapiImage media={contact?.icon} />
-                           <p>{contact?.title}</p>
+                           <p className='notranslate'>{contact?.title}</p>
                         </div>
                      );
                   })}

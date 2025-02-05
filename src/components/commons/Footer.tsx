@@ -26,7 +26,7 @@ const Footer = ({ footer, quickLinks }: any) => {
                <CustomResearchCTA  />
             </div>
          )} */}
-         <footer className='bg-blue-1 pb-12 text-white [&>a]:hover:underline'>
+         <footer className='min-h-[500px] bg-blue-1 pb-12 text-white [&>a]:hover:underline'>
             <div className='relative border-b border-blue-4 py-12 text-center'>
                <div className='absolute inset-0 z-[1] h-full w-full'>
                   <Image
@@ -35,6 +35,7 @@ const Footer = ({ footer, quickLinks }: any) => {
                      fill
                      className='object-cover'
                      priority
+                     placeholder='blur'
                   />
                </div>
                <div className='container relative z-[3]'>
@@ -65,12 +66,14 @@ const Footer = ({ footer, quickLinks }: any) => {
                         alt='UnivDatos'
                         width={150}
                         height={50}
+                        placeholder='blur'
                      />
                      <p className='mt-4 text-blue-9 md:w-2/3'>
                         {footer?.companyInfo?.companyDescription}
                      </p>
                      <div className='mt-4 flex space-x-4 md:mt-8'>
                         <a
+                           title='Facebook'
                            href={`https://www.facebook.com/univdatosmarketinsights/`}
                            target='_blank'
                            rel='noopener noreferrer'
@@ -79,6 +82,7 @@ const Footer = ({ footer, quickLinks }: any) => {
                            <FaFacebook key='FaFacebook' />
                         </a>
                         <a
+                           title='Twitter'
                            href={`https://x.com/univ_datos`}
                            target='_blank'
                            rel='noopener noreferrer'
@@ -87,6 +91,7 @@ const Footer = ({ footer, quickLinks }: any) => {
                            <FaXTwitter key='FaTwitter' />
                         </a>
                         <a
+                           title='LinkedIn'
                            href={`https://www.linkedin.com/company/univ-datos-market-insight/`}
                            target='_blank'
                            rel='noopener noreferrer'
@@ -95,6 +100,7 @@ const Footer = ({ footer, quickLinks }: any) => {
                            <FaLinkedin key='FaLinkedin' />
                         </a>
                         <a
+                           title='Instagram'
                            href={`https://www.instagram.com/univdatosmarketinsights/?hl=en`}
                            target='_blank'
                            rel='noopener noreferrer'
@@ -103,6 +109,7 @@ const Footer = ({ footer, quickLinks }: any) => {
                            <FaInstagram key='FaInstagram' />
                         </a>
                         <a
+                           title='Youtube'
                            href={`https://www.youtube.com/@univdatosmarketinsights1114`}
                            target='_blank'
                            rel='noopener noreferrer'
@@ -111,6 +118,7 @@ const Footer = ({ footer, quickLinks }: any) => {
                            <FaYoutube key='FaYoutube' />
                         </a>
                         <a
+                           title='Pinterest'
                            href={`https://in.pinterest.com/univdatosmarketinsights/`}
                            target='_blank'
                            rel='noopener noreferrer'
@@ -169,18 +177,17 @@ const Footer = ({ footer, quickLinks }: any) => {
                   <div>
                      <p className='mb-4 text-lg text-white'>CONTACT</p>
                      <p className='mb-2'>
-                        4th & 5th Floor, C80B, Sector 8, Noida, Uttar Pradesh-
-                        201301, India
+                        C-80B, Sector 8, Noida, Uttar Pradesh- 201301, India
                      </p>
                      <a
                         href={`tel:${footer?.phoneNumber?.replace(/ /g, '')}`}
-                        className='mb-2 block'
+                        className='notranslate mb-2 block'
                      >
                         {footer?.phoneNumber}
                      </a>
                      <a
                         href={`mailto:${footer?.email}`}
-                        className='mb-4 block max-w-[200px] break-words'
+                        className='notranslate mb-4 block max-w-[200px] break-words'
                      >
                         {footer?.email}
                      </a>
