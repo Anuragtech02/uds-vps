@@ -31,7 +31,9 @@ const ContactDetails = ({ contactDetails }: any) => {
                <p className='mb-2 text-[1.625rem] text-blue-1'>
                   {contactDetails?.locationSectionTitle}
                </p>
-               <p>{contactDetails?.locationSectionDescription}</p>
+               <p className='notranslate'>
+                  {contactDetails?.locationSectionDescription}
+               </p>
             </div>
             <div>
                <p className='mb-2 text-[1.625rem] text-blue-1'>
