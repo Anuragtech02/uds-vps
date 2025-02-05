@@ -1,6 +1,6 @@
 'use client';
 import Image from 'next/image';
-import earth from '@/assets/img/earth.png';
+import earth from '@/assets/img/earth-min.png';
 import Button from './Button';
 import {
    FaInstagram,
@@ -9,23 +9,12 @@ import {
    FaXTwitter,
 } from 'react-icons/fa6';
 import { usePathname } from 'next/navigation';
-import CustomResearchCTA from './CustomResearchCTA';
 import { LocalizedLink } from './LocalizedLink';
 import { Suspense } from 'react';
 import { BiLoaderCircle } from 'react-icons/bi';
 import Popup from '../Popup';
 import DemoRequestForm from '../Home/DemoRequestForm';
 import { FaPinterest, FaYoutube } from 'react-icons/fa';
-
-const socials = [];
-const invalidRoutes = [
-   '/',
-   '/about',
-   '/contact',
-   '/login',
-   '/signup',
-   '/search',
-];
 
 const Footer = ({ footer, quickLinks }: any) => {
    const pathname = usePathname();
@@ -39,21 +28,22 @@ const Footer = ({ footer, quickLinks }: any) => {
          )} */}
          <footer className='bg-blue-1 pb-12 text-white [&>a]:hover:underline'>
             <div className='relative border-b border-blue-4 py-12 text-center'>
-               <img
-                  src={earth.src}
-                  className='absolute inset-0 z-[1] h-full w-full object-cover'
-                  alt=''
-               />
+               <div className='absolute inset-0 z-[1] h-full w-full'>
+                  <Image
+                     src={earth}
+                     alt='Earth background'
+                     fill
+                     className='object-cover'
+                     priority
+                  />
+               </div>
                <div className='container relative z-[3]'>
                   <p
                      className='text-[2.25rem] font-bold md:text-[3.5rem]'
                      dangerouslySetInnerHTML={{
                         __html: footer?.footerCTA?.title,
                      }}
-                  >
-                     {/* Order your <span className='text-white'>tailored</span>{' '}
-                     research report now! */}
-                  </p>
+                  ></p>
                   <p className='mx-auto mt-4 text-s-300 md:w-2/3 md:text-2xl'>
                      {footer?.footerCTA?.description}
                   </p>
