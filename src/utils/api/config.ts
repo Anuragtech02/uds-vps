@@ -15,7 +15,7 @@ const fetchClient = async (url: string, options: any = {}) => {
          ...options.headers,
       },
       next: {
-         revalidate: 0,
+         revalidate: 3600,
       },
    };
 
