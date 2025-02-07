@@ -2,10 +2,7 @@
 const nextConfig = {
    output: 'standalone',
    images: {
-      domains: [
-         'udsweb.s3.ap-south-1.amazonaws.com',
-         'univdatos-cms.s3.ap-south-1.amazonaws.com',
-      ],
+      remotePatterns: ['https://udsweb.s3.ap-south-1.amazonaws.com/*'],
    },
    async redirects() {
       return [
