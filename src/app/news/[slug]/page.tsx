@@ -1,4 +1,4 @@
-export const runtime = 'edge';
+// export const runtime = 'edge';
 import NewsBody from '@/components/News/NewsBody';
 import NewsSidebar from '@/components/News/NewsSidebar';
 import Header from '@/components/News/Header';

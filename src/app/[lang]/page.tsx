@@ -1,4 +1,4 @@
-export const runtime = 'edge';
+// export const runtime = 'edge';
 import MediaCitation from '@/components/commons/MediaCitation';
 import Hero from '@/components/Home/Hero';
 import LatestResearch from '@/components/Home/LatestResearch';
@@ -97,7 +97,11 @@ async function Home() {
          <Hero data={homePage} />
          <RecentResearch data={homePage} />
          <Testimonials data={homePage} />
-         <LatestResearch data={homePage} reports={latestReportList} upcomingReports={upcomingReportList} />
+         <LatestResearch
+            data={homePage}
+            reports={latestReportList}
+            upcomingReports={upcomingReportList}
+         />
          <MediaCitation mediaCitation={mediaCitation} />
          <UpcomingReports
             data={{ upcomingReports: upcomingReportList, homePage }}

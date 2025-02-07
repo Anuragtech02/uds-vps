@@ -1,4 +1,4 @@
-export const runtime = 'edge';
+// export const runtime = 'edge';
 import BlogItem from '@/components/Blog/BlogItem';
 import { LocalizedLink } from '@/components/commons/LocalizedLink';
 import ViewToggle from '@/components/Report/ViewToggle';

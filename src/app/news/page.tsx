@@ -1,4 +1,4 @@
-export const runtime = 'edge';
+// export const runtime = 'edge';
 import { LocalizedLink } from '@/components/commons/LocalizedLink';
 import NewsFilters from '@/components/News/NewsFilters';
 import NewsItem from '@/components/News/NewsItem';

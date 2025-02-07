@@ -1,4 +1,4 @@
-export const runtime = 'edge';
+// export const runtime = 'edge';
 import { LocalizedLink } from '@/components/commons/LocalizedLink';
 import { IoMdCheckmarkCircle } from 'react-icons/io';
 

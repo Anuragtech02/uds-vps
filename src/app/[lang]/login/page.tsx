@@ -1,4 +1,4 @@
-export const runtime = 'edge';
+// export const runtime = 'edge';
 import ClientSearchHero from '@/components/Home/ClientSearchHero';
 import LoginForm from '@/components/Login/LoginForm';
 import LoginSidebar from '@/components/Login/LoginSidebar';

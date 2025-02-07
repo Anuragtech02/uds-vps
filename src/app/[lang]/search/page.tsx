@@ -1,4 +1,4 @@
-export const runtime = 'edge';
+// export const runtime = 'edge';
 import GetCallBackForm from '@/components/commons/GetCallBackForm';
 import ClientSearchHero from '@/components/Home/ClientSearchHero';
 import Pagination from '@/components/ReportStore/Pagination';

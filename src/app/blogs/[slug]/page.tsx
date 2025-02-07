@@ -1,4 +1,4 @@
-export const runtime = 'edge';
+// export const runtime = 'edge';
 
 import BlogBody from '@/components/Blog/BlogBody';
 import BlogSidebar from '@/components/Blog/BlogSidebar';
