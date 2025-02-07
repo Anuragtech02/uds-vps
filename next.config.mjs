@@ -2,7 +2,13 @@
 const nextConfig = {
    output: 'standalone',
    images: {
-      remotePatterns: ['https://udsweb.s3.ap-south-1.amazonaws.com/*'],
+      remotePatterns: [
+         {
+            protocol: 'https',
+            hostname: 'udsweb.s3.ap-south-1.amazonaws.com',
+            pathname: '/**',
+         },
+      ],
    },
    async redirects() {
       return [
