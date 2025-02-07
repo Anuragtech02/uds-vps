@@ -272,6 +272,7 @@ export async function middleware(request: NextRequest) {
             currentHost,
          );
       }
+
       try {
          // First, check in blogs collection
          const blogsResponse = await fetch(
@@ -327,12 +328,20 @@ export async function middleware(request: NextRequest) {
          }
 
          // If not found in either collection, redirect to 404
-         const notFoundUrl = pathnameHasLocale
-            ? `/${potentialLocale}/not-found`
-            : '/en/not-found';
+         // const notFoundUrl = pathnameHasLocale
+         //    ? `/${potentialLocale}/not-found`
+         //    : '/en/not-found';
+
+         // const response = NextResponse.redirect(
+         //    new URL(notFoundUrl, request.url),
+         // );
+
+         const reportsUrl = pathnameHasLocale
+            ? `/${potentialLocale}/reports`
+            : '/reports';
 
          const response = NextResponse.redirect(
-            new URL(notFoundUrl, request.url),
+            new URL(reportsUrl, request.url),
          );
          return setLocaleCookies(response, potentialLocale, currentHost);
       } catch (error) {
