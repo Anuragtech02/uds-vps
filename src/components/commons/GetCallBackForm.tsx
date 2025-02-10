@@ -5,6 +5,7 @@ import Script from 'next/script';
 import countryList from '@/assets/utils/countries.json';
 import { submitForm } from '@/utils/api/csr-services';
 import CustomPhoneInput from '../CustomPhoneInput';
+import { sendGAEvent } from '@next/third-parties/google';
 
 const GetCallBackForm = () => {
    const [formFields, setFormFields] = useState({
@@ -117,6 +118,11 @@ const GetCallBackForm = () => {
          source: window.location.href,
       };
 
+      sendGAEvent('event', 'form_initiation', {
+         form_category: 'CallbackForm',
+         form_action: 'Initiate',
+      });
+
       try {
          const response = await submitForm('callback', {
             ...requestData,
@@ -142,6 +148,10 @@ const GetCallBackForm = () => {
          setTimeout(() => {
             setSubmitSuccess(false);
          }, 5000); // Reset success message after 5 seconds
+         sendGAEvent('event', 'form_submission', {
+            form_category: 'CallbackForm',
+            form_action: 'Submit',
+         });
          // Reset Turnstile after successful submission
          if (window.turnstile) {
             window.turnstile.reset(`#${turnstileContainerId}`);
@@ -151,6 +161,10 @@ const GetCallBackForm = () => {
          setSubmitSuccess(false);
          setSubmitError('An error occurred. Please try again.');
          console.error('Form submission error:', error);
+         sendGAEvent('event', 'form_submission', {
+            form_category: 'CallbackForm',
+            form_action: 'Error',
+         });
       } finally {
          setIsSubmitting(false);
       }

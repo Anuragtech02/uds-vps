@@ -1,17 +1,12 @@
 import Button from '../commons/Button';
 import { FaArrowRightLong } from 'react-icons/fa6';
 import Ellipse from '../commons/Ellipse';
-import { IoIosSearch } from 'react-icons/io';
-import Image from 'next/image';
-import heroImage from '@/assets/img/heroStock.jpg';
 import TypewritterText from '../TypewritterText';
 import Stats from '../commons/Stats';
-import Link from 'next/link';
 import StrapiImage from '../StrapiImage/StrapiImage';
 import ClientSearchHero from './ClientSearchHero';
 import Popup from '../Popup';
 import DemoRequestForm from './DemoRequestForm';
-import reportIllustration from '@/assets/img/report.svg';
 import { Suspense } from 'react';
 import { BiLoaderCircle } from 'react-icons/bi';
 import { LocalizedLink } from '../commons/LocalizedLink';
@@ -56,11 +51,10 @@ const Hero: React.FC<{ data: any }> = ({ data }) => {
             <div className='flex flex-col-reverse items-center gap-6 py-16 pb-10 md:flex-row md:py-32 md:pb-16'>
                <div className='md:w-[60%]'>
                   <h1>
-                     {getHeadingTextSplit().first}
                      <TypewritterText
                         markets={heroSection.animationIndustriesList}
-                     />{' '}
-                     <br /> {getHeadingTextSplit().second}
+                        heading={heroSection.heroMainHeading}
+                     />
                   </h1>
                   <ClientSearchHero />
 

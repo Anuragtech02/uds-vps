@@ -1,4 +1,6 @@
 'use client';
+import { SUPPORTED_LOCALES } from '@/utils/constants';
+import { usePathname } from 'next/navigation';
 import { useState, useEffect, useCallback, useRef } from 'react';
 
 const DUMMY_MARKETS = [
@@ -12,7 +14,8 @@ const DUMMY_MARKETS = [
 
 const TypewriterText: React.FC<{
    markets: string[];
-}> = ({ markets = DUMMY_MARKETS }) => {
+   heading: string;
+}> = ({ markets = DUMMY_MARKETS, heading }) => {
    const [text, setText] = useState('');
    const [marketIndex, setMarketIndex] = useState(0);
    const [isDeleting, setIsDeleting] = useState(false);
@@ -48,12 +51,46 @@ const TypewriterText: React.FC<{
       return () => clearTimeout(timer);
    }, [typeEffect, isDeleting]);
 
+   function getHeadingTextSplit() {
+      const splitted = heading.split('<DYNAMIC>');
+      return {
+         first: splitted[0],
+         second: splitted[1],
+      };
+   }
+
    return (
       <>
+         {getHeadingTextSplit().first}
          <span>{text}</span>
-         <span className='caret'></span>
+         <span className='caret'></span> <br /> {getHeadingTextSplit().second}
       </>
    );
 };
 
-export default TypewriterText;
+const TypeWrapper: React.FC<{
+   markets: string[];
+   heading: string;
+}> = ({ markets = DUMMY_MARKETS, heading }) => {
+   const [containsLocale, setContainsLocale] = useState(false);
+   const pathname = usePathname();
+
+   useEffect(() => {
+      setContainsLocale(
+         SUPPORTED_LOCALES.some(
+            (loc) => pathname.startsWith(`/${loc}/`) || pathname === `/${loc}`,
+         ),
+      );
+   }, [pathname]);
+
+   return !containsLocale ? (
+      <TypewriterText markets={markets} heading={heading} />
+   ) : (
+      <>
+         Unlock <br /> <span>Industry Insights</span> with Comprehensive
+         research
+      </>
+   );
+};
+
+export default TypeWrapper;

@@ -4,6 +4,7 @@ import CustomPhoneInput from '../CustomPhoneInput';
 import { submitForm } from '@/utils/api/csr-services';
 import Button from '../commons/Button';
 import Script from 'next/script';
+import { sendGAEvent } from '@next/third-parties/google';
 
 const DemoRequestForm = () => {
    const [formFields, setFormFields] = useState({
@@ -115,6 +116,11 @@ const DemoRequestForm = () => {
          source: window.location.href,
       };
 
+      sendGAEvent('event', 'form_initiation', {
+         form_category: 'DemoRequestForm',
+         form_action: 'Initiate',
+      });
+
       try {
          const response = await submitForm('demo', {
             ...formFields,
@@ -136,6 +142,10 @@ const DemoRequestForm = () => {
          setTimeout(() => {
             setSubmitSuccess(false);
          }, 5000); // Reset success message after 5 seconds
+         sendGAEvent('event', 'form_submission', {
+            form_category: 'DemoRequestForm',
+            form_action: 'Submit',
+         });
          // Reset Turnstile after successful submission
          if (window.turnstile) {
             window.turnstile.reset('#callback-turnstile-container');
@@ -144,6 +154,10 @@ const DemoRequestForm = () => {
          setSubmitError('An error occurred. Please try again.');
          setSubmitSuccess(false); // Ensure success is cleared on error
          console.error(error); // Changed to console.error for better debugging
+         sendGAEvent('event', 'form_submission', {
+            form_category: 'DemoRequestForm',
+            form_action: 'Error',
+         });
       } finally {
          setIsSubmitting(false);
       }
