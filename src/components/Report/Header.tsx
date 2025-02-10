@@ -245,8 +245,8 @@ const Header: React.FC<{ data: any }> = ({ data }) => {
                      </div>
                      <div className='flex w-full items-center gap-2 md:max-w-max md:justify-end'>
                         <div className='hidden text-right text-sm lg:block'>
-                           <p>contact@univdatos.com</p>
-                           <p>+19787330253</p>
+                           <p className='notranslate'>contact@univdatos.com</p>
+                           <p className='notranslate'>+19787330253</p>
                         </div>
                         <div className='flex w-full items-center gap-2 md:max-w-max md:justify-end'>
                            <LocalizedLink
