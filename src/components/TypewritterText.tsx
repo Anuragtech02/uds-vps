@@ -74,13 +74,38 @@ const TypeWrapper: React.FC<{
 }> = ({ markets = DUMMY_MARKETS, heading }) => {
    const [containsLocale, setContainsLocale] = useState(false);
    const pathname = usePathname();
+   const prevCookie = useRef(''); // Initialize as empty string - no document yet
 
    useEffect(() => {
-      setContainsLocale(
-         SUPPORTED_LOCALES.some(
-            (loc) => pathname.startsWith(`/${loc}/`) || pathname === `/${loc}`,
-         ),
-      );
+      // **Check if 'document' is defined (browser environment)**
+      if (typeof document !== 'undefined') {
+         prevCookie.current = document.cookie; // Initialize *only* in browser
+         const checkCookieAndPathname = () => {
+            const hasCookie = document.cookie.includes('googtrans=');
+            setContainsLocale(
+               hasCookie ||
+                  SUPPORTED_LOCALES.some(
+                     (loc) =>
+                        pathname.startsWith(`/${loc}/`) ||
+                        pathname === `/${loc}`,
+                  ),
+            );
+         };
+
+         checkCookieAndPathname(); // Initial check in browser
+
+         const intervalId = setInterval(() => {
+            if (document.cookie !== prevCookie.current) {
+               // Cookie has changed!
+               prevCookie.current = document.cookie; // Update in browser
+               checkCookieAndPathname(); // Rerun logic in browser
+            }
+         }, 500);
+
+         return () => {
+            clearInterval(intervalId); // Cleanup in browser
+         };
+      }
    }, [pathname]);
 
    return !containsLocale ? (
