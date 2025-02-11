@@ -25,8 +25,10 @@ const GeographyFilters: React.FC<GeographyFiltersProps> = ({
 
    const handleToggleFilter = (slug: string) => {
       const currentParams = new URLSearchParams(window.location.search);
-      const industryFilters = currentParams.get('industries')?.split(',').filter(Boolean) || [];
-      const geographyFilters = currentParams.get('geographies')?.split(',').filter(Boolean) || [];
+      const industryFilters =
+         currentParams.get('industries')?.split(',').filter(Boolean) || [];
+      const geographyFilters =
+         currentParams.get('geographies')?.split(',').filter(Boolean) || [];
 
       const updatedGeographyFilters = geographyFilters.includes(slug)
          ? geographyFilters.filter((item) => item !== slug)
@@ -44,8 +46,8 @@ const GeographyFilters: React.FC<GeographyFiltersProps> = ({
       }
 
       // Remove empty params
-      Object.keys(updatedParams).forEach(key => 
-         !updatedParams[key] && delete updatedParams[key]
+      Object.keys(updatedParams).forEach(
+         (key) => !updatedParams[key] && delete updatedParams[key],
       );
 
       router.push(`/reports?${new URLSearchParams(updatedParams).toString()}`);
@@ -66,19 +68,24 @@ const GeographyFilters: React.FC<GeographyFiltersProps> = ({
          <div
             className={`${expanded ? 'absolute right-0 z-10 mt-4 h-max overflow-auto rounded-xl bg-white px-4 pb-4 shadow-md' : 'mt-0 h-0 overflow-hidden lg:mt-4 lg:h-max lg:overflow-auto'} max-h-[50vh] w-full space-y-4 overflow-y-auto`}
          >
-            {geographies.map(({ attributes: { slug, name } }) => (
-               <div className='flex items-center gap-4' key={slug}>
-                  <input
-                     type='checkbox'
-                     id={`geo-${name}`}
-                     checked={filters?.includes(slug)}
-                     onChange={() => handleToggleFilter(slug)}
-                  />
-                  <label htmlFor={`geo-${name}`} className='block cursor-pointer'>
-                     {name}
-                  </label>
-               </div>
-            ))}
+            {geographies
+               .filter((item) => item.attributes.slug !== 'unknown')
+               .map(({ attributes: { slug, name } }) => (
+                  <div className='flex items-center gap-4' key={slug}>
+                     <input
+                        type='checkbox'
+                        id={`geo-${name}`}
+                        checked={filters?.includes(slug)}
+                        onChange={() => handleToggleFilter(slug)}
+                     />
+                     <label
+                        htmlFor={`geo-${name}`}
+                        className='block cursor-pointer'
+                     >
+                        {name}
+                     </label>
+                  </div>
+               ))}
          </div>
       </div>
    );

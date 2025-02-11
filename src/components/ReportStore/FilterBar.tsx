@@ -238,8 +238,11 @@ const FilterBar: React.FC<FilterBarProps> = ({
                      </button>
                      {geographyDropdown && (
                         <div className='absolute top-full mt-2 max-h-[60vh] w-64 overflow-y-auto rounded-lg bg-white p-4 shadow-lg'>
-                           {geographies.map(
-                              ({ attributes: { slug, name } }) => (
+                           {geographies
+                              .filter(
+                                 (item) => item.attributes.slug !== 'unknown',
+                              )
+                              .map(({ attributes: { slug, name } }) => (
                                  <div
                                     key={slug}
                                     className='flex items-center gap-3 py-2'
@@ -260,8 +263,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
                                        {name}
                                     </label>
                                  </div>
-                              ),
-                           )}
+                              ))}
                         </div>
                      )}
                   </div>

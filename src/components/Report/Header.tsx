@@ -247,13 +247,13 @@ const Header: React.FC<{ data: any }> = ({ data }) => {
                         <div className='hidden text-right text-sm lg:block'>
                            <a
                               href={`mailto:${'contact@univdatos.com'}`}
-                              className='notranslate'
+                              className='notranslate block hover:underline'
                            >
                               contact@univdatos.com
                            </a>
                            <a
                               href={`tel:${'+19787330253'}`}
-                              className='notranslate'
+                              className='notranslate block hover:underline'
                            >
                               +1 978 733 0253
                            </a>

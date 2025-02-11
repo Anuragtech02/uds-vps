@@ -150,7 +150,7 @@ const DesktopMenuItem: React.FC<{ item: MenuItem; depth: number }> = ({
                   className={`ml-1 flex-shrink-0 text-xl ${isOpen ? 'rotate-180' : ''} transition-transform`}
                />
             </div>
-            {true && (
+            {isOpen && (
                <div className='absolute left-0 top-full z-50 pt-2'>
                   <div className='rounded-md border border-s-400 bg-white p-6 shadow-md'>
                      <div
@@ -164,7 +164,7 @@ const DesktopMenuItem: React.FC<{ item: MenuItem; depth: number }> = ({
                               className='flex items-start break-words py-2 text-s-800 hover:text-blue-600'
                            >
                               {child.url?.includes('industries=') && (
-                                 <div className='mr-2 w-6'>
+                                 <div className='mr-2'>
                                     {
                                        industryIcons[
                                           child.url
@@ -211,7 +211,7 @@ const DesktopMenuItem: React.FC<{ item: MenuItem; depth: number }> = ({
                </LocalizedLink>
                {isOpen && (
                   <div className='absolute left-0 top-full z-50 pt-2'>
-                     <ul className='min-w-[200px] rounded-md border border-s-400 bg-white shadow-md'>
+                     <ul className='min-w-[300px] rounded-md border border-s-400 bg-white shadow-md'>
                         {item.children.map((child, index) => (
                            <DesktopMenuItem
                               key={index}
