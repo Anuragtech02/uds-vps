@@ -52,7 +52,7 @@ const Topbar = ({ header, industries }: ITopbarProps) => {
                      <FaPhoneAlt />
                      <span className='text-sm'>
                         <a
-                           href={`tel:${header?.phoneNumber} ?? ''}`}
+                           href={`tel:${header?.phoneNumber ?? ''}`}
                            className='notranslate text-sm'
                         >
                            {header?.phoneNumber}

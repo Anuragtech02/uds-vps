@@ -16,13 +16,14 @@ const ContactDetails = ({ contactDetails }: any) => {
                <div className='flex items-center gap-4'>
                   {contacts?.map((contact: any) => {
                      return (
-                        <div
+                        <a
                            key={contact?.title}
                            className='flex items-center gap-2'
+                           href={contact?.link}
                         >
                            <StrapiImage media={contact?.icon} />
                            <p className='notranslate'>{contact?.title}</p>
-                        </div>
+                        </a>
                      );
                   })}
                </div>
