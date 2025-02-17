@@ -7,6 +7,11 @@ const nextConfig = {
             hostname: 'udsweb.s3.ap-south-1.amazonaws.com',
             pathname: '/**',
          },
+         {
+            protocol: 'https',
+            hostname: 'univdatos-cms.s3.ap-south-1.amazonaws.com',
+            pathname: '/**',
+         },
       ],
    },
    async redirects() {
