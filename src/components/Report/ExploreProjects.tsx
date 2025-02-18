@@ -25,15 +25,23 @@ const ExploreProjects = ({ reports }: { reports: any[] }) => {
                            type='upcoming'
                            title={data?.title}
                            year={new Date(
-                              data?.oldPublishedAt || data?.publishedAt || new Date().getTime(),
+                              data?.oldPublishedAt ||
+                                 data?.publishedAt ||
+                                 new Date().getTime(),
                            )
                               ?.getFullYear()
                               .toString()}
                            description={data?.shortDescription}
-                           date={new Date(data?.oldPublishedAt || data?.publishedAt).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })}
+                           date={new Date(
+                              data?.oldPublishedAt || data?.publishedAt,
+                           ).toLocaleDateString(undefined, {
+                              year: 'numeric',
+                              month: 'long',
+                              day: 'numeric',
+                           })}
                            slug={data?.slug}
                            image={
-                              data?.highlightImage?.data?.attributes?.url ||
+                              data?.highlightImage?.data?.attributes ||
                               sampleImage
                            }
                         />

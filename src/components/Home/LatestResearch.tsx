@@ -8,13 +8,57 @@ import Button from '../commons/Button';
 import PreBookCTA from '../commons/PreBookCTA';
 import { SLICK_COMMON_SETTINGS } from '@/utils/constants';
 
+const LatestResearch: React.FC<{
+   data: any;
+   reports: any;
+   upcomingReports: any;
+}> = ({ data, reports, upcomingReports }) => {
+   const settings = {
+      ...SLICK_COMMON_SETTINGS,
+      slidesToShow: 4,
 
-const LatestResearch: React.FC<{ data: any; reports: any, upcomingReports: any }> = ({
-   data,
-   reports,
-   upcomingReports,
-}) => {
-   const settings = SLICK_COMMON_SETTINGS;
+      responsive: [
+         {
+            breakpoint: 1200,
+            settings: {
+               slidesToShow: 4,
+               // slidesToScroll: 1,
+               infinite: true,
+               dots: false,
+            },
+         },
+         {
+            breakpoint: 1024,
+            settings: {
+               slidesToShow: 3,
+               // slidesToScroll: 1,
+               infinite: true,
+               dots: false,
+            },
+         },
+         {
+            breakpoint: 786,
+            settings: {
+               slidesToShow: 2,
+               // slidesToScroll: 2,
+            },
+         },
+         {
+            breakpoint: 600,
+            settings: {
+               slidesToShow: 2,
+               // slidesToScroll: 2,
+            },
+         },
+         {
+            breakpoint: 480,
+            settings: {
+               slidesToShow: 1,
+               // slidesToScroll: 1,
+            },
+         },
+      ],
+   };
 
    const latestResearchSection = {
       latestResearchSectionTitle:
@@ -32,8 +76,8 @@ const LatestResearch: React.FC<{ data: any; reports: any, upcomingReports: any }
    function getYear(report: {
       publishedAt: string;
       oldPublishedAt: string | null;
-   }){
-      if(report.oldPublishedAt && new Date(report.oldPublishedAt)){
+   }) {
+      if (report.oldPublishedAt && new Date(report.oldPublishedAt)) {
          return new Date(report.oldPublishedAt).getFullYear().toString();
       }
 
@@ -41,7 +85,7 @@ const LatestResearch: React.FC<{ data: any; reports: any, upcomingReports: any }
    }
 
    return (
-      <section className='min-h-full py-4 md:py-8 !pt-2'>
+      <section className='min-h-full py-4 !pt-2 md:py-8'>
          <div className='container'>
             <h2
                dangerouslySetInnerHTML={{
@@ -51,17 +95,26 @@ const LatestResearch: React.FC<{ data: any; reports: any, upcomingReports: any }
             <div className='my-8 md:my-10'>
                <Slider {...settings}>
                   {reports.map((report: any, index: number) => (
-                      <div key={index} className='pr-4'>
+                     <div key={index} className='pr-4'>
                         <ResearchCard
                            key={index}
                            type='latest'
                            title={report?.title}
                            slug={report?.slug}
                            year={getYear(report)}
-                           image={report?.highlightImage?.data?.attributes?.formats?.small?.url || sampleImage}
-                           date={new Date(report?.oldPublishedAt || report?.publishedAt).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })}
+                           image={
+                              report?.highlightImage?.data?.attributes ||
+                              sampleImage
+                           }
+                           date={new Date(
+                              report?.oldPublishedAt || report?.publishedAt,
+                           ).toLocaleDateString(undefined, {
+                              year: 'numeric',
+                              month: 'long',
+                              day: 'numeric',
+                           })}
                         />
-                      </div>
+                     </div>
                   ))}
                </Slider>
             </div>
@@ -70,10 +123,12 @@ const LatestResearch: React.FC<{ data: any; reports: any, upcomingReports: any }
                   <div className='h-8'></div>
                   <PreBookCTA
                      title={
-                        latestResearchSection.latestResearchSectionCTABanner.title
+                        latestResearchSection.latestResearchSectionCTABanner
+                           .title
                      }
                      ctaButton={
-                        latestResearchSection.latestResearchSectionCTABanner.ctaButton
+                        latestResearchSection.latestResearchSectionCTABanner
+                           .ctaButton
                      }
                   />
                </>

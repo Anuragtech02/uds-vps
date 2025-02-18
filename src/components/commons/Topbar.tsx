@@ -6,6 +6,7 @@ import { IoMail } from 'react-icons/io5';
 import { LocalizedLink } from './LocalizedLink';
 import ClientSearchHero from '../Home/ClientSearchHero';
 import CartIcon from './CartIcon';
+import StrapiImage, { Media } from '../StrapiImage/StrapiImage';
 interface ITopbarProps {
    header: {
       phoneNumber: string;
@@ -13,7 +14,7 @@ interface ITopbarProps {
       createdAt: string;
       updatedAt: string;
       publishedAt: string;
-      logo?: { data: { attributes: { url?: string } } };
+      logo?: { data: { attributes: Media } };
       ctaButton: { id: number; title: string; link: string };
    };
    industries: any[];
@@ -24,10 +25,13 @@ const Topbar = ({ header, industries }: ITopbarProps) => {
       <div className='container pb-2'>
          <div className='flex items-center justify-between gap-4 text-[#1D2C60]'>
             <LocalizedLink href='/' className='hidden items-center lg:flex'>
-               <img
-                  src={header?.logo?.data?.attributes?.url}
+               <StrapiImage
+                  media={header?.logo?.data?.attributes as Media}
+                  size='small'
                   alt='logo'
+                  loading='eager'
                   className='h-10 w-24 object-contain md:h-[80px] md:w-[200px]'
+                  wrapperClassName='h-10 w-24 object-contain md:h-[80px] md:w-[200px] flex justify-start items-center'
                />
             </LocalizedLink>
             <div className='hidden flex-1 lg:block'>

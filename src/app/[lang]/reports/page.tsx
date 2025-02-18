@@ -14,6 +14,7 @@ import { absoluteUrl } from '@/utils/generic-methods';
 import { LOGO_URL_DARK } from '@/utils/constants';
 import { Metadata } from 'next';
 import FilterBar from '@/components/ReportStore/FilterBar';
+import { Media } from '@/components/StrapiImage/StrapiImage';
 
 interface SearchParams {
    industries?: string;
@@ -30,13 +31,7 @@ interface Report {
       publishedAt: string;
       shortDescription: string;
       oldPublishedAt: string;
-      highlightImage: {
-         data: {
-            attributes: {
-               url: string;
-            };
-         };
-      };
+      highlightImage: Media;
    };
 }
 
@@ -204,8 +199,9 @@ const ReportStore: FC<ReportStoreProps> = async ({ searchParams }) => {
                               viewType={viewType}
                               highlightImageUrl={
                                  report.attributes.highlightImage?.data
-                                    ?.attributes?.url
+                                    ?.attributes
                               }
+                              size='small'
                            />
                         ))
                      ) : (

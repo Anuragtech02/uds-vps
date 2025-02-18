@@ -1,11 +1,6 @@
 'use client';
 import ResearchCard from '../ResearchCard';
 import sampleImage from '@/assets/img/sampleResearch.png';
-import { FaArrowRightLong } from 'react-icons/fa6';
-// @ts-ignore
-import Slider from 'react-slick';
-import Button from '../commons/Button';
-import PreBookCTA from '../commons/PreBookCTA';
 import { getRecentReports } from '@/utils/cache-recent-reports.utils';
 import { useEffect, useState } from 'react';
 
@@ -25,12 +20,11 @@ const RecentResearch: React.FC<{ data: any }> = ({ data }) => {
    };
    if (reports?.length < 1) return null;
 
-
    function getYear(report: {
       publishedAt: string;
       oldPublishedAt: string | null;
-   }){
-      if(report.oldPublishedAt && new Date(report.oldPublishedAt)){
+   }) {
+      if (report.oldPublishedAt && new Date(report.oldPublishedAt)) {
          return new Date(report.oldPublishedAt).getFullYear().toString();
       }
 
@@ -38,7 +32,7 @@ const RecentResearch: React.FC<{ data: any }> = ({ data }) => {
    }
 
    return (
-      <section className='min-h-full pt-10 md:pt-8 pb-0'>
+      <section className='min-h-full pb-0 pt-10 md:pt-8'>
          <div className='container'>
             <h2
                dangerouslySetInnerHTML={{
@@ -56,9 +50,18 @@ const RecentResearch: React.FC<{ data: any }> = ({ data }) => {
                               title={report?.title}
                               slug={report?.slug}
                               year={getYear(report)}
-                              image={report?.highlightImage?.data?.attributes?.formats?.small?.url || sampleImage}
-                              date={new Date(report?.oldPublishedAt || report?.publishedAt).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })}
-                              />
+                              image={
+                                 report?.highlightImage?.data?.attributes ||
+                                 sampleImage
+                              }
+                              date={new Date(
+                                 report?.oldPublishedAt || report?.publishedAt,
+                              ).toLocaleDateString(undefined, {
+                                 year: 'numeric',
+                                 month: 'long',
+                                 day: 'numeric',
+                              })}
+                           />
                         </div>
                      );
                   })}

@@ -5,6 +5,7 @@ import { FC } from 'react';
 import Button from '../commons/Button';
 import Link from 'next/link';
 import { LocalizedLink } from '../commons/LocalizedLink';
+import StrapiImage, { Media } from '../StrapiImage/StrapiImage';
 
 interface ReportStoreItemProps {
    title: string;
@@ -12,7 +13,8 @@ interface ReportStoreItemProps {
    description: string;
    slug: string;
    viewType?: string;
-   highlightImageUrl: string;
+   highlightImageUrl: Media;
+   size?: 'thumbnail' | 'small' | 'medium' | 'large' | 'original';
 }
 
 const ReportStoreItem: FC<ReportStoreItemProps> = ({
@@ -22,14 +24,16 @@ const ReportStoreItem: FC<ReportStoreItemProps> = ({
    slug,
    viewType,
    highlightImageUrl,
+   size = 'small',
 }) => {
    return (
       <div className='flex flex-col gap-4 rounded-xl bg-white p-6 md:flex-row'>
          <div className='relative aspect-square h-auto w-[180px] rounded-xl border border-s-300'>
-            <Image
-               src={highlightImageUrl || newPlaceHolder}
-               alt='news'
-               fill
+            <StrapiImage
+               media={highlightImageUrl}
+               alt='report-item'
+               size={size}
+               objectFit='fill'
                className='rounded-xl object-contain'
             />
          </div>

@@ -1,16 +1,9 @@
 'use client';
 import React, { useEffect, useMemo, useRef } from 'react';
+import StrapiImage, { Media } from '../StrapiImage/StrapiImage';
 
 interface Logo {
-   attributes: {
-      url: string;
-      formats: {
-         [key: string]: {
-            url: string;
-         };
-      };
-      alternativeText: string;
-   };
+   attributes: Media;
 }
 
 interface BrandsMarqueeProps {
@@ -46,14 +39,14 @@ const BrandsMarquee: React.FC<BrandsMarqueeProps> = ({ logos }) => {
                      key={`first-${index}`}
                      className='mx-8 flex h-16 w-32 items-center justify-center'
                   >
-                     <img
-                        src={
-                           logo.attributes.formats?.thumbnail?.url ||
-                           logo.attributes.url
-                        }
+                     <StrapiImage
+                        wrapperClassName='w-full h-full flex justify-center items-center p-2'
+                        media={logo.attributes}
+                        objectFit='contain'
                         alt={logo.attributes.alternativeText}
                         className='h-full w-full object-contain'
                         loading='lazy'
+                        size='thumbnail'
                      />
                   </div>
                ))}
@@ -65,11 +58,11 @@ const BrandsMarquee: React.FC<BrandsMarqueeProps> = ({ logos }) => {
                      key={`second-${index}`}
                      className='mx-8 flex h-16 w-32 items-center justify-center'
                   >
-                     <img
-                        src={
-                           logo.attributes.formats?.thumbnail?.url ||
-                           logo.attributes.url
-                        }
+                     <StrapiImage
+                        wrapperClassName='w-full h-full flex justify-center items-center p-2'
+                        media={logo.attributes}
+                        objectFit='contain'
+                        size='thumbnail'
                         alt={logo.attributes.alternativeText}
                         className='h-full w-full object-contain'
                         loading='lazy'

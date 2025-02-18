@@ -3,6 +3,7 @@ import Button from './Button';
 import { FaArrowRightLong } from 'react-icons/fa6';
 import reportIllustration from '@/assets/img/report.svg';
 import { LocalizedLink } from './LocalizedLink';
+import Image from 'next/image';
 
 export interface ICTABanner {
    title: string;
@@ -28,10 +29,13 @@ const CustomResearchCTA = ({ ctaBanner }: { ctaBanner: ICTABanner }) => {
                </Button>
             </LocalizedLink>
          </div>
-         <img
+         <Image
             src={reportIllustration.src}
             className='right-10 top-10 mx-auto mt-10 h-[300px] w-auto object-contain md:absolute md:mt-0'
-            alt=''
+            width={300}
+            height={300}
+            alt='report'
+            unoptimized
          />
       </div>
    );

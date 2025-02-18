@@ -263,6 +263,7 @@ const Navbar: React.FC<INavbarProps> = ({ header, mainMenu, industries }) => {
                <img
                   src={LOGO_URL_LIGHT}
                   alt='logo'
+                  fetchPriority='high'
                   className='h-10 w-24 object-contain md:h-16 md:w-32'
                />
             </LocalizedLink>

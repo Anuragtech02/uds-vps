@@ -1,14 +1,12 @@
 'use client'; // Add this for Next.js 13+ client components
 
 import React, { useState, useEffect, useCallback } from 'react';
-import StrapiImage from '../StrapiImage/StrapiImage';
+import StrapiImage, { Media } from '../StrapiImage/StrapiImage';
 
 interface StatData {
    title: string;
    countTo: number;
-   icon: {
-      url: string;
-   };
+   icon: Media;
 }
 
 const Counter: React.FC<{ end: number; duration: number }> = ({
@@ -94,10 +92,11 @@ const Stats: React.FC<{ data: StatData[] }> = ({ data }) => {
                         '0+'
                      )}
                   </h3>
-                  <img
-                     src={stat.icon.url}
-                     className='absolute bottom-1 right-1 aspect-square h-10 sm:h-14'
-                     alt=''
+                  <StrapiImage
+                     media={stat.icon}
+                     wrapperClassName='absolute bottom-1 right-1 aspect-square h-10 sm:h-14'
+                     className='aspect-square h-10 sm:h-14'
+                     alt='stat'
                   />
                </div>
             ))}

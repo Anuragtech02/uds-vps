@@ -35,6 +35,7 @@ const Footer = ({ footer, quickLinks }: any) => {
                      fill
                      className='object-cover'
                      priority
+                     unoptimized
                   />
                </div>
                <div className='container relative z-[3]'>
@@ -65,6 +66,7 @@ const Footer = ({ footer, quickLinks }: any) => {
                         alt='UnivDatos'
                         width={150}
                         height={50}
+                        unoptimized
                      />
                      <p className='mt-4 text-blue-9 md:w-2/3'>
                         {footer?.companyInfo?.companyDescription}

@@ -1,6 +1,7 @@
 'use client';
 import { allCitations } from '@/assets/img/citations';
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import StrapiImage from '../StrapiImage/StrapiImage';
 
 const MediaCitation: React.FC<{ mediaCitation: any }> = ({ mediaCitation }) => {
    const [shuffleAlternator, setShuffleAlternator] = useState<boolean>(false);
@@ -38,9 +39,10 @@ const MediaCitation: React.FC<{ mediaCitation: any }> = ({ mediaCitation }) => {
                         key={index}
                         className={`grid place-items-center px-4 py-5 md:px-10 ${index % 2 === 0 ? `${shuffleAlternator ? 'tile-white' : 'tile-gray'} ` : `${!shuffleAlternator ? 'tile-white' : 'tile-gray'} `}`}
                      >
-                        <img
+                        <StrapiImage
                            className='h-full w-full object-contain md:h-[80px]'
-                           src={img.url}
+                           media={img}
+                           size='thumbnail'
                            alt={`Citation ${index + 1}`}
                         />
                      </div>
