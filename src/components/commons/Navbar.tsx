@@ -161,7 +161,7 @@ const DesktopMenuItem: React.FC<{ item: MenuItem; depth: number }> = ({
                            <LocalizedLink
                               key={index}
                               href={child.url ?? ''}
-                              className='flex items-center break-words py-2 text-s-800 hover:text-blue-600'
+                              className='flex items-start break-words py-2 text-s-800 hover:text-blue-600'
                            >
                               {child.url?.includes('industries=') && (
                                  <div className='mr-2'>
@@ -174,7 +174,7 @@ const DesktopMenuItem: React.FC<{ item: MenuItem; depth: number }> = ({
                                     }
                                  </div>
                               )}
-                              {child.title}
+                              <span className='-mt-1'>{child.title}</span>
                            </LocalizedLink>
                         ))}
                      </div>
@@ -211,7 +211,7 @@ const DesktopMenuItem: React.FC<{ item: MenuItem; depth: number }> = ({
                </LocalizedLink>
                {isOpen && (
                   <div className='absolute left-0 top-full z-50 pt-2'>
-                     <ul className='min-w-[200px] rounded-md border border-s-400 bg-white shadow-md'>
+                     <ul className='min-w-[300px] rounded-md border border-s-400 bg-white shadow-md'>
                         {item.children.map((child, index) => (
                            <DesktopMenuItem
                               key={index}

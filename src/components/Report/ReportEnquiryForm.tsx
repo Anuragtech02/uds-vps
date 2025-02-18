@@ -5,6 +5,7 @@ import Button from '../commons/Button';
 import Script from 'next/script';
 import { submitForm } from '@/utils/api/csr-services';
 import countryList from '@/assets/utils/countries.json';
+import { sendGAEvent } from '@next/third-parties/google';
 
 interface ReportEnquiryFormProps {
    reportId: number;
@@ -146,6 +147,12 @@ const ReportEnquiryForm: React.FC<ReportEnquiryFormProps> = ({
          report: reportId,
       };
 
+      sendGAEvent('event', 'form_initiation', {
+         form_category: 'EnquiryForm',
+         form_action: 'Initiate',
+         form_label: reportTitle,
+      });
+
       try {
          const response = await submitForm('enquiry', {
             ...requestData,
@@ -165,8 +172,18 @@ const ReportEnquiryForm: React.FC<ReportEnquiryFormProps> = ({
             country: '',
          });
          setPhone('');
+         sendGAEvent('event', 'form_initiation', {
+            form_category: 'EnquiryForm',
+            form_action: 'Submit',
+            form_label: reportTitle,
+         });
       } catch (error) {
          setSubmitError('An error occurred. Please try again.');
+         sendGAEvent('event', 'form_error', {
+            form_category: 'EnquiryForm',
+            form_action: 'Error',
+            form_label: reportTitle,
+         });
       } finally {
          setIsSubmitting(false);
       }

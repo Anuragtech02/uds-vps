@@ -152,8 +152,6 @@ const SearchFilterBar: React.FC<SearchFilterBarProps> = ({
       return slug;
    };
 
-   console.log({ industries, geographies });
-
    return (
       <div className='sticky top-44 z-30 mb-6 rounded-lg bg-white py-4 shadow-sm'>
          <div className='container flex flex-col items-start gap-6 lg:flex-row lg:items-center'>
@@ -219,8 +217,9 @@ const SearchFilterBar: React.FC<SearchFilterBarProps> = ({
                   </button>
                   {geographyDropdown && (
                      <div className='absolute top-full mt-2 max-h-[60vh] w-64 overflow-y-auto rounded-lg bg-white p-4 shadow-lg'>
-                        {geographies?.data.map(
-                           ({ attributes: { slug, name } }) => (
+                        {geographies?.data
+                           .filter((item) => item.attributes.slug !== 'unknown')
+                           .map(({ attributes: { slug, name } }) => (
                               <div
                                  key={slug}
                                  className='flex items-center gap-3 py-2'
@@ -241,8 +240,7 @@ const SearchFilterBar: React.FC<SearchFilterBarProps> = ({
                                     {name}
                                  </label>
                               </div>
-                           ),
-                        )}
+                           ))}
                      </div>
                   )}
                </div>

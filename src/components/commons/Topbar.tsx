@@ -52,8 +52,8 @@ const Topbar = ({ header, industries }: ITopbarProps) => {
                      <FaPhoneAlt />
                      <span className='text-sm'>
                         <a
-                           href={`tel:${header?.phoneNumber} ?? ''}`}
-                           className='text-sm'
+                           href={`tel:${header?.phoneNumber ?? ''}`}
+                           className='notranslate text-sm'
                         >
                            {header?.phoneNumber}
                         </a>
@@ -64,7 +64,7 @@ const Topbar = ({ header, industries }: ITopbarProps) => {
                      <span>
                         <a
                            href={`mailto:${header?.email ?? ''}`}
-                           className='text-sm'
+                           className='notranslate text-sm'
                         >
                            {header?.email}
                         </a>

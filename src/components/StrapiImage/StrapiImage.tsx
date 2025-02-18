@@ -48,7 +48,7 @@ const StrapiImage: React.FC<StrapiImageProps> = ({
    } = media;
 
    // Choose the best format based on screen size or props
-   const imageUrl = formats?.small?.url || url;
+   const imageUrl = url || formats?.small?.url || url;
 
    const usesFillLayout = objectFit === 'fill' || objectFit === 'cover';
 

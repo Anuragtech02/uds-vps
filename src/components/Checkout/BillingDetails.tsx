@@ -33,6 +33,7 @@ const BillingDetails = () => {
    const [states, setStates] = useState<State[]>([]);
    const [loadingCountries, setLoadingCountries] = useState(false);
    const [loadingStates, setLoadingStates] = useState(false);
+   const [hasStates, setHasStates] = useState(true);
 
    const {
       formData,
@@ -48,7 +49,6 @@ const BillingDetails = () => {
       const fetchCountries = async () => {
          setLoadingCountries(true);
          try {
-            // Using a reliable country-state API
             const response = await fetch(
                'https://countriesnow.space/api/v0.1/countries/states',
             );
@@ -73,8 +73,6 @@ const BillingDetails = () => {
    }, []);
 
    const handleCountryChange = (value: string) => {
-      // Update the country in form data
-      // @ts-ignore
       setFormData((prev) => ({
          ...prev,
          country: value,
@@ -93,14 +91,17 @@ const BillingDetails = () => {
       } else if (countries.find((c) => c.code === value)?.name.includes('EU')) {
          setSelectedCurrency('EUR');
       } else {
-         setSelectedCurrency('USD'); // Default to USD
+         setSelectedCurrency('USD');
       }
+
       // Update available states based on selected country
       const selectedCountry = countries.find((c) => c.code === value);
       if (selectedCountry) {
          setStates(selectedCountry.states);
+         setHasStates(selectedCountry.states.length > 0);
       } else {
          setStates([]);
+         setHasStates(false);
       }
 
       // Validate if the field was touched
@@ -111,8 +112,6 @@ const BillingDetails = () => {
 
    const validateField = (name: keyof BillingFormData, value: string) => {
       let error: string | undefined;
-
-      // Get trimmed value for validation
       const trimmedValue = value.trim();
 
       switch (name) {
@@ -150,8 +149,14 @@ const BillingDetails = () => {
             break;
 
          case 'country':
-         case 'state':
             if (!trimmedValue) {
+               error = 'This field is required';
+            }
+            break;
+
+         case 'state':
+            // Only validate state if the country has states
+            if (hasStates && !trimmedValue) {
                error = 'This field is required';
             }
             break;
@@ -171,7 +176,6 @@ const BillingDetails = () => {
          [name]: value,
       }));
 
-      // Only trim during validation
       if (touched[name]) {
          validateField(name, value.trim());
       }
@@ -182,8 +186,7 @@ const BillingDetails = () => {
          ...prev,
          [name]: true,
       }));
-      // @ts-ignore
-      validateField(name, formData[name]);
+      validateField(name, formData[name] || '');
    };
 
    const handlePhoneChange = (value: string) => {
@@ -198,13 +201,13 @@ const BillingDetails = () => {
    };
 
    const inputClassName = (hasError: boolean) => `
-  w-full rounded-md border p-3
-  ${
-     hasError
-        ? 'border-red-500 focus:border-red-500 focus:ring-red-500'
-        : 'border-s-300 focus:border-blue-500 focus:ring-blue-500'
-  }
-`;
+      w-full rounded-md border p-3
+      ${
+         hasError
+            ? 'border-red-500 focus:border-red-500 focus:ring-red-500'
+            : 'border-s-300 focus:border-blue-500 focus:ring-blue-500'
+      }
+   `;
 
    return (
       <div>
@@ -310,30 +313,44 @@ const BillingDetails = () => {
                   )}
                </div>
                <div className='shrink grow basis-0 space-y-1'>
-                  <label htmlFor='state'>State*</label>
-                  <select
-                     id='state'
-                     value={formData.state}
-                     onChange={(e) => handleChange('state', e.target.value)}
-                     onBlur={() => handleBlur('state')}
-                     className={inputClassName(
-                        !!errors.state && !!touched.state,
-                     )}
-                     disabled={!formData.country || loadingStates}
-                  >
-                     <option value=''>
-                        {!formData.country
-                           ? 'Select a country first'
-                           : loadingStates
-                             ? 'Loading states...'
-                             : 'Select your state'}
-                     </option>
-                     {states.map((state) => (
-                        <option key={state.code} value={state.code}>
-                           {state.name}
+                  <label htmlFor='state'>State{hasStates && '*'}</label>
+                  {hasStates ? (
+                     <select
+                        id='state'
+                        value={formData.state}
+                        onChange={(e) => handleChange('state', e.target.value)}
+                        onBlur={() => handleBlur('state')}
+                        className={inputClassName(
+                           !!errors.state && !!touched.state,
+                        )}
+                        disabled={!formData.country || loadingStates}
+                     >
+                        <option value=''>
+                           {!formData.country
+                              ? 'Select a country first'
+                              : loadingStates
+                                ? 'Loading states...'
+                                : 'Select your state'}
                         </option>
-                     ))}
-                  </select>
+                        {states.map((state) => (
+                           <option key={state.code} value={state.code}>
+                              {state.name}
+                           </option>
+                        ))}
+                     </select>
+                  ) : (
+                     <input
+                        type='text'
+                        id='state'
+                        value={formData.state}
+                        onChange={(e) => handleChange('state', e.target.value)}
+                        onBlur={() => handleBlur('state')}
+                        placeholder='Enter your state/province (optional)'
+                        className={inputClassName(
+                           !!errors.state && !!touched.state,
+                        )}
+                     />
+                  )}
                   {errors.state && touched.state && (
                      <p className='mt-1 text-sm text-red-500'>{errors.state}</p>
                   )}
