@@ -3,13 +3,14 @@ import { useEffect, useRef, useState } from 'react';
 import Navbar from './Navbar';
 import Topbar from './Topbar';
 import { usePathname } from 'next/navigation';
+import { Media } from '../StrapiImage/StrapiImage';
 interface IHeader {
    phoneNumber: string;
    email: string;
    createdAt: string;
    updatedAt: string;
    publishedAt: string;
-   logo?: { data: { attributes: { url?: string } } };
+   logo?: { data: { attributes: Media } };
    ctaButton: { id: number; title: string; link: string };
 }
 
