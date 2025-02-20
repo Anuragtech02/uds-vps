@@ -29,6 +29,7 @@ interface StrapiImageProps
    width?: number | string;
    height?: number | string;
    wrapperClassName?: string;
+   priority?: boolean;
 }
 
 const StrapiImage: React.FC<StrapiImageProps> = ({
@@ -39,6 +40,7 @@ const StrapiImage: React.FC<StrapiImageProps> = ({
    width: propWidth,
    height: propHeight,
    wrapperClassName,
+   priority,
    ...props
 }) => {
    if (!media) return null;
@@ -108,6 +110,7 @@ const StrapiImage: React.FC<StrapiImageProps> = ({
             height={Number(propHeight) || imageHeight}
             style={imageStyle}
             unoptimized // Skip Next.js image optimization
+            priority={priority}
             {...props}
          />
       </div>
