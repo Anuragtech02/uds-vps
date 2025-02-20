@@ -7,6 +7,7 @@ import { LocalizedLink } from './LocalizedLink';
 import ClientSearchHero from '../Home/ClientSearchHero';
 import CartIcon from './CartIcon';
 import StrapiImage, { Media } from '../StrapiImage/StrapiImage';
+
 interface ITopbarProps {
    header: {
       phoneNumber: string;
@@ -14,7 +15,7 @@ interface ITopbarProps {
       createdAt: string;
       updatedAt: string;
       publishedAt: string;
-      logo?: { data: { attributes: Media } };
+      logo?:  Media ;
       ctaButton: { id: number; title: string; link: string };
    };
    industries: any[];
@@ -26,9 +27,11 @@ const Topbar = ({ header, industries }: ITopbarProps) => {
          <div className='flex items-center justify-between gap-4 text-[#1D2C60]'>
             <LocalizedLink href='/' className='hidden items-center lg:flex'>
                <StrapiImage
-                  media={header?.logo?.data?.attributes as Media}
-                  size='small'
+                  media={header?.logo as Media}
+                  size='original'
                   alt='logo'
+                  width={200}
+                  height={80}
                   loading='eager'
                   className='h-10 w-24 object-contain md:h-[80px] md:w-[200px]'
                   wrapperClassName='h-10 w-24 object-contain md:h-[80px] md:w-[200px] flex justify-start items-center'

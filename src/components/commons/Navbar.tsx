@@ -19,6 +19,7 @@ import Healthcare from '../icons/industries/healthcare';
 import MediaEntertainment from '../icons/industries/media-entertainment';
 import MinigMachinery from '../icons/industries/mining-machinery';
 import TelecomeIT from '../icons/industries/telecom-it';
+import { Media } from '../StrapiImage/StrapiImage';
 
 // Create an object mapping industry slugs to their respective icons
 const industryIcons: {
@@ -53,7 +54,7 @@ interface INavbarProps {
       createdAt: string;
       updatedAt: string;
       publishedAt: string;
-      logo?: { data: { attributes: { url?: string } } };
+      logo?: Media;
       ctaButton: { id: number; title: string; link: string };
    };
    mainMenu: MenuItem[];

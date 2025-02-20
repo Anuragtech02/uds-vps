@@ -10,7 +10,7 @@ interface IHeader {
    createdAt: string;
    updatedAt: string;
    publishedAt: string;
-   logo?: { data: { attributes: Media } };
+   logo?: Media  ;
    ctaButton: { id: number; title: string; link: string };
 }
 
@@ -25,24 +25,9 @@ const Header = ({
    industries: any;
    mainMenu: any;
 }) => {
-   const [isSticky, setSticky] = useState(false);
    const navRef = useRef<HTMLDivElement | null>(null);
    const pathname = usePathname();
-
-   const handleScroll = () => {
-      if (navRef.current) {
-         setSticky(navRef.current?.getBoundingClientRect().top <= 0);
-      }
-   };
-
-   useEffect(() => {
-      window.addEventListener('scroll', handleScroll);
-
-      return () => {
-         window.removeEventListener('scroll', () => handleScroll);
-      };
-   }, []);
-
+   
    return (
       <div
          className={`${

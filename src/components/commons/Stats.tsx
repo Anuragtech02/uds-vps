@@ -80,10 +80,10 @@ const Stats: React.FC<{ data: StatData[] }> = ({ data }) => {
             {data.map((stat) => (
                <div
                   key={stat.title}
-                  className='relative flex flex-col justify-between rounded-md border border-s-200 bg-white p-4'
+                  className='relative flex flex-col justify-between rounded-md border border-s-200 bg-white p-4 h-40'
                >
                   <p>{stat.title}</p>
-                  <h3 className='notranslate mt-6 font-bricolage text-4xl font-bold text-blue-4 md:text-5xl'>
+                  <h3 className='notranslate mt-6 font-bricolage text-4xl font-bold text-blue-4 md:text-5xl h-10'>
                      {isVisible ? (
                         <>
                            <Counter end={stat.countTo} duration={2000} />+
@@ -94,8 +94,8 @@ const Stats: React.FC<{ data: StatData[] }> = ({ data }) => {
                   </h3>
                   <StrapiImage
                      media={stat.icon}
-                     wrapperClassName='absolute bottom-1 right-1 aspect-square h-10 sm:h-14'
-                     className='aspect-square h-10 sm:h-14'
+                     wrapperClassName='absolute bottom-1 right-1 aspect-square h-10'
+                     className='aspect-square h-10'
                      alt='stat'
                   />
                </div>

@@ -94,10 +94,15 @@ const StrapiImage: React.FC<StrapiImageProps> = ({
         }
       : {};
 
+   function replaceWithCloudfrontURL(imageUrl: string){
+      const cloudfrontURL = 'd21aa2ghywi6oj.cloudfront.net';
+      return imageUrl.replace('udsweb.s3.ap-south-1.amazonaws.com', cloudfrontURL);
+   }
+
    return (
       <div style={containerStyle} className={wrapperClassName}>
          <Image
-            src={imageUrl}
+            src={replaceWithCloudfrontURL(imageUrl)}
             alt={alt || alternativeText || 'Image'}
             width={Number(propWidth) || imageWidth}
             height={Number(propHeight) || imageHeight}

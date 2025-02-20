@@ -6,7 +6,6 @@ const ReportResults = ({ reports }: any) => {
    return (
       <div className='flex flex-col gap-4'>
          {reports?.map((report: any) => (
-            <LocalizedLink href={`/reports/${report?.slug}`} key={report?.id}>
                <ReportStoreItem
                   date={new Date(
                      report.oldPublishedAt ||
@@ -20,7 +19,6 @@ const ReportResults = ({ reports }: any) => {
                   highlightImageUrl={report?.highlightImage}
                   size='small'
                />
-            </LocalizedLink>
          ))}
          {reports?.length === 0 && <p>No reports found</p>}
       </div>
