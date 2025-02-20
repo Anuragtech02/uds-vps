@@ -1,4 +1,3 @@
-'use client';
 import Image from 'next/image';
 import earth from '@/assets/img/earth-min.png';
 import Button from './Button';
@@ -8,7 +7,6 @@ import {
    FaFacebook,
    FaXTwitter,
 } from 'react-icons/fa6';
-import { usePathname } from 'next/navigation';
 import { LocalizedLink } from './LocalizedLink';
 import { Suspense } from 'react';
 import { BiLoaderCircle } from 'react-icons/bi';
@@ -17,7 +15,6 @@ import DemoRequestForm from '../Home/DemoRequestForm';
 import { FaPinterest, FaYoutube } from 'react-icons/fa';
 
 const Footer = ({ footer, quickLinks }: any) => {
-   const pathname = usePathname();
 
    return (
       <>
@@ -27,7 +24,7 @@ const Footer = ({ footer, quickLinks }: any) => {
             </div>
          )} */}
          <footer className='min-h-[500px] bg-blue-1 pb-12 text-white [&>a]:hover:underline'>
-            <div className='relative border-b border-blue-4 py-12 text-center'>
+            <div className='relative border-b border-blue-4 py-12 text-center min-h-[300px]'>
                <div className='absolute inset-0 z-[1] h-full w-full'>
                   <Image
                      src={earth}
