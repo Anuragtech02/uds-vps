@@ -142,9 +142,13 @@ const DemoRequestForm = () => {
          setTimeout(() => {
             setSubmitSuccess(false);
          }, 5000); // Reset success message after 5 seconds
-         sendGAEvent('event', 'form_submission', {
-            form_category: 'DemoRequestForm',
-            form_action: 'Submit',
+         // sendGAEvent('event', 'form_submission', {
+         //    form_category: 'DemoRequestForm',
+         //    form_action: 'Submit',
+         // });
+         sendGAEvent({
+            event: 'form_submission',
+            value: `DemoRequestForm_Submit: ${JSON.stringify(requestData)}`,
          });
          // Reset Turnstile after successful submission
          if (window.turnstile) {
