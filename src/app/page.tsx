@@ -2,7 +2,6 @@ export const runtime = 'edge';
 
 import MediaCitation from '@/components/commons/MediaCitation';
 import Hero from '@/components/Home/Hero';
-import LatestResearch from '@/components/Home/LatestResearch';
 
 import NewsRoom from '@/components/Home/NewsRoom';
 import Testimonials from '@/components/Home/Testimonials';
@@ -15,9 +14,17 @@ import {
    getNewsListingPage,
 } from '@/utils/api/services';
 import { Metadata } from 'next';
-import RecentResearch from '@/components/Home/RecentResearch';
 import { absoluteUrl } from '@/utils/generic-methods';
 import { SUPPORTED_LOCALES } from '@/utils/constants';
+import dynamic from 'next/dynamic';
+
+const RecentResearch = dynamic(
+   () => import('@/components/Home/RecentResearch'),
+);
+
+const LatestResearch = dynamic(
+   () => import('@/components/Home/LatestResearch'),
+);
 
 export async function generateMetadata(): Promise<Metadata> {
    const homePage = await getHomePage();

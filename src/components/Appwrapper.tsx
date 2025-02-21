@@ -2,16 +2,11 @@ import { FC, Suspense } from 'react';
 
 import Header from './commons/Header';
 import Footer from './commons/Footer';
-import {
-   getFooter,
-   getFooterQuickLinks,
-   getHeader,
-   getHeaderMainMenu,
-   getIndustries,
-   getRootConfig,
-} from '@/utils/api/services';
-import SearchWrapper from './Search/SearchWrapper';
+import { getRootConfig } from '@/utils/api/services';
 import PageSwitchLoading from './PageSwitchLoading';
+import dynamic from 'next/dynamic';
+
+const SearchWrapper = dynamic(() => import('./Search/SearchWrapper'));
 
 interface AppwrapperProps {
    children: React.ReactNode;
@@ -53,83 +48,77 @@ export interface MenuItem {
 const organizeItemsIntoTree = (items: any[]): MenuItem[] => {
    const itemsMap = new Map();
    const rootItems: MenuItem[] = [];
- 
+
    // First pass: Create a map of all items
-   items.forEach(item => {
-     itemsMap.set(item.id, {
-       id: item.id,
-       title: item.title,
-       url: item.url,
-       target: item.target,
-       order: item.order,
-       children: []
-     });
+   items.forEach((item) => {
+      itemsMap.set(item.id, {
+         id: item.id,
+         title: item.title,
+         url: item.url,
+         target: item.target,
+         order: item.order,
+         children: [],
+      });
    });
- 
+
    // Second pass: Organize into tree structure
-   items.forEach(item => {
-     const mappedItem = itemsMap.get(item.id);
-     if (item.parent) {
-       const parentItem = itemsMap.get(item.parent.id);
-       if (parentItem) {
-         parentItem.children.push(mappedItem);
-       }
-     } else {
-       rootItems.push(mappedItem);
-     }
+   items.forEach((item) => {
+      const mappedItem = itemsMap.get(item.id);
+      if (item.parent) {
+         const parentItem = itemsMap.get(item.parent.id);
+         if (parentItem) {
+            parentItem.children.push(mappedItem);
+         }
+      } else {
+         rootItems.push(mappedItem);
+      }
    });
- 
+
    // Sort items by order
    const sortByOrder = (items: MenuItem[]) => {
-     items.sort((a, b) => (a.order || 0) - (b.order || 0));
-     items.forEach(item => {
-       if (item.children && item.children.length > 0) {
-         sortByOrder(item.children);
-       }
-     });
-     return items;
+      items.sort((a, b) => (a.order || 0) - (b.order || 0));
+      items.forEach((item) => {
+         if (item.children && item.children.length > 0) {
+            sortByOrder(item.children);
+         }
+      });
+      return items;
    };
- 
-   return sortByOrder(rootItems);
- };
 
- const mapMenuItem = (item: any): MenuItem => ({
+   return sortByOrder(rootItems);
+};
+
+const mapMenuItem = (item: any): MenuItem => ({
    id: item.id,
    title: item.attributes.title,
    url: item.attributes.url,
-   children: item.attributes.children?.map(mapMenuItem) || []
- });
- 
- export const mapHeaderMainMenu = (headerMainMenuData: any): MenuItem[] => {
+   children: item.attributes.children?.map(mapMenuItem) || [],
+});
+
+export const mapHeaderMainMenu = (headerMainMenuData: any): MenuItem[] => {
    const items = headerMainMenuData?.data?.attributes?.items?.data || [];
    return items.map(mapMenuItem);
- };
- 
- export const mapFooterQuickLinks = (footerQuickLinksData: any): MenuItem[] => {
+};
+
+export const mapFooterQuickLinks = (footerQuickLinksData: any): MenuItem[] => {
    const items = footerQuickLinksData?.data?.attributes?.items?.data || [];
    return items.map(mapMenuItem);
- };
- 
-const Appwrapper: FC<AppwrapperProps> = async ({ children }) => {
+};
 
+const Appwrapper: FC<AppwrapperProps> = async ({ children }) => {
    let globalData;
    try {
-     const response = await getRootConfig();
-     globalData = response;
+      const response = await getRootConfig();
+      globalData = response;
    } catch (err) {
-     console.error(err);
+      console.error(err);
    }
- 
-   const {
-      header,
-      footer,
-      industries,
-      headerMainMenu,
-      footerQuickLinks
-    } = globalData || {};
-  
-    const mappedHeaderMenu = mapHeaderMainMenu(headerMainMenu);
-    const mappedFooterLinks = mapFooterQuickLinks(footerQuickLinks);  
+
+   const { header, footer, industries, headerMainMenu, footerQuickLinks } =
+      globalData || {};
+
+   const mappedHeaderMenu = mapHeaderMainMenu(headerMainMenu);
+   const mappedFooterLinks = mapFooterQuickLinks(footerQuickLinks);
 
    return (
       <>
