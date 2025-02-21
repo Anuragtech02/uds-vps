@@ -469,3 +469,15 @@ export const getDisclaimer = async () => {
       throw error;
    }
 };
+
+export const getRootConfig = async () => {
+   try {
+     const response = await fetchClient('/root-config', {
+       headers: getAuthHeaders(),
+     });
+     return await response;
+   } catch (error) {
+     console.error('Error fetching root config:', error);
+     throw error;
+   }
+ };

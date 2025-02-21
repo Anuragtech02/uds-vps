@@ -3,6 +3,7 @@ import Button from './Button';
 import prebookBg from '@/assets/img/prebook-bg.png';
 import Link from 'next/link';
 import { LocalizedLink } from './LocalizedLink';
+import Image from 'next/image';
 
 const PreBookCTA: React.FC<{
    title: string;
@@ -13,8 +14,10 @@ const PreBookCTA: React.FC<{
 }> = ({ title, ctaButton }) => {
    return (
       <div className='relative overflow-hidden rounded-xl bg-blue-1 p-8 py-12 text-white'>
-         <img
-            src={prebookBg.src}
+         <Image
+            src={prebookBg}
+            fill
+            unoptimized
             className='absolute inset-0 z-[1] h-full w-full object-cover object-center'
             alt=''
          />

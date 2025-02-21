@@ -1,17 +1,27 @@
 import React from 'react';
 
-const ReportListLoading: React.FC = () => {
-  return (
-    <div className="flex-[0.7] space-y-6">
-      {[...Array(3)].map((_, index) => (
-        <div key={index} className="animate-pulse">
-          <div className="h-6 w-3/4 bg-gray-300 rounded mb-2"></div>
-          <div className="h-4 w-1/4 bg-gray-300 rounded mb-2"></div>
-          <div className="h-20 bg-gray-300 rounded"></div>
-        </div>
-      ))}
-    </div>
-  );
+// Modify ReportListLoading.tsx
+const ReportListLoading = ({ viewType }: { viewType: 'list' | 'grid' }) => {
+   return (
+      <div
+         className={`mt-4 grid min-h-[800px] gap-4 sm:mt-0 ${
+            viewType === 'list'
+               ? 'grid-cols-1'
+               : 'grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3'
+         }`}
+      >
+         {[...Array(10)].map((_, index) => (
+            <div
+               key={index}
+               className='animate-pulse rounded-lg bg-gray-200'
+               style={{
+                  height: viewType === 'list' ? '200px' : '400px',
+                  // Match your actual report item dimensions
+               }}
+            />
+         ))}
+      </div>
+   );
 };
 
 export default ReportListLoading;

@@ -7,7 +7,7 @@ interface MediaFormat {
    height: number;
 }
 
-interface Media {
+export interface Media {
    url: string;
    alternativeText?: string;
    formats?: {
@@ -23,18 +23,24 @@ interface Media {
 interface StrapiImageProps
    extends Omit<ImageProps, 'src' | 'alt' | 'width' | 'height' | 'fill'> {
    media: Media | null;
+   size?: 'thumbnail' | 'small' | 'medium' | 'large' | 'original';
    alt?: string;
    objectFit?: 'fill' | 'contain' | 'cover' | 'none' | 'scale-down';
    width?: number | string;
    height?: number | string;
+   wrapperClassName?: string;
+   priority?: boolean;
 }
 
 const StrapiImage: React.FC<StrapiImageProps> = ({
    media,
+   size = 'original',
    alt,
    objectFit,
    width: propWidth,
    height: propHeight,
+   wrapperClassName,
+   priority,
    ...props
 }) => {
    if (!media) return null;
@@ -47,8 +53,31 @@ const StrapiImage: React.FC<StrapiImageProps> = ({
       height: mediaHeight,
    } = media;
 
-   // Choose the best format based on screen size or props
-   const imageUrl = url || formats?.small?.url || url;
+   // Get the appropriate format or fallback to original
+   const getImageData = () => {
+      if (size === 'original') {
+         return {
+            url,
+            width: mediaWidth,
+            height: mediaHeight,
+         };
+      }
+
+      const format = formats?.[size];
+      return (
+         format || {
+            url,
+            width: mediaWidth,
+            height: mediaHeight,
+         }
+      );
+   };
+
+   const {
+      url: imageUrl,
+      width: imageWidth,
+      height: imageHeight,
+   } = getImageData();
 
    const usesFillLayout = objectFit === 'fill' || objectFit === 'cover';
 
@@ -61,18 +90,27 @@ const StrapiImage: React.FC<StrapiImageProps> = ({
            position: 'relative',
            width: propWidth || '100%',
            height: propHeight || '100%',
+           display: 'flex',
+           justifyContent: 'center',
+           alignItems: 'center',
         }
       : {};
 
+   function replaceWithCloudfrontURL(imageUrl: string){
+      const cloudfrontURL = 'd21aa2ghywi6oj.cloudfront.net';
+      return imageUrl.replace('udsweb.s3.ap-south-1.amazonaws.com', cloudfrontURL);
+   }
+
    return (
-      <div style={containerStyle}>
+      <div style={containerStyle} className={wrapperClassName}>
          <Image
-            src={imageUrl}
-            alt={alt || alternativeText || 'Strapi Image'}
-            {...(usesFillLayout
-               ? { fill: true }
-               : { width: mediaWidth, height: mediaHeight })}
+            src={replaceWithCloudfrontURL(imageUrl)}
+            alt={alt || alternativeText || 'Image'}
+            width={Number(propWidth) || imageWidth}
+            height={Number(propHeight) || imageHeight}
             style={imageStyle}
+            unoptimized // Skip Next.js image optimization
+            priority={priority}
             {...props}
          />
       </div>

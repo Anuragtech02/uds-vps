@@ -55,6 +55,7 @@ const NewsRoom: React.FC<{
                                  alt='news'
                                  fill
                                  className='rounded-xl object-cover'
+                                 unoptimized
                               />
                            </div>
                            <div className='flex flex-wrap gap-2 py-4'>
@@ -115,6 +116,7 @@ const NewsRoom: React.FC<{
                                     src={newsPlaceholder}
                                     alt='news'
                                     fill
+                                    unoptimized
                                     className='rounded-xl object-cover'
                                  />
                               </div>

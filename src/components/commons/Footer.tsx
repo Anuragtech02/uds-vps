@@ -1,4 +1,3 @@
-'use client';
 import Image from 'next/image';
 import earth from '@/assets/img/earth-min.png';
 import Button from './Button';
@@ -8,7 +7,6 @@ import {
    FaFacebook,
    FaXTwitter,
 } from 'react-icons/fa6';
-import { usePathname } from 'next/navigation';
 import { LocalizedLink } from './LocalizedLink';
 import { Suspense } from 'react';
 import { BiLoaderCircle } from 'react-icons/bi';
@@ -16,8 +14,10 @@ import Popup from '../Popup';
 import DemoRequestForm from '../Home/DemoRequestForm';
 import { FaPinterest, FaYoutube } from 'react-icons/fa';
 
+const LOGO_DIMENSIONS = { width: 150, height: 50 };
+const EARTH_DIMENSIONS = { width: 1920, height: 1080 }; 
+
 const Footer = ({ footer, quickLinks }: any) => {
-   const pathname = usePathname();
 
    return (
       <>
@@ -26,27 +26,32 @@ const Footer = ({ footer, quickLinks }: any) => {
                <CustomResearchCTA  />
             </div>
          )} */}
-         <footer className='min-h-[500px] bg-blue-1 pb-12 text-white [&>a]:hover:underline'>
-            <div className='relative border-b border-blue-4 py-12 text-center'>
-               <div className='absolute inset-0 z-[1] h-full w-full'>
+         <footer className='bg-blue-1 pb-12 text-white [&>a]:hover:underline'>
+            <div className='relative border-b border-blue-4 py-12 text-center h-[300px] md:h-[350px] xl:h-[300px] overflow-hidden'>
+               <div className='absolute inset-0 bottom-0 z-[1] h-full w-full'>
                   <Image
                      src={earth}
                      alt='Earth background'
-                     fill
                      className='object-cover'
+                     sizes='100vw'
                      priority
+                     {...EARTH_DIMENSIONS}
                   />
                </div>
                <div className='container relative z-[3]'>
+                  <div className='min-h-[60px]'>
                   <p
                      className='text-[2.25rem] font-bold md:text-[3.5rem]'
                      dangerouslySetInnerHTML={{
                         __html: footer?.footerCTA?.title,
                      }}
                   ></p>
-                  <p className='mx-auto mt-4 text-s-300 md:w-2/3 md:text-2xl'>
-                     {footer?.footerCTA?.description}
-                  </p>
+                  </div>
+                  {footer?.footerCTA?.description?.trim()?.length > 0 && (
+                     <p className='mx-auto mt-4 text-s-300 md:w-2/3 md:text-2xl'>
+                        {footer?.footerCTA?.description}
+                     </p>
+                  )}
                   <LocalizedLink
                      href={footer?.footerCTA?.ctaButton?.link ?? '/contact'}
                   >
@@ -60,12 +65,17 @@ const Footer = ({ footer, quickLinks }: any) => {
                <div className='grid grid-cols-1 gap-4 pt-12 text-blue-9 sm:gap-8 md:grid-cols-5'>
                   {/* Company Info */}
                   <div className='col-span-1 md:col-span-2'>
-                     <Image
-                        src={footer?.companyInfo?.logo?.data?.attributes?.url}
-                        alt='UnivDatos'
-                        width={150}
-                        height={50}
-                     />
+                     <LocalizedLink href='/'>
+                     <div className='h-[50px] w-[150px]'>
+
+                        <Image
+                           src={footer?.companyInfo?.logo?.url}
+                           alt='UnivDatos'
+                           unoptimized
+                           {...LOGO_DIMENSIONS}
+                        />
+                     </div>
+                     </LocalizedLink>
                      <p className='mt-4 text-blue-9 md:w-2/3'>
                         {footer?.companyInfo?.companyDescription}
                      </p>
@@ -132,7 +142,7 @@ const Footer = ({ footer, quickLinks }: any) => {
                      <p className='mb-4 text-lg text-white'>QUICK LINKS</p>
                      <ul className='space-y-2'>
                         {quickLinks?.map((item: any) => (
-                           <li key={item}>
+                           <li key={item?.title}>
                               <LocalizedLink
                                  href={item?.url ?? ''}
                                  className='hover:text-gray-300 hover:underline'
@@ -150,13 +160,13 @@ const Footer = ({ footer, quickLinks }: any) => {
                         INDUSTRY VERTICALS
                      </p>
                      <ul className='space-y-2'>
-                        {footer.industries?.data?.map((item: any) => (
-                           <li key={item?.attributes?.slug}>
+                        {footer.industries?.map((item: any) => (
+                           <li key={item?.slug}>
                               <LocalizedLink
-                                 href={`/reports?industries=${item?.attributes?.slug}`}
+                                 href={`/reports?industries=${item?.slug}`}
                                  className='hover:text-gray-300 hover:underline'
                               >
-                                 {item?.attributes?.name}
+                                 {item?.name}
                               </LocalizedLink>
                            </li>
                         ))}

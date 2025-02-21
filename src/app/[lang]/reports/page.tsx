@@ -11,9 +11,10 @@ import ReportListLoading from '@/components/ReportStore/ReportListLoading';
 import Pagination from '@/components/ReportStore/Pagination';
 import ViewToggle from '@/components/Report/ViewToggle';
 import { absoluteUrl } from '@/utils/generic-methods';
-import { LOGO_URL_DARK } from '@/utils/constants';
 import { Metadata } from 'next';
+import { LOGO_URL_DARK } from '@/utils/constants';
 import FilterBar from '@/components/ReportStore/FilterBar';
+import { Media } from '@/components/StrapiImage/StrapiImage';
 
 interface SearchParams {
    industries?: string;
@@ -32,9 +33,7 @@ interface Report {
       oldPublishedAt: string;
       highlightImage: {
          data: {
-            attributes: {
-               url: string;
-            };
+            attributes: Media;
          };
       };
    };
@@ -160,20 +159,38 @@ const ReportStore: FC<ReportStoreProps> = async ({ searchParams }) => {
             geographies={geographiesData?.data || []}
             currentFilters={filters}
             sortBy={sortBy}
+            redirectPath='/reports'
          />
 
          <div className='mb-10 mt-4 flex flex-col items-start justify-between gap-6 lg:min-h-[50vh] lg:flex-row'>
             {/* Main Content */}
             <div className='flex-1'>
-               <div className='hidden flex-col items-start justify-between sm:flex sm:flex-row sm:items-center'>
-                  <Pagination
-                     searchParams={searchParams}
-                     currentPage={currentPage}
-                     totalPages={totalPages}
-                  />
-                  <ViewToggle currentView={viewType} />
-               </div>
-               <Suspense fallback={<ReportListLoading />}>
+               <Suspense
+                  fallback={
+                     <div className='mb-10 mt-4 flex flex-col items-start justify-between gap-6 lg:min-h-[50vh] lg:flex-row'>
+                        <div className='flex-1'>
+                           <div className='hidden sm:flex sm:flex-row sm:items-center sm:justify-between'>
+                              {/* Static loading state for pagination/view toggle */}
+                              <div className='h-10 w-32 animate-pulse rounded bg-gray-200' />
+                              <div className='h-10 w-24 animate-pulse rounded bg-gray-200' />
+                           </div>
+                           <ReportListLoading
+                              viewType={viewType as 'list' | 'grid'}
+                           />
+                        </div>
+                     </div>
+                  }
+               >
+                  <div className='mb-2 hidden sm:flex sm:flex-row sm:items-center sm:justify-start'>
+                     <Pagination
+                        searchParams={searchParams}
+                        currentPage={currentPage}
+                        totalPages={totalPages}
+                     />
+                     <span className='ml-auto'>
+                        <ViewToggle currentView={viewType} />
+                     </span>
+                  </div>
                   <div
                      className={`mt-4 grid gap-4 sm:mt-0 ${
                         viewType === 'list'
@@ -204,8 +221,9 @@ const ReportStore: FC<ReportStoreProps> = async ({ searchParams }) => {
                               viewType={viewType}
                               highlightImageUrl={
                                  report.attributes.highlightImage?.data
-                                    ?.attributes?.url
+                                    ?.attributes
                               }
+                              size='small'
                            />
                         ))
                      ) : (

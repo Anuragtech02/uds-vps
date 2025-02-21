@@ -64,8 +64,10 @@ const AboutData = ({ about }: any) => {
                         </p> */}
                      </div>
                      <div className='md:w-1/2'>
-                        <img
-                           src={researchSectionImage?.url}
+                        <StrapiImage
+                           media={researchSectionImage}
+                           objectFit='fill'
+                           size='medium'
                            className='h-auto w-full object-contain'
                            alt=''
                         />

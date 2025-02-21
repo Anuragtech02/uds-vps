@@ -29,7 +29,10 @@ const About = async () => {
          title: service?.attributes?.title,
          description: service?.attributes?.description,
          shortDescription: service?.attributes?.shortDescription,
-         image: service?.attributes?.highlightImage?.data?.attributes?.url,
+         image:
+            service?.attributes?.highlightImage?.data?.attributes?.formats
+               ?.small?.url ||
+            service?.attributes?.highlightImage?.data?.attributes?.url,
       }))
       .sort((a: any, b: any) => a.id - b.id);
 

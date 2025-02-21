@@ -3,13 +3,14 @@ import { useEffect, useRef, useState } from 'react';
 import Navbar from './Navbar';
 import Topbar from './Topbar';
 import { usePathname } from 'next/navigation';
+import { Media } from '../StrapiImage/StrapiImage';
 interface IHeader {
    phoneNumber: string;
    email: string;
    createdAt: string;
    updatedAt: string;
    publishedAt: string;
-   logo?: { data: { attributes: { url?: string } } };
+   logo?: Media  ;
    ctaButton: { id: number; title: string; link: string };
 }
 
@@ -24,24 +25,9 @@ const Header = ({
    industries: any;
    mainMenu: any;
 }) => {
-   const [isSticky, setSticky] = useState(false);
    const navRef = useRef<HTMLDivElement | null>(null);
    const pathname = usePathname();
-
-   const handleScroll = () => {
-      if (navRef.current) {
-         setSticky(navRef.current?.getBoundingClientRect().top <= 0);
-      }
-   };
-
-   useEffect(() => {
-      window.addEventListener('scroll', handleScroll);
-
-      return () => {
-         window.removeEventListener('scroll', () => handleScroll);
-      };
-   }, []);
-
+   
    return (
       <div
          className={`${

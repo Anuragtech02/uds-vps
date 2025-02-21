@@ -1,6 +1,7 @@
 import { FC, useState, useEffect } from 'react';
 import { IoCloseCircle } from 'react-icons/io5';
 import { LocalizedLink } from '../commons/LocalizedLink';
+import StrapiImage from '../StrapiImage/StrapiImage';
 
 interface CartItemProps {
    name: string;
@@ -33,9 +34,7 @@ const CartItem: FC<CartItemProps> = ({
 
    let name = report?.title,
       price = selectedLicense?.price?.amount,
-      img =
-         report?.highlightImage?.data?.attributes?.url ||
-         '/api/placeholder/64/64';
+      img = report?.highlightImage?.data?.attributes;
 
    useEffect(() => {
       return () => {
@@ -65,10 +64,13 @@ const CartItem: FC<CartItemProps> = ({
                <IoCloseCircle className='h-5 w-5' />
             </button>
 
-            <img
-               src={img}
+            <StrapiImage
+               media={img}
+               size='thumbnail'
+               objectFit='fill'
                alt={name}
-               className='h-10 w-10 rounded border border-gray-300 object-cover'
+               className='h-10 w-10'
+               wrapperClassName='h-10 !w-10 rounded border border-gray-300 overflow-hidden'
             />
 
             <h5 className='line-clamp-2 flex-1 font-medium text-gray-900'>
