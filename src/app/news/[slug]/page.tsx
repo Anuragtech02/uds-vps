@@ -3,9 +3,150 @@ import NewsBody from '@/components/News/NewsBody';
 import NewsSidebar from '@/components/News/NewsSidebar';
 import Header from '@/components/News/Header';
 import RelatedNews from '@/components/News/RelatedNews';
-import { getNewsBySlug } from '@/utils/api/services';
+import { getBlogDetails, getNewsBySlug } from '@/utils/api/services';
 import ClientSearchHero from '@/components/Home/ClientSearchHero';
 import { redirect } from 'next/navigation';
+import { absoluteUrl } from '@/utils/generic-methods';
+import { Metadata } from 'next';
+import { SUPPORTED_LOCALES } from '@/utils/constants';
+
+export async function generateMetadata({
+   params,
+}: {
+   params: {
+      slug: string;
+   };
+}): Promise<Metadata> {
+   const newsDataList = await getBlogDetails(params.slug);
+   const newsPage = newsDataList.data?.length > 0 ? newsDataList.data[0] : null;
+
+   if (!newsPage) {
+      return {
+         title: 'Blog Not Found',
+         description: 'The requested blog could not be found.',
+      };
+   }
+
+   const { attributes } = newsPage;
+   const seo = attributes?.seo;
+
+   // Create languages map for alternates
+   const languagesMap: Record<string, string> = {};
+
+   // Add all language alternates if available
+   // if (seo?.alternateLanguages) {
+   //   Object.entries(seo.alternateLanguages).forEach(([locale, url]) => {
+   //     languagesMap[locale] = url as string;
+   //   });
+   // }
+
+   SUPPORTED_LOCALES.filter((locale) => locale !== 'en').forEach((locale) => {
+      languagesMap[locale] = absoluteUrl(`/${locale}/news/${params.slug}`);
+   });
+
+   // Base metadata object
+   const metadata: Metadata = {
+      title: seo?.metaTitle || attributes?.title,
+      description: seo?.metaDescription || attributes?.shortDescription,
+
+      openGraph: {
+         title:
+            seo?.metaSocial?.find(
+               (social: any) => social.socialNetwork === 'facebook',
+            )?.title ||
+            seo?.metaTitle ||
+            attributes?.title,
+         description:
+            seo?.metaSocial?.find(
+               (social: any) => social.socialNetwork === 'facebook',
+            )?.description ||
+            seo?.metaDescription ||
+            attributes?.shortDescription,
+         type: 'article',
+         url: absoluteUrl(`/news/${params.slug}`),
+         images: [
+            {
+               url:
+                  seo?.metaSocial?.find(
+                     (social: any) => social.socialNetwork === 'facebook',
+                  )?.image?.url ||
+                  seo?.metaImage?.url ||
+                  attributes?.highlightImage?.data?.attributes?.url,
+               width: 1200,
+               height: 630,
+               alt: attributes?.title,
+            },
+         ],
+         siteName: 'UnivDatos',
+      },
+
+      twitter: {
+         card: 'summary_large_image',
+         title:
+            seo?.metaSocial?.find(
+               (social: any) => social.socialNetwork === 'twitter',
+            )?.title ||
+            seo?.metaTitle ||
+            attributes?.title,
+         description:
+            seo?.metaSocial?.find(
+               (social: any) => social.socialNetwork === 'twitter',
+            )?.description ||
+            seo?.metaDescription ||
+            attributes?.shortDescription,
+         images: [
+            seo?.metaSocial?.find(
+               (social: any) => social.socialNetwork === 'twitter',
+            )?.image?.url ||
+               seo?.metaImage?.url ||
+               attributes?.highlightImage?.data?.attributes?.url,
+         ],
+      },
+
+      keywords: seo?.keywords || '',
+
+      alternates: {
+         canonical: seo?.canonicalURL || absoluteUrl(`/news/${params.slug}`),
+         languages: languagesMap,
+      },
+
+      other: {
+         'script:ld+json': [
+            JSON.stringify({
+               '@context': 'https://schema.org',
+               '@type': 'Article',
+               headline: attributes?.title,
+               description: attributes?.shortDescription,
+               image: attributes?.highlightImage?.data?.attributes?.url,
+               datePublished: attributes?.oldPublishedAt,
+               author: {
+                  '@type': 'Organization',
+                  name: 'UnivDatos',
+               },
+               publisher: {
+                  '@type': 'Organization',
+                  name: 'UnivDatos',
+                  logo: {
+                     '@type': 'ImageObject',
+                     url: absoluteUrl('/logo.png'),
+                  },
+               },
+               ...seo?.structuredData,
+            }),
+         ],
+      },
+   };
+
+   // Add extra scripts if defined
+   if (seo?.extraScripts) {
+      metadata.other = {
+         ...metadata.other,
+         ...seo.extraScripts,
+      };
+   }
+
+   return metadata;
+}
 
 const News = async (props: any) => {
    const { slug } = props?.params;
