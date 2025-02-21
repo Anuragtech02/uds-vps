@@ -7,6 +7,7 @@ import { SUPPORTED_LOCALES } from '@/utils/constants';
 import { Bricolage_Grotesque, Manrope } from 'next/font/google';
 import { GoogleTagManager } from '@next/third-parties/google';
 import { GoogleAnalytics } from '@next/third-parties/google';
+import BackToTop from '@/components/BackToTop';
 
 const bricolageGrotesque = Bricolage_Grotesque({
    subsets: ['latin'],
@@ -46,6 +47,7 @@ export default function RootLayout({
          <GoogleTagManager gtmId='GTM-5F572ZK' />
          <body>
             <Appwrapper>{children}</Appwrapper>
+            <BackToTop />
             <HandleRTL />
             <Script id='gtranslate-settings' defer strategy='afterInteractive'>
                {/* Russian(Ru), Arabic(AR), German(DE), French, Chinese(ZH-tw), Japanese(ja), Korean(KO), Vietnamese(Vi), Italian(It),Poland(pl) */}
