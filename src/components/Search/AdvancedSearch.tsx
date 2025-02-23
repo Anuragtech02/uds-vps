@@ -131,9 +131,9 @@ const AdvancedSearch: React.FC<AdvancedSearchProps> = ({ isOpen, onClose }) => {
                <h3 className='mb-2 text-sm font-semibold text-gray-500'>
                   Recent Searches
                </h3>
-               {recentSearches.map((search, index) => (
+               {recentSearches.map((search) => (
                   <div
-                     key={index}
+                     key={search}
                      className='flex items-center justify-between rounded px-3 py-2 hover:bg-gray-100'
                   >
                      <div
@@ -185,7 +185,7 @@ const AdvancedSearch: React.FC<AdvancedSearchProps> = ({ isOpen, onClose }) => {
                   </h3>
                   {results.map((result: SearchResult) => (
                      <div
-                        key={result.id}
+                        key={result.id ?? result.title ?? result.name}
                         className='cursor-pointer rounded px-3 py-2 hover:bg-gray-100'
                         onClick={() =>
                            handleSearch(result.title || result.name || '')

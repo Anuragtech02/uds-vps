@@ -13,7 +13,6 @@ import {
 import { LOGO_URL_DARK } from '@/utils/constants';
 import { absoluteUrl } from '@/utils/generic-methods';
 import { Metadata } from 'next';
-import Link from 'next/link';
 
 interface newsItem {
    id: number;

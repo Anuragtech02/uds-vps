@@ -217,7 +217,8 @@ const MobileReportBlock: React.FC<MobileReportBlockProps> = ({
                      onClick={() => setIsLicenseOpen(!isLicenseOpen)}
                      className='flex w-full items-center justify-between rounded-lg bg-blue-50 px-4 py-2'
                   >
-                     <span className='font-medium'>{rightSectionHeading}</span>
+                     {/* <span className='font-medium'>{rightSectionHeading}</span> */}
+                     <span className='font-medium'>License Options</span>
                      {isLicenseOpen ? (
                         <BiChevronUp className='h-5 w-5' />
                      ) : (
