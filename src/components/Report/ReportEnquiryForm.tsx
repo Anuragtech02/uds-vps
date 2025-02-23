@@ -1,5 +1,4 @@
-'use client';
-import { useState, FormEvent, useEffect, useRef } from 'react';
+import React, { useState, FormEvent, useEffect, useRef } from 'react';
 import CustomPhoneInput from '../CustomPhoneInput';
 import Button from '../commons/Button';
 import Script from 'next/script';
@@ -10,7 +9,7 @@ import { sendGAEvent } from '@next/third-parties/google';
 interface ReportEnquiryFormProps {
    reportId: number;
    reportTitle: string;
-   isOpen?: boolean; // Add this prop to track popup state
+   isOpen?: boolean;
 }
 
 declare global {
@@ -42,8 +41,9 @@ const ReportEnquiryForm: React.FC<ReportEnquiryFormProps> = ({
    const [submitSuccess, setSubmitSuccess] = useState(false);
    const [turnstileToken, setTurnstileToken] = useState<string>('');
    const widgetIdRef = useRef<string>('');
-   const turnstileContainerId = `turnstile-container-${reportId}`; // Unique container ID
+   const turnstileContainerId = `turnstile-container-${reportId}`;
 
+   // ... (keeping all the existing Turnstile-related functions)
    const cleanupTurnstile = () => {
       if (widgetIdRef.current && window.turnstile) {
          try {
@@ -58,7 +58,6 @@ const ReportEnquiryForm: React.FC<ReportEnquiryFormProps> = ({
    const initializeTurnstile = () => {
       cleanupTurnstile();
 
-      // Check if container exists
       const container = document.getElementById(turnstileContainerId);
       if (!container || !window.turnstile) return;
 
@@ -68,7 +67,6 @@ const ReportEnquiryForm: React.FC<ReportEnquiryFormProps> = ({
             {
                sitekey: process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || '',
                callback: function (token: string) {
-                  console.log('Challenge Success');
                   setTurnstileToken(token);
                   setSubmitError(null);
                },
@@ -89,18 +87,14 @@ const ReportEnquiryForm: React.FC<ReportEnquiryFormProps> = ({
       }
    };
 
-   // Handle initial load and reopens
    useEffect(() => {
       if (isOpen) {
-         // Reset states
          setTurnstileToken('');
          setSubmitError(null);
          setSubmitSuccess(false);
 
-         // Set up Turnstile callback
          window.onloadTurnstileCallback = initializeTurnstile;
 
-         // If Turnstile is already loaded, initialize immediately
          if (window.turnstile) {
             initializeTurnstile();
          }
@@ -108,12 +102,11 @@ const ReportEnquiryForm: React.FC<ReportEnquiryFormProps> = ({
 
       return () => {
          cleanupTurnstile();
-         // @ts-expect-error - window.onloadTurnstileCallback is defined
+         // @ts-ignore
          delete window.onloadTurnstileCallback;
       };
    }, [isOpen]);
 
-   // Rest of the component remains the same...
    const handleInputChange = (
       e: React.ChangeEvent<
          HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
@@ -127,6 +120,10 @@ const ReportEnquiryForm: React.FC<ReportEnquiryFormProps> = ({
 
    const handlePhoneChange = (phone: string) => {
       setPhone(phone);
+   };
+
+   const handleCloseSuccess = () => {
+      setSubmitSuccess(false);
    };
 
    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -163,7 +160,6 @@ const ReportEnquiryForm: React.FC<ReportEnquiryFormProps> = ({
          });
 
          setSubmitSuccess(true);
-         // Reset form fields
          setFormFields({
             fullName: '',
             businessEmail: '',
@@ -172,10 +168,14 @@ const ReportEnquiryForm: React.FC<ReportEnquiryFormProps> = ({
             country: '',
          });
          setPhone('');
-         sendGAEvent('event', 'form_initiation', {
-            form_category: 'EnquiryForm',
-            form_action: 'Submit',
-            form_label: reportTitle,
+         // sendGAEvent('event', 'form_initiation', {
+         //    form_category: 'EnquiryForm',
+         //    form_action: 'Submit',
+         //    form_label: reportTitle,
+         // });
+         sendGAEvent({
+            event: 'form_submission',
+            value: reportTitle,
          });
       } catch (error) {
          setSubmitError('An error occurred. Please try again.');
@@ -191,13 +191,45 @@ const ReportEnquiryForm: React.FC<ReportEnquiryFormProps> = ({
 
    return (
       <>
-         <Script
-            src='https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onloadTurnstileCallback'
-            async
-            defer
-         />
+         <div className='relative max-h-[80vh] overflow-y-auto pt-6 font-medium'>
+            {submitSuccess && (
+               <div className='fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50'>
+                  <div className='relative w-full max-w-md rounded-lg bg-white p-6 shadow-xl'>
+                     <button
+                        onClick={handleCloseSuccess}
+                        className='absolute right-3 top-3 rounded-full p-2 transition-colors hover:bg-gray-100'
+                     >
+                        X
+                     </button>
 
-         <div className='max-h-[80vh] overflow-y-auto pt-6 font-medium'>
+                     <div className='text-center'>
+                        <div className='mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-green-100'>
+                           <svg
+                              className='h-6 w-6 text-green-500'
+                              fill='none'
+                              stroke='currentColor'
+                              viewBox='0 0 24 24'
+                           >
+                              <path
+                                 strokeLinecap='round'
+                                 strokeLinejoin='round'
+                                 strokeWidth='2'
+                                 d='M5 13l4 4L19 7'
+                              />
+                           </svg>
+                        </div>
+                        <h3 className='mb-2 text-lg font-semibold text-gray-900'>
+                           Success!
+                        </h3>
+                        <p className='text-gray-600'>
+                           Thank you for your enquiry. We&apos;ll get back to
+                           you soon!
+                        </p>
+                     </div>
+                  </div>
+               </div>
+            )}
+
             <p>
                Requesting For: <strong>{reportTitle}</strong>
             </p>
@@ -206,7 +238,7 @@ const ReportEnquiryForm: React.FC<ReportEnquiryFormProps> = ({
                onSubmit={handleSubmit}
                className='relative mt-2 space-y-4 text-sm md:space-y-4'
             >
-               {/* New 3-column layout for large screens */}
+               {/* Form fields */}
                <div className='grid grid-cols-1 gap-4 lg:grid-cols-3'>
                   <div className='space-y-1'>
                      <label htmlFor='name'>Full Name*</label>
@@ -296,12 +328,6 @@ const ReportEnquiryForm: React.FC<ReportEnquiryFormProps> = ({
                </div>
 
                {submitError && <p className='text-red-500'>{submitError}</p>}
-               {submitSuccess && (
-                  <p className='text-green-500'>
-                     Thank you for your enquiry. We&apos;ll get back to you
-                     soon!
-                  </p>
-               )}
 
                <div className='w-full'>
                   <Button
@@ -314,6 +340,11 @@ const ReportEnquiryForm: React.FC<ReportEnquiryFormProps> = ({
                </div>
             </form>
          </div>
+         <Script
+            src='https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onloadTurnstileCallback'
+            async
+            defer
+         />
       </>
    );
 };
