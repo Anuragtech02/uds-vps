@@ -1,16 +1,11 @@
-const baseURL = 'https://web-server-india.univdatos.com/api';
-const timeout = 50000;
+const baseURL = process.env.API_URL || 'http://127.0.0.1:1337';
+const timeout = 10000;
 
 const fetchClient = async (url: string, options: any = {}) => {
    const fullUrl = `${baseURL}${url}`;
 
    const defaultHeaders = {
       'Content-Type': 'application/json',
-      'User-Agent':
-         'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-      Accept:
-         'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-      'Accept-Language': 'en-US,en;q=0.5',
    };
 
    const config = {

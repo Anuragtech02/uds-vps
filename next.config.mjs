@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-   staticPageGenerationTimeout: 120,
+   output: 'standalone',
    images: {
       remotePatterns: [
          {
@@ -14,6 +14,7 @@ const nextConfig = {
             pathname: '/**',
          },
       ],
+      unoptimized: process.env.NODE_ENV === 'production',
    },
    async redirects() {
       return [
