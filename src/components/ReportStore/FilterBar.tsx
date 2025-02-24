@@ -197,7 +197,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
                      Industry <BiChevronDown className='h-5 w-5' />
                   </button>
                   {industryDropdown && (
-                     <div className='absolute top-full mt-2 max-h-[60vh] w-64 overflow-y-auto rounded-lg bg-white p-4 shadow-lg'>
+                     <div className='absolute top-full z-[4] mt-2 max-h-[60vh] w-64 overflow-y-auto rounded-lg bg-white p-4 shadow-lg'>
                         {industries.map(({ attributes: { slug, name } }) => (
                            <div
                               key={slug}
@@ -226,7 +226,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
 
                {/* Geography Filter */}
                {showGeographyFilter && (
-                  <div className='relative' ref={geographyRef}>
+                  <div className='relative z-[2]' ref={geographyRef}>
                      <button
                         onClick={() => {
                            setGeographyDropdown(!geographyDropdown);
