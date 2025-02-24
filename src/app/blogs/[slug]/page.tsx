@@ -172,7 +172,7 @@ const Blog = async (data: any) => {
          <div className='mt-0' />
          <Header blog={blog} />
          <div className='container'>
-            <div className='flex flex-col gap-6 py-12 md:gap-10 md:py-20 lg:flex-row'>
+            <div className='flex flex-col gap-6 py-12 md:gap-10 md:py-4 lg:flex-row'>
                <div className='flex-[0.7]'>
                   <BlogBody blog={blog} />
                </div>
@@ -183,6 +183,7 @@ const Blog = async (data: any) => {
                   <BlogSidebar />
                </div>
             </div>
+            <hr className='border-t border-gray-200' />
             {/* Client-side Related Blogs Section */}
             {industries?.data?.length > 0 && (
                <RelatedBlogs

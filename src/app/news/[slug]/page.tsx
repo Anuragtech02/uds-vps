@@ -173,7 +173,7 @@ const News = async (props: any) => {
          <div className='mt-0' />
          <Header newsArticle={newsArticleData} />
          <div className='container'>
-            <div className='flex flex-col gap-6 py-12 md:gap-10 md:py-20 lg:flex-row'>
+            <div className='flex flex-col gap-6 py-12 md:gap-10 md:py-4 lg:flex-row'>
                <div className='flex-[0.7]'>
                   <NewsBody newsArticle={newsArticleData} />
                </div>
@@ -184,6 +184,7 @@ const News = async (props: any) => {
                   <NewsSidebar />
                </div>
             </div>
+            <hr className='border-t border-gray-200' />
             {/* Client-side Related News Section */}
             {industries?.data?.length > 0 && (
                <RelatedNews
