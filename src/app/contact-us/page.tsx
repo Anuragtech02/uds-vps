@@ -2,6 +2,23 @@ export const runtime = 'edge';
 import ContactDetails from '@/components/Contact/ContactDetails';
 import ContactForm from '@/components/Contact/ContactForm';
 import { getContagePageData } from '@/utils/api/services';
+import { Metadata } from 'next';
+
+const metadata = {
+   title: 'Contact Us | UnivDatos',
+   description:
+      'Get in touch with UnivDatos. Contact us for inquiries, support, or collaboration opportunities.',
+   openGraph: {
+      title: 'Contact Us | UnivDatos',
+      description:
+         'Get in touch with UnivDatos. Contact us for inquiries, support, or collaboration opportunities.',
+      type: 'website',
+   },
+};
+
+export async function generateMetadata(): Promise<Metadata> {
+   return metadata;
+}
 
 const Contact = async () => {
    let contactPageData: Awaited<ReturnType<typeof getContagePageData>>;
