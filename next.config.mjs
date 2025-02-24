@@ -15,6 +15,23 @@ const nextConfig = {
          },
       ],
    },
+   webpack: (config, { isServer }) => {
+      if (isServer) {
+         // Add default headers to all requests
+         const originalEntry = config.entry;
+         config.entry = async () => {
+            const entries = await originalEntry();
+            if (entries['pages/_app']) {
+               entries['pages/_app'] = [
+                  './config/request-defaults.js',
+                  ...entries['pages/_app'],
+               ];
+            }
+            return entries;
+         };
+      }
+      return config;
+   },
    async redirects() {
       return [
          {
