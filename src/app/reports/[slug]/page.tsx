@@ -8,8 +8,6 @@ import { absoluteUrl } from '@/utils/generic-methods';
 import { Metadata } from 'next';
 import { notFound, redirect } from 'next/navigation';
 
-export const dynamic = 'force-dynamic'; // Forces dynamic rendering, bypassing all static optimizations
-
 export async function generateMetadata({
    params,
 }: {

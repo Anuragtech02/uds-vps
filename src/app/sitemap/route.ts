@@ -1,9 +1,3 @@
-// app/sitemap/route.ts
-import { headers } from 'next/headers';
-
-// export const runtime = 'edge'
-export const dynamic = 'force-dynamic';
-
 export async function GET() {
    try {
       // Fetch the sitemap from your Strapi instance
