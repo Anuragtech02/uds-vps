@@ -23,14 +23,14 @@ const nextConfig = {
       ],
       unoptimized: process.env.NODE_ENV === 'production',
    },
-   webpack: (config, { dev, isServer }) => {
+   webpack: async (config, { dev, isServer }) => {
       // Keep the original configuration
       const originalConfig = { ...config };
 
       // Only apply production optimizations
       if (!dev) {
          // Add Compression Plugin for JS and CSS if not already configured
-         const CompressionPlugin = require('compression-webpack-plugin');
+         const CompressionPlugin = await import('compression-webpack-plugin');
          originalConfig.plugins.push(
             new CompressionPlugin({
                test: /\.(js|css|html|svg)$/,
