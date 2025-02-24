@@ -17,13 +17,13 @@ export async function generateMetadata({
       slug: string;
    };
 }): Promise<Metadata> {
-   const newsDataList = await getBlogDetails(params.slug);
+   const newsDataList = await getNewsBySlug(params.slug);
    const newsPage = newsDataList.data?.length > 0 ? newsDataList.data[0] : null;
 
    if (!newsPage) {
       return {
-         title: 'Blog Not Found',
-         description: 'The requested blog could not be found.',
+         title: 'News article Not Found',
+         description: 'The requested news article could not be found.',
       };
    }
 
