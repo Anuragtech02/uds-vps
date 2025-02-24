@@ -70,7 +70,7 @@ const RelatedBlogs: React.FC<RelatedBlogsProps> = ({
 
    if (isLoading) {
       return (
-         <div className='mt-12'>
+         <div className='mt-4'>
             <h2 className='mb-6 text-2xl font-semibold text-gray-900'>
                Related Articles
             </h2>
@@ -97,7 +97,7 @@ const RelatedBlogs: React.FC<RelatedBlogsProps> = ({
    }
 
    return (
-      <div className='mt-12 pb-4'>
+      <div className='mt-4 pb-4'>
          <h2 className='mb-6 text-2xl font-semibold text-gray-900'>
             Related Blogs
          </h2>

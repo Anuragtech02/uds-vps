@@ -128,7 +128,7 @@ const Blog = async ({
    const geographyFilters =
       searchParams.geographies?.split(',').filter(Boolean) || [];
    const currentPage = parseInt(searchParams.page || '1', 10);
-   const sortBy = searchParams.sortBy || 'relevance';
+   const sortBy = searchParams.sortBy || 'oldPublishedAt:desc';
 
    const filters = industryFilters.concat(geographyFilters);
    const filtersQuery = filters.reduce(

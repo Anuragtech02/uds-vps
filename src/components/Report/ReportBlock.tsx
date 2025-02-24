@@ -376,7 +376,8 @@ const ReportBlock: React.FC<ReportBlockProps> = ({ data }) => {
                </div>
                <div className='w-full rounded-md border border-s-400 bg-white px-4 py-6 pt-4'>
                   <p className='text-center text-lg font-semibold'>
-                     {reportData.rightSectionHeading}
+                     {/* This is {reportData.rightSectionHeading} */}
+                     License Options
                   </p>
                   <CollapsibleLicenseOptions
                      variants={variants}
@@ -390,19 +391,22 @@ const ReportBlock: React.FC<ReportBlockProps> = ({ data }) => {
                      variant='secondary'
                      onClick={handleBuyNow}
                   >
-                     {reportData.leftSectionPrimaryCTAButton.title?.replace(
+                     {/* {reportData.leftSectionPrimaryCTAButton.title?.replace(
                         'Purchase',
                         'Buy',
-                     )}
+                     )} */}
+                     Buy Now
                   </Button>
                </div>
                <LocalizedLink
-                  href={getCTALink(
-                     reportData.leftSectionSecondaryCTAButton.link,
-                  )}
+                  // href={getCTALink(
+                  //    reportData.leftSectionSecondaryCTAButton.link,
+                  // )}
+                  href={getCTALink('?popup=report-enquiry')}
                >
                   <Button className='w-full py-3' variant='light'>
-                     {reportData.leftSectionSecondaryCTAButton.title}
+                     {/* {reportData.leftSectionSecondaryCTAButton.title} */}
+                     Request For Customization
                   </Button>
                </LocalizedLink>
             </div>

@@ -1,33 +1,5 @@
 import FAQItem from './ReportFaqItem';
 
-const sampleFAQs = [
-   {
-      question: 'What is the purpose of the report?',
-      answer:
-         'The purpose of the report is to provide a comprehensive analysis of the market trends, drivers, challenges, and opportunities in the industry.',
-   },
-   {
-      question: 'What is the purpose of the report?',
-      answer:
-         'The purpose of the report is to provide a comprehensive analysis of the market trends, drivers, challenges, and opportunities in the industry.',
-   },
-   {
-      question: 'What is the purpose of the report?',
-      answer:
-         'The purpose of the report is to provide a comprehensive analysis of the market trends, drivers, challenges, and opportunities in the industry.',
-   },
-   {
-      question: 'What is the purpose of the report?',
-      answer:
-         'The purpose of the report is to provide a comprehensive analysis of the market trends, drivers, challenges, and opportunities in the industry.',
-   },
-   {
-      question: 'What is the purpose of the report?',
-      answer:
-         'The purpose of the report is to provide a comprehensive analysis of the market trends, drivers, challenges, and opportunities in the industry.',
-   },
-];
-
 const ReportFAQs = ({
    data,
 }: {
