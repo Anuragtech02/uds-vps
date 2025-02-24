@@ -21,7 +21,10 @@ const fetchClient = async (url: string, options: any = {}) => {
 
    // Timeout promise
    const timeoutPromise = new Promise((_, reject) =>
-      setTimeout(() => reject(new Error('Request timed out')), timeout),
+      setTimeout(
+         () => reject(new Error('Request timed out custom hai ye')),
+         timeout,
+      ),
    );
 
    // Fetch request promise
