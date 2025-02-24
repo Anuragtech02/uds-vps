@@ -176,7 +176,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
    }
 
    return (
-      <div className='top-44 z-30 mt-10 rounded-lg bg-white py-4 shadow-sm sm:sticky'>
+      <div className='relative z-30 mt-10 rounded-lg bg-white py-4 shadow-sm sm:sticky sm:top-44'>
          <div className='container flex flex-col items-start gap-6 lg:flex-row lg:items-center'>
             {/* Added Filter Label */}
             <div className='flex items-center gap-2 text-gray-600'>
