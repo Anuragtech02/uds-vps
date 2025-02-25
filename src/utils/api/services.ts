@@ -499,23 +499,21 @@ export const getRootConfig = async () => {
  */
 export const getMostViewedReports = cache(async (limit = 50) => {
    try {
-      const API_URL = process.env.NEXT_PUBLIC_API_URL || '';
-      const API_TOKEN = process.env.API_TOKEN || '';
+      // First try to get reports with view counts (if available)
+      // Adjust fields to only get what you need for static generation
+      const populateQuery = buildPopulateQuery(['slug']);
+      const paginationQuery = getPaginationQuery(1, limit);
 
-      // First try to get reports with view counts
-      // This assumes you have a viewCount field or similar
-      const queryParams = new URLSearchParams({
-         'pagination[limit]': limit.toString(),
-         sort: 'viewCount:desc,oldPublishedAt:desc', // Sort by views and then by date
-         'fields[0]': 'slug', // Only request the slug field to minimize payload
-      });
+      // Try to sort by viewCount if it exists (fallback to publication date)
+      let sortQuery = '&sort[0]=oldPublishedAt:desc';
 
-      const response = await fetch(
-         `${API_URL}/reports?${queryParams.toString()}`,
+      // You can add viewCount if it exists in your DB schema
+      // sortQuery = '&sort[0]=viewCount:desc&sort[1]=oldPublishedAt:desc';
+
+      const response = await fetchClient(
+         '/reports?' + paginationQuery + '&' + populateQuery + sortQuery,
          {
-            headers: {
-               Authorization: `Bearer ${API_TOKEN}`,
-            },
+            headers: getAuthHeaders(),
             next: {
                revalidate: 86400, // Revalidate daily
                tags: ['popular-reports'],
@@ -523,89 +521,33 @@ export const getMostViewedReports = cache(async (limit = 50) => {
          },
       );
 
-      if (!response.ok) {
-         throw new Error(`API error: ${response.status}`);
-      }
+      return response;
+   } catch (error) {
+      console.error('Error fetching most viewed reports:', error);
 
-      const data = await response.json();
+      // Fallback to getting the latest reports if the view-based query fails
+      try {
+         const populateQuery = buildPopulateQuery(['slug']);
+         const paginationQuery = getPaginationQuery(1, limit);
+         const sortQuery = '&sort[0]=oldPublishedAt:desc';
 
-      // If we don't get enough reports, fall back to recently published
-      if (data.data.length < limit) {
-         const fallbackParams = new URLSearchParams({
-            'pagination[limit]': (limit - data.data.length).toString(),
-            sort: 'oldPublishedAt:desc', // Sort by publication date
-            'fields[0]': 'slug', // Only request the slug field
-         });
-
-         const fallbackResponse = await fetch(
-            `${API_URL}/reports?${fallbackParams.toString()}`,
+         const response = await fetchClient(
+            '/reports?' + paginationQuery + '&' + populateQuery + sortQuery,
             {
-               headers: {
-                  Authorization: `Bearer ${API_TOKEN}`,
-               },
+               headers: getAuthHeaders(),
                next: {
                   revalidate: 86400, // Revalidate daily
                },
             },
          );
 
-         if (!fallbackResponse.ok) {
-            return data; // Return what we have if fallback fails
-         }
-
-         const fallbackData = await fallbackResponse.json();
-
-         // Combine the two sets, avoiding duplicates
-         const existingSlugs = new Set(
-            data.data.map((report: any) => report.attributes.slug),
-         );
-         const uniqueFallbackData = fallbackData.data.filter(
-            (report: any) => !existingSlugs.has(report.attributes.slug),
-         );
-
-         // Merge the datasets
-         data.data = [...data.data, ...uniqueFallbackData];
-      }
-
-      return data;
-   } catch (error) {
-      console.error('Error fetching popular reports:', error);
-
-      // If the popular reports endpoint fails, fall back to getting the latest reports
-      try {
-         const API_URL = process.env.NEXT_PUBLIC_API_URL || '';
-         const API_TOKEN = process.env.API_TOKEN || '';
-
-         const queryParams = new URLSearchParams({
-            'pagination[limit]': limit.toString(),
-            sort: 'oldPublishedAt:desc',
-            'fields[0]': 'slug',
-         });
-
-         const response = await fetch(
-            `${API_URL}/reports?${queryParams.toString()}`,
-            {
-               headers: {
-                  Authorization: `Bearer ${API_TOKEN}`,
-               },
-               next: {
-                  revalidate: 86400,
-               },
-            },
-         );
-
-         if (!response.ok) {
-            throw new Error(`API error in fallback: ${response.status}`);
-         }
-
-         return await response.json();
+         return response;
       } catch (fallbackError) {
          console.error('Fallback error fetching reports:', fallbackError);
          return { data: [] }; // Return empty data if all attempts fail
       }
    }
 });
-
 /**
  * Fetches a report by its slug with proper caching
  * @param {string} slug - The report slug
