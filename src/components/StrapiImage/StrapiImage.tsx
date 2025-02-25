@@ -96,9 +96,12 @@ const StrapiImage: React.FC<StrapiImageProps> = ({
         }
       : {};
 
-   function replaceWithCloudfrontURL(imageUrl: string){
+   function replaceWithCloudfrontURL(imageUrl: string) {
       const cloudfrontURL = 'd21aa2ghywi6oj.cloudfront.net';
-      return imageUrl.replace('udsweb.s3.ap-south-1.amazonaws.com', cloudfrontURL);
+      return imageUrl.replace(
+         'udsweb.s3.ap-south-1.amazonaws.com',
+         cloudfrontURL,
+      );
    }
 
    return (
@@ -109,7 +112,6 @@ const StrapiImage: React.FC<StrapiImageProps> = ({
             width={Number(propWidth) || imageWidth}
             height={Number(propHeight) || imageHeight}
             style={imageStyle}
-            unoptimized // Skip Next.js image optimization
             priority={priority}
             {...props}
          />
