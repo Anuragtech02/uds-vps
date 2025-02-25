@@ -14,7 +14,7 @@ RUN apk add --no-cache libc6-compat python3 make g++
 COPY package.json package-lock.json* ./
 
 # Install dependencies
-RUN npm ci --only=production
+RUN npm ci
 # If using Yarn, replace with:
 # COPY package.json yarn.lock ./
 # RUN yarn install --frozen-lockfile --production
