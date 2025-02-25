@@ -41,13 +41,13 @@ const nextConfig = {
       ],
       // Change this to false to use Next.js image optimization
       // Only use unoptimized if your CloudFront is already optimizing images
-      unoptimized: false,
+      unoptimized: true,
       // Configure image device sizes for responsive images
-      deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048],
-      // Configure image size to generate
-      imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
-      // Set image format preferences
-      formats: ['image/webp', 'image/avif'],
+      // deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048],
+      // // Configure image size to generate
+      // imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+      // // Set image format preferences
+      // formats: ['image/webp', 'image/avif'],
       // Increase cache duration
       minimumCacheTTL: 60 * 60 * 24 * 30, // 30 days
    },
