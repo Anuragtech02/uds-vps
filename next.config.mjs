@@ -15,7 +15,7 @@ const nextConfig = {
       // Optimize memory usage
       memoryBasedWorkersCount: true,
       // Pre-fetch capabilities to improve performance
-      typedRoutes: true,
+      // typedRoutes: true,
       // More efficient chunking
       optimizePackageImports: ['react', 'react-dom', 'lodash'],
    },
