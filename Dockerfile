@@ -14,7 +14,7 @@ RUN apk add --no-cache libc6-compat python3 make g++
 COPY package.json package-lock.json* ./
 
 # Install dependencies
-RUN npm ci
+RUN npm ci --force --include=dev
 
 # ---- Builder ----
 FROM base AS builder
@@ -29,12 +29,9 @@ RUN npm install --save-dev eslint @types/js-cookie
 # Set build-time environment variables for optimization
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV NODE_ENV=production
-# Disable TypeScript checking and ESLint for production builds
-ENV NEXT_TYPESCRIPT_CHECK=0
-ENV NEXT_LINT=0
 
 # Build the application
-RUN npm run build
+RUN NODE_ENV=production NEXT_TYPESCRIPT_CHECK=0 NEXT_LINT=0 npm run build -- --no-lint
 
 # ---- Production ----
 FROM base AS runner
