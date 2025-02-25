@@ -26,6 +26,8 @@ COPY --from=deps /app/node_modules ./node_modules
 # Copy app source
 COPY . .
 
+RUN npm install --save-dev eslint @types/js-cookie
+
 # Set build-time environment variables for optimization
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV NODE_ENV=production
