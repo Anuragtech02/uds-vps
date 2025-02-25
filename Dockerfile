@@ -1,63 +1,48 @@
-# ---- Base Node ----
+# Next.js Dockerfile
 FROM node:18-alpine AS base
-WORKDIR /app
-# Set environment variables
-ENV NODE_ENV=production
-ENV NEXT_TELEMETRY_DISABLED=1
 
-# ---- Dependencies ----
+# Install dependencies only when needed
 FROM base AS deps
-# Install dependencies needed for node-gyp and build
-RUN apk add --no-cache libc6-compat python3 make g++
+WORKDIR /app
 
 # Copy package files
 COPY package.json package-lock.json* ./
+RUN npm ci --force
 
-# Install dependencies
-RUN npm ci --force --include=dev
-
-# ---- Builder ----
+# Rebuild the source code only when needed
 FROM base AS builder
-# Copy dependencies
+WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
-# Copy app source
 COPY . .
 
-# Install development dependencies needed for build
-RUN npm install --save-dev eslint @types/js-cookie
+RUN npm run build
 
-# Set build-time environment variables for optimization
-ENV NEXT_TELEMETRY_DISABLED=1
-ENV NODE_ENV=production
-
-# Build the application
-RUN NODE_ENV=production NEXT_TYPESCRIPT_CHECK=0 NEXT_LINT=0 npm run build -- --no-lint
-
-# ---- Production ----
+# Production image, copy all the files and run next
 FROM base AS runner
 WORKDIR /app
 
-# Create a non-root user to run the app and own app files
+ENV NODE_ENV production
+
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
-USER nextjs
 
-# Set runtime environment variables
-ENV NODE_ENV=production
-ENV NEXT_TELEMETRY_DISABLED=1
-ENV PORT=3000
+# Copy necessary files
+COPY --from=builder /app/public ./public
+COPY --from=builder /app/.env ./.env
 
-# Copy only necessary files for production
-COPY --from=builder --chown=nextjs:nodejs /app/public ./public
-# Leverage output standalone to reduce image size
+# Set the correct permission for prerender cache
+RUN mkdir .next
+RUN chown nextjs:nodejs .next
+
+# Automatically leverage output traces to reduce image size
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
-# Create and set permissions for the cache directory
-RUN mkdir -p .next/cache && chown -R nextjs:nodejs .next/cache
+USER nextjs
 
-# Expose the port the app will run on
 EXPOSE 3000
 
-# Command to run the application
+ENV PORT 3000
+ENV HOSTNAME "0.0.0.0"
+
 CMD ["node", "server.js"]
