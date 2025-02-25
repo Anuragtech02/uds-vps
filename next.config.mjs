@@ -21,6 +21,11 @@ const nextConfig = {
             hostname: 'univdatos-cms.s3.ap-south-1.amazonaws.com',
             pathname: '/**',
          },
+         {
+            protocol: 'https',
+            hostname: 'd21aa2ghywi6oj.cloudfront.net',
+            pathname: '/**',
+         },
       ],
       unoptimized: process.env.NODE_ENV === 'production',
    },

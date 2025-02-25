@@ -45,6 +45,11 @@ export default function RootLayout({
          className={`${manrope.variable} ${bricolageGrotesque.variable} `}
       >
          <GoogleTagManager gtmId='GTM-5F572ZK' />
+         <link rel='preconnect' href='https://d21aa2ghywi6oj.cloudfront.net' />
+         <link
+            rel='dns-prefetch'
+            href='https://d21aa2ghywi6oj.cloudfront.net'
+         />
          <body>
             <Appwrapper>{children}</Appwrapper>
             <BackToTop />

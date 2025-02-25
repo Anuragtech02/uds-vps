@@ -3,6 +3,7 @@ import { cookies } from 'next/headers';
 import API from './config';
 import { buildPopulateQuery } from '../generic-methods';
 import fetchClient from './config';
+import { cache } from 'react';
 
 function getAuthHeaders() {
    if (process.env.API_TOKEN) {
@@ -61,74 +62,75 @@ export const getHomePage = async () => {
    }
 };
 
-export const getReportsPageBySlug = async (slug: string) => {
-   try {
-      const populateQuery = buildPopulateQuery([
-         'industry.name',
-         'geography.name',
-         'heroSectionPrimaryCTA.link',
-         'heroSectionSecondaryCTA.link',
-         'tableOfContent.title',
-         'faqList.title',
-         'ctaBanner.ctaButton.link',
-         'leftSectionPrimaryCTAButton',
-         'leftSectionSecondaryCTAButton',
-         'highlightImage.url',
-         'variants.price.amount',
-      ]);
-      const filterQuery = `?filters[slug][$eq]=${slug}`;
-      const response = await fetchClient(
-         '/reports' + filterQuery + '&' + populateQuery,
-         {
+// export const getReportsPageBySlug = async (slug: string) => {
+//    try {
+//       const populateQuery = buildPopulateQuery([
+//          'industry.name',
+//          'geography.name',
+//          'heroSectionPrimaryCTA.link',
+//          'heroSectionSecondaryCTA.link',
+//          'tableOfContent.title',
+//          'faqList.title',
+//          'ctaBanner.ctaButton.link',
+//          'leftSectionPrimaryCTAButton',
+//          'leftSectionSecondaryCTAButton',
+//          'highlightImage.url',
+//          'variants.price.amount',
+//       ]);
+//       const filterQuery = `?filters[slug][$eq]=${slug}`;
+//       const response = await fetchClient(
+//          '/reports' + filterQuery + '&' + populateQuery,
+//          {
+//             headers: getAuthHeaders(),
+//          },
+//       );
+//       return await response;
+//    } catch (error) {
+//       console.error('Error fetching products:', error);
+//       throw error;
+//    }
+// };
+
+export const getAllReports = cache(
+   async (page = 1, limit = 10, filters = {}, sortBy: string = 'relevance') => {
+      try {
+         let sort = '';
+         switch (sortBy) {
+            case 'oldPublishedAt:desc':
+               sort = 'oldPublishedAt:desc';
+               break;
+            case 'oldPublishedAt:asc':
+               sort = 'oldPublishedAt:asc';
+               break;
+            default:
+               sort = 'relevance';
+         }
+         const populateQuery = buildPopulateQuery([
+            'industry.name',
+            'geography.name',
+            'highlightImage.url',
+         ]);
+         const paginationQuery = getPaginationQuery(page, limit);
+         const filterQuery = getFilterQuery(filters);
+         const sortQuery = sort !== 'relevance' ? `sort[0]=${sort}` : '';
+         const query = [populateQuery, paginationQuery, filterQuery, sortQuery]
+            .filter(Boolean)
+            .join('&');
+
+         const response = await fetchClient('/reports?' + query, {
             headers: getAuthHeaders(),
-         },
-      );
-      return await response;
-   } catch (error) {
-      console.error('Error fetching products:', error);
-      throw error;
-   }
-};
-
-export const getAllReports = async (
-   page = 1,
-   limit = 10,
-   filters = {},
-   sortBy: string = 'relevance',
-) => {
-   try {
-      let sort = '';
-      switch (sortBy) {
-         case 'oldPublishedAt:desc':
-            sort = 'oldPublishedAt:desc';
-            break;
-         case 'oldPublishedAt:asc':
-            sort = 'oldPublishedAt:asc';
-            break;
-         default:
-            sort = 'relevance';
+            next: {
+               revalidate: 3600, // Revalidate cached data hourly
+               tags: ['reports'], // Tag for manual revalidation
+            },
+         });
+         return await response;
+      } catch (error) {
+         console.error('Error fetching products:', error);
+         throw error;
       }
-      const populateQuery = buildPopulateQuery([
-         'industry.name',
-         'geography.name',
-         'highlightImage.url',
-      ]);
-      const paginationQuery = getPaginationQuery(page, limit);
-      const filterQuery = getFilterQuery(filters);
-      const sortQuery = sort !== 'relevance' ? `sort[0]=${sort}` : '';
-      const query = [populateQuery, paginationQuery, filterQuery, sortQuery]
-         .filter(Boolean)
-         .join('&');
-
-      const response = await fetchClient('/reports?' + query, {
-         headers: getAuthHeaders(),
-      });
-      return await response;
-   } catch (error) {
-      console.error('Error fetching products:', error);
-      throw error;
-   }
-};
+   },
+);
 
 export const getNewsListingPage = async (
    page = 1,
@@ -206,31 +208,39 @@ export const getBlogsListingPage = async (
    }
 };
 
-export const getIndustries = async (page = 1, limit = 100) => {
+export const getIndustries = cache(async (page = 1, limit = 100) => {
    try {
       const paginationQuery = getPaginationQuery(page, limit);
       const response = await fetchClient('/industries?' + paginationQuery, {
          headers: getAuthHeaders(),
+         next: {
+            revalidate: 86400, // Revalidate daily (industries change less frequently)
+            tags: ['industries'],
+         },
       });
       return await response;
    } catch (error) {
       console.error('Error fetching Industries:', error);
       throw error;
    }
-};
+});
 
-export const getGeographies = async (page = 1, limit = 100) => {
+export const getGeographies = cache(async (page = 1, limit = 100) => {
    try {
       const paginationQuery = getPaginationQuery(page, limit);
       const response = await fetchClient('/geographies?' + paginationQuery, {
          headers: getAuthHeaders(),
+         next: {
+            revalidate: 86400, // Revalidate daily
+            tags: ['geographies'],
+         },
       });
       return await response;
    } catch (error) {
       console.error('Error fetching Geographies:', error);
       throw error;
    }
-};
+});
 
 export const getAboutPage = async () => {
    try {
@@ -472,12 +482,166 @@ export const getDisclaimer = async () => {
 
 export const getRootConfig = async () => {
    try {
-     const response = await fetchClient('/root-config', {
-       headers: getAuthHeaders(),
-     });
-     return await response;
+      const response = await fetchClient('/root-config', {
+         headers: getAuthHeaders(),
+      });
+      return await response;
    } catch (error) {
-     console.error('Error fetching root config:', error);
-     throw error;
+      console.error('Error fetching root config:', error);
+      throw error;
    }
- };
+};
+
+/**
+ * Fetches the most viewed or recently published reports to pre-render
+ * @param {number} limit - Number of reports to fetch
+ * @returns {Promise<Object>} - Object containing the report data
+ */
+export const getMostViewedReports = cache(async (limit = 50) => {
+   try {
+      const API_URL = process.env.NEXT_PUBLIC_API_URL || '';
+      const API_TOKEN = process.env.API_TOKEN || '';
+
+      // First try to get reports with view counts
+      // This assumes you have a viewCount field or similar
+      const queryParams = new URLSearchParams({
+         'pagination[limit]': limit.toString(),
+         sort: 'viewCount:desc,oldPublishedAt:desc', // Sort by views and then by date
+         'fields[0]': 'slug', // Only request the slug field to minimize payload
+      });
+
+      const response = await fetch(
+         `${API_URL}/reports?${queryParams.toString()}`,
+         {
+            headers: {
+               Authorization: `Bearer ${API_TOKEN}`,
+            },
+            next: {
+               revalidate: 86400, // Revalidate daily
+               tags: ['popular-reports'],
+            },
+         },
+      );
+
+      if (!response.ok) {
+         throw new Error(`API error: ${response.status}`);
+      }
+
+      const data = await response.json();
+
+      // If we don't get enough reports, fall back to recently published
+      if (data.data.length < limit) {
+         const fallbackParams = new URLSearchParams({
+            'pagination[limit]': (limit - data.data.length).toString(),
+            sort: 'oldPublishedAt:desc', // Sort by publication date
+            'fields[0]': 'slug', // Only request the slug field
+         });
+
+         const fallbackResponse = await fetch(
+            `${API_URL}/reports?${fallbackParams.toString()}`,
+            {
+               headers: {
+                  Authorization: `Bearer ${API_TOKEN}`,
+               },
+               next: {
+                  revalidate: 86400, // Revalidate daily
+               },
+            },
+         );
+
+         if (!fallbackResponse.ok) {
+            return data; // Return what we have if fallback fails
+         }
+
+         const fallbackData = await fallbackResponse.json();
+
+         // Combine the two sets, avoiding duplicates
+         const existingSlugs = new Set(
+            data.data.map((report: any) => report.attributes.slug),
+         );
+         const uniqueFallbackData = fallbackData.data.filter(
+            (report: any) => !existingSlugs.has(report.attributes.slug),
+         );
+
+         // Merge the datasets
+         data.data = [...data.data, ...uniqueFallbackData];
+      }
+
+      return data;
+   } catch (error) {
+      console.error('Error fetching popular reports:', error);
+
+      // If the popular reports endpoint fails, fall back to getting the latest reports
+      try {
+         const API_URL = process.env.NEXT_PUBLIC_API_URL || '';
+         const API_TOKEN = process.env.API_TOKEN || '';
+
+         const queryParams = new URLSearchParams({
+            'pagination[limit]': limit.toString(),
+            sort: 'oldPublishedAt:desc',
+            'fields[0]': 'slug',
+         });
+
+         const response = await fetch(
+            `${API_URL}/reports?${queryParams.toString()}`,
+            {
+               headers: {
+                  Authorization: `Bearer ${API_TOKEN}`,
+               },
+               next: {
+                  revalidate: 86400,
+               },
+            },
+         );
+
+         if (!response.ok) {
+            throw new Error(`API error in fallback: ${response.status}`);
+         }
+
+         return await response.json();
+      } catch (fallbackError) {
+         console.error('Fallback error fetching reports:', fallbackError);
+         return { data: [] }; // Return empty data if all attempts fail
+      }
+   }
+});
+
+/**
+ * Fetches a report by its slug with proper caching
+ * @param {string} slug - The report slug
+ * @returns {Promise<Object>} - Object containing the report data
+ */
+export const getReportsPageBySlug = cache(async (slug: string) => {
+   try {
+      const populateQuery = buildPopulateQuery([
+         'industry.name',
+         'geography.name',
+         'heroSectionPrimaryCTA.link',
+         'heroSectionSecondaryCTA.link',
+         'tableOfContent.title',
+         'faqList.title',
+         'ctaBanner.ctaButton.link',
+         'leftSectionPrimaryCTAButton',
+         'leftSectionSecondaryCTAButton',
+         'highlightImage.url',
+         'variants.price.amount',
+      ]);
+      const filterQuery = `?filters[slug][$eq]=${slug}`;
+
+      const response = await fetchClient(
+         '/reports' + filterQuery + '&' + populateQuery,
+         {
+            headers: getAuthHeaders(),
+            next: {
+               revalidate: 86400, // Cache for 24 hours
+               tags: [`report-${slug}`], // Tag with the specific report for targeted revalidation
+            },
+         },
+      );
+
+      return await response;
+   } catch (error) {
+      console.error(`Error fetching report with slug ${slug}:`, error);
+      throw error;
+   }
+});

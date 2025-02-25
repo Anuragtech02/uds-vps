@@ -2,11 +2,34 @@
 import ExploreProjects from '@/components/Report/ExploreProjects';
 import Header from '@/components/Report/Header';
 import ReportBlock from '@/components/Report/ReportBlock';
-import { getAllReports, getReportsPageBySlug } from '@/utils/api/services';
+import {
+   getAllReports,
+   getReportsPageBySlug,
+   getMostViewedReports,
+} from '@/utils/api/services';
 import { SUPPORTED_LOCALES } from '@/utils/constants';
 import { absoluteUrl } from '@/utils/generic-methods';
 import { Metadata } from 'next';
 import { notFound, redirect } from 'next/navigation';
+
+// Enable ISR with a longer cache duration for report details
+export const revalidate = 86400; // 24 hours
+
+// Pre-generate the most popular report pages
+export async function generateStaticParams() {
+   try {
+      // Get top 50 most viewed reports
+      const topReports = await getMostViewedReports(50);
+
+      return topReports.data.map((report: any) => ({
+         slug: report.attributes.slug,
+      }));
+   } catch (error) {
+      console.error('Error generating static params:', error);
+      // Return an empty array if fetching fails
+      return [];
+   }
+}
 
 export async function generateMetadata({
    params,
@@ -31,13 +54,6 @@ export async function generateMetadata({
 
    // Create languages map for alternates
    const languagesMap: Record<string, string> = {};
-
-   // Add all language alternates if available
-   // if (seo?.alternateLanguages) {
-   //   Object.entries(seo.alternateLanguages).forEach(([locale, url]) => {
-   //     languagesMap[locale] = url as string;
-   //   });
-   // }
 
    SUPPORTED_LOCALES.filter((locale) => locale !== 'en').forEach((locale) => {
       languagesMap[locale] = absoluteUrl(`/${locale}/reports/${params.slug}`);
@@ -161,39 +177,77 @@ async function isCompanyProfile(slug: string) {
    return false;
 }
 
-const page: React.FC<{
+// Create a simple in-memory cache for related reports by industry
+const relatedReportsCache = new Map();
+
+const ReportDetailPage: React.FC<{
    params: {
       slug: string;
    };
 }> = async ({ params }) => {
-   let relatedReports, reportDataList;
+   let reportPage = null;
+   let relatedReportsData = [];
+
    try {
-      reportDataList = await getReportsPageBySlug(params.slug);
-      relatedReports = await getAllReports(1, 10, {
-         industry: reportDataList.data[0]?.attributes?.industry?.data?.id,
-      });
+      // Fetch the report data
+      const reportDataList = await getReportsPageBySlug(params.slug);
+      reportPage =
+         reportDataList.data?.length > 0 ? reportDataList.data[0] : null;
+
+      if (!reportPage) {
+         const hasCompanyProfile = await isCompanyProfile(params.slug);
+         if (hasCompanyProfile) {
+            redirect('/');
+         } else {
+            notFound();
+         }
+      }
+
+      // Get industry ID for related reports
+      const industryId = reportPage?.attributes?.industry?.data?.id;
+
+      // Check if related reports for this industry are already in cache
+      if (industryId && relatedReportsCache.has(industryId)) {
+         relatedReportsData = relatedReportsCache.get(industryId);
+      } else if (industryId) {
+         // Fetch related reports if not in cache
+         const relatedReports = await getAllReports(1, 10, {
+            industry: industryId,
+         });
+         relatedReportsData =
+            relatedReports?.data?.map((report: any) => report?.attributes) ??
+            [];
+
+         // Store in cache (if there are results)
+         if (relatedReportsData.length > 0) {
+            relatedReportsCache.set(industryId, relatedReportsData);
+         }
+      }
    } catch (err) {
-      console.log(err);
+      console.error('Error fetching report details:', err);
       const hasCompanyProfile = await isCompanyProfile(params.slug);
       if (!hasCompanyProfile) {
          notFound();
       } else {
-         redirect(`/`);
+         redirect('/');
       }
    }
 
-   let reportPage =
-      reportDataList.data?.length > 0 ? reportDataList.data[0] : null;
-   let relatedReportsData =
-      relatedReports?.data?.map((report: any) => report?.attributes) ?? [];
+   // If we still have no report page after all error handling, show not found
+   if (!reportPage) {
+      notFound();
+   }
+
    return (
       <div className='bg-s-50'>
          <div className='mt-4' />
          <Header data={reportPage} />
          <ReportBlock data={reportPage} />
-         <ExploreProjects reports={relatedReportsData} />
+         {relatedReportsData.length > 0 && (
+            <ExploreProjects reports={relatedReportsData} />
+         )}
       </div>
    );
 };
 
-export default page;
+export default ReportDetailPage;

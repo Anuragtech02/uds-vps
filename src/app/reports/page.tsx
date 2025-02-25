@@ -1,5 +1,3 @@
-// export const runtime = 'edge';
-
 import { FC, Suspense } from 'react';
 import ReportStoreItem from '@/components/ReportStore/ReportItem';
 import {
@@ -16,6 +14,7 @@ import { LOGO_URL_DARK } from '@/utils/constants';
 import FilterBar from '@/components/ReportStore/FilterBar';
 import { Media } from '@/components/StrapiImage/StrapiImage';
 
+// Define search params interface
 interface SearchParams {
    industries?: string;
    geographies?: string;
@@ -24,6 +23,7 @@ interface SearchParams {
    sortBy?: string;
 }
 
+// Define Report interface
 interface Report {
    attributes: {
       slug: string;
@@ -52,7 +52,6 @@ export async function generateMetadata(): Promise<Metadata> {
    return {
       title,
       description,
-
       openGraph: {
          title,
          description,
@@ -68,21 +67,17 @@ export async function generateMetadata(): Promise<Metadata> {
          ],
          siteName: 'UnivDatos',
       },
-
       twitter: {
          card: 'summary_large_image',
          title,
          description,
          images: [LOGO_URL_DARK],
       },
-
       keywords:
          'market research reports, industry analysis, market insights, research reports, business intelligence, industry trends, market data, sector analysis',
-
       alternates: {
          canonical: absoluteUrl('/reports'),
       },
-
       other: {
          'script:ld+json': [
             JSON.stringify({
@@ -105,7 +100,54 @@ export async function generateMetadata(): Promise<Metadata> {
    };
 }
 
+// Generate static params for the most common filter combinations and pages
+export async function generateStaticParams() {
+   // Pre-render the first 5 pages of the most common views
+   const pages = [1, 2, 3, 4, 5];
+
+   // Get the most popular industries (you would need to determine these)
+   const popularIndustries = ['healthcare', 'automotive', 'technology']; // Example values
+
+   // Generate params for common combinations
+   const params = [
+      // Default view (no filters)
+      { page: '1', viewType: 'list', sortBy: 'oldPublishedAt:desc' },
+      { page: '1', viewType: 'grid', sortBy: 'oldPublishedAt:desc' },
+
+      // Pages with no filters
+      ...pages.map((page) => ({
+         page: page.toString(),
+         viewType: 'list',
+         sortBy: 'oldPublishedAt:desc',
+      })),
+
+      // Popular industries (first page only)
+      ...popularIndustries.map((industry) => ({
+         page: '1',
+         industries: industry,
+         viewType: 'list',
+         sortBy: 'oldPublishedAt:desc',
+      })),
+   ];
+
+   return params;
+}
+
 const ITEMS_PER_PAGE = 10;
+
+// Define a cache for storing pre-fetched data
+let reportCache = new Map();
+interface CacheResponse {
+   data: Array<{
+      attributes: {
+         name: string;
+         slug: string;
+      };
+   }>;
+}
+
+let industriesCache: CacheResponse | null = null;
+let geographiesCache: CacheResponse | null = null;
 
 const ReportStore: FC<ReportStoreProps> = async ({ searchParams }) => {
    const viewType = searchParams.viewType || 'list';
@@ -116,6 +158,10 @@ const ReportStore: FC<ReportStoreProps> = async ({ searchParams }) => {
    const currentPage = parseInt(searchParams.page || '1', 10);
    const sortBy = searchParams.sortBy || 'oldPublishedAt:desc';
 
+   // Create a cache key based on the current filters and pagination
+   const cacheKey = `${currentPage}_${sortBy}_${industryFilters.join('_')}_${geographyFilters.join('_')}`;
+
+   // Process filters for the API query
    const filters = industryFilters.concat(geographyFilters);
    const filtersQuery = filters.reduce(
       (acc, filter) => {
@@ -129,23 +175,58 @@ const ReportStore: FC<ReportStoreProps> = async ({ searchParams }) => {
       {} as Record<string, string>,
    );
 
-   // Add sort parameter to getAllReports call
-   const [reportsList, industriesData, geographiesData] = await Promise.all([
-      getAllReports(currentPage, ITEMS_PER_PAGE, filtersQuery, sortBy).catch(
-         (error) => {
-            console.error('Error fetching reports:', error);
-            return null;
-         },
-      ),
-      getIndustries().catch((error) => {
+   // Fetch data with caching strategy
+   let reportsList, industriesData, geographiesData;
+
+   // Try to get data from cache first
+   if (reportCache.has(cacheKey)) {
+      reportsList = reportCache.get(cacheKey);
+   } else {
+      // Fetch reports if not in cache
+      reportsList = await getAllReports(
+         currentPage,
+         ITEMS_PER_PAGE,
+         filtersQuery,
+         sortBy,
+      ).catch((error) => {
+         console.error('Error fetching reports:', error);
+         return null;
+      });
+
+      // Store in cache
+      if (reportsList) {
+         reportCache.set(cacheKey, reportsList);
+      }
+   }
+
+   // Fetch and cache industries and geographies (these change less frequently)
+   if (!industriesCache) {
+      industriesData = await getIndustries().catch((error) => {
          console.error('Error fetching industries:', error);
          return null;
-      }),
-      getGeographies().catch((error) => {
+      });
+      if (industriesData) {
+         industriesCache = industriesData;
+      } else {
+         industriesData = { data: [] };
+      }
+   } else {
+      industriesData = industriesCache;
+   }
+
+   if (!geographiesCache) {
+      geographiesData = await getGeographies().catch((error) => {
          console.error('Error fetching geographies:', error);
          return null;
-      }),
-   ]);
+      });
+      if (geographiesData) {
+         geographiesCache = geographiesData;
+      } else {
+         geographiesData = { data: [] };
+      }
+   } else {
+      geographiesData = geographiesCache;
+   }
 
    const totalItems = reportsList?.meta?.pagination?.total || 0;
    const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
@@ -153,7 +234,6 @@ const ReportStore: FC<ReportStoreProps> = async ({ searchParams }) => {
    return (
       <div className='container pt-40 sm:pt-48'>
          <h1 className='mt-5 text-center font-bold'>Report Store</h1>
-
          <FilterBar
             industries={industriesData?.data || []}
             geographies={geographiesData?.data || []}
@@ -161,7 +241,6 @@ const ReportStore: FC<ReportStoreProps> = async ({ searchParams }) => {
             sortBy={sortBy}
             redirectPath='/reports'
          />
-
          <div className='mb-10 mt-4 flex flex-col items-start justify-between gap-6 lg:min-h-[50vh] lg:flex-row'>
             {/* Main Content */}
             <div className='flex-1'>
@@ -235,7 +314,6 @@ const ReportStore: FC<ReportStoreProps> = async ({ searchParams }) => {
                </Suspense>
             </div>
          </div>
-
          <Pagination
             searchParams={searchParams}
             currentPage={currentPage}
@@ -244,5 +322,8 @@ const ReportStore: FC<ReportStoreProps> = async ({ searchParams }) => {
       </div>
    );
 };
+
+// Enable ISR with a revalidation period
+export const revalidate = 3600; // Revalidate every hour
 
 export default ReportStore;
