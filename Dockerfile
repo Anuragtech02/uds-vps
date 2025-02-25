@@ -34,7 +34,7 @@ ENV NEXT_TYPESCRIPT_CHECK=0
 ENV NEXT_LINT=0
 
 # Build the application
-RUN npm run build
+RUN NODE_ENV=production NEXT_TYPESCRIPT_CHECK=0 NEXT_LINT=0 npm run build -- --no-lint
 
 # ---- Production ----
 FROM base AS runner
