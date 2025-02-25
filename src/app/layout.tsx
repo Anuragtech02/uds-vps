@@ -8,16 +8,19 @@ import { Bricolage_Grotesque, Manrope } from 'next/font/google';
 import { GoogleTagManager } from '@next/third-parties/google';
 import { GoogleAnalytics } from '@next/third-parties/google';
 import BackToTop from '@/components/BackToTop';
+import Head from 'next/head';
 
 const bricolageGrotesque = Bricolage_Grotesque({
    subsets: ['latin'],
    weight: ['200', '300', '400', '500', '600', '700', '800'],
    variable: '--font-bricolage-grotesque',
+   display: 'swap',
 });
 
 const manrope = Manrope({
    subsets: ['latin'],
    variable: '--font-manrope',
+   display: 'swap',
 });
 
 export const metadata: Metadata = {
@@ -44,6 +47,60 @@ export default function RootLayout({
          lang='en'
          className={`${manrope.variable} ${bricolageGrotesque.variable} `}
       >
+         <Head>
+            {/* Add critical CSS for navigation inline */}
+            <style
+               dangerouslySetInnerHTML={{
+                  __html: `
+          /* Critical navigation styles to prevent FOUC */
+          .bg-blue-1 {
+            background-color: #09184c; /* Match your blue-1 color */
+          }
+          
+          .bg-blue-2 {
+            background-color: #1e3a8a; /* Match your blue-2 color */
+          }
+          
+          .bg-blue-3 {
+            background-color: #1e40af; /* Match your blue-3 color */
+          }
+          
+          .text-white {
+            color: #ffffff;
+          }
+          
+          .rounded-md {
+            border-radius: 0.375rem;
+          }
+          
+          /* Mobile menu critical styles */
+          .fixed {
+            position: fixed;
+          }
+          
+          .absolute {
+            position: absolute;
+          }
+          
+          .invisible {
+            visibility: hidden;
+          }
+          
+          /* Force navigation to be hidden during initial load on mobile */
+          @media (max-width: 1023px) {
+            .mobile-nav-loading {
+              opacity: 0;
+              transition: opacity 0.2s ease-in;
+            }
+            
+            .mobile-nav-loaded {
+              opacity: 1;
+            }
+          }
+        `,
+               }}
+            />
+         </Head>
          <GoogleTagManager gtmId='GTM-5F572ZK' />
          <link rel='preconnect' href='https://d21aa2ghywi6oj.cloudfront.net' />
          <link

@@ -3,23 +3,50 @@ import Button from './Button';
 import { BiChevronDown, BiMenu, BiX } from 'react-icons/bi';
 import { LocalizedLink } from './LocalizedLink';
 import ClientSearchHero from '../Home/ClientSearchHero';
-
 import { LOGO_URL_LIGHT } from '@/utils/constants';
-import AerospaceAndDefense from '../icons/industries/aerospace-and-defense';
-import AgricultureIcon from '../icons/industries/agriculture';
-import ArtificialInitelligenceAnalytics from '../icons/industries/artificial-intelligence-analytics';
-import Automotive from '../icons/industries/automotive';
-import Banking from '../icons/industries/banking';
-import BuildingMaterial from '../icons/industries/building-material';
-import Chemical from '../icons/industries/chemical';
-import ConsumerGoods from '../icons/industries/consumer-good';
-import ElectronicsAndSemiconductor from '../icons/industries/electronics-semiconductor';
-import EnergyAndPower from '../icons/industries/energy-and-power';
-import Healthcare from '../icons/industries/healthcare';
-import MediaEntertainment from '../icons/industries/media-entertainment';
-import MinigMachinery from '../icons/industries/mining-machinery';
-import TelecomeIT from '../icons/industries/telecom-it';
 import { Media } from '../StrapiImage/StrapiImage';
+
+// Import industry icons dynamically to reduce initial load
+import dynamic from 'next/dynamic';
+
+// Create dynamic imports for industry icons
+const AerospaceAndDefense = dynamic(
+   () => import('../icons/industries/aerospace-and-defense'),
+);
+const AgricultureIcon = dynamic(
+   () => import('../icons/industries/agriculture'),
+);
+const ArtificialInitelligenceAnalytics = dynamic(
+   () => import('../icons/industries/artificial-intelligence-analytics'),
+);
+const Automotive = dynamic(() => import('../icons/industries/automotive'));
+const Banking = dynamic(() => import('../icons/industries/banking'));
+const BuildingMaterial = dynamic(
+   () => import('../icons/industries/building-material'),
+);
+const Chemical = dynamic(() => import('../icons/industries/chemical'));
+const ConsumerGoods = dynamic(
+   () => import('../icons/industries/consumer-good'),
+);
+const ElectronicsAndSemiconductor = dynamic(
+   () => import('../icons/industries/electronics-semiconductor'),
+);
+const EnergyAndPower = dynamic(
+   () => import('../icons/industries/energy-and-power'),
+);
+const Healthcare = dynamic(() => import('../icons/industries/healthcare'));
+const MediaEntertainment = dynamic(
+   () => import('../icons/industries/media-entertainment'),
+);
+const MinigMachinery = dynamic(
+   () => import('../icons/industries/mining-machinery'),
+);
+const TelecomeIT = dynamic(() => import('../icons/industries/telecom-it'));
+
+// Create a placeholder component for lazy-loaded icons
+const IconPlaceholder = () => (
+   <div className='h-5 w-5 animate-pulse rounded-sm bg-gray-200'></div>
+);
 
 // Create an object mapping industry slugs to their respective icons
 const industryIcons: {
@@ -106,18 +133,16 @@ const MobileMenuItem: React.FC<{
             <LocalizedLink
                href={item.url ?? ''}
                className='flex w-full items-center px-2 py-3 text-white hover:bg-blue-2'
-               onClick={(e: MouseEvent) => {
+               onClick={(e: any) => {
                   e.stopPropagation();
                   onClick();
                }}
             >
                {depth > 0 && item.url?.includes('industries=') && (
                   <div className='mr-2'>
-                     {
-                        industryIcons[
-                           item.url.split('industries=')[1].split('&')[0]
-                        ]
-                     }
+                     {industryIcons[
+                        item.url.split('industries=')[1]?.split('&')[0]
+                     ] || <IconPlaceholder />}
                   </div>
                )}
                <span className='break-words'>{item.title}</span>
@@ -166,13 +191,11 @@ const DesktopMenuItem: React.FC<{ item: MenuItem; depth: number }> = ({
                            >
                               {child.url?.includes('industries=') && (
                                  <div className='mr-2'>
-                                    {
-                                       industryIcons[
-                                          child.url
-                                             .split('industries=')[1]
-                                             .split('&')[0]
-                                       ]
-                                    }
+                                    {industryIcons[
+                                       child.url
+                                          .split('industries=')[1]
+                                          ?.split('&')[0]
+                                    ] || <IconPlaceholder />}
                                  </div>
                               )}
                               <span className='-mt-1'>{child.title}</span>
@@ -247,18 +270,31 @@ const exclude = ['unknown', 'medical devices', 'pharmaceuticals'];
 const Navbar: React.FC<INavbarProps> = ({ header, mainMenu, industries }) => {
    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
    const [isMobile, setIsMobile] = useState(false);
+   const [isLoaded, setIsLoaded] = useState(false);
 
    useEffect(() => {
+      // Fix FOUC by waiting a bit for styles to load
+      const timer = setTimeout(() => {
+         setIsLoaded(true);
+      }, 100);
+
       const handleResize = () => {
          setIsMobile(window.innerWidth < 1024);
       };
+
       handleResize();
       window.addEventListener('resize', handleResize);
-      return () => window.removeEventListener('resize', handleResize);
+
+      return () => {
+         window.removeEventListener('resize', handleResize);
+         clearTimeout(timer);
+      };
    }, []);
 
    return (
-      <div className='container'>
+      <div
+         className={`container ${!isLoaded ? 'mobile-nav-loading' : 'mobile-nav-loaded'}`}
+      >
          <nav className='flex items-center justify-between rounded-md bg-blue-1 px-2 py-2 lg:px-8'>
             <LocalizedLink href='/' className='flex items-center lg:hidden'>
                <img
@@ -266,6 +302,8 @@ const Navbar: React.FC<INavbarProps> = ({ header, mainMenu, industries }) => {
                   alt='logo'
                   fetchPriority='high'
                   className='h-10 w-24 object-contain md:h-16 md:w-32'
+                  width={128}
+                  height={64}
                />
             </LocalizedLink>
             {isMobile ? (
@@ -319,15 +357,6 @@ const Navbar: React.FC<INavbarProps> = ({ header, mainMenu, industries }) => {
                      )}
                   </ul>
                   <div className='ml-4 flex items-center'>
-                     {/* <LocalizedLink href={header?.ctaButton?.link ?? ''}>
-                        <Button>{header?.ctaButton?.title}</Button>
-                     </LocalizedLink> */}
-                     {/* <div className='max-w-[190px] [&>div]:mt-0 [&>div]:w-full'>
-                        <ClientSearchHero
-                           placeholder='Search here...'
-                           variant='light'
-                        />
-                     </div> */}
                      <div className='gtranslate_wrapper !relative'></div>
                   </div>
                </>
@@ -337,6 +366,7 @@ const Navbar: React.FC<INavbarProps> = ({ header, mainMenu, industries }) => {
          {/* Mobile Side Menu */}
          <div
             className={`fixed inset-0 z-50 bg-black bg-opacity-50 transition-opacity duration-300 ${isMobileMenuOpen ? 'visible' : 'invisible'}`}
+            style={{ opacity: isMobileMenuOpen ? 1 : 0 }}
          >
             <div
                className={`pointer-events-auto absolute right-0 top-0 h-full w-full bg-blue-2 shadow-lg transition-transform duration-300 ease-in-out sm:w-[300px] ${isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}

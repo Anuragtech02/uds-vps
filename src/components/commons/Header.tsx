@@ -4,13 +4,14 @@ import Navbar from './Navbar';
 import Topbar from './Topbar';
 import { usePathname } from 'next/navigation';
 import { Media } from '../StrapiImage/StrapiImage';
+
 interface IHeader {
    phoneNumber: string;
    email: string;
    createdAt: string;
    updatedAt: string;
    publishedAt: string;
-   logo?: Media  ;
+   logo?: Media;
    ctaButton: { id: number; title: string; link: string };
 }
 
@@ -27,9 +28,34 @@ const Header = ({
 }) => {
    const navRef = useRef<HTMLDivElement | null>(null);
    const pathname = usePathname();
-   
+   const [mounted, setMounted] = useState(false);
+
+   // Fix for FOUC (Flash of Unstyled Content)
+   useEffect(() => {
+      setMounted(true);
+   }, []);
+
+   // If not mounted yet, render a placeholder with the same dimensions
+   // to prevent layout shift when the full component loads
+   if (!mounted) {
+      return (
+         <div
+            className={`${
+               STICKY_URL.some((url) => pathname.includes(url))
+                  ? ''
+                  : 'fixed left-0 top-0 z-50'
+            } w-full border-b border-s-300 bg-white py-4 opacity-0`}
+            aria-hidden='true'
+         >
+            <div className='h-[40px]'></div> {/* Topbar placeholder */}
+            <div className='h-[60px]'></div> {/* Navbar placeholder */}
+         </div>
+      );
+   }
+
    return (
       <div
+         ref={navRef}
          className={`${
             STICKY_URL.some((url) => pathname.includes(url))
                ? ''
