@@ -1,0 +1,236 @@
+http:
+  middlewares:
+    # 1. /reports/industry/:slug-market-research-reports to /reports?industries=:slug
+    reports-industry-slug-redirectregex:
+      redirectRegex:
+        regex: "^/reports/industry/([^/]+)-market-research-reports$"
+        replacement: "/reports?industries=$1"
+        permanent: true
+
+    # 2. /:locale/reports/industry/:slug-market-research-reports to /:locale/reports?industries=:slug
+    locale-reports-industry-slug-redirectregex:
+      redirectRegex:
+        regex: "^/([a-z]{2}(?:-[a-z]{2})?)/reports/industry/([^/]+)-market-research-reports$"
+        replacement: "/$1/reports?industries=$2"
+        permanent: true
+
+    # 3. /reports/industry/:path* to /reports?industries=:path*
+    reports-industry-path-redirectregex:
+      redirectRegex:
+        regex: "^/reports/industry/(.+)$"
+        replacement: "/reports?industries=$1"
+        permanent: true
+
+    # 4. /:locale/reports/industry/:path* to /:locale/reports?industries=:path*
+    locale-reports-industry-path-redirectregex:
+      redirectRegex:
+        regex: "^/([a-z]{2}(?:-[a-z]{2})?)/reports/industry/(.+)$"
+        replacement: "/$1/reports?industries=$2"
+        permanent: true
+
+    # 5. /report/:path* to /reports/:path*
+    report-to-reports-redirectregex:
+      redirectRegex:
+        regex: "^/report/(.+)$"
+        replacement: "/reports/$1"
+        permanent: true
+
+    # 6. /:locale/report/:path* to /:locale/reports/:path*
+    locale-report-to-reports-redirectregex:
+      redirectRegex:
+        regex: "^/([a-z]{2}(?:-[a-z]{2})?)/report/(.+)$"
+        replacement: "/$1/reports/$2"
+        permanent: true
+
+    # 7. /custom-research to /services
+    custom-research-redirectregex:
+      redirectRegex:
+        regex: "^/custom-research$"
+        replacement: "/services"
+        permanent: true
+
+    # 8. /:locale/custom-research to /:locale/services
+    locale-custom-research-redirectregex:
+      redirectRegex:
+        regex: "^/([a-z]{2}(?:-[a-z]{2})?)/custom-research$"
+        replacement: "/$1/services"
+        permanent: true
+
+    # 9. /reports/company-profile/:path* to /
+    company-profile-redirectregex:
+      redirectRegex:
+        regex: "^/reports/company-profile/.*$"
+        replacement: "/"
+        permanent: true
+
+    # 10. /:locale/reports/company-profile/:path* to /:locale/
+    locale-company-profile-redirectregex:
+      redirectRegex:
+        regex: "^/([a-z]{2}(?:-[a-z]{2})?)/reports/company-profile/.*$"
+        replacement: "/$1/"
+        permanent: true
+
+    # 11. /terms-and-condition to /terms-and-conditions
+    terms-redirectregex:
+      redirectRegex:
+        regex: "^/terms-and-condition$"
+        replacement: "/terms-and-conditions"
+        permanent: true
+
+    # 12. /:locale/terms-and-condition to /:locale/terms-and-conditions
+    locale-terms-redirectregex:
+      redirectRegex:
+        regex: "^/([a-z]{2}(?:-[a-z]{2})?)/terms-and-condition$"
+        replacement: "/$1/terms-and-conditions"
+        permanent: true
+
+  services:
+    nextjs-service:
+      loadBalancer:
+        servers:
+          - url: "http://nextjs-app:3000"
+
+  routers:
+    # 1. /reports/industry/:slug-market-research-reports to /reports?industries=:slug
+    reports-industry-slug-redirect:
+      rule: "Host(`uds-vps.univdatos.com`) && Path(`/reports/industry/{slug:[^/]+}-market-research-reports`)"
+      middlewares:
+        - reports-industry-slug-redirectregex
+      service: "nextjs-service"
+      priority: 200
+      entryPoints:
+        - websecure
+      tls:
+        certResolver: letsencrypt
+
+    # 2. /:locale/reports/industry/:slug-market-research-reports to /:locale/reports?industries=:slug
+    locale-reports-industry-slug-redirect:
+      rule: "Host(`uds-vps.univdatos.com`) && Path(`/{locale:[a-z]{2}(?:-[a-z]{2})?}/reports/industry/{slug:[^/]+}-market-research-reports`)"
+      middlewares:
+        - locale-reports-industry-slug-redirectregex
+      service: "nextjs-service"
+      priority: 200
+      entryPoints:
+        - websecure
+      tls:
+        certResolver: letsencrypt
+
+    # 3. /reports/industry/:path* to /reports?industries=:path*
+    reports-industry-path-redirect:
+      rule: "Host(`uds-vps.univdatos.com`) && PathPrefix(`/reports/industry/`)"
+      middlewares:
+        - reports-industry-path-redirectregex
+      service: "nextjs-service"
+      priority: 100
+      entryPoints:
+        - websecure
+      tls:
+        certResolver: letsencrypt
+
+    # 4. /:locale/reports/industry/:path* to /:locale/reports?industries=:path*
+    locale-reports-industry-path-redirect:
+      rule: "Host(`uds-vps.univdatos.com`) && PathPrefix(`/{locale:[a-z]{2}(?:-[a-z]{2})?}/reports/industry/`)"
+      middlewares:
+        - locale-reports-industry-path-redirectregex
+      service: "nextjs-service"
+      priority: 100
+      entryPoints:
+        - websecure
+      tls:
+        certResolver: letsencrypt
+
+    # 5. /report/:path* to /reports/:path*
+    report-to-reports-redirect:
+      rule: "Host(`uds-vps.univdatos.com`) && PathPrefix(`/report/`)"
+      middlewares:
+        - report-to-reports-redirectregex
+      service: "nextjs-service"
+      priority: 100
+      entryPoints:
+        - websecure
+      tls:
+        certResolver: letsencrypt
+
+    # 6. /:locale/report/:path* to /:locale/reports/:path*
+    locale-report-to-reports-redirect:
+      rule: "Host(`uds-vps.univdatos.com`) && PathPrefix(`/{locale:[a-z]{2}(?:-[a-z]{2})?}/report/`)"
+      middlewares:
+        - locale-report-to-reports-redirectregex
+      service: "nextjs-service"
+      priority: 100
+      entryPoints:
+        - websecure
+      tls:
+        certResolver: letsencrypt
+
+    # 7. /custom-research to /services
+    custom-research-redirect:
+      rule: "Host(`uds-vps.univdatos.com`) && Path(`/custom-research`)"
+      middlewares:
+        - custom-research-redirectregex
+      service: "nextjs-service"
+      priority: 100
+      entryPoints:
+        - websecure
+      tls:
+        certResolver: letsencrypt
+
+    # 8. /:locale/custom-research to /:locale/services
+    locale-custom-research-redirect:
+      rule: "Host(`uds-vps.univdatos.com`) && Path(`/{locale:[a-z]{2}(?:-[a-z]{2})?}/custom-research`)"
+      middlewares:
+        - locale-custom-research-redirectregex
+      service: "nextjs-service"
+      priority: 100
+      entryPoints:
+        - websecure
+      tls:
+        certResolver: letsencrypt
+
+    # 9. /reports/company-profile/:path* to /
+    company-profile-redirect:
+      rule: "Host(`uds-vps.univdatos.com`) && PathPrefix(`/reports/company-profile/`)"
+      middlewares:
+        - company-profile-redirectregex
+      service: "nextjs-service"
+      priority: 100
+      entryPoints:
+        - websecure
+      tls:
+        certResolver: letsencrypt
+
+    # 10. /:locale/reports/company-profile/:path* to /:locale/
+    locale-company-profile-redirect:
+      rule: "Host(`uds-vps.univdatos.com`) && PathPrefix(`/{locale:[a-z]{2}(?:-[a-z]{2})?}/reports/company-profile/`)"
+      middlewares:
+        - locale-company-profile-redirectregex
+      service: "nextjs-service"
+      priority: 100
+      entryPoints:
+        - websecure
+      tls:
+        certResolver: letsencrypt
+
+    # 11. /terms-and-condition to /terms-and-conditions
+    terms-redirect:
+      rule: "Host(`uds-vps.univdatos.com`) && Path(`/terms-and-condition`)"
+      middlewares:
+        - terms-redirectregex
+      service: "nextjs-service"
+      priority: 100
+      entryPoints:
+        - websecure
+      tls:
+        certResolver: letsencrypt
+
+    # 12. /:locale/terms-and-condition to /:locale/terms-and-conditions
+    locale-terms-redirect:
+      rule: "Host(`uds-vps.univdatos.com`) && Path(`/{locale:[a-z]{2}(?:-[a-z]{2})?}/terms-and-condition`)"
+      middlewares:
+        - locale-terms-redirectregex
+      service: "nextjs-service"
+      priority: 100
+      entryPoints:
+        - websecure
+      tls:
+        certResolver: letsencrypt

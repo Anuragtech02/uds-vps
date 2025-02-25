@@ -24,19 +24,19 @@ const nextConfig = {
       ],
       unoptimized: process.env.NODE_ENV === 'production',
    },
-   async headers() {
-      return [
-         {
-            source: '/static/:path*',
-            headers: [
-               {
-                  key: 'Cache-Control',
-                  value: 'public, max-age=31536000, immutable',
-               },
-            ],
-         },
-      ];
-   },
+   // async headers() {
+   //    return [
+   //       {
+   //          source: '/static/:path*',
+   //          headers: [
+   //             {
+   //                key: 'Cache-Control',
+   //                value: 'public, max-age=31536000, immutable',
+   //             },
+   //          ],
+   //       },
+   //    ];
+   // },
    // async redirects() {
    //    return [
    //       {
