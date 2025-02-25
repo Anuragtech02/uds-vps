@@ -15,9 +15,6 @@ COPY package.json package-lock.json* ./
 
 # Install dependencies
 RUN npm ci
-# If using Yarn, replace with:
-# COPY package.json yarn.lock ./
-# RUN yarn install --frozen-lockfile --production
 
 # ---- Builder ----
 FROM base AS builder
@@ -26,18 +23,18 @@ COPY --from=deps /app/node_modules ./node_modules
 # Copy app source
 COPY . .
 
-ENV NEXT_TYPESCRIPT_CHECK=0
-
+# Install development dependencies needed for build
 RUN npm install --save-dev eslint @types/js-cookie
 
 # Set build-time environment variables for optimization
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV NODE_ENV=production
+# Disable TypeScript checking and ESLint for production builds
+ENV NEXT_TYPESCRIPT_CHECK=0
+ENV NEXT_LINT=0
 
 # Build the application
 RUN npm run build
-# If using Yarn, replace with:
-# RUN yarn build
 
 # ---- Production ----
 FROM base AS runner
