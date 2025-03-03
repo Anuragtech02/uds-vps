@@ -1,3 +1,4 @@
+'use client';
 import React, { useState, FormEvent, useEffect, useRef } from 'react';
 import CustomPhoneInput from '../CustomPhoneInput';
 import Button from '../commons/Button';

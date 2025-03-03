@@ -1,5 +1,4 @@
 // export const runtime = 'edge';
-import ExploreProjects from '@/components/Report/ExploreProjects';
 import Header from '@/components/Report/Header';
 import ReportBlock from '@/components/Report/ReportBlock';
 import {
@@ -10,7 +9,12 @@ import {
 import { SUPPORTED_LOCALES } from '@/utils/constants';
 import { absoluteUrl } from '@/utils/generic-methods';
 import { Metadata } from 'next';
+import dynamic from 'next/dynamic';
 import { notFound, redirect } from 'next/navigation';
+
+const ExploreProjects = dynamic(
+   () => import('@/components/Report/ExploreProjects'),
+);
 
 // Enable ISR with a longer cache duration for report details
 export const revalidate = 86400; // 24 hours

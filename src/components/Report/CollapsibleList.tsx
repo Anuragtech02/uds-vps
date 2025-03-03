@@ -1,4 +1,10 @@
-import React, { useState } from 'react';
+'use client';
+import { useSelectedLicenseStore } from '@/stores/selectedLicense.store';
+import {
+   getLicenseOfReport,
+   setLicenseOfReport,
+} from '@/utils/cart-utils.util';
+import React, { useEffect, useState } from 'react';
 
 interface License {
    title: string;
@@ -11,8 +17,9 @@ interface License {
 
 interface CollapsibleLicenseOptionsProps {
    variants: License[];
-   selectedLicense: number | null;
-   setSelectedLicense: (index: number | null) => void;
+   reportData: {
+      id: number;
+   };
 }
 
 const formatCurrency = (amount: number, currency: string) => {
@@ -46,10 +53,35 @@ const calculateDiscountedPrice = (
 
 const CollapsibleLicenseOptions: React.FC<CollapsibleLicenseOptionsProps> = ({
    variants,
-   selectedLicense,
-   setSelectedLicense,
+   reportData,
 }) => {
    const [expandedLicense, setExpandedLicense] = useState<number | null>(null);
+   const [selectedLicense, setSelectedLicense] = useState<number | null>(null);
+   const selectedLicenses = useSelectedLicenseStore();
+
+   useEffect(() => {
+      if (selectedLicense === null || isNaN(selectedLicense)) return;
+
+      const license = variants[selectedLicense] ?? null;
+      selectedLicenses.selectLicense(reportData.id, license);
+      setLicenseOfReport(reportData.id, license);
+   }, [selectedLicense]);
+
+   useEffect(() => {
+      const alreadySelectedLicense = getLicenseOfReport(reportData.id);
+
+      if (alreadySelectedLicense) {
+         setSelectedLicense(
+            variants.findIndex(
+               (variant) => variant.title === alreadySelectedLicense.title,
+            ),
+         );
+         selectedLicenses.selectLicense(
+            reportData.id,
+            getLicenseOfReport(reportData.id) as License,
+         );
+      }
+   }, []);
 
    const toggleLicense = (index: number) => {
       // If clicking the same license that's already selected and expanded
@@ -60,7 +92,6 @@ const CollapsibleLicenseOptions: React.FC<CollapsibleLicenseOptionsProps> = ({
          setExpandedLicense(index); // Expand the license
       }
    };
-
    return (
       <div className='mt-3 flex flex-col gap-2'>
          {variants?.map((license: License, index: number) => {

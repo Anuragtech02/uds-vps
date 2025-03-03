@@ -326,6 +326,49 @@
    }
 }
 
+.report-content img {
+   max-width: 100%;
+   height: auto;
+   aspect-ratio: 16/9;
+}
+
+/* Apply style to images missing dimensions */
+.report-content img:not([width]):not([height]) {
+   background-color: #f3f4f6;
+}
+
+/* Add transition for TOC items */
+.toc-content {
+   transition: height 0.3s ease;
+}
+
+/* Server-first responsive design */
+@media (min-width: 1024px) {
+   .sidebar-container {
+      width: 16rem;
+      min-height: 600px;
+   }
+
+   .content-container {
+      width: calc(100% - 18rem);
+   }
+}
+
+@media (max-width: 1023px) {
+   .sidebar-container {
+      display: none;
+   }
+
+   .content-container {
+      width: 100%;
+   }
+}
+/* Rotate icon when details is open */
+details[open] .icon {
+   transform: rotate(45deg);
+   transition: transform 0.2s ease-out;
+}
+
 /*Translator styles*/
 
 // #gt_float_wrapper {

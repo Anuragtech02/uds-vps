@@ -14,7 +14,7 @@ const config: Config = {
             decimal: 'decimal',
             square: 'square',
             roman: 'upper-roman',
-          },
+         },
          colors: {
             green: {
                1: '#009090',
@@ -54,6 +54,18 @@ const config: Config = {
          fontFamily: {
             bricolage: ['var(--font-bricolage-grotesque)'],
             manrope: ['var(--font-manrope)'],
+         },
+         minHeight: {
+            'screen-vh': '100vh',
+            'screen-svh': '100svh',
+         },
+         height: {
+            'screen-vh': '100vh',
+            'screen-svh': '100svh',
+         },
+         maxHeight: {
+            'screen-vh': '100vh',
+            'screen-svh': '100svh',
          },
       },
    },

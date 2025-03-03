@@ -1,4 +1,5 @@
 'use client';
+import { useSelectedLicenseStore } from '@/stores/selectedLicense.store';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { BiChevronDown, BiChevronUp } from 'react-icons/bi';
 
@@ -19,8 +20,6 @@ interface NavigationItem {
 interface MobileReportBlockProps {
    reportIndex: NavigationItem[];
    variants: License[];
-   selectedLicense: number | null;
-   setSelectedLicense: (index: number | null) => void;
    rightSectionHeading: string;
 }
 
@@ -142,14 +141,14 @@ const useMobileScrollSpy = (sectionIds: string[]) => {
 const MobileReportBlock: React.FC<MobileReportBlockProps> = ({
    reportIndex,
    variants,
-   selectedLicense,
-   setSelectedLicense,
    rightSectionHeading,
 }) => {
    const [isLicenseOpen, setIsLicenseOpen] = useState(false);
    const [showSecondHeader, setShowSecondHeader] = useState(false);
    const sectionIds = reportIndex.map((item) => item.id);
    const activeTab = useMobileScrollSpy(sectionIds);
+   const [selectedLicense, setSelectedLicense] = useState<number | null>(null);
+   const selectedLicenses = useSelectedLicenseStore();
 
    // Improved scroll function with dynamic header height
    const scrollToSection = useCallback((id: string) => {

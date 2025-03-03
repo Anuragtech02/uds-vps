@@ -1,11 +1,6 @@
+'use client';
 import { useEffect, useState } from 'react';
-import reportData from './sample.json';
 import TableOfContentItem from './TableOfContentItem';
-
-const styles = {
-   title: 'text-2xl font-semibold text-blue-2 mb-3',
-   subTitle: 'text-lg font-semibold text-blue-2 mb-2 mt-4',
-};
 
 interface ReportBlockDataProps {
    data: any;

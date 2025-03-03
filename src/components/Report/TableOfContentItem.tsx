@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import { BiPlusCircle } from 'react-icons/bi';
 
 interface TableOfContentItemProps {
