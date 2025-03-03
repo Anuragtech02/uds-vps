@@ -23,12 +23,12 @@ const Header: React.FC<{ data: any }> = ({ data }) => {
          slug: data.attributes.industry.data.attributes.slug,
       },
       heroSectionPrimaryCTA: {
-         title: data.attributes.heroSectionPrimaryCTA.title,
-         link: data.attributes.heroSectionPrimaryCTA.link,
+         title: 'Download Sample',
+         link: '?popup=report-enquiry',
       },
       heroSectionSecondaryCTA: {
-         title: data.attributes.heroSectionSecondaryCTA.title,
-         link: data.attributes.heroSectionSecondaryCTA.link,
+         title: 'Buy Now',
+         link: '#',
       },
       totalPagesCount: data.attributes.totalPagesCount,
       tablesCount: data.attributes.tablesCount,
@@ -47,7 +47,7 @@ const Header: React.FC<{ data: any }> = ({ data }) => {
 
    useEffect(() => {
       if (data?.attributes) cacheRecentReports(data?.attributes);
-   }, []);
+   }, [data.attributes]);
 
    useEffect(() => {
       const handleScroll = () => {

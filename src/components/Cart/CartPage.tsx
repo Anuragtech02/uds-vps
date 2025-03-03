@@ -385,7 +385,7 @@ const CartPage = () => {
                const strapiPaymentId = createdPayment?.data?.id;
                const result = await verifyPayments(data);
                const res = await result;
-               console.log('reslut', res);
+               // console.log('reslut', res);
 
                if (res.isOk) {
                   await updatePaymentStatus(strapiPaymentId, 'SUCCESS');

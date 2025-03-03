@@ -375,7 +375,7 @@ export const getNewsBySlug = async (slug: string) => {
             headers: getAuthHeaders(),
          },
       );
-      console.log(response);
+      // console.log(response);
       return response;
    } catch (error) {
       console.error('Error fetching news article by slug:', error);

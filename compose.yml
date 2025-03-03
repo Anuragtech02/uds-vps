@@ -1,0 +1,104 @@
+version: '3.8'
+services:
+   traefik:
+      image: traefik:v2.10
+      container_name: traefik
+      restart: unless-stopped
+      security_opt:
+         - no-new-privileges:true
+      command:
+         # Enable Docker provider
+         - --providers.docker=true
+         - --providers.docker.exposedbydefault=false
+         - --api.dashboard=true
+         - --api.insecure=true
+         # Configure entrypoints
+         - --entrypoints.web.address=:80
+         - --entrypoints.websecure.address=:443
+         # Enable HTTP to HTTPS redirect
+         - --entrypoints.web.http.redirections.entryPoint.to=websecure
+         - --entrypoints.web.http.redirections.entryPoint.scheme=https
+         # Let's Encrypt configuration
+         - --certificatesresolvers.letsencrypt.acme.httpchallenge=true
+         - --certificatesresolvers.letsencrypt.acme.httpchallenge.entrypoint=web
+         - --certificatesresolvers.letsencrypt.acme.email=anuragpal0226@gmail.com
+         - --certificatesresolvers.letsencrypt.acme.storage=/letsencrypt/acme.json
+         - --log.level=INFO
+      ports:
+         - '80:80'
+         - '443:443'
+         - '8080:8080'
+      volumes:
+         - /var/run/docker.sock:/var/run/docker.sock:ro
+         - letsencrypt:/letsencrypt
+      networks:
+         - web
+
+   nextjs1:
+      build:
+         context: ./uds-vps
+         dockerfile: Dockerfile
+      container_name: nextjs-app1
+      restart: unless-stopped
+      env_file:
+         - ./uds-vps/.env
+      environment:
+         - NODE_ENV=production
+      labels:
+         - 'traefik.enable=true'
+         # HTTP Router
+         - 'traefik.http.routers.nextjs1.rule=Host(`univdatos.com`) || Host(`uds-vps.univdatos.com`)'
+         - 'traefik.http.routers.nextjs1.entrypoints=websecure'
+         - 'traefik.http.routers.nextjs1.tls=true'
+         - 'traefik.http.routers.nextjs1.tls.certresolver=letsencrypt'
+         # Service
+         - 'traefik.http.services.nextjs-service.loadbalancer.server.port=3000'
+         # Assign this container to the load-balanced service
+         - 'traefik.http.services.nextjs-service.loadbalancer.sticky=false'
+         # Enable compression
+         - 'traefik.http.middlewares.compress.compress=true'
+         - 'traefik.http.routers.nextjs1.middlewares=compress'
+      volumes:
+         - ./uds-vps/next.config.js:/app/next.config.js:ro
+      networks:
+         - web
+      depends_on:
+         - traefik
+
+   nextjs2:
+      build:
+         context: ./uds-vps
+         dockerfile: Dockerfile
+      container_name: nextjs-app2
+      restart: unless-stopped
+      env_file:
+         - ./uds-vps/.env
+      environment:
+         - NODE_ENV=production
+      labels:
+         - 'traefik.enable=true'
+         # HTTP Router (same host rule as nextjs1)
+         - 'traefik.http.routers.nextjs2.rule=Host(`univdatos.com`) || Host(`uds-vps.univdatos.com`)'
+         - 'traefik.http.routers.nextjs2.entrypoints=websecure'
+         - 'traefik.http.routers.nextjs2.tls=true'
+         - 'traefik.http.routers.nextjs2.tls.certresolver=letsencrypt'
+         # Use the same service as nextjs1 (this is what enables load balancing)
+         - 'traefik.http.services.nextjs-service.loadbalancer.server.port=3000'
+         # Enable compression
+         - 'traefik.http.middlewares.compress.compress=true'
+         - 'traefik.http.routers.nextjs2.middlewares=compress'
+      volumes:
+         - ./uds-vps/next.config.js:/app/next.config.js:ro
+      networks:
+         - web
+      depends_on:
+         - traefik
+
+networks:
+   web:
+      name: traefik_network
+      driver: bridge
+
+volumes:
+   letsencrypt:
+      name: traefik_letsencrypt
