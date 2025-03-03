@@ -1,10 +1,5 @@
-import {
-   createContext,
-   useContext,
-   useState,
-   ReactNode,
-   useEffect,
-} from 'react';
+'use client';
+import { createContext, useContext, useState, ReactNode } from 'react';
 
 export interface BillingFormData {
    firstName: string;
@@ -73,11 +68,6 @@ export function CheckoutProvider({ children }: { children: ReactNode }) {
          return newData;
       });
    };
-
-   // Add debug effect
-   useEffect(() => {
-      console.log('Form Data in Context:', formData);
-   }, [formData]);
 
    return (
       <CheckoutContext.Provider
