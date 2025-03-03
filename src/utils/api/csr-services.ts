@@ -4,7 +4,11 @@ import fetchClientCSR from './csr-config';
 
 function getAuthHeaders(type: 'get' | 'search' | 'post' = 'get') {
    const token =
-      '127001e645bc65923f9729a31a7b65654a744938bc6eb8a4695a3bef3a1c5f67ff390b2d05e4554861aeeed173375fd0506a53f85c29727c91cdb1ff62cb9e516f8396c7393e2bdd145e834d4f47ab688ea13991596ae9e3d05f1f007b0b1a2fac5f3cc0068652f3d685d65e9854a5106a1af9291708f1c784df6c2f21d27c29';
+      type === 'search'
+         ? process.env.NEXT_PUBLIC_SEARCH_TOKEN
+         : type === 'post'
+           ? process.env.NEXT_PUBLIC_POST_TOKEN
+           : process.env.NEXT_PUBLIC_API_TOKEN;
    if (token) {
       return {
          Authorization: `Bearer ${token}`,
