@@ -128,11 +128,11 @@ const Appwrapper: FC<AppwrapperProps> = async ({ children }) => {
             industries={industries}
             mainMenu={mappedHeaderMenu}
          />
-         {/* <Suspense fallback={<PageSwitchLoading />}> */}
-         <main key='main' className='lg:min-h-screen-vh'>
-            {children}
-         </main>
-         {/* </Suspense> */}
+         <Suspense fallback={<PageSwitchLoading />}>
+            <main key='main' className='lg:min-h-screen-vh'>
+               {children}
+            </main>
+         </Suspense>
          <SearchWrapper />
          <Footer key='footer' footer={footer} quickLinks={mappedFooterLinks} />
       </>
