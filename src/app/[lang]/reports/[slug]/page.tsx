@@ -17,7 +17,7 @@ const ExploreProjects = dynamic(
 );
 
 // Enable ISR with a longer cache duration for report details
-export const revalidate = 86400; // 24 hours
+export const revalidate = 3600; // 24 hours
 
 // Pre-generate the most popular report pages
 // export async function generateStaticParams() {
