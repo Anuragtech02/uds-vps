@@ -1,16 +1,39 @@
 // export const runtime = 'edge';
-
-import ExploreProjects from '@/components/Report/ExploreProjects';
 import Header from '@/components/Report/Header';
 import ReportBlock from '@/components/Report/ReportBlock';
-import ReportFAQs from '@/components/Report/ReportFAQs';
-import { getAllReports, getReportsPageBySlug } from '@/utils/api/services';
+import {
+   getAllReports,
+   getReportsPageBySlug,
+   getMostViewedReports,
+} from '@/utils/api/services';
+import { SUPPORTED_LOCALES } from '@/utils/constants';
 import { absoluteUrl } from '@/utils/generic-methods';
 import { Metadata } from 'next';
-import { cookies } from 'next/headers';
+import dynamic from 'next/dynamic';
 import { notFound, redirect } from 'next/navigation';
 
-export const dynamic = 'force-dynamic'; // Forces dynamic rendering, bypassing all static optimizations
+const ExploreProjects = dynamic(
+   () => import('@/components/Report/ExploreProjects'),
+);
+
+// Enable ISR with a longer cache duration for report details
+export const revalidate = 86400; // 24 hours
+
+// Pre-generate the most popular report pages
+// export async function generateStaticParams() {
+//    try {
+//       // Get top 50 most viewed reports
+//       const topReports = await getMostViewedReports(50);
+
+//       return topReports.data.map((report: any) => ({
+//          slug: report.attributes.slug,
+//       }));
+//    } catch (error) {
+//       console.error('Error generating static params:', error);
+//       // Return an empty array if fetching fails
+//       return [];
+//    }
+// }
 
 export async function generateMetadata({
    params,
@@ -33,13 +56,18 @@ export async function generateMetadata({
    const { attributes } = reportPage;
    const seo = attributes?.seo;
 
+   // Create languages map for alternates
+   const languagesMap: Record<string, string> = {};
+
+   SUPPORTED_LOCALES.filter((locale) => locale !== 'en').forEach((locale) => {
+      languagesMap[locale] = absoluteUrl(`/${locale}/reports/${params.slug}`);
+   });
+
    // Base metadata object
    const metadata: Metadata = {
-      // Title with fallbacks
       title: seo?.metaTitle || attributes?.title,
       description: seo?.metaDescription || attributes?.shortDescription,
 
-      // Open Graph
       openGraph: {
          title:
             seo?.metaSocial?.find(
@@ -71,7 +99,6 @@ export async function generateMetadata({
          siteName: 'UnivDatos',
       },
 
-      // Twitter
       twitter: {
          card: 'summary_large_image',
          title:
@@ -95,17 +122,13 @@ export async function generateMetadata({
          ],
       },
 
-      // Additional metadata
       keywords: seo?.keywords || '',
-      robots: seo?.metaRobots || 'index, follow',
-      viewport: seo?.metaViewport || 'width=device-width, initial-scale=1',
 
-      // Canonical URL
       alternates: {
          canonical: seo?.canonicalURL || absoluteUrl(`/reports/${params.slug}`),
+         languages: languagesMap,
       },
 
-      // Structured Data
       other: {
          'script:ld+json': [
             JSON.stringify({
@@ -124,7 +147,7 @@ export async function generateMetadata({
                   name: 'UnivDatos',
                   logo: {
                      '@type': 'ImageObject',
-                     url: absoluteUrl('/logo.png'), // Make sure to update with your actual logo path
+                     url: absoluteUrl('/logo.png'),
                   },
                },
                ...seo?.structuredData,
@@ -133,7 +156,7 @@ export async function generateMetadata({
       },
    };
 
-   // Add any extra scripts if defined in SEO
+   // Add extra scripts if defined
    if (seo?.extraScripts) {
       metadata.other = {
          ...metadata.other,
@@ -158,39 +181,77 @@ async function isCompanyProfile(slug: string) {
    return false;
 }
 
-const page: React.FC<{
+// Create a simple in-memory cache for related reports by industry
+const relatedReportsCache = new Map();
+
+const ReportDetailPage: React.FC<{
    params: {
       slug: string;
-      lang: string;
    };
 }> = async ({ params }) => {
-   let relatedReports, reportDataList;
+   let reportPage = null;
+   let relatedReportsData = [];
+
    try {
-      reportDataList = await getReportsPageBySlug(params.slug);
-      relatedReports = await getAllReports(1, 10, {
-         industry: reportDataList.data[0]?.attributes?.industry?.data?.id,
-      });
+      // Fetch the report data
+      const reportDataList = await getReportsPageBySlug(params.slug);
+      reportPage =
+         reportDataList.data?.length > 0 ? reportDataList.data[0] : null;
+
+      if (!reportPage) {
+         const hasCompanyProfile = await isCompanyProfile(params.slug);
+         if (hasCompanyProfile) {
+            redirect('/');
+         } else {
+            notFound();
+         }
+      }
+
+      // Get industry ID for related reports
+      const industryId = reportPage?.attributes?.industry?.data?.id;
+
+      // Check if related reports for this industry are already in cache
+      if (industryId && relatedReportsCache.has(industryId)) {
+         relatedReportsData = relatedReportsCache.get(industryId);
+      } else if (industryId) {
+         // Fetch related reports if not in cache
+         const relatedReports = await getAllReports(1, 10, {
+            industry: industryId,
+         });
+         relatedReportsData =
+            relatedReports?.data?.map((report: any) => report?.attributes) ??
+            [];
+
+         // Store in cache (if there are results)
+         if (relatedReportsData.length > 0) {
+            relatedReportsCache.set(industryId, relatedReportsData);
+         }
+      }
    } catch (err) {
-      console.log(err);
+      console.error('Error fetching report details:', err);
       const hasCompanyProfile = await isCompanyProfile(params.slug);
       if (!hasCompanyProfile) {
          notFound();
       } else {
-         redirect(`/${params.lang}`);
+         redirect('/');
       }
    }
-   let reportPage =
-      reportDataList.data?.length > 0 ? reportDataList.data[0] : null;
-   let relatedReportsData =
-      relatedReports?.data?.map((report: any) => report?.attributes) ?? [];
+
+   // If we still have no report page after all error handling, show not found
+   if (!reportPage) {
+      notFound();
+   }
+
    return (
       <div className='bg-s-50'>
          <div className='mt-4' />
          <Header data={reportPage} />
          <ReportBlock data={reportPage} />
-         <ExploreProjects reports={relatedReportsData} />
+         {relatedReportsData.length > 0 && (
+            <ExploreProjects reports={relatedReportsData} />
+         )}
       </div>
    );
 };
 
-export default page;
+export default ReportDetailPage;

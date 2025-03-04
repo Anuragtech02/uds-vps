@@ -20,20 +20,20 @@ const ExploreProjects = dynamic(
 export const revalidate = 86400; // 24 hours
 
 // Pre-generate the most popular report pages
-export async function generateStaticParams() {
-   try {
-      // Get top 50 most viewed reports
-      const topReports = await getMostViewedReports(50);
+// export async function generateStaticParams() {
+//    try {
+//       // Get top 50 most viewed reports
+//       const topReports = await getMostViewedReports(50);
 
-      return topReports.data.map((report: any) => ({
-         slug: report.attributes.slug,
-      }));
-   } catch (error) {
-      console.error('Error generating static params:', error);
-      // Return an empty array if fetching fails
-      return [];
-   }
-}
+//       return topReports.data.map((report: any) => ({
+//          slug: report.attributes.slug,
+//       }));
+//    } catch (error) {
+//       console.error('Error generating static params:', error);
+//       // Return an empty array if fetching fails
+//       return [];
+//    }
+// }
 
 export async function generateMetadata({
    params,

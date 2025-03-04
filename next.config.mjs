@@ -7,18 +7,18 @@ const nextConfig = {
    swcMinify: true,
 
    // Improved experimental features
-   experimental: {
-      optimizeCss: true,
-      optimizeServerReact: true,
-      serverComponentsExternalPackages: ['sharp'],
-      // Enable streaming for improved TTFB
-      // Optimize memory usage
-      memoryBasedWorkersCount: true,
-      // Pre-fetch capabilities to improve performance
-      // typedRoutes: true,
-      // More efficient chunking
-      optimizePackageImports: ['react', 'react-dom', 'lodash'],
-   },
+   // experimental: {
+   //    optimizeCss: true,
+   //    optimizeServerReact: true,
+   //    serverComponentsExternalPackages: ['sharp'],
+   //    // Enable streaming for improved TTFB
+   //    // Optimize memory usage
+   //    memoryBasedWorkersCount: true,
+   //    // Pre-fetch capabilities to improve performance
+   //    // typedRoutes: true,
+   //    // More efficient chunking
+   //    optimizePackageImports: ['react', 'react-dom', 'lodash'],
+   // },
 
    // Optimize Cloudfront-hosted images
    images: {
