@@ -155,9 +155,14 @@ async function Home() {
          getAllReports(1, 10, {
             status: 'UPCOMING',
          }),
-         getAllReports(1, 10, {
-            status: 'LIVE',
-         }),
+         getAllReports(
+            1,
+            10,
+            {
+               status: 'LIVE',
+            },
+            'oldPublishedAt:desc',
+         ),
          getBlogsListingPage(1, 1),
          getNewsListingPage(1, 3),
       ]);

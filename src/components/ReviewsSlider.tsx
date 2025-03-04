@@ -40,9 +40,9 @@ const ReviewsSlider: FC<ReviewsSliderProps> = ({ data }) => {
                      <p className='md:text-xl'>{data.review}</p>
 
                      <div className='mt-6'>
-                        <h3 className='font-semibold text-white md:text-xl'>
+                        <p className='h3 font-semibold !text-white md:text-xl'>
                            {data.name}
-                        </h3>
+                        </p>
                         <p className='uppercase'>{data.designation}</p>
                      </div>
                   </div>
