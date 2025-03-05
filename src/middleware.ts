@@ -160,7 +160,6 @@ export async function middleware(request: NextRequest) {
 
    // If it's a known valid route, skip processing
    if (validRoutes.includes(pathSlug)) {
-      console.log('Is valid route');
       // set pathname as x-url to headers
       return setLocaleCookies(
          request,
