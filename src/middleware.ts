@@ -81,6 +81,18 @@ export async function middleware(request: NextRequest) {
       return NextResponse.next();
    }
 
+   if (pathname.includes('googlea315237f11c90f9d')) {
+      return new Response(
+         'google-site-verification: googlea315237f11c90f9d.html',
+         {
+            headers: {
+               'Content-Type': 'text/html',
+               'Cache-Control': 'public, max-age=86400, s-maxage=86400', // Cache for 24 hours
+            },
+         },
+      );
+   }
+
    if (request.nextUrl.pathname === '/sitemap.xml') {
       return NextResponse.redirect(
          `${process.env.API_URL}/sitemap/index.xml`,
