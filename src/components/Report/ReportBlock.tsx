@@ -7,7 +7,7 @@ import ReportFAQs from './ReportFAQs';
 import { LocalizedLink } from '../commons/LocalizedLink';
 import Breadcrumbs from './Breadcrumbs';
 import dynamic from 'next/dynamic';
-import LicenseOptionsClient from './LicenseOptionsClient';
+import SidebarSectionIndexClient from './SidebarSectionIndexClient';
 import ReportBuyButtonClient from './ReportBuyButtonClient';
 
 const ReportEnquiryForm = dynamic(() => import('./ReportEnquiryForm'), {
@@ -177,8 +177,8 @@ const ReportBlock: React.FC<ReportBlockProps> = ({ data }) => {
             }}
          />
          <div className='flex flex-col items-start gap-4 lg:flex-row'>
-            <div className='sticky top-[100px] hidden flex-[0.23] flex-col gap-6 lg:flex'>
-               <LicenseOptionsClient reportData={reportData} />
+            <div className='sticky top-28 hidden w-1/4 flex-col gap-6 lg:flex'>
+               <SidebarSectionIndexClient reportData={reportData} />
                <div className='w-full rounded-md border border-s-400 bg-white px-4 py-6 pt-4'>
                   <p className='text-center text-lg font-semibold'>
                      {/* This is {reportData.rightSectionHeading} */}
@@ -204,7 +204,7 @@ const ReportBlock: React.FC<ReportBlockProps> = ({ data }) => {
                   </Button>
                </LocalizedLink>
             </div>
-            <div className='flex-[0.77]'>
+            <div className='flex-1'>
                <ReportBlockData data={reportData} />
                {data?.attributes?.faqList?.length > 0 && (
                   <ReportFAQs data={data} />

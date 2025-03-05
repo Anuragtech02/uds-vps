@@ -1,3 +1,4 @@
+'use client';
 import React, { useState, useEffect } from 'react';
 import Button from './Button';
 import { BiChevronDown, BiMenu, BiX } from 'react-icons/bi';
@@ -328,29 +329,27 @@ const Navbar: React.FC<INavbarProps> = ({ header, mainMenu, industries }) => {
                   <ul className='flex flex-wrap items-center gap-4 text-white'>
                      {mainMenu.map((item, index) =>
                         item.title?.toLowerCase()?.includes('industr') ? (
-                           <a
-                              title='industries'
-                              href={item.url ?? ''}
-                              key={index}
-                           >
-                              <DesktopMenuItem
-                                 item={{
-                                    ...item,
-                                    children: industries
-                                       .filter(
-                                          (industry) =>
-                                             !exclude.includes(
-                                                industry.name.toLowerCase(),
-                                             ),
-                                       )
-                                       .map(({ slug, name }) => ({
-                                          title: name,
-                                          url: `/reports?industries=${slug}&page=1`,
-                                       })),
-                                 }}
-                                 depth={0}
-                              />
-                           </a>
+                           <li key={index}>
+                              <a title='industries' href={item.url ?? ''}>
+                                 <DesktopMenuItem
+                                    item={{
+                                       ...item,
+                                       children: industries
+                                          .filter(
+                                             (industry) =>
+                                                !exclude.includes(
+                                                   industry.name.toLowerCase(),
+                                                ),
+                                          )
+                                          .map(({ slug, name }) => ({
+                                             title: name,
+                                             url: `/reports?industries=${slug}&page=1`,
+                                          })),
+                                    }}
+                                    depth={0}
+                                 />
+                              </a>
+                           </li>
                         ) : (
                            <DesktopMenuItem key={index} item={item} depth={0} />
                         ),

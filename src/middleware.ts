@@ -11,6 +11,7 @@ export const locales = SUPPORTED_LOCALES;
 export const defaultLocale = DEFAULT_LOCALE;
 
 function setLocaleCookies(
+   request: NextRequest,
    response: NextResponse,
    locale: string,
    currentHost: string,
@@ -42,6 +43,7 @@ function setLocaleCookies(
          );
       }
    }
+   response.headers.append('x-url', request.url);
    return response;
 }
 
@@ -158,7 +160,14 @@ export async function middleware(request: NextRequest) {
 
    // If it's a known valid route, skip processing
    if (validRoutes.includes(pathSlug)) {
-      return setLocaleCookies(nxtResponse.next(), potentialLocale, currentHost);
+      console.log('Is valid route');
+      // set pathname as x-url to headers
+      return setLocaleCookies(
+         request,
+         nxtResponse.next(),
+         potentialLocale,
+         currentHost,
+      );
    }
 
    // Check if it's a product-tag URL
@@ -266,6 +275,7 @@ export async function middleware(request: NextRequest) {
          SUPPORTED_LOCALES.includes(slug as (typeof SUPPORTED_LOCALES)[number])
       ) {
          return setLocaleCookies(
+            request,
             nxtResponse.next(),
             potentialLocale,
             currentHost,
@@ -297,7 +307,12 @@ export async function middleware(request: NextRequest) {
             );
 
             // Set locale cookies on the redirect
-            return setLocaleCookies(response, potentialLocale, currentHost);
+            return setLocaleCookies(
+               request,
+               response,
+               potentialLocale,
+               currentHost,
+            );
          }
 
          // If not found in blogs, check news collection
@@ -323,7 +338,12 @@ export async function middleware(request: NextRequest) {
                new URL(redirectUrl, request.url),
                301,
             );
-            return setLocaleCookies(response, potentialLocale, currentHost);
+            return setLocaleCookies(
+               request,
+               response,
+               potentialLocale,
+               currentHost,
+            );
          }
 
          // If not found in either collection, redirect to 404
@@ -342,7 +362,12 @@ export async function middleware(request: NextRequest) {
          const response = NextResponse.redirect(
             new URL(reportsUrl, request.url),
          );
-         return setLocaleCookies(response, potentialLocale, currentHost);
+         return setLocaleCookies(
+            request,
+            response,
+            potentialLocale,
+            currentHost,
+         );
       } catch (error) {
          console.error('Error processing legacy URL redirect:', error);
          return nxtResponse.redirect(new URL('/en/not-found', request.url));

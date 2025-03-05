@@ -1,7 +1,4 @@
-import { useSearchStore } from '@/stores/search.store';
 import { FaPhoneAlt } from 'react-icons/fa';
-import { FaCircleUser } from 'react-icons/fa6';
-import { IoIosSearch, IoMdCart } from 'react-icons/io';
 import { IoMail } from 'react-icons/io5';
 import { LocalizedLink } from './LocalizedLink';
 import ClientSearchHero from '../Home/ClientSearchHero';
@@ -15,13 +12,11 @@ interface ITopbarProps {
       createdAt: string;
       updatedAt: string;
       publishedAt: string;
-      logo?:  Media ;
+      logo?: Media;
       ctaButton: { id: number; title: string; link: string };
    };
-   industries: any[];
 }
-const Topbar = ({ header, industries }: ITopbarProps) => {
-   const searchStore = useSearchStore();
+const Topbar = ({ header }: ITopbarProps) => {
    return (
       <div className='container pb-2'>
          <div className='flex items-center justify-between gap-4 text-[#1D2C60]'>
@@ -47,13 +42,6 @@ const Topbar = ({ header, industries }: ITopbarProps) => {
             </div>
             <div className='gtranslate_wrapper !relative lg:hidden'></div>
             <div className='flex items-center gap-2 sm:gap-6'>
-               {/* <select title='Industry' id='' className='hidden md:block'>
-                  {industries?.map((industry) => (
-                     <option key={industry?.slug} value={industry?.slug}>
-                        {industry?.name}
-                     </option>
-                  ))}
-               </select> */}
                <div className='flex flex-col items-start gap-1 text-xs md:text-base'>
                   <p className='flex items-center gap-2'>
                      <FaPhoneAlt />

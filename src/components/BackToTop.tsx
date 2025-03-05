@@ -33,7 +33,7 @@ const BackToTop = () => {
          {isVisible && (
             <button
                onClick={scrollToTop}
-               className='fixed bottom-8 left-8 right-auto z-50 rounded-full bg-blue-1 p-3 text-white shadow-lg ring-2 ring-white transition-all duration-300 hover:bg-blue-2 focus:outline-none focus:ring-2 focus:ring-blue-3 focus:ring-offset-2 md:bottom-44 md:left-auto md:right-8'
+               className='fixed bottom-8 left-8 right-auto z-50 hidden rounded-full bg-blue-1 p-3 text-white shadow-lg ring-2 ring-white transition-all duration-300 hover:bg-blue-2 focus:outline-none focus:ring-2 focus:ring-blue-3 focus:ring-offset-2 sm:block md:bottom-44 md:left-auto md:right-8'
                aria-label='Back to top'
             >
                <BiChevronUp size={24} />

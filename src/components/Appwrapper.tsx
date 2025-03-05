@@ -10,6 +10,7 @@ const SearchWrapper = dynamic(() => import('./Search/SearchWrapper'));
 
 interface AppwrapperProps {
    children: React.ReactNode;
+   pathname: string;
 }
 
 export const variants = {
@@ -105,7 +106,7 @@ export const mapFooterQuickLinks = (footerQuickLinksData: any): MenuItem[] => {
    return items.map(mapMenuItem);
 };
 
-const Appwrapper: FC<AppwrapperProps> = async ({ children }) => {
+const Appwrapper: FC<AppwrapperProps> = async ({ children, pathname }) => {
    let globalData;
    try {
       const response = await getRootConfig();
@@ -127,6 +128,7 @@ const Appwrapper: FC<AppwrapperProps> = async ({ children }) => {
             header={header}
             industries={industries}
             mainMenu={mappedHeaderMenu}
+            pathname={pathname}
          />
          <Suspense fallback={<PageSwitchLoading />}>
             <main key='main' className='lg:min-h-screen-vh'>

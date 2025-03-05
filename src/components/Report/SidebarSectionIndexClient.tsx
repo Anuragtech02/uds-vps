@@ -118,7 +118,7 @@ const reportIndex = [
    { title: 'FAQs', id: 'faq-section' },
 ];
 
-const LicenseOptionsClient: React.FC<Props> = ({ reportData }) => {
+const SidebarSectionIndex: React.FC<Props> = ({ reportData }) => {
    const sectionIds = reportIndex.map((item) => item.id);
    const activeSection = useMiddleScreenScrollSpy(sectionIds);
 
@@ -149,4 +149,4 @@ const LicenseOptionsClient: React.FC<Props> = ({ reportData }) => {
    );
 };
 
-export default LicenseOptionsClient;
+export default SidebarSectionIndex;

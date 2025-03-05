@@ -1,4 +1,3 @@
-import type { Metadata } from 'next';
 import '@/assets/styles/style.scss';
 import Appwrapper from '@/components/Appwrapper';
 import Script from 'next/script';
@@ -9,6 +8,7 @@ import { GoogleTagManager } from '@next/third-parties/google';
 import { GoogleAnalytics } from '@next/third-parties/google';
 import BackToTop from '@/components/BackToTop';
 import Head from 'next/head';
+import { headers } from 'next/headers';
 
 const bricolageGrotesque = Bricolage_Grotesque({
    subsets: ['latin'],
@@ -37,65 +37,13 @@ export default function RootLayout({
 }: Readonly<{
    children: React.ReactNode;
 }>) {
+   const serverHeaders = headers();
+   const pathname = serverHeaders.get('x-url');
    return (
       <html
          lang='en'
          className={`${manrope.variable} ${bricolageGrotesque.variable} `}
       >
-         <Head>
-            {/* Add critical CSS for navigation inline */}
-            <style
-               dangerouslySetInnerHTML={{
-                  __html: `
-          /* Critical navigation styles to prevent FOUC */
-          .bg-blue-1 {
-            background-color: #09184c; /* Match your blue-1 color */
-          }
-          
-          .bg-blue-2 {
-            background-color: #1e3a8a; /* Match your blue-2 color */
-          }
-          
-          .bg-blue-3 {
-            background-color: #1e40af; /* Match your blue-3 color */
-          }
-          
-          .text-white {
-            color: #ffffff;
-          }
-          
-          .rounded-md {
-            border-radius: 0.375rem;
-          }
-          
-          /* Mobile menu critical styles */
-          .fixed {
-            position: fixed;
-          }
-          
-          .absolute {
-            position: absolute;
-          }
-          
-          .invisible {
-            visibility: hidden;
-          }
-          
-          /* Force navigation to be hidden during initial load on mobile */
-          @media (max-width: 1023px) {
-            .mobile-nav-loading {
-              opacity: 0;
-              transition: opacity 0.2s ease-in;
-            }
-            
-            .mobile-nav-loaded {
-              opacity: 1;
-            }
-          }
-        `,
-               }}
-            />
-         </Head>
          <GoogleTagManager gtmId='GTM-5F572ZK' />
          <link rel='preconnect' href='https://d21aa2ghywi6oj.cloudfront.net' />
          <link
@@ -103,7 +51,7 @@ export default function RootLayout({
             href='https://d21aa2ghywi6oj.cloudfront.net'
          />
          <body>
-            <Appwrapper>{children}</Appwrapper>
+            <Appwrapper pathname={pathname as string}>{children}</Appwrapper>
             <BackToTop />
             <HandleRTL />
             <Script id='gtranslate-settings' defer strategy='afterInteractive'>
