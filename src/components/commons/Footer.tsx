@@ -13,12 +13,12 @@ import { BiLoaderCircle } from 'react-icons/bi';
 import Popup from '../Popup';
 import DemoRequestForm from '../Home/DemoRequestForm';
 import { FaPinterest, FaYoutube } from 'react-icons/fa';
+import StrapiImage from '../StrapiImage/StrapiImage';
 
 const LOGO_DIMENSIONS = { width: 150, height: 50 };
-const EARTH_DIMENSIONS = { width: 1920, height: 1080 }; 
+const EARTH_DIMENSIONS = { width: 1920, height: 1080 };
 
 const Footer = ({ footer, quickLinks }: any) => {
-
    return (
       <>
          {/* {invalidRoutes.includes(pathname) ? null : (
@@ -27,25 +27,24 @@ const Footer = ({ footer, quickLinks }: any) => {
             </div>
          )} */}
          <footer className='bg-blue-1 pb-12 text-white [&>a]:hover:underline'>
-            <div className='relative border-b border-blue-4 py-12 text-center h-[300px] md:h-[350px] xl:h-[300px] overflow-hidden'>
+            <div className='relative h-[300px] overflow-hidden border-b border-blue-4 py-12 text-center md:h-[350px] xl:h-[300px]'>
                <div className='absolute inset-0 bottom-0 z-[1] h-full w-full'>
                   <Image
                      src={earth}
                      alt='Earth background'
                      className='object-cover'
                      sizes='100vw'
-                     priority
                      {...EARTH_DIMENSIONS}
                   />
                </div>
                <div className='container relative z-[3]'>
                   <div className='min-h-[60px]'>
-                  <p
-                     className='text-[2.25rem] font-bold md:text-[3.5rem]'
-                     dangerouslySetInnerHTML={{
-                        __html: footer?.footerCTA?.title,
-                     }}
-                  ></p>
+                     <p
+                        className='text-[2.25rem] font-bold md:text-[3.5rem]'
+                        dangerouslySetInnerHTML={{
+                           __html: footer?.footerCTA?.title,
+                        }}
+                     ></p>
                   </div>
                   {footer?.footerCTA?.description?.trim()?.length > 0 && (
                      <p className='mx-auto mt-4 text-s-300 md:w-2/3 md:text-2xl'>
@@ -66,15 +65,15 @@ const Footer = ({ footer, quickLinks }: any) => {
                   {/* Company Info */}
                   <div className='col-span-1 md:col-span-2'>
                      <LocalizedLink href='/'>
-                     <div className='h-[50px] w-[150px]'>
-
-                        <Image
-                           src={footer?.companyInfo?.logo?.url}
-                           alt='UnivDatos'
-                           unoptimized
-                           {...LOGO_DIMENSIONS}
-                        />
-                     </div>
+                        <div className='h-[50px] w-[150px]'>
+                           <StrapiImage
+                              media={footer?.companyInfo?.logo}
+                              size='small'
+                              alt='UnivDatos'
+                              unoptimized
+                              {...LOGO_DIMENSIONS}
+                           />
+                        </div>
                      </LocalizedLink>
                      <p className='mt-4 text-blue-9 md:w-2/3'>
                         {footer?.companyInfo?.companyDescription}

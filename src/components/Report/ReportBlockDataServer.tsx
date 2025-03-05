@@ -6,7 +6,7 @@ interface ReportBlockDataProps {
 }
 
 // Server-side HTML processing function for research methodology
-const processAndRemoveH2FromRM = (rmData: string): string => {
+const processRM = (rmData: string): string => {
    if (!rmData) return '';
 
    try {
@@ -22,6 +22,46 @@ const processAndRemoveH2FromRM = (rmData: string): string => {
       if (priceBreakup) {
          priceBreakup.remove();
       }
+
+      const images = doc.querySelectorAll('img');
+
+      images.forEach((img: HTMLImageElement, idx: number) => {
+         const tempUrl = img.getAttribute('src');
+         const originalSrc = tempUrl ? replaceWithCloudfrontURL(tempUrl) : '';
+         if (originalSrc && originalSrc.includes('://')) {
+            try {
+               // Parse the URL to extract components
+               const urlObj = new URL(originalSrc);
+               const pathSegments = urlObj.pathname.split('/');
+               const filename = pathSegments[pathSegments.length - 1];
+
+               // Create the base path without the filename
+               const basePath = pathSegments
+                  .slice(0, pathSegments.length - 1)
+                  .join('/');
+
+               // Create URLs for different sizes
+               const smallSrc = `${urlObj.protocol}//${urlObj.host}${basePath}/small_${filename}${urlObj.search}`;
+               const mediumSrc = `${urlObj.protocol}//${urlObj.host}${basePath}/medium_${filename}${urlObj.search}`;
+
+               // Set srcset attribute
+               img.setAttribute(
+                  'srcset',
+                  `${smallSrc} 480w, ${mediumSrc} 768w, ${originalSrc} 1280w`,
+               );
+
+               // Set sizes attribute based on typical responsive behavior
+               img.setAttribute(
+                  'sizes',
+                  '(max-width: 480px) 100vw, (max-width: 768px) 50vw, 33vw',
+               );
+               img.setAttribute('src', originalSrc);
+               img.setAttribute('loading', 'lazy');
+            } catch (error) {
+               console.error('Error processing image URL:', error);
+            }
+         }
+      });
 
       return doc.body.innerHTML;
    } catch (error) {
@@ -96,7 +136,7 @@ const addSrcSetToImages = (htmlContent: string): string => {
 export default function ReportBlockDataServer({ data }: ReportBlockDataProps) {
    // Process both HTML sections
    const rmData = data.researchMethodology
-      ? processAndRemoveH2FromRM(data.researchMethodology)
+      ? processRM(data.researchMethodology)
       : '';
    const processedDescription = data.description
       ? addSrcSetToImages(data.description)

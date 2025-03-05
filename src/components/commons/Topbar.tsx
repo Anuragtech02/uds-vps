@@ -23,7 +23,7 @@ const Topbar = ({ header }: ITopbarProps) => {
             <LocalizedLink href='/' className='hidden items-center lg:flex'>
                <StrapiImage
                   media={header?.logo as Media}
-                  size='original'
+                  size='medium'
                   alt='logo'
                   width={200}
                   height={80}

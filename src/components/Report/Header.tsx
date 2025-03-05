@@ -217,10 +217,11 @@ const Header: React.FC<{ data: any }> = ({ data }) => {
                         <LocalizedLink href='/'>
                            <StrapiImage
                               media={{
-                                 url: 'https://udsweb.s3.ap-south-1.amazonaws.com/UDS_Logo_no_BG_4f5a475221.png',
+                                 url: 'https://d21aa2ghywi6oj.cloudfront.net/medium_UDS_Logo_no_BG_2e6680dcdf.webp',
                                  width: 120,
                                  height: 50,
                               }}
+                              size='small'
                               objectFit='contain'
                               className='hidden !h-[25px] !object-contain pr-2 lg:block lg:pr-6'
                            />

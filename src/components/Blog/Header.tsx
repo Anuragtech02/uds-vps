@@ -1,16 +1,8 @@
 'use client';
-import Button from '../commons/Button';
 import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
-import StrapiImage from '../StrapiImage/StrapiImage';
-import { CalendarSvg, CommentSvg, TagIcon } from '../commons/Icons';
+import { CalendarSvg, TagIcon } from '../commons/Icons';
 import { LocalizedLink } from '../commons/LocalizedLink';
-
-const industries = [
-   'AI in drug discovery',
-   'AI in clinical trials',
-   'AI in genomics',
-];
 
 const Header: React.FC<{ blog: any }> = ({ blog }) => {
    const headerRef1 = useRef<HTMLDivElement>(null);
