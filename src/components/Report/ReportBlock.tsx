@@ -9,6 +9,7 @@ import Breadcrumbs from './Breadcrumbs';
 import dynamic from 'next/dynamic';
 import SidebarSectionIndexClient from './SidebarSectionIndexClient';
 import ReportBuyButtonClient from './ReportBuyButtonClient';
+import ReportBlockDataServer from './ReportBlockDataServer';
 
 const ReportEnquiryForm = dynamic(() => import('./ReportEnquiryForm'), {
    loading: () => (
@@ -205,7 +206,8 @@ const ReportBlock: React.FC<ReportBlockProps> = ({ data }) => {
                </LocalizedLink>
             </div>
             <div className='flex-1'>
-               <ReportBlockData data={reportData} />
+               {/* <ReportBlockData data={reportData} /> */}
+               <ReportBlockDataServer data={reportData} />
                {data?.attributes?.faqList?.length > 0 && (
                   <ReportFAQs data={data} />
                )}

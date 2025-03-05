@@ -1,27 +1,106 @@
 import dynamic from 'next/dynamic';
-import { DOMParser } from 'linkedom';
+import { JSDOM } from 'jsdom';
 
 interface ReportBlockDataProps {
    data: any;
 }
 
-// Server-side HTML processing function
+// Server-side HTML processing function for research methodology
 const processAndRemoveH2FromRM = (rmData: string): string => {
-   const parser = new DOMParser();
-   const doc = parser.parseFromString(rmData, 'text/html');
-   const h2 = doc.querySelector('h2');
-   if (h2 && h2.textContent === 'Research Methodology') {
-      h2.remove();
+   if (!rmData) return '';
+
+   try {
+      const dom = new JSDOM(rmData);
+      const doc = dom.window.document;
+
+      const h2 = doc.querySelector('h2');
+      if (h2 && h2.textContent === 'Research Methodology') {
+         h2.remove();
+      }
+
+      const priceBreakup = doc.querySelector('.price-breakup');
+      if (priceBreakup) {
+         priceBreakup.remove();
+      }
+
+      return doc.body.innerHTML;
+   } catch (error) {
+      console.error('Error processing research methodology:', error);
+      return rmData;
    }
-   const priceBreakup = doc.querySelector('.price-breakup');
-   if (priceBreakup) {
-      priceBreakup.remove();
-   }
-   return doc.body.innerHTML;
 };
 
-export default function ReportBlockData({ data }: ReportBlockDataProps) {
-   const rmData = processAndRemoveH2FromRM(data.researchMethodology);
+function replaceWithCloudfrontURL(imageUrl: string) {
+   const cloudfrontURL = 'd21aa2ghywi6oj.cloudfront.net';
+   return imageUrl.replace('udsweb.s3.ap-south-1.amazonaws.com', cloudfrontURL);
+}
+
+// Server-side HTML processing function to add srcset to images
+const addSrcSetToImages = (htmlContent: string): string => {
+   if (!htmlContent) return htmlContent;
+
+   try {
+      const dom = new JSDOM(htmlContent);
+      const doc = dom.window.document;
+
+      const images = doc.querySelectorAll('img');
+
+      images.forEach((img: HTMLImageElement, idx: number) => {
+         const tempUrl = img.getAttribute('src');
+         const originalSrc = tempUrl ? replaceWithCloudfrontURL(tempUrl) : '';
+         if (originalSrc && originalSrc.includes('://')) {
+            try {
+               // Parse the URL to extract components
+               const urlObj = new URL(originalSrc);
+               const pathSegments = urlObj.pathname.split('/');
+               const filename = pathSegments[pathSegments.length - 1];
+
+               // Create the base path without the filename
+               const basePath = pathSegments
+                  .slice(0, pathSegments.length - 1)
+                  .join('/');
+
+               // Create URLs for different sizes
+               const smallSrc = `${urlObj.protocol}//${urlObj.host}${basePath}/small_${filename}${urlObj.search}`;
+               const mediumSrc = `${urlObj.protocol}//${urlObj.host}${basePath}/medium_${filename}${urlObj.search}`;
+               const largeSrc = `${urlObj.protocol}//${urlObj.host}${basePath}/large_${filename}${urlObj.search}`;
+
+               // Set srcset attribute
+               img.setAttribute(
+                  'srcset',
+                  `${smallSrc} 480w, ${mediumSrc} 768w, ${largeSrc} 1280w`,
+               );
+
+               // Set sizes attribute based on typical responsive behavior
+               img.setAttribute(
+                  'sizes',
+                  '(max-width: 480px) 100vw, (max-width: 768px) 50vw, 33vw',
+               );
+               img.setAttribute('src', largeSrc);
+               if (idx > 0) {
+                  img.setAttribute('loading', 'lazy');
+               }
+            } catch (error) {
+               console.error('Error processing image URL:', error);
+            }
+         }
+      });
+
+      return doc.body.innerHTML;
+   } catch (error) {
+      console.error('Error during HTML processing:', error);
+      return htmlContent; // Return original content if processing fails
+   }
+};
+
+export default function ReportBlockDataServer({ data }: ReportBlockDataProps) {
+   // Process both HTML sections
+   const rmData = data.researchMethodology
+      ? processAndRemoveH2FromRM(data.researchMethodology)
+      : '';
+   const processedDescription = data.description
+      ? addSrcSetToImages(data.description)
+      : '';
 
    // Dynamically import the interactive Table of Contents component as a client component
    const InteractiveTOC = dynamic(() => import('./InteractiveTOC'), {
@@ -33,7 +112,7 @@ export default function ReportBlockData({ data }: ReportBlockDataProps) {
          <div
             id='report-data'
             className='report-content section-anchor'
-            dangerouslySetInnerHTML={{ __html: data.description }}
+            dangerouslySetInnerHTML={{ __html: processedDescription }}
          />
 
          <div className='section-anchor'>
