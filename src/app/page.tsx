@@ -18,6 +18,8 @@ import { absoluteUrl } from '@/utils/generic-methods';
 import { SUPPORTED_LOCALES } from '@/utils/constants';
 import dynamic from 'next/dynamic';
 
+export const revalidate = 3600;
+
 const RecentResearch = dynamic(
    () => import('@/components/Home/RecentResearch'),
 );
