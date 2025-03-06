@@ -255,6 +255,7 @@ export const getAboutPage = async () => {
          'ctaBanner',
          'ctaBanner.ctaButton',
          'mediaSecrtionLogos',
+         'seo.metaImage.url',
       ]);
       const response = await fetchClient('/about-page?' + populateQuery, {
          headers: getAuthHeaders(),
@@ -347,6 +348,7 @@ export const getBlogDetails = async (slug: string) => {
          'industries',
          'author',
          'author.profilePicture',
+         'seo.metaImage.url',
       ]);
       const response = await fetchClient(
          `/blogs?filters[slug][$eq]=${slug}&` + populateQuery,
@@ -368,6 +370,7 @@ export const getNewsBySlug = async (slug: string) => {
          'industries',
          'author',
          'author.profilePicture',
+         'seo.metaImage.url',
       ]);
       const response = await fetchClient(
          `/news-articles?filters[slug][$eq]=${slug}&` + populateQuery,
@@ -433,8 +436,9 @@ export const getServiceBySlug = async (slug: string) => {
 };
 
 export const getPrivacyPolicy = async () => {
+   const populateQuery = buildPopulateQuery(['seo.metaImage.url']);
    try {
-      const response = await fetchClient('/privacy-policy', {
+      const response = await fetchClient('/privacy-policy?' + populateQuery, {
          headers: getAuthHeaders(),
       });
       return await response;
@@ -445,8 +449,9 @@ export const getPrivacyPolicy = async () => {
 };
 
 export const getTermsAndConditions = async () => {
+   const populateQuery = buildPopulateQuery(['seo.metaImage.url']);
    try {
-      const response = await fetchClient('/t-and-c', {
+      const response = await fetchClient('/t-and-c?' + populateQuery, {
          headers: getAuthHeaders(),
       });
       return await response;
@@ -457,8 +462,9 @@ export const getTermsAndConditions = async () => {
 };
 
 export const getLegal = async () => {
+   const populateQuery = buildPopulateQuery(['seo.metaImage.url']);
    try {
-      const response = await fetchClient('/legal', {
+      const response = await fetchClient('/legal?' + populateQuery, {
          headers: getAuthHeaders(),
       });
       return await response;
@@ -469,8 +475,9 @@ export const getLegal = async () => {
 };
 
 export const getDisclaimer = async () => {
+   const populateQuery = buildPopulateQuery(['seo.metaImage.url']);
    try {
-      const response = await fetchClient('/disclaimer', {
+      const response = await fetchClient('/disclaimer?' + populateQuery, {
          headers: getAuthHeaders(),
       });
       return await response;
