@@ -103,12 +103,12 @@ const addSrcSetToImages = (htmlContent: string): string => {
                // Create URLs for different sizes
                const smallSrc = `${urlObj.protocol}//${urlObj.host}${basePath}/small_${filename}${urlObj.search}`;
                const mediumSrc = `${urlObj.protocol}//${urlObj.host}${basePath}/medium_${filename}${urlObj.search}`;
-               const largeSrc = `${urlObj.protocol}//${urlObj.host}${basePath}/large_${filename}${urlObj.search}`;
+               // const largeSrc = `${urlObj.protocol}//${urlObj.host}${basePath}/large_${filename}${urlObj.search}`;
 
                // Set srcset attribute
                img.setAttribute(
                   'srcset',
-                  `${smallSrc} 480w, ${mediumSrc} 768w, ${largeSrc} 1280w`,
+                  `${smallSrc} 480w, ${mediumSrc} 768w, ${originalSrc} 1280w`,
                );
 
                // Set sizes attribute based on typical responsive behavior
@@ -116,7 +116,7 @@ const addSrcSetToImages = (htmlContent: string): string => {
                   'sizes',
                   '(max-width: 480px) 100vw, (max-width: 768px) 50vw, 33vw',
                );
-               img.setAttribute('src', largeSrc);
+               img.setAttribute('src', originalSrc);
                if (idx > 0) {
                   img.setAttribute('loading', 'lazy');
                }
