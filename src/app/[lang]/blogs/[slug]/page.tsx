@@ -11,7 +11,7 @@ import { absoluteUrl } from '@/utils/generic-methods';
 import { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 
-export const revdalidate = 3600;
+export const revalidate = 3600;
 
 export async function generateMetadata({
    params,
