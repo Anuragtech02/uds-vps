@@ -4,9 +4,130 @@ import AboutData from '@/components/About/AboutData';
 import Hero from '@/components/About/Hero';
 
 import MediaCitation from '@/components/commons/MediaCitation';
-import PageSwitchLoading from '@/components/PageSwitchLoading';
 import { getAboutPage } from '@/utils/api/services';
-import { Suspense } from 'react';
+import { SUPPORTED_LOCALES } from '@/utils/constants';
+import { absoluteUrl } from '@/utils/generic-methods';
+import { Metadata } from 'next';
+
+export async function generateMetadata(): Promise<Metadata> {
+   try {
+      const aboutData = await getAboutPage();
+      const { attributes } = aboutData.data;
+      const seo = attributes?.seo;
+
+      // Create languages map for alternates
+      const languagesMap: Record<string, string> = {};
+
+      // Add all supported locales except English
+      SUPPORTED_LOCALES.filter((locale) => locale !== 'en').forEach(
+         (locale) => {
+            languagesMap[locale] = absoluteUrl(`/${locale}/about`);
+         },
+      );
+
+      const metadata: Metadata = {
+         title: seo?.metaTitle || 'About UnivDatos',
+         description: seo?.metaDescription || attributes?.heroHeading,
+
+         openGraph: {
+            title:
+               seo?.metaSocial?.find(
+                  (social: any) => social.socialNetwork === 'facebook',
+               )?.title ||
+               seo?.metaTitle ||
+               'About UnivDatos',
+            description:
+               seo?.metaSocial?.find(
+                  (social: any) => social.socialNetwork === 'facebook',
+               )?.description ||
+               seo?.metaDescription ||
+               attributes?.heroHeading,
+            type: 'website',
+            url: absoluteUrl('/about'),
+            images: [
+               {
+                  url:
+                     seo?.metaSocial?.find(
+                        (social: any) => social.socialNetwork === 'facebook',
+                     )?.image?.url ||
+                     seo?.metaImage?.url ||
+                     absoluteUrl('/logo.png'),
+                  width: 1200,
+                  height: 630,
+                  alt: 'About UnivDatos',
+               },
+            ],
+            siteName: 'UnivDatos',
+         },
+
+         twitter: {
+            card: 'summary_large_image',
+            title:
+               seo?.metaSocial?.find(
+                  (social: any) => social.socialNetwork === 'twitter',
+               )?.title ||
+               seo?.metaTitle ||
+               'About UnivDatos',
+            description:
+               seo?.metaSocial?.find(
+                  (social: any) => social.socialNetwork === 'twitter',
+               )?.description ||
+               seo?.metaDescription ||
+               attributes?.heroHeading,
+            images: [
+               seo?.metaSocial?.find(
+                  (social: any) => social.socialNetwork === 'twitter',
+               )?.image?.url ||
+                  seo?.metaImage?.url ||
+                  absoluteUrl('/logo.png'),
+            ],
+         },
+
+         keywords: seo?.keywords || 'About, UnivDatos, Research, Data',
+
+         alternates: {
+            canonical: seo?.canonicalURL || absoluteUrl('/about'),
+            languages: languagesMap,
+         },
+
+         other: {
+            'script:ld+json': [
+               JSON.stringify({
+                  '@context': 'https://schema.org',
+                  '@type': 'Organization',
+                  name: 'UnivDatos',
+                  url: absoluteUrl('/about'),
+                  logo: absoluteUrl('/logo.png'),
+                  description: attributes?.heroHeading,
+                  sameAs: [
+                     'https://twitter.com/univdatos',
+                     'https://www.linkedin.com/company/univdatos',
+                  ],
+                  ...seo?.structuredData,
+               }),
+            ],
+         },
+      };
+
+      // Add extra scripts if defined
+      if (seo?.extraScripts) {
+         metadata.other = {
+            ...metadata.other,
+            ...seo.extraScripts,
+         };
+      }
+
+      return metadata;
+   } catch (error) {
+      console.error('Error generating metadata:', error);
+      // Return default metadata if there's an error
+      return {
+         title: 'About UnivDatos',
+         description: 'Learn about UnivDatos and our mission.',
+      };
+   }
+}
+
 interface heroItem {
    heroHeading: string;
    heroPrimaryCTAButton: {

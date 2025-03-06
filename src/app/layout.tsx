@@ -7,8 +7,9 @@ import { Bricolage_Grotesque, Manrope } from 'next/font/google';
 import { GoogleTagManager } from '@next/third-parties/google';
 import { GoogleAnalytics } from '@next/third-parties/google';
 import BackToTop from '@/components/BackToTop';
-import Head from 'next/head';
 import { headers } from 'next/headers';
+
+export const runtime = 'nodejs';
 
 const bricolageGrotesque = Bricolage_Grotesque({
    subsets: ['latin'],

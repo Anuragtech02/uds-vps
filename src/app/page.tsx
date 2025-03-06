@@ -138,41 +138,6 @@ export async function generateMetadata(): Promise<Metadata> {
    return metadata;
 }
 
-export async function getStaticProps() {
-   try {
-      const [
-         homePage,
-         upcomingReports,
-         latestReports,
-         latestBlogs,
-         latestNewsArticles,
-      ] = await Promise.all([
-         getHomePage(),
-         getAllReports(1, 10, { status: 'UPCOMING' }),
-         getAllReports(1, 10, { status: 'LIVE' }, 'oldPublishedAt:desc'),
-         getBlogsListingPage(1, 1),
-         getNewsListingPage(1, 3),
-      ]);
-
-      return {
-         props: {
-            homePage,
-            upcomingReports,
-            latestReports,
-            latestBlogs,
-            latestNewsArticles,
-         },
-         // In App Router, this is handled by the revalidate export above
-         // revalidate: 3600,
-      };
-   } catch (error) {
-      console.error('Error fetching homepage data:', error);
-      return {
-         notFound: true,
-      };
-   }
-}
-
 async function Home() {
    let homePage: Awaited<ReturnType<typeof getHomePage>>;
    let upcomingReports: Awaited<ReturnType<typeof getAllReports>>;
