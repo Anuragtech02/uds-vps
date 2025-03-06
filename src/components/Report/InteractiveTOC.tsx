@@ -38,7 +38,7 @@ export default function InteractiveTOC({
 
    return (
       <>
-         <div className='mb-4 flex items-center justify-between'>
+         <div className='-mt-6 mb-4 flex w-full items-center justify-start'>
             <button
                onClick={() => {
                   if (expandedSections.size === tableOfContent.length) {
@@ -47,7 +47,7 @@ export default function InteractiveTOC({
                      expandAll();
                   }
                }}
-               className='font-medium text-blue-1 hover:text-blue-2'
+               className='ml-auto font-medium text-blue-1 hover:text-blue-2 hover:underline'
                type='button'
             >
                {expandedSections.size === tableOfContent.length
