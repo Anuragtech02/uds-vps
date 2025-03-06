@@ -51,6 +51,8 @@ export default function RootLayout({
             rel='dns-prefetch'
             href='https://d21aa2ghywi6oj.cloudfront.net'
          />
+         <link rel='icon' type='image/svg+xml' href='/favicon.svg' />
+         <link rel='icon' type='image/png' href='/favicon.png' />
          <body>
             <Appwrapper pathname={pathname as string}>{children}</Appwrapper>
             <BackToTop />
