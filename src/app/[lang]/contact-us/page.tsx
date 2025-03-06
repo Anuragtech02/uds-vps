@@ -2,6 +2,139 @@
 import ContactDetails from '@/components/Contact/ContactDetails';
 import ContactForm from '@/components/Contact/ContactForm';
 import { getContagePageData } from '@/utils/api/services';
+import { SUPPORTED_LOCALES } from '@/utils/constants';
+import { absoluteUrl } from '@/utils/generic-methods';
+import { Metadata } from 'next';
+
+// Set ISR revalidation period to 1 hour (3600 seconds)
+export const revalidate = 86400;
+
+// Enhanced metadata with more SEO attributes
+export async function generateMetadata(): Promise<Metadata> {
+   try {
+      const contactData = await getContagePageData();
+      const { attributes } = contactData.data;
+      const seo = attributes?.seo;
+
+      // Create languages map for alternates
+      const languagesMap: Record<string, string> = {};
+
+      // Add all supported locales except English
+      SUPPORTED_LOCALES.filter((locale) => locale !== 'en').forEach(
+         (locale) => {
+            languagesMap[locale] = absoluteUrl(`/${locale}/contact`);
+         },
+      );
+
+      // Use SEO data from CMS if available, otherwise use default metadata
+      const metadata: Metadata = {
+         title: seo?.metaTitle || 'Contact Us | UnivDatos',
+         description:
+            seo?.metaDescription ||
+            'Get in touch with UnivDatos. Contact us for inquiries, support, or collaboration opportunities.',
+
+         openGraph: {
+            title:
+               seo?.metaSocial?.find(
+                  (social: any) => social.socialNetwork === 'facebook',
+               )?.title ||
+               seo?.metaTitle ||
+               'Contact Us | UnivDatos',
+            description:
+               seo?.metaSocial?.find(
+                  (social: any) => social.socialNetwork === 'facebook',
+               )?.description ||
+               seo?.metaDescription ||
+               'Get in touch with UnivDatos. Contact us for inquiries, support, or collaboration opportunities.',
+            type: 'website',
+            url: absoluteUrl('/contact'),
+            images: [
+               {
+                  url:
+                     seo?.metaSocial?.find(
+                        (social: any) => social.socialNetwork === 'facebook',
+                     )?.image?.url ||
+                     seo?.metaImage?.url ||
+                     absoluteUrl('/logo.png'),
+                  width: 1200,
+                  height: 630,
+                  alt: 'Contact UnivDatos',
+               },
+            ],
+            siteName: 'UnivDatos',
+         },
+
+         twitter: {
+            card: 'summary_large_image',
+            title:
+               seo?.metaSocial?.find(
+                  (social: any) => social.socialNetwork === 'twitter',
+               )?.title ||
+               seo?.metaTitle ||
+               'Contact Us | UnivDatos',
+            description:
+               seo?.metaSocial?.find(
+                  (social: any) => social.socialNetwork === 'twitter',
+               )?.description ||
+               seo?.metaDescription ||
+               'Get in touch with UnivDatos. Contact us for inquiries, support, or collaboration opportunities.',
+            images: [
+               seo?.metaSocial?.find(
+                  (social: any) => social.socialNetwork === 'twitter',
+               )?.image?.url ||
+                  seo?.metaImage?.url ||
+                  absoluteUrl('/logo.png'),
+            ],
+         },
+
+         keywords:
+            seo?.keywords || 'Contact, UnivDatos, Support, Inquiries, Location',
+
+         alternates: {
+            canonical: seo?.canonicalURL || absoluteUrl('/contact'),
+            languages: languagesMap,
+         },
+
+         other: {
+            'script:ld+json': [
+               JSON.stringify({
+                  '@context': 'https://schema.org',
+                  '@type': 'ContactPage',
+                  name: 'UnivDatos Contact Page',
+                  url: absoluteUrl('/contact'),
+                  description:
+                     'Get in touch with UnivDatos. Contact us for inquiries, support, or collaboration opportunities.',
+                  ...seo?.structuredData,
+               }),
+            ],
+         },
+      };
+
+      // Add extra scripts if defined
+      if (seo?.extraScripts) {
+         metadata.other = {
+            ...metadata.other,
+            ...seo.extraScripts,
+         };
+      }
+
+      return metadata;
+   } catch (error) {
+      console.error('Error generating metadata:', error);
+      // Return default metadata if there's an error
+      return {
+         title: 'Contact Us | UnivDatos',
+         description:
+            'Get in touch with UnivDatos. Contact us for inquiries, support, or collaboration opportunities.',
+         openGraph: {
+            title: 'Contact Us | UnivDatos',
+            description:
+               'Get in touch with UnivDatos. Contact us for inquiries, support, or collaboration opportunities.',
+            type: 'website',
+         },
+      };
+   }
+}
 
 const Contact = async () => {
    let contactPageData: Awaited<ReturnType<typeof getContagePageData>>;
