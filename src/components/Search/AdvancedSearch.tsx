@@ -73,12 +73,25 @@ const AdvancedSearch: React.FC<AdvancedSearchProps> = ({ isOpen, onClose }) => {
       setIsLoading(true);
       setHasSearched(true);
       try {
+         // Make sure to pass page parameter as a number
          const data = await searchContent(
             encodeURIComponent(searchQuery),
-            1,
+            1, // Explicitly pass page as number
             10,
          );
-         setSuggestions(data.results);
+
+         // Process results to ensure they have type info based on category
+         const processedResults: CategoryResults = {};
+
+         Object.entries(data.results).forEach(([category, items]) => {
+            // @ts-ignore
+            processedResults[category] = items.map((item: any) => ({
+               ...item,
+               type: category, // Add category as type for each result
+            }));
+         });
+
+         setSuggestions(processedResults);
       } catch (error) {
          console.error('Error fetching suggestions:', error);
          setSuggestions({});
@@ -107,7 +120,6 @@ const AdvancedSearch: React.FC<AdvancedSearchProps> = ({ isOpen, onClose }) => {
 
    // Function to handle direct navigation to content pages using slugs
    const handleItemClick = async (result: SearchResult) => {
-      console.log(result);
       // If slug is available, navigate directly to the content page
       if (result.slug && result.type) {
          setQuery('');
@@ -148,14 +160,30 @@ const AdvancedSearch: React.FC<AdvancedSearchProps> = ({ isOpen, onClose }) => {
       }
    };
 
-   // New function to handle "View All" for a category
+   // Function to handle "View All" for a category
    const handleViewAllCategory = async (category: string) => {
       setQuery('');
       onClose();
-      // Navigate to search page with category tab selected
-      await router.push(
-         `/search?q=${encodeURIComponent(query)}&tab=${category}`,
-      );
+
+      // Map category from API response to tab names used in SearchResults component
+      let tab = 'reports'; // Default tab
+      switch (category.toLowerCase()) {
+         case 'report':
+            tab = 'reports';
+            break;
+         case 'news-article':
+            tab = 'news';
+            break;
+         case 'blog':
+            tab = 'blogs';
+            break;
+         default:
+            tab = 'reports';
+      }
+
+      // Navigate to search page with both parameters
+      // Using window.location.href for a full page reload to ensure state reset
+      window.location.href = `/search?q=${encodeURIComponent(query)}&tab=${tab}&${tab}Page=1`;
    };
 
    const handleKeyDown = async (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -250,9 +278,7 @@ const AdvancedSearch: React.FC<AdvancedSearchProps> = ({ isOpen, onClose }) => {
                      <div
                         key={result.id ?? result.title ?? result.name}
                         className='cursor-pointer rounded px-3 py-2 hover:bg-gray-100'
-                        onClick={() =>
-                           handleItemClick({ ...result, type: category })
-                        }
+                        onClick={() => handleItemClick(result)}
                      >
                         {result.title || result.name}
                      </div>
@@ -279,7 +305,7 @@ const AdvancedSearch: React.FC<AdvancedSearchProps> = ({ isOpen, onClose }) => {
                   ref={inputRef}
                   type='text'
                   className='flex-grow text-lg outline-none'
-                  placeholder='Search for reports, blogs, news articles & more...'
+                  placeholder='Search for reports, blogs, news articles, industries, or geographies...'
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
                   onKeyDown={handleKeyDown}
@@ -295,7 +321,7 @@ const AdvancedSearch: React.FC<AdvancedSearchProps> = ({ isOpen, onClose }) => {
                )}
                <button
                   onClick={() => handleSearch(query)}
-                  className='cursor-pointer rounded-md bg-blue-1 px-4 py-2 text-white transition-colors hover:bg-blue-2'
+                  className='rounded bg-blue-500 px-4 py-2 text-white transition-colors hover:bg-blue-600'
                   disabled={query.length < 3}
                >
                   Search
