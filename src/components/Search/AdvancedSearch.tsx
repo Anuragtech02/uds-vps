@@ -305,7 +305,7 @@ const AdvancedSearch: React.FC<AdvancedSearchProps> = ({ isOpen, onClose }) => {
                   ref={inputRef}
                   type='text'
                   className='flex-grow text-lg outline-none'
-                  placeholder='Search for reports, blogs, news articles, industries, or geographies...'
+                  placeholder='Search for reports, blogs, news articles & more...'
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
                   onKeyDown={handleKeyDown}
@@ -321,7 +321,7 @@ const AdvancedSearch: React.FC<AdvancedSearchProps> = ({ isOpen, onClose }) => {
                )}
                <button
                   onClick={() => handleSearch(query)}
-                  className='rounded bg-blue-500 px-4 py-2 text-white transition-colors hover:bg-blue-600'
+                  className='rounded bg-blue-1 px-4 py-2 text-white transition-colors hover:bg-blue-2'
                   disabled={query.length < 3}
                >
                   Search
