@@ -19,6 +19,8 @@ interface SearchResult {
    id: string;
    title?: string;
    name?: string;
+   slug?: string; // Using slug instead of full URL for navigation
+   type?: string; // To determine content type (report, blog, news, etc.)
 }
 
 interface CategoryResults {
@@ -103,6 +105,59 @@ const AdvancedSearch: React.FC<AdvancedSearchProps> = ({ isOpen, onClose }) => {
       await router.push(`/search?q=${encodeURIComponent(searchQuery)}`);
    };
 
+   // Function to handle direct navigation to content pages using slugs
+   const handleItemClick = async (result: SearchResult) => {
+      console.log(result);
+      // If slug is available, navigate directly to the content page
+      if (result.slug && result.type) {
+         setQuery('');
+         onClose();
+
+         // Construct the appropriate URL based on content type
+         let targetUrl = '';
+         switch (result.type.toLowerCase()) {
+            case 'report':
+            case 'reports':
+               targetUrl = `/reports/${result.slug}`;
+               break;
+            case 'blog':
+            case 'blogs':
+               targetUrl = `/blogs/${result.slug}`;
+               break;
+            case 'news':
+            case 'news-articles':
+               targetUrl = `/news/${result.slug}`;
+               break;
+            case 'industry':
+            case 'industries':
+               targetUrl = `/industries/${result.slug}`;
+               break;
+            case 'geography':
+            case 'geographies':
+               targetUrl = `/geographies/${result.slug}`;
+               break;
+            default:
+               // If type is unknown, use the category as the path
+               targetUrl = `/${result.type.toLowerCase().replace(/\s+/g, '-')}/${result.slug}`;
+         }
+
+         await router.push(targetUrl);
+      } else {
+         // Fallback to search if slug or type is not available
+         await handleSearch(result.title || result.name || '');
+      }
+   };
+
+   // New function to handle "View All" for a category
+   const handleViewAllCategory = async (category: string) => {
+      setQuery('');
+      onClose();
+      // Navigate to search page with category tab selected
+      await router.push(
+         `/search?q=${encodeURIComponent(query)}&tab=${category}`,
+      );
+   };
+
    const handleKeyDown = async (e: React.KeyboardEvent<HTMLInputElement>) => {
       if (e.key === 'Enter') {
          await handleSearch(query);
@@ -180,15 +235,23 @@ const AdvancedSearch: React.FC<AdvancedSearchProps> = ({ isOpen, onClose }) => {
          ([category, results]) =>
             results.length > 0 && (
                <div key={category} className='mb-4'>
-                  <h3 className='mb-2 text-sm font-semibold capitalize text-gray-500'>
-                     {category.replace('-', ' ')}
-                  </h3>
+                  <div className='mb-2 flex items-center justify-between'>
+                     <h3 className='text-sm font-semibold capitalize text-gray-500'>
+                        {category.replace('-', ' ')}
+                     </h3>
+                     <button
+                        onClick={() => handleViewAllCategory(category)}
+                        className='text-xs text-blue-500 hover:underline'
+                     >
+                        View All
+                     </button>
+                  </div>
                   {results.map((result: SearchResult) => (
                      <div
                         key={result.id ?? result.title ?? result.name}
                         className='cursor-pointer rounded px-3 py-2 hover:bg-gray-100'
                         onClick={() =>
-                           handleSearch(result.title || result.name || '')
+                           handleItemClick({ ...result, type: category })
                         }
                      >
                         {result.title || result.name}
@@ -216,7 +279,7 @@ const AdvancedSearch: React.FC<AdvancedSearchProps> = ({ isOpen, onClose }) => {
                   ref={inputRef}
                   type='text'
                   className='flex-grow text-lg outline-none'
-                  placeholder='Search for reports, blogs, news articles, industries, or geographies...'
+                  placeholder='Search for reports, blogs, news articles & more...'
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
                   onKeyDown={handleKeyDown}
@@ -225,11 +288,18 @@ const AdvancedSearch: React.FC<AdvancedSearchProps> = ({ isOpen, onClose }) => {
                   <button
                      title='Clear search'
                      onClick={() => setQuery('')}
-                     className='text-2xl text-gray-400 hover:text-gray-600'
+                     className='mr-2 text-2xl text-gray-400 hover:text-gray-600'
                   >
                      <IoIosClose />
                   </button>
                )}
+               <button
+                  onClick={() => handleSearch(query)}
+                  className='cursor-pointer rounded-md bg-blue-1 px-4 py-2 text-white transition-colors hover:bg-blue-2'
+                  disabled={query.length < 3}
+               >
+                  Search
+               </button>
             </div>
             <p className='absolute px-4 py-2 text-right text-xs text-white'>
                * Min. 3 characters

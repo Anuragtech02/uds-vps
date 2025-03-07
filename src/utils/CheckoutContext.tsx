@@ -64,7 +64,7 @@ export function CheckoutProvider({ children }: { children: ReactNode }) {
    ) => {
       setFormData((prev) => {
          const newData = typeof update === 'function' ? update(prev) : update;
-         console.log('Form Data Updated:', newData);
+         // console.log('Form Data Updated:', newData);
          return newData;
       });
    };
