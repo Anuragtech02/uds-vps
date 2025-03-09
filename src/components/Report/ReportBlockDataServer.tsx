@@ -114,7 +114,7 @@ const addSrcSetToImages = (htmlContent: string): string => {
                // Set sizes attribute based on typical responsive behavior
                img.setAttribute(
                   'sizes',
-                  '(max-width: 480px) 100vw, (max-width: 768px) 50vw, 33vw',
+                  '(max-width: 480px) 100vw, (max-width: 768px) 50vw, (max-width: 1279px) 50vw, 100vw',
                );
                img.setAttribute('src', originalSrc);
                if (idx > 0) {
