@@ -33,6 +33,7 @@ export const validRoutes = [
    'terms-and-conditions',
    'disclaimer',
    'legal',
+   'cancellation-policy',
    'not-found',
 ];
 

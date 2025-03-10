@@ -1,6 +1,3 @@
-import { cookies } from 'next/headers';
-
-import API from './config';
 import { buildPopulateQuery } from '../generic-methods';
 import fetchClient from './config';
 import { cache } from 'react';
@@ -480,6 +477,22 @@ export const getDisclaimer = async () => {
       const response = await fetchClient('/disclaimer?' + populateQuery, {
          headers: getAuthHeaders(),
       });
+      return await response;
+   } catch (error) {
+      console.error('Error fetching disclaimer:', error);
+      throw error;
+   }
+};
+
+export const getCancellationPolicy = async () => {
+   const populateQuery = buildPopulateQuery(['seo.metaImage.url']);
+   try {
+      const response = await fetchClient(
+         '/cancellation-policy?' + populateQuery,
+         {
+            headers: getAuthHeaders(),
+         },
+      );
       return await response;
    } catch (error) {
       console.error('Error fetching disclaimer:', error);
