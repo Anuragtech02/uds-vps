@@ -15,12 +15,12 @@ const Header: React.FC<{ data: any }> = ({ data }) => {
       title: data.attributes.title,
       shortDescription: data.attributes.shortDescription,
       geography: {
-         name: data.attributes.geography.data.attributes.name,
-         slug: data.attributes.geography.data.attributes.slug,
+         name: data.attributes.geography.data?.attributes.name || 'Global',
+         slug: data.attributes.geography.data?.attributes.slug || 'global',
       },
       industry: {
-         name: data.attributes.industry.data.attributes.name,
-         slug: data.attributes.industry.data.attributes.slug,
+         name: data.attributes.industry.data?.attributes.name || 'All',
+         slug: data.attributes.industry.data?.attributes.slug || 'all',
       },
       heroSectionPrimaryCTA: {
          title: 'Download Sample',
