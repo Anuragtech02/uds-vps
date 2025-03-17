@@ -159,7 +159,7 @@ const Footer = ({ footer, quickLinks }: any) => {
                         INDUSTRY VERTICALS
                      </p>
                      <ul className='space-y-2'>
-                        {footer.industries?.map((item: any) => (
+                        {footer?.industries?.map((item: any) => (
                            <li key={item?.slug}>
                               <LocalizedLink
                                  href={`/reports?industries=${item?.slug}`}
