@@ -1,3 +1,5 @@
+import { Variant } from '@/components/Report/ReportBlock';
+
 export const SUPPORTED_LOCALES = [
    'en',
    'ru',
