@@ -10,6 +10,7 @@ import dynamic from 'next/dynamic';
 import SidebarSectionIndexClient from './SidebarSectionIndexClient';
 import ReportBuyButtonClient from './ReportBuyButtonClient';
 import ReportBlockDataServer from './ReportBlockDataServer';
+import { DEFAULT_VARIANTS } from '@/utils/constants';
 
 const ReportEnquiryForm = dynamic(() => import('./ReportEnquiryForm'), {
    loading: () => (
@@ -160,14 +161,19 @@ const ReportBlock: React.FC<ReportBlockProps> = ({ data }) => {
       rightSectionHeading: data.attributes.rightSectionHeading,
    };
 
-   const variants: Variant[] = data.attributes.variants.map((variant) => ({
+   let variants: Variant[] = data.attributes.variants.map((variant, i) => ({
       title: variant.title,
       description: variant.description,
       price: {
-         amount: variant.price.amount,
-         currency: variant.price.currency,
+         amount: variant?.price?.amount || DEFAULT_VARIANTS[i].price.amount,
+         currency:
+            variant.price?.currency || DEFAULT_VARIANTS[i].price.currency,
       },
    }));
+
+   if (variants.length === 0) {
+      variants = DEFAULT_VARIANTS;
+   }
 
    return (
       <div className='container py-10 md:py-16 md:pt-10'>

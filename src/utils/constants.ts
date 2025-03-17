@@ -111,3 +111,93 @@ export const SLICK_COMMON_SETTINGS = {
       },
    ],
 };
+
+export const DEFAULT_VARIANTS: Variant[] = [
+   {
+      title: 'Single User License',
+      description: `<ul>
+    <li>
+        Report accessible by Purchaser Only
+    </li>
+    <li>
+        Pre-Post Sale Support
+    </li>
+    <li>
+        24 Hours Analyst Support
+    </li>
+    <li>
+        Direct Access to Lead Analysts<br>
+        &nbsp;
+    </li>
+</ul>`,
+      price: {
+         amount: 3999,
+         currency: 'USD',
+      },
+   },
+   {
+      title: 'Site License',
+      description: `<ul>
+    <li>
+        Report accessible among 5 Users including the Purchaser
+    </li>
+    <li>
+        Pre-Post Sale Support
+    </li>
+    <li>
+        32 Hours Analyst Support
+    </li>
+    <li>
+        Direct Access to Lead Analysts
+    </li>
+    <li>
+        10% Discount on next purchase
+    </li>
+    <li>
+        Dedicated Point of Contact
+    </li>
+    <li>
+        Permission to Print the Report<br>
+        &nbsp;
+    </li>
+</ul>`,
+      price: {
+         amount: 5499,
+         currency: 'USD',
+      },
+   },
+   {
+      title: 'Global License',
+      description: `<ul>
+    <li>
+        Unlimited User Access
+    </li>
+    <li>
+        Pre-Post Sale Support
+    </li>
+    <li>
+        40 Hours Analyst Support
+    </li>
+    <li>
+        Direct Access to Lead Analysts
+    </li>
+    <li>
+        20% Discount on next purchase
+    </li>
+    <li>
+        Dedicated Point of Contact
+    </li>
+    <li>
+        Permission to Print the Report
+    </li>
+    <li>
+        Market Data Sheet in Excel (free)<br>
+        &nbsp;
+    </li>
+</ul>`,
+      price: {
+         amount: 6999,
+         currency: 'USD',
+      },
+   },
+];
