@@ -200,8 +200,6 @@ async function Home() {
       highlightImage: report?.attributes?.highlightImage,
    }));
 
-   console.log(upcomingReportList[0].highlightImage.data.attributes.formats);
-
    return (
       <>
          <Hero data={homePage} />

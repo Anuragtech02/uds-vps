@@ -30,7 +30,6 @@ const ResearchCard: FC<ResearchCardProps> = ({
    id,
    date,
 }) => {
-   console.log(image);
    return (
       <div className='!h-full flex-col rounded-xl border border-s-200 bg-white p-3'>
          <div className='relative aspect-square w-full overflow-hidden rounded-xl bg-[#d1e0ff]/20'>
