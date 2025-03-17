@@ -8,8 +8,6 @@ import CustomResearchCTA from '../commons/CustomResearchCTA';
 import { SLICK_COMMON_SETTINGS } from '@/utils/constants';
 
 const UpcomingReports: React.FC<{ data: any }> = ({ data }) => {
-   console.log(data.upcomingReports);
-
    const settings = SLICK_COMMON_SETTINGS;
 
    return (
