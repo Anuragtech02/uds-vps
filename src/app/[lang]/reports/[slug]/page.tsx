@@ -187,6 +187,7 @@ const relatedReportsCache = new Map();
 const ReportDetailPage: React.FC<{
    params: {
       slug: string;
+      lang: string;
    };
 }> = async ({ params }) => {
    let reportPage = null;
@@ -194,7 +195,10 @@ const ReportDetailPage: React.FC<{
 
    try {
       // Fetch the report data
-      const reportDataList = await getReportsPageBySlug(params.slug);
+      const reportDataList = await getReportsPageBySlug(
+         params.slug,
+         params.lang,
+      );
       reportPage =
          reportDataList.data?.length > 0 ? reportDataList.data[0] : null;
 

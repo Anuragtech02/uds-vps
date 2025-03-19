@@ -573,37 +573,40 @@ export const getMostViewedReports = cache(async (limit = 50) => {
  * @param {string} slug - The report slug
  * @returns {Promise<Object>} - Object containing the report data
  */
-export const getReportsPageBySlug = cache(async (slug: string) => {
-   try {
-      const populateQuery = buildPopulateQuery([
-         'industry.name',
-         'geography.name',
-         'heroSectionPrimaryCTA.link',
-         'heroSectionSecondaryCTA.link',
-         'tableOfContent.title',
-         'faqList.title',
-         'ctaBanner.ctaButton.link',
-         'leftSectionPrimaryCTAButton',
-         'leftSectionSecondaryCTAButton',
-         'highlightImage.url',
-         'variants.price.amount',
-      ]);
-      const filterQuery = `?filters[slug][$eq]=${slug}`;
+export const getReportsPageBySlug = cache(
+   async (slug: string, locale: string = 'en') => {
+      console.log(slug, locale);
+      try {
+         const populateQuery = buildPopulateQuery([
+            'industry.name',
+            'geography.name',
+            'heroSectionPrimaryCTA.link',
+            'heroSectionSecondaryCTA.link',
+            'tableOfContent.title',
+            'faqList.title',
+            'ctaBanner.ctaButton.link',
+            'leftSectionPrimaryCTAButton',
+            'leftSectionSecondaryCTAButton',
+            'highlightImage.url',
+            'variants.price.amount',
+         ]);
+         const filterQuery = `?filters[slug][$eq]=${slug}&locale=${locale}`;
 
-      const response = await fetchClient(
-         '/reports' + filterQuery + '&' + populateQuery,
-         {
-            headers: getAuthHeaders(),
-            next: {
-               revalidate: 86400, // Cache for 24 hours
-               tags: [`report-${slug}`], // Tag with the specific report for targeted revalidation
+         const response = await fetchClient(
+            '/reports' + filterQuery + '&' + populateQuery,
+            {
+               headers: getAuthHeaders(),
+               next: {
+                  revalidate: 86400, // Cache for 24 hours
+                  tags: [`report-${slug}`], // Tag with the specific report for targeted revalidation
+               },
             },
-         },
-      );
+         );
 
-      return await response;
-   } catch (error) {
-      console.error(`Error fetching report with slug ${slug}:`, error);
-      throw error;
-   }
-});
+         return await response;
+      } catch (error) {
+         console.error(`Error fetching report with slug ${slug}:`, error);
+         throw error;
+      }
+   },
+);

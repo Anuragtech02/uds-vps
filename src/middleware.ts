@@ -16,33 +16,33 @@ function setLocaleCookies(
    locale: string,
    currentHost: string,
 ) {
-   if (locale !== defaultLocale) {
-      const cookieValue = `/en/${locale}`;
+   // if (locale !== defaultLocale) {
+   //    const cookieValue = `/en/${locale}`;
 
-      response.headers.append(
-         'Set-Cookie',
-         `googtrans=${cookieValue}; path=/; SameSite=Lax`,
-      );
+   //    response.headers.append(
+   //       'Set-Cookie',
+   //       `googtrans=${cookieValue}; path=/; SameSite=Lax`,
+   //    );
 
-      if (!currentHost.includes('localhost')) {
-         response.headers.append(
-            'Set-Cookie',
-            `googtrans=${cookieValue}; path=/; domain=.${currentHost}; SameSite=Lax`,
-         );
-      }
-   } else {
-      response.headers.append(
-         'Set-Cookie',
-         'googtrans=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT',
-      );
+   //    if (!currentHost.includes('localhost')) {
+   //       response.headers.append(
+   //          'Set-Cookie',
+   //          `googtrans=${cookieValue}; path=/; domain=.${currentHost}; SameSite=Lax`,
+   //       );
+   //    }
+   // } else {
+   //    response.headers.append(
+   //       'Set-Cookie',
+   //       'googtrans=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT',
+   //    );
 
-      if (!currentHost.includes('localhost')) {
-         response.headers.append(
-            'Set-Cookie',
-            `googtrans=; path=/; domain=.${currentHost}; expires=Thu, 01 Jan 1970 00:00:00 GMT`,
-         );
-      }
-   }
+   //    if (!currentHost.includes('localhost')) {
+   //       response.headers.append(
+   //          'Set-Cookie',
+   //          `googtrans=; path=/; domain=.${currentHost}; expires=Thu, 01 Jan 1970 00:00:00 GMT`,
+   //       );
+   //    }
+   // }
    response.headers.append('x-url', request.url);
    return response;
 }
