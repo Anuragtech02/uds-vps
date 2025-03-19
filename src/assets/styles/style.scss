@@ -585,6 +585,9 @@ details[open] .icon {
    padding: 0.5rem;
    border: 1px solid #e0e0e0;
 }
+.report-content table td p {
+   text-align: left !important;
+}
 
 /* Responsive behavior only on mobile devices */
 @media (max-width: 768px) {
