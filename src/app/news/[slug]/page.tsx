@@ -10,7 +10,8 @@ import { absoluteUrl } from '@/utils/generic-methods';
 import { Metadata } from 'next';
 import { SUPPORTED_LOCALES } from '@/utils/constants';
 
-export const revalidate = 3600;
+// export const revalidate = 3600;
+export const dynamic = true;
 
 export async function generateMetadata({
    params,
