@@ -180,7 +180,9 @@ const ReportStore: FC<ReportStoreProps> = async ({ searchParams }) => {
 
    // Try to get data from cache first
    if (reportCache.has(cacheKey)) {
+      console.log('Yes from cache');
       reportsList = reportCache.get(cacheKey);
+      console.log('Reports', reportsList);
    } else {
       // Fetch reports if not in cache
       reportsList = await getAllReports(
@@ -192,6 +194,8 @@ const ReportStore: FC<ReportStoreProps> = async ({ searchParams }) => {
          console.error('Error fetching reports:', error);
          return null;
       });
+
+      console.log('Fetched', reportsList);
 
       // Store in cache
       if (reportsList) {
