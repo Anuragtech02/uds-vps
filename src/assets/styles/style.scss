@@ -570,3 +570,71 @@ details[open] .icon {
 .custom-service-menu:nth-of-type(1) {
    padding-top: 1rem;
 }
+
+/* Base styles for all tables */
+.report-content table {
+   width: 100%;
+   margin-bottom: 1.5rem;
+   border-collapse: collapse;
+   table-layout: auto;
+}
+
+/* Table cell styling */
+.report-content table th,
+.report-content table td {
+   padding: 0.5rem;
+   border: 1px solid #e0e0e0;
+}
+.report-content table td p {
+   margin: 0 !important;
+}
+
+/* Responsive behavior only on mobile devices */
+@media (max-width: 768px) {
+   /* Make tables horizontally scrollable on mobile */
+   .report-content table {
+      display: block;
+      width: 100%;
+      max-width: calc(100vw - 2rem);
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+   }
+
+   /* Prevent text wrapping in cells on mobile */
+   .report-content table th,
+   .report-content table td {
+      white-space: nowrap;
+   }
+
+   /* Ensure minimum width of table on mobile */
+   .report-content table thead,
+   .report-content table tbody,
+   .report-content table tfoot {
+      min-width: 500px;
+   }
+}
+
+/* Desktop styles - ensure tables display properly */
+@media (min-width: 769px) {
+   .report-content table {
+      display: table;
+      width: 100%;
+      overflow: visible;
+   }
+
+   /* Allow wrapping on desktop for better readability */
+   .report-content table th,
+   .report-content table td {
+      white-space: normal;
+   }
+
+   /* Improve header visibility */
+   .report-content table th {
+      background-color: #f5f5f5;
+   }
+
+   /* Zebra striping for better readability */
+   .report-content table tbody tr:nth-child(even) {
+      background-color: #f9f9f9;
+   }
+}
