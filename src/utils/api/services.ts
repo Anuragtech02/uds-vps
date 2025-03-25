@@ -48,6 +48,7 @@ export const getHomePage = async () => {
          'upcomingReportsSectionCTABanner.ctaButton.link',
          'mediaSectionLogos.url',
          'seo.metaImage.url',
+         'seo.metaSocial.image.url',
       ]);
       const response = await fetchClient('/home-page?' + populateQuery, {
          headers: getAuthHeaders(),
@@ -106,6 +107,8 @@ export const getAllReports = cache(
             'industry.name',
             'geography.name',
             'highlightImage.url',
+            'seo.metaImage.url',
+            'seo.metaSocial.image.url',
          ]);
          const paginationQuery = getPaginationQuery(page, limit);
          const filterQuery = getFilterQuery(filters);
@@ -152,6 +155,8 @@ export const getNewsListingPage = async (
          'thumbnailImage.url',
          'author.name',
          'oldPublishedAt',
+         'seo.metaImage.url',
+         'seo.metaSocial.image.url',
       ]);
       const paginationQuery = getPaginationQuery(page, limit);
       const filterQuery = getFilterQuery(filters);
@@ -190,6 +195,8 @@ export const getBlogsListingPage = async (
          'thumbnailImage.url',
          'author.name',
          'oldPublishedAt',
+         'seo.metaImage.url',
+         'seo.metaSocial.image.url',
       ]);
       const paginationQuery = getPaginationQuery(page, limit);
       const filterQuery = getFilterQuery(filters);
@@ -253,6 +260,7 @@ export const getAboutPage = async () => {
          'ctaBanner.ctaButton',
          'mediaSecrtionLogos',
          'seo.metaImage.url',
+         'seo.metaSocial.image.url',
       ]);
       const response = await fetchClient('/about-page?' + populateQuery, {
          headers: getAuthHeaders(),
@@ -346,6 +354,7 @@ export const getBlogDetails = async (slug: string) => {
          'author',
          'author.profilePicture',
          'seo.metaImage.url',
+         'seo.metaSocial.image.url',
       ]);
       const response = await fetchClient(
          `/blogs?filters[slug][$eq]=${slug}&` + populateQuery,
@@ -368,6 +377,7 @@ export const getNewsBySlug = async (slug: string) => {
          'author',
          'author.profilePicture',
          'seo.metaImage.url',
+         'seo.metaSocial.image.url',
       ]);
       const response = await fetchClient(
          `/news-articles?filters[slug][$eq]=${slug}&` + populateQuery,
@@ -390,6 +400,8 @@ export const getServicesPage = async () => {
          'ctaBanner',
          'ctaBanner.ctaButton',
          'mediaSecrtionLogos',
+         'seo.metaImage.url',
+         'seo.metaSocial.image.url',
       ]);
       const response = await fetchClient('/services-page?' + populateQuery, {
          headers: getAuthHeaders(),
@@ -433,7 +445,10 @@ export const getServiceBySlug = async (slug: string) => {
 };
 
 export const getPrivacyPolicy = async () => {
-   const populateQuery = buildPopulateQuery(['seo.metaImage.url']);
+   const populateQuery = buildPopulateQuery([
+      'seo.metaImage.url',
+      'seo.metaSocial.image.url',
+   ]);
    try {
       const response = await fetchClient('/privacy-policy?' + populateQuery, {
          headers: getAuthHeaders(),
@@ -446,7 +461,10 @@ export const getPrivacyPolicy = async () => {
 };
 
 export const getTermsAndConditions = async () => {
-   const populateQuery = buildPopulateQuery(['seo.metaImage.url']);
+   const populateQuery = buildPopulateQuery([
+      'seo.metaImage.url',
+      'seo.metaSocial.image.url',
+   ]);
    try {
       const response = await fetchClient('/t-and-c?' + populateQuery, {
          headers: getAuthHeaders(),
@@ -459,7 +477,10 @@ export const getTermsAndConditions = async () => {
 };
 
 export const getLegal = async () => {
-   const populateQuery = buildPopulateQuery(['seo.metaImage.url']);
+   const populateQuery = buildPopulateQuery([
+      'seo.metaImage.url',
+      'seo.metaSocial.image.url',
+   ]);
    try {
       const response = await fetchClient('/legal?' + populateQuery, {
          headers: getAuthHeaders(),
@@ -472,7 +493,10 @@ export const getLegal = async () => {
 };
 
 export const getDisclaimer = async () => {
-   const populateQuery = buildPopulateQuery(['seo.metaImage.url']);
+   const populateQuery = buildPopulateQuery([
+      'seo.metaImage.url',
+      'seo.metaSocial.image.url',
+   ]);
    try {
       const response = await fetchClient('/disclaimer?' + populateQuery, {
          headers: getAuthHeaders(),
@@ -485,7 +509,10 @@ export const getDisclaimer = async () => {
 };
 
 export const getCancellationPolicy = async () => {
-   const populateQuery = buildPopulateQuery(['seo.metaImage.url']);
+   const populateQuery = buildPopulateQuery([
+      'seo.metaImage.url',
+      'seo.metaSocial.image.url',
+   ]);
    try {
       const response = await fetchClient(
          '/cancellation-policy?' + populateQuery,
@@ -587,6 +614,8 @@ export const getReportsPageBySlug = cache(async (slug: string) => {
          'leftSectionSecondaryCTAButton',
          'highlightImage.url',
          'variants.price.amount',
+         'seo.metaImage.url',
+         'seo.metaSocial.image.url',
       ]);
       const filterQuery = `?filters[slug][$eq]=${slug}`;
 
