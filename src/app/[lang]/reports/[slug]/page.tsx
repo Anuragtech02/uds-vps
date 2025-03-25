@@ -199,6 +199,7 @@ const ReportDetailPage: React.FC<{
          params.slug,
          params.lang,
       );
+
       reportPage =
          reportDataList.data?.length > 0 ? reportDataList.data[0] : null;
 

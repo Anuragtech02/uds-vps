@@ -590,7 +590,7 @@ export const getReportsPageBySlug = cache(
             'highlightImage.url',
             'variants.price.amount',
          ]);
-         const filterQuery = `?filters[slug][$eq]=${slug}&locale=${locale}`;
+         const filterQuery = `?filters[slugCopy][$eq]=${encodeURIComponent(slug)}&locale=${encodeURIComponent(locale)}`;
 
          const response = await fetchClient(
             '/reports' + filterQuery + '&' + populateQuery,
