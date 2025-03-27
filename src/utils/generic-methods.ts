@@ -32,4 +32,8 @@ export function getCTALink(ctaUrl: string) {
 
 export function absoluteUrl(path: string): string {
    return `${process.env.NEXT_PUBLIC_APP_URL || 'https://univdatos.com'}${path}`;
- }
+}
+
+export function removeTrailingslash(str: string) {
+   return str.replace(/\/$/, '');
+}
