@@ -27,6 +27,7 @@ interface SearchParams {
 interface Report {
    attributes: {
       slug: string;
+      slugCopy: string;
       title: string;
       publishedAt: string;
       shortDescription: string;
@@ -201,7 +202,7 @@ const ReportStore: FC<ReportStoreProps> = async ({ searchParams }) => {
                      {reportsList?.data && reportsList.data.length > 0 ? (
                         reportsList.data.map((report: Report) => (
                            <ReportStoreItem
-                              key={report.attributes.slug}
+                              key={report.attributes.slugCopy}
                               title={report.attributes.title}
                               date={new Date(
                                  report.attributes.oldPublishedAt ||
@@ -211,7 +212,7 @@ const ReportStore: FC<ReportStoreProps> = async ({ searchParams }) => {
                                  month: 'long',
                                  day: 'numeric',
                               })}
-                              slug={report.attributes.slug}
+                              slug={report.attributes.slugCopy}
                               description={
                                  report.attributes.shortDescription?.slice(
                                     0,

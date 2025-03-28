@@ -617,7 +617,7 @@ export const getReportsPageBySlug = cache(async (slug: string) => {
          'seo.metaImage.url',
          'seo.metaSocial.image.url',
       ]);
-      const filterQuery = `?filters[slug][$eq]=${slug}`;
+      const filterQuery = `?filters[slugCopy][$eq]=${slug}`;
 
       const response = await fetchClient(
          '/reports' + filterQuery + '&' + populateQuery,

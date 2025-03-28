@@ -177,7 +177,7 @@ async function Home() {
 
    const upcomingReportList = upcomingReports?.data?.map((report: any) => ({
       id: report?.id,
-      slug: report?.attributes?.slug,
+      slug: report?.attributes?.slugCopy,
       title: report?.attributes?.title,
       shortDescription: report?.attributes?.shortDescription,
       publishedAt: report?.attributes?.publishedAt,
@@ -186,7 +186,7 @@ async function Home() {
 
    const latestReportList = latestReports?.data?.map((report: any) => ({
       id: report?.id,
-      slug: report?.attributes?.slug,
+      slug: report?.attributes?.slugCopy,
       title: report?.attributes?.title,
       shortDescription: report?.attributes?.shortDescription,
       publishedAt: report?.attributes?.publishedAt,
