@@ -202,7 +202,7 @@ const ReportStore: FC<ReportStoreProps> = async ({ searchParams }) => {
                      {reportsList?.data && reportsList.data.length > 0 ? (
                         reportsList.data.map((report: Report) => (
                            <ReportStoreItem
-                              key={report.attributes.slugCopy}
+                              key={report.attributes.slug}
                               title={report.attributes.title}
                               date={new Date(
                                  report.attributes.oldPublishedAt ||
@@ -212,7 +212,7 @@ const ReportStore: FC<ReportStoreProps> = async ({ searchParams }) => {
                                  month: 'long',
                                  day: 'numeric',
                               })}
-                              slug={report.attributes.slugCopy}
+                              slug={report.attributes.slug}
                               description={
                                  report.attributes.shortDescription?.slice(
                                     0,
