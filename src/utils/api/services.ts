@@ -617,14 +617,14 @@ export const getReportsPageBySlug = cache(async (slug: string) => {
          'seo.metaImage.url',
          'seo.metaSocial.image.url',
       ]);
-      const filterQuery = `?filters[slugCopy][$eq]=${slug}`;
+      const filterQuery = `?filters[slug][$eq]=${slug}`;
 
       const response = await fetchClient(
          '/reports' + filterQuery + '&' + populateQuery,
          {
             headers: getAuthHeaders(),
             next: {
-               revalidate: 86400, // Cache for 24 hours
+               revalidate: 3600, // Cache for 24 hours
                tags: [`report-${slug}`], // Tag with the specific report for targeted revalidation
             },
          },
