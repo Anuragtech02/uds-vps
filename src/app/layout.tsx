@@ -59,7 +59,7 @@ export default function RootLayout({
             <HandleRTL />
             <Script id='gtranslate-settings' defer strategy='afterInteractive'>
                {/* Russian(Ru), Arabic(AR), German(DE), French, Chinese(ZH-tw), Japanese(ja), Korean(KO), Vietnamese(Vi), Italian(It),Poland(pl) */}
-               {`window.gtranslateSettings = {"default_language":"en","languages":["en","ru","ar","de","fr","zh-TW","zh-CN","ja","ko","vi","it","pl","es"],"wrapper_selector":".gtranslate_wrapper"}`}
+               {/* {`window.gtranslateSettings = {"default_language":"en","languages":["en","ru","ar","de","fr","zh-TW","zh-CN","ja","ko","vi","it","pl","es"],"wrapper_selector":".gtranslate_wrapper"}`} */}
             </Script>
             <Script
                src='https://cdn.gtranslate.net/widgets/latest/dropdown.js'

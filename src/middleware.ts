@@ -110,7 +110,7 @@ export async function middleware(request: NextRequest) {
    Disallow: /static/
    
    # Sitemap
-   Sitemap: ${process.env.NEXT_PUBLIC_API_URL}/sitemap/index.xml`;
+   Sitemap: https://univdatos.com/sitemap/index.xml`;
 
       return new Response(robotsTxt, {
          headers: {
