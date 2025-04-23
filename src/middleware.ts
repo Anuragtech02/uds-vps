@@ -114,7 +114,7 @@ export async function middleware(request: NextRequest) {
    Allow: /news/
    
    # Sitemap
-   Sitemap: https://univdatos.com/sitemap/index.xml`;
+   Sitemap: https://univdatos.com/sitemap.xml`;
 
       return new Response(robotsTxt, {
          headers: {
