@@ -8,6 +8,7 @@ import { DesktopMenuItem } from './MenuItemsClient';
 
 // Import industry icons dynamically to reduce initial load
 import dynamic from 'next/dynamic';
+import LocaleSelector from './LocaleSelector';
 
 const MobileMenuClient = dynamic(() => import('./MobileMenuClient'));
 
@@ -88,7 +89,7 @@ const Navbar: React.FC<INavbarProps> = ({ header, mainMenu, industries }) => {
                )}
             </ul>
             <div className='ml-4 hidden items-center sm:flex'>
-               <div className='gtranslate_wrapper !relative'></div>
+               <LocaleSelector />
             </div>
          </nav>
 

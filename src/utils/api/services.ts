@@ -89,7 +89,13 @@ export const getHomePage = async () => {
 // };
 
 export const getAllReports = cache(
-   async (page = 1, limit = 10, filters = {}, sortBy: string = 'relevance') => {
+   async ({
+      page = 1,
+      limit = 10,
+      filters = {},
+      sortBy = 'relevance',
+      locale = 'en',
+   } = {}) => {
       try {
          let sort = '';
          switch (sortBy) {
@@ -110,7 +116,14 @@ export const getAllReports = cache(
          const paginationQuery = getPaginationQuery(page, limit);
          const filterQuery = getFilterQuery(filters);
          const sortQuery = sort !== 'relevance' ? `sort[0]=${sort}` : '';
-         const query = [populateQuery, paginationQuery, filterQuery, sortQuery]
+         const localeQuery = locale ? `&locale=${locale}` : '';
+         const query = [
+            populateQuery,
+            paginationQuery,
+            filterQuery,
+            sortQuery,
+            localeQuery,
+         ]
             .filter(Boolean)
             .join('&');
 

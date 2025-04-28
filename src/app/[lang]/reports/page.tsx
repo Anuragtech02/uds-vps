@@ -41,6 +41,10 @@ interface Report {
 
 interface ReportStoreProps {
    searchParams: SearchParams;
+   params: {
+      slug: string;
+      lang: string;
+   };
 }
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -107,14 +111,14 @@ export async function generateMetadata(): Promise<Metadata> {
 
 const ITEMS_PER_PAGE = 10;
 
-const ReportStore: FC<ReportStoreProps> = async ({ searchParams }) => {
+const ReportStore: FC<ReportStoreProps> = async ({ searchParams, params }) => {
    const viewType = searchParams.viewType || 'list';
    const industryFilters =
       searchParams.industries?.split(',').filter(Boolean) || [];
    const geographyFilters =
       searchParams.geographies?.split(',').filter(Boolean) || [];
    const currentPage = parseInt(searchParams.page || '1', 10);
-   const sortBy = searchParams.sortBy || 'relevance';
+   const sortBy = searchParams.sortBy || 'oldPublishedAt:desc';
 
    const filters = industryFilters.concat(geographyFilters);
    const filtersQuery = filters.reduce(
@@ -131,12 +135,16 @@ const ReportStore: FC<ReportStoreProps> = async ({ searchParams }) => {
 
    // Add sort parameter to getAllReports call
    const [reportsList, industriesData, geographiesData] = await Promise.all([
-      getAllReports(currentPage, ITEMS_PER_PAGE, filtersQuery, sortBy).catch(
-         (error) => {
-            console.error('Error fetching reports:', error);
-            return null;
-         },
-      ),
+      getAllReports({
+         page: currentPage,
+         limit: ITEMS_PER_PAGE,
+         filters: filtersQuery,
+         sortBy,
+         locale: params.lang,
+      }).catch((error) => {
+         console.error('Error fetching reports:', error);
+         return null;
+      }),
       getIndustries().catch((error) => {
          console.error('Error fetching industries:', error);
          return null;
@@ -224,6 +232,7 @@ const ReportStore: FC<ReportStoreProps> = async ({ searchParams }) => {
                                     ?.attributes
                               }
                               size='small'
+                              locale={params.lang}
                            />
                         ))
                      ) : (

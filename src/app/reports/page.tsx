@@ -185,12 +185,13 @@ const ReportStore: FC<ReportStoreProps> = async ({ searchParams }) => {
       // console.log('Reports', reportsList);
    } else {
       // Fetch reports if not in cache
-      reportsList = await getAllReports(
-         currentPage,
-         ITEMS_PER_PAGE,
-         filtersQuery,
+      reportsList = await getAllReports({
+         page: currentPage,
+         limit: ITEMS_PER_PAGE,
+         filters: filtersQuery,
          sortBy,
-      ).catch((error) => {
+         locale: 'en',
+      }).catch((error) => {
          console.error('Error fetching reports:', error);
          return null;
       });

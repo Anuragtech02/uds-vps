@@ -9,8 +9,12 @@ import { useSelectedLicenseStore } from '@/stores/selectedLicense.store';
 import { useRouter } from 'next/navigation';
 import { addToCart } from '@/utils/cart-utils.util';
 import { LocalizedLink } from '../commons/LocalizedLink';
+import { TRANSLATED_VALUES } from '@/utils/localeConstants';
 
-const Header: React.FC<{ data: any }> = ({ data }) => {
+const Header: React.FC<{ data: any; locale: string }> = ({
+   data,
+   locale = 'en',
+}) => {
    const reportHeaderData = {
       title: data.attributes.title,
       shortDescription: data.attributes.shortDescription,
@@ -23,11 +27,11 @@ const Header: React.FC<{ data: any }> = ({ data }) => {
          slug: data.attributes.industry.data?.attributes.slug || 'all',
       },
       heroSectionPrimaryCTA: {
-         title: 'Download Sample',
+         title: TRANSLATED_VALUES[locale].report.downloadSample,
          link: '?popup=report-enquiry',
       },
       heroSectionSecondaryCTA: {
-         title: 'Buy Now',
+         title: TRANSLATED_VALUES[locale].report.buyNow,
          link: '#',
       },
       totalPagesCount: data.attributes.totalPagesCount,
@@ -144,7 +148,9 @@ const Header: React.FC<{ data: any }> = ({ data }) => {
                      <div className='flex flex-wrap items-center justify-between gap-4'>
                         <div className='flex flex-wrap items-center gap-4'>
                            <div className='flex items-center gap-2'>
-                              <p className='text-md text-s-500'>Geography:</p>
+                              <p className='text-md text-s-500'>
+                                 {TRANSLATED_VALUES[locale].commons.geography}:
+                              </p>
                               <p className='text-md text-blue-4 hover:underline'>
                                  <LocalizedLink
                                     href={`/reports/?geographies=${reportHeaderData.geography.slug}`}
@@ -155,7 +161,9 @@ const Header: React.FC<{ data: any }> = ({ data }) => {
                            </div>
 
                            <div className='flex items-center gap-2'>
-                              <p className='text-md text-s-500'>Industry:</p>
+                              <p className='text-md text-s-500'>
+                                 {TRANSLATED_VALUES[locale].commons.industry}:
+                              </p>
                               <p className='text-md text-blue-4 hover:underline'>
                                  <LocalizedLink
                                     href={`/reports/?industries=${reportHeaderData.industry.slug}`}
@@ -166,7 +174,8 @@ const Header: React.FC<{ data: any }> = ({ data }) => {
                            </div>
                            <div className='flex items-center gap-2'>
                               <p className='text-md text-s-500'>
-                                 Last updated:
+                                 {TRANSLATED_VALUES[locale].commons.lastUpdated}
+                                 :
                               </p>
                               <p
                                  className='text-md text-blue-4'

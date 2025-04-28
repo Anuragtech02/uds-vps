@@ -1,20 +1,31 @@
 'use client';
 import ResearchCard from '../ResearchCard';
 import sampleImage from '@/assets/img/sampleResearch.png';
-import { SLICK_COMMON_SETTINGS } from '@/utils/constants';
+import { SLICK_COMMON_SETTINGS, SUPPORTED_LOCALES } from '@/utils/constants';
+import { TRANSLATED_VALUES } from '@/utils/localeConstants';
 // @ts-ignore
 import Slider from 'react-slick';
 
-const ExploreProjects = ({ reports }: { reports: any[] }) => {
+const ExploreProjects = ({
+   reports,
+   locale = 'en',
+}: {
+   reports: any[];
+   locale: any;
+}) => {
    const settings = SLICK_COMMON_SETTINGS;
    return (
       <section className='block min-h-max'>
          <div className='container'>
             <h2>
-               <span>Related</span> Reports
+               <span>{TRANSLATED_VALUES[locale]?.report.related}</span>{' '}
+               {TRANSLATED_VALUES[locale]?.report.reports}
             </h2>
             <p className='text-medium mt-2'>
-               Customers who bought this item also bought
+               {
+                  TRANSLATED_VALUES[locale]?.report
+                     .customersWhoBoughtThisAlsoBought
+               }
             </p>
 
             <div className='my-8 md:my-16 md:mt-10'>
@@ -44,6 +55,7 @@ const ExploreProjects = ({ reports }: { reports: any[] }) => {
                               data?.highlightImage?.data?.attributes ||
                               sampleImage
                            }
+                           locale={locale}
                         />
                      </div>
                   ))}

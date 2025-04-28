@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Button from './commons/Button';
 import { LocalizedLink } from './commons/LocalizedLink';
 import StrapiImage, { Media } from './StrapiImage/StrapiImage';
+import { TRANSLATED_VALUES } from '@/utils/localeConstants';
 
 interface ResearchCardProps {
    type: string;
@@ -17,6 +18,7 @@ interface ResearchCardProps {
    id?: string;
    sku?: string;
    date?: string;
+   locale?: string;
 }
 
 const ResearchCard: FC<ResearchCardProps> = ({
@@ -29,6 +31,7 @@ const ResearchCard: FC<ResearchCardProps> = ({
    cta,
    id,
    date,
+   locale = 'en',
 }) => {
    return (
       <div className='!h-full flex-col rounded-xl border border-s-200 bg-white p-3'>
@@ -44,7 +47,7 @@ const ResearchCard: FC<ResearchCardProps> = ({
          <p
             className={`my-2 line-clamp-2 overflow-hidden font-bold hover:underline ${type === 'latest' ? 'text-base' : 'text-xl'}`}
          >
-            <LocalizedLink href={`/reports/${slug}`}>
+            <LocalizedLink href={`/reports/${slug}`} lang={locale}>
                <span
                   dangerouslySetInnerHTML={{
                      __html: title,
@@ -72,9 +75,12 @@ const ResearchCard: FC<ResearchCardProps> = ({
                         Select options
                      </Button>
                   </LocalizedLink> */}
-            <LocalizedLink href={`/reports/${slug}?popup=report-enquiry`}>
+            <LocalizedLink
+               href={`/reports/${slug}?popup=report-enquiry`}
+               lang={locale}
+            >
                <Button variant='light' size='small' className='w-full'>
-                  Download Sample
+                  {TRANSLATED_VALUES[locale]?.report.downloadSample}
                </Button>
             </LocalizedLink>
          </div>

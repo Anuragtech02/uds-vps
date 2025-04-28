@@ -154,17 +154,21 @@ async function Home() {
          latestNewsArticles,
       ] = await Promise.all([
          getHomePage(),
-         getAllReports(1, 10, {
-            status: 'UPCOMING',
+         getAllReports({
+            page: 1,
+            limit: 10,
+            filters: {
+               status: 'UPCOMING',
+            },
          }),
-         getAllReports(
-            1,
-            10,
-            {
+         getAllReports({
+            page: 1,
+            limit: 10,
+            filters: {
                status: 'LIVE',
             },
-            'oldPublishedAt:desc',
-         ),
+            sortBy: 'oldPublishedAt:desc',
+         }),
          getBlogsListingPage(1, 1),
          getNewsListingPage(1, 3),
       ]);

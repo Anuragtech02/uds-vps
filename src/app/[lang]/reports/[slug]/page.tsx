@@ -220,8 +220,14 @@ const ReportDetailPage: React.FC<{
          relatedReportsData = relatedReportsCache.get(industryId);
       } else if (industryId) {
          // Fetch related reports if not in cache
-         const relatedReports = await getAllReports(1, 10, {
-            industry: industryId,
+         const relatedReports = await getAllReports({
+            page: 1,
+            limit: 10,
+            filters: {
+               industry: industryId,
+            },
+            sortBy: 'oldPublishedAt:desc',
+            locale: params.lang,
          });
          relatedReportsData =
             relatedReports?.data?.map((report: any) => report?.attributes) ??
@@ -250,10 +256,13 @@ const ReportDetailPage: React.FC<{
    return (
       <div className='bg-s-50'>
          <div className='mt-4' />
-         <Header data={reportPage} />
-         <ReportBlock data={reportPage} />
+         <Header data={reportPage} locale={params.lang} />
+         <ReportBlock data={reportPage} locale={params.lang} />
          {relatedReportsData.length > 0 && (
-            <ExploreProjects reports={relatedReportsData} />
+            <ExploreProjects
+               reports={relatedReportsData}
+               locale={params.lang}
+            />
          )}
       </div>
    );

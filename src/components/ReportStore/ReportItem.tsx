@@ -15,6 +15,7 @@ interface ReportStoreItemProps {
    viewType?: string;
    highlightImageUrl: Media;
    size?: 'thumbnail' | 'small' | 'medium' | 'large' | 'original';
+   locale?: string;
 }
 
 const ReportStoreItem: FC<ReportStoreItemProps> = ({
@@ -25,6 +26,7 @@ const ReportStoreItem: FC<ReportStoreItemProps> = ({
    viewType,
    highlightImageUrl,
    size = 'small',
+   locale = 'en',
 }) => {
    return (
       <div className='flex flex-col gap-4 rounded-xl bg-white p-6 md:flex-row'>
@@ -39,7 +41,11 @@ const ReportStoreItem: FC<ReportStoreItemProps> = ({
          </div>
          <div className='grow space-y-3 md:w-2/3'>
             <h4 className='line-clamp-3 overflow-hidden text-lg font-semibold hover:underline'>
-               <LocalizedLink href={`/reports/${slug}`} className='w-full'>
+               <LocalizedLink
+                  href={`/reports/${slug}`}
+                  className='w-full'
+                  lang={locale}
+               >
                   <span dangerouslySetInnerHTML={{ __html: title }}></span>
                </LocalizedLink>
             </h4>
@@ -65,6 +71,7 @@ const ReportStoreItem: FC<ReportStoreItemProps> = ({
                   <LocalizedLink
                      href={`/reports/${slug}?popup=report-enquiry`}
                      className='mt-2'
+                     lang={locale}
                   >
                      <Button variant='light' size='small'>
                         Download Sample
