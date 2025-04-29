@@ -6,6 +6,8 @@ import { BiLoaderCircle } from 'react-icons/bi';
 import { FaTrash } from 'react-icons/fa';
 import { useSearchStore } from '@/stores/search.store';
 import { searchContent } from '@/utils/api/csr-services';
+import { useLocale } from '@/utils/LocaleContext';
+import { TRANSLATED_VALUES } from '@/utils/localeConstants';
 
 const RECENT_SEARCHES_KEY = 'recentSearches';
 const MAX_RECENT_SEARCHES = 5;
@@ -36,6 +38,8 @@ const AdvancedSearch: React.FC<AdvancedSearchProps> = ({ isOpen, onClose }) => {
    const [hasSearched, setHasSearched] = useState(false);
    const router = useRouter();
    const inputRef = useRef<HTMLInputElement>(null);
+
+   const { locale } = useLocale();
 
    useEffect(() => {
       if (isOpen) {
@@ -305,7 +309,9 @@ const AdvancedSearch: React.FC<AdvancedSearchProps> = ({ isOpen, onClose }) => {
                   ref={inputRef}
                   type='text'
                   className='flex-grow text-lg outline-none'
-                  placeholder='Search for reports, blogs, news articles & more...'
+                  placeholder={
+                     TRANSLATED_VALUES[locale]?.header.searchPlaceholder
+                  }
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
                   onKeyDown={handleKeyDown}

@@ -2,12 +2,13 @@ import '@/assets/styles/style.scss';
 import Appwrapper from '@/components/Appwrapper';
 import Script from 'next/script';
 import HandleRTL from '@/components/commons/HandleRTL';
-import { SUPPORTED_LOCALES } from '@/utils/constants';
+import { DEFAULT_LOCALE, SUPPORTED_LOCALES } from '@/utils/constants';
 import { Bricolage_Grotesque, Manrope } from 'next/font/google';
 import { GoogleTagManager } from '@next/third-parties/google';
 import { GoogleAnalytics } from '@next/third-parties/google';
 import BackToTop from '@/components/BackToTop';
 import { headers } from 'next/headers';
+import { LocaleProvider } from '@/utils/LocaleContext';
 
 export const runtime = 'nodejs';
 
@@ -38,35 +39,94 @@ export default function RootLayout({
 }: Readonly<{
    children: React.ReactNode;
 }>) {
+   // --- Determine effective locale and pathname ---
    const serverHeaders = headers();
-   const pathname = serverHeaders.get('x-url');
+   const invokedPath = serverHeaders.get('x-invoke-path');
+   const customPathHeader = serverHeaders.get('x-url');
+   const pathSource = invokedPath || customPathHeader;
+   let actualPathname: string = '/';
+   let effectiveLocale: string = DEFAULT_LOCALE;
+
+   if (pathSource) {
+      try {
+         let tempPathname: string;
+         if (
+            pathSource.startsWith('http://') ||
+            pathSource.startsWith('https://')
+         ) {
+            tempPathname = new URL(pathSource).pathname;
+         } else if (pathSource.startsWith('/')) {
+            tempPathname = pathSource;
+         } else {
+            tempPathname = '/'; // Fallback for unexpected format
+         }
+
+         actualPathname = tempPathname; // Store the determined pathname
+
+         // Parse locale from the determined pathname
+         const pathSegments = tempPathname.split('/').filter(Boolean);
+         if (
+            pathSegments.length > 0 &&
+            SUPPORTED_LOCALES.includes(pathSegments[0] as any)
+         ) {
+            effectiveLocale = pathSegments[0]; // Set locale if found
+         } else {
+            effectiveLocale = DEFAULT_LOCALE; // Otherwise, use default
+         }
+      } catch (e) {
+         console.error(
+            `RootLayout: Error parsing pathSource: ${pathSource}`,
+            e,
+         );
+         actualPathname = '/';
+         effectiveLocale = DEFAULT_LOCALE;
+      }
+   } else {
+      // No path header found (e.g., asset request), use defaults
+      actualPathname = '/';
+      effectiveLocale = DEFAULT_LOCALE;
+   }
+   // // --- End locale/pathname determination ---
+
+   // console.log(
+   //    `RootLayout determined: locale=${effectiveLocale}, pathname=${actualPathname}`,
+   // );
+
    return (
-      <html
-         lang='en'
-         className={`${manrope.variable} ${bricolageGrotesque.variable} `}
-      >
-         <GoogleTagManager gtmId='GTM-5F572ZK' />
-         <link rel='preconnect' href='https://d21aa2ghywi6oj.cloudfront.net' />
-         <link
-            rel='dns-prefetch'
-            href='https://d21aa2ghywi6oj.cloudfront.net'
-         />
-         <link rel='icon' type='image/svg+xml' href='/favicon.svg' />
-         <link rel='icon' type='image/png' href='/favicon.png' />
-         <body>
-            <Appwrapper pathname={pathname as string}>{children}</Appwrapper>
-            <BackToTop />
-            <HandleRTL />
-            <Script id='gtranslate-settings' defer strategy='afterInteractive'>
-               {/* Russian(Ru), Arabic(AR), German(DE), French, Chinese(ZH-tw), Japanese(ja), Korean(KO), Vietnamese(Vi), Italian(It),Poland(pl) */}
-               {/* {`window.gtranslateSettings = {"default_language":"en","languages":["en","ru","ar","de","fr","zh-TW","zh-CN","ja","ko","vi","it","pl","es"],"wrapper_selector":".gtranslate_wrapper"}`} */}
-            </Script>
-            <Script
-               src='https://cdn.gtranslate.net/widgets/latest/dropdown.js'
-               defer
-            ></Script>
-            <Script id='tawk-api' defer type='text/javascript'>
-               {`   var Tawk_API = Tawk_API || {},
+      <LocaleProvider locale={effectiveLocale}>
+         <html
+            lang={effectiveLocale}
+            className={`${manrope.variable} ${bricolageGrotesque.variable} `}
+         >
+            <GoogleTagManager gtmId='GTM-5F572ZK' />
+            <link
+               rel='preconnect'
+               href='https://d21aa2ghywi6oj.cloudfront.net'
+            />
+            <link
+               rel='dns-prefetch'
+               href='https://d21aa2ghywi6oj.cloudfront.net'
+            />
+            <link rel='icon' type='image/svg+xml' href='/favicon.svg' />
+            <link rel='icon' type='image/png' href='/favicon.png' />
+            <body>
+               <Appwrapper pathname={actualPathname}>{children}</Appwrapper>
+               <BackToTop />
+               <HandleRTL />
+               <Script
+                  id='gtranslate-settings'
+                  defer
+                  strategy='afterInteractive'
+               >
+                  {/* Russian(Ru), Arabic(AR), German(DE), French, Chinese(ZH-tw), Japanese(ja), Korean(KO), Vietnamese(Vi), Italian(It),Poland(pl) */}
+                  {/* {`window.gtranslateSettings = {"default_language":"en","languages":["en","ru","ar","de","fr","zh-TW","zh-CN","ja","ko","vi","it","pl","es"],"wrapper_selector":".gtranslate_wrapper"}`} */}
+               </Script>
+               <Script
+                  src='https://cdn.gtranslate.net/widgets/latest/dropdown.js'
+                  defer
+               ></Script>
+               <Script id='tawk-api' defer type='text/javascript'>
+                  {`   var Tawk_API = Tawk_API || {},
                Tawk_LoadStart = new Date();
                (function() {
                var s1 = document.createElement("script"),
@@ -77,9 +137,10 @@ export default function RootLayout({
                s1.setAttribute('crossorigin', '*');
                s0.parentNode.insertBefore(s1, s0);
                })();`}
-            </Script>
-         </body>
-         <GoogleAnalytics gaId='G-3BSS95LP56' />
-      </html>
+               </Script>
+            </body>
+            <GoogleAnalytics gaId='G-3BSS95LP56' />
+         </html>
+      </LocaleProvider>
    );
 }

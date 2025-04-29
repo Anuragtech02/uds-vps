@@ -1,7 +1,6 @@
 import Navbar from './Navbar';
 import Topbar from './Topbar';
 import { Media } from '../StrapiImage/StrapiImage';
-import Script from 'next/script';
 import HeaderStickyClient from './HeaderStickyClient';
 
 interface IHeader {
@@ -14,18 +13,18 @@ interface IHeader {
    ctaButton: { id: number; title: string; link: string };
 }
 
-const STICKY_URL = ['/reports/'];
-
 const Header = ({
    header,
    industries,
    mainMenu,
    pathname,
+   locale = 'en',
 }: {
    header: IHeader;
    industries: any;
    mainMenu: any;
    pathname: string;
+   locale?: string;
 }) => {
    return (
       <>
@@ -39,6 +38,7 @@ const Header = ({
                header={header}
                mainMenu={mainMenu}
                industries={industries}
+               locale={locale}
             />
             <HeaderStickyClient />
          </div>

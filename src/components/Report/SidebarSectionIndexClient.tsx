@@ -1,5 +1,6 @@
 'use client';
 
+import { TRANSLATED_VALUES } from '@/utils/localeConstants';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 interface Props {
@@ -7,6 +8,7 @@ interface Props {
       faqList: [];
       id: number;
    };
+   locale?: string;
 }
 
 // Custom hook for middle-screen detection
@@ -110,15 +112,26 @@ const scrollToSection = (id: string) => {
    }
 };
 
-const reportIndex = [
-   // { title: 'About this report', id: 'about-report' },
-   { title: 'Report Description', id: 'report-data' },
-   { title: 'Table of content', id: 'table-of-content' },
-   { title: 'Research Methodology', id: 'research-methodology' },
-   { title: 'FAQs', id: 'faq-section' },
-];
-
-const SidebarSectionIndex: React.FC<Props> = ({ reportData }) => {
+const SidebarSectionIndex: React.FC<Props> = ({
+   reportData,
+   locale = 'en',
+}) => {
+   const reportIndex = [
+      // { title: 'About this report', id: 'about-report' },
+      {
+         title: TRANSLATED_VALUES[locale].report.reportDescription,
+         id: 'report-data',
+      },
+      {
+         title: TRANSLATED_VALUES[locale].report.tableOfContent,
+         id: 'table-of-content',
+      },
+      {
+         title: TRANSLATED_VALUES[locale].report.researchMethodology,
+         id: 'research-methodology',
+      },
+      { title: TRANSLATED_VALUES[locale].report.faqs, id: 'faq-section' },
+   ];
    const sectionIds = reportIndex.map((item) => item.id);
    const activeSection = useMiddleScreenScrollSpy(sectionIds);
 
@@ -127,7 +140,9 @@ const SidebarSectionIndex: React.FC<Props> = ({ reportData }) => {
          <ul className='list-none p-0'>
             {reportIndex
                .filter((idx) =>
-                  idx.title === 'FAQs' ? reportData.faqList?.length > 0 : true,
+                  idx.id.includes('faq')
+                     ? reportData.faqList?.length > 0
+                     : true,
                )
                .map((item, index) => (
                   <li

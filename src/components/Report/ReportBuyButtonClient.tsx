@@ -1,15 +1,19 @@
 'use client';
-import React from 'react';
 import Button from '../commons/Button';
 import { useSelectedLicenseStore } from '@/stores/selectedLicense.store';
 import { License } from '@/utils/cart-utils.util';
 import { useRouter } from 'next/navigation';
+import { TRANSLATED_VALUES } from '@/utils/localeConstants';
 
 interface Props {
    variants: License[];
+   locale?: string;
 }
 
-const ReportBuyButtonClient: React.FC<Props> = ({ variants }) => {
+const ReportBuyButtonClient: React.FC<Props> = ({
+   variants,
+   locale = 'en',
+}) => {
    const selectedLicenses = useSelectedLicenseStore();
    const router = useRouter();
 
@@ -25,7 +29,7 @@ const ReportBuyButtonClient: React.FC<Props> = ({ variants }) => {
 
       // @ts-ignore
       addToCart({ id: data.id, ...data.attributes }, selectedLicense);
-      router.push('/cart');
+      router.push(locale === 'en' ? '/cart' : `/${locale}/cart`);
    };
 
    return (
@@ -38,7 +42,7 @@ const ReportBuyButtonClient: React.FC<Props> = ({ variants }) => {
        'Purchase',
        'Buy',
     )} */}
-         Buy Now
+         {TRANSLATED_VALUES[locale]?.report.buyNow}
       </Button>
    );
 };

@@ -136,7 +136,13 @@ export async function generateMetadata(): Promise<Metadata> {
    return metadata;
 }
 
-async function Home() {
+async function Home({
+   params,
+}: {
+   params: {
+      lang: string;
+   };
+}) {
    let homePage: Awaited<ReturnType<typeof getHomePage>>;
    let upcomingReports: Awaited<ReturnType<typeof getAllReports>>;
    let latestReports: Awaited<ReturnType<typeof getAllReports>>;
@@ -152,11 +158,22 @@ async function Home() {
          latestNewsArticles,
       ] = await Promise.all([
          getHomePage(),
-         getAllReports(1, 10, {
-            status: 'UPCOMING',
+         getAllReports({
+            page: 1,
+            limit: 10,
+            filters: {
+               status: 'UPCOMING',
+            },
+            locale: params.lang,
          }),
-         getAllReports(1, 10, {
-            status: 'LIVE',
+         getAllReports({
+            page: 1,
+            limit: 10,
+            filters: {
+               status: 'LIVE',
+            },
+            sortBy: 'oldPublishedAt:desc',
+            locale: params.lang,
          }),
          getBlogsListingPage(1, 1),
          getNewsListingPage(1, 3),
@@ -219,6 +236,18 @@ async function Home() {
    );
 }
 
-export default function Page() {
-   return <Home />;
+export default function Page({
+   params,
+}: {
+   params: {
+      lang: string;
+   };
+}) {
+   return (
+      <Home
+         params={{
+            lang: params.lang,
+         }}
+      />
+   );
 }

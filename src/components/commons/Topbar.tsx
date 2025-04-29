@@ -1,9 +1,11 @@
+'use client';
 import { FaPhoneAlt } from 'react-icons/fa';
 import { IoMail } from 'react-icons/io5';
 import { LocalizedLink } from './LocalizedLink';
 import ClientSearchHero from '../Home/ClientSearchHero';
 import CartIcon from './CartIcon';
 import StrapiImage, { Media } from '../StrapiImage/StrapiImage';
+import { useLocale } from '@/utils/LocaleContext';
 
 interface ITopbarProps {
    header: {
@@ -17,10 +19,16 @@ interface ITopbarProps {
    };
 }
 const Topbar = ({ header }: ITopbarProps) => {
+   const { locale } = useLocale();
+
    return (
       <div className='container pb-2'>
          <div className='flex items-center justify-between gap-4 text-[#1D2C60]'>
-            <LocalizedLink href='/' className='hidden items-center lg:flex'>
+            <LocalizedLink
+               href='/'
+               className='hidden items-center lg:flex'
+               lang={locale}
+            >
                <StrapiImage
                   media={header?.logo as Media}
                   size='medium'
@@ -34,10 +42,7 @@ const Topbar = ({ header }: ITopbarProps) => {
             </LocalizedLink>
             <div className='hidden flex-1 lg:block'>
                <div className='mx-auto max-w-[95%] [&>div>span]:block [&>div>span]:bg-[#C1CFEA] [&>div>span]:p-2 [&>div]:mt-0 [&>div]:w-full [&>div]:overflow-hidden [&>div]:rounded-md [&>div]:border-blue-1 [&>div]:p-0'>
-                  <ClientSearchHero
-                     placeholder='Search for reports, blogs, news, industries and more...'
-                     variant='light'
-                  />
+                  <ClientSearchHero variant='light' />
                </div>
             </div>
             <div className='gtranslate_wrapper !relative lg:hidden'></div>

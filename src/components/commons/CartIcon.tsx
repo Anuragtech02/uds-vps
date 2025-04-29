@@ -5,16 +5,19 @@ import React, { useEffect, useState } from 'react';
 import { LocalizedLink } from './LocalizedLink';
 import { IoMdCart } from 'react-icons/io';
 import { useCartStore } from '@/stores/cart.store';
+import { useLocale } from '@/utils/LocaleContext';
 
 const CartIcon = () => {
    const cartStore = useCartStore();
+
+   const { locale } = useLocale();
 
    useEffect(() => {
       cartStore.updateCart(getCart());
    }, []);
 
    return (
-      <LocalizedLink href='/cart' className='relative'>
+      <LocalizedLink href='/cart' className='relative' lang={locale}>
          <span className='block cursor-pointer rounded-md border border-blue-4 p-2 text-xl sm:text-3xl'>
             <IoMdCart />
             {/* Tooltip for cart items */}

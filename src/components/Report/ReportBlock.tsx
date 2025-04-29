@@ -11,6 +11,8 @@ import SidebarSectionIndexClient from './SidebarSectionIndexClient';
 import ReportBuyButtonClient from './ReportBuyButtonClient';
 import ReportBlockDataServer from './ReportBlockDataServer';
 import { DEFAULT_VARIANTS } from '@/utils/constants';
+import { TRANSLATED_VALUES } from '@/utils/localeConstants';
+import React from 'react';
 
 const ReportEnquiryForm = dynamic(() => import('./ReportEnquiryForm'), {
    loading: () => (
@@ -123,6 +125,7 @@ interface ReportBlockProps {
          }[];
       };
    };
+   locale?: string;
 }
 
 const reportIndex = [
@@ -133,7 +136,7 @@ const reportIndex = [
    { title: 'FAQs', id: 'faq-section' },
 ];
 
-const ReportBlock: React.FC<ReportBlockProps> = ({ data }) => {
+const ReportBlock: React.FC<ReportBlockProps> = ({ data, locale = 'en' }) => {
    const reportData: ReportData = {
       id: data.id,
       title: data.attributes.title,
@@ -182,14 +185,18 @@ const ReportBlock: React.FC<ReportBlockProps> = ({ data }) => {
                name: reportData.industry.name,
                slug: reportData.industry.slug,
             }}
+            locale={locale}
          />
          <div className='flex flex-col items-start gap-4 lg:flex-row'>
             <div className='sticky top-28 hidden w-1/4 flex-col gap-6 lg:flex'>
-               <SidebarSectionIndexClient reportData={reportData} />
+               <SidebarSectionIndexClient
+                  reportData={reportData}
+                  locale={locale}
+               />
                <div className='w-full rounded-md border border-s-400 bg-white px-4 py-6 pt-4'>
                   <p className='text-center text-lg font-semibold'>
                      {/* This is {reportData.rightSectionHeading} */}
-                     License Options
+                     {TRANSLATED_VALUES[locale].report.licenseOptions}
                   </p>
                   <CollapsibleLicenseOptions
                      variants={variants}
@@ -197,7 +204,7 @@ const ReportBlock: React.FC<ReportBlockProps> = ({ data }) => {
                   />
                </div>
                <div className='relative mt-3'>
-                  <ReportBuyButtonClient variants={variants} />
+                  <ReportBuyButtonClient variants={variants} locale={locale} />
                </div>
                <LocalizedLink
                   // href={getCTALink(
@@ -207,7 +214,7 @@ const ReportBlock: React.FC<ReportBlockProps> = ({ data }) => {
                >
                   <Button className='w-full py-3' variant='light'>
                      {/* {reportData.leftSectionSecondaryCTAButton.title} */}
-                     Request For Customization
+                     {TRANSLATED_VALUES[locale]?.report.requestForCustomization}
                   </Button>
                </LocalizedLink>
             </div>

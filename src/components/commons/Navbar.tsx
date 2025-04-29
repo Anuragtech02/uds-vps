@@ -33,15 +33,25 @@ interface INavbarProps {
       slug: string;
       name: string;
    }>;
+   locale?: string;
 }
 
 const exclude = ['unknown', 'medical devices', 'pharmaceuticals'];
 
-const Navbar: React.FC<INavbarProps> = ({ header, mainMenu, industries }) => {
+const Navbar: React.FC<INavbarProps> = ({
+   header,
+   mainMenu,
+   industries,
+   locale = 'en',
+}) => {
    return (
       <div className='container'>
          <nav className='flex items-center justify-between rounded-md bg-blue-1 px-2 py-2 lg:px-8'>
-            <LocalizedLink href='/' className='flex items-center lg:hidden'>
+            <LocalizedLink
+               href='/'
+               className='flex items-center lg:hidden'
+               lang={locale}
+            >
                <img
                   src={LOGO_URL_LIGHT}
                   alt='logo'

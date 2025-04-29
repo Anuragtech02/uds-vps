@@ -5,6 +5,7 @@ import Footer from './commons/Footer';
 import { getRootConfig } from '@/utils/api/services';
 import PageSwitchLoading from './PageSwitchLoading';
 import dynamic from 'next/dynamic';
+import { DEFAULT_LOCALE, SUPPORTED_LOCALES } from '@/utils/constants';
 
 const SearchWrapper = dynamic(() => import('./Search/SearchWrapper'));
 
@@ -120,6 +121,8 @@ const Appwrapper: FC<AppwrapperProps> = async ({ children, pathname }) => {
 
    const mappedHeaderMenu = mapHeaderMainMenu(headerMainMenu);
    const mappedFooterLinks = mapFooterQuickLinks(footerQuickLinks);
+
+   // console.log(`Appwrapper rendering with pathname: ${pathname}`);
 
    return (
       <>

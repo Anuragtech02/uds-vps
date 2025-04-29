@@ -72,13 +72,30 @@ export async function middleware(request: NextRequest) {
    const currentHost = request.headers.get('host') || '';
    const searchParams = request.nextUrl.searchParams;
 
+   console.log(`Processing URL: ${pathname}`);
+
    if (
       pathname.startsWith('/_next') ||
       pathname.startsWith('/api') ||
       pathname.startsWith('/blogs/') ||
       pathname.startsWith('/news/')
    ) {
+      console.log('Bypassing middleware for special path');
       return NextResponse.next();
+   }
+
+   // 2. Handle direct locale URLs (very important - add this!)
+   // Check if the URL is *exactly* a locale (like /ko, /ja, etc.)
+   if (locales.some((locale) => pathname === `/${locale}`)) {
+      console.log(`Direct locale URL detected: ${pathname}`);
+      // Just continue without redirecting
+      const locale = pathname.substring(1); // Remove the leading slash
+      return setLocaleCookies(
+         request,
+         NextResponse.next(),
+         locale,
+         currentHost,
+      );
    }
 
    if (pathname.includes('googlea315237f11c90f9d')) {
@@ -369,7 +386,7 @@ export async function middleware(request: NextRequest) {
          // const response = NextResponse.redirect(
          //    new URL(notFoundUrl, request.url),
          // );
-
+         console.log('Came here, nothing found');
          const reportsUrl = pathnameHasLocale
             ? `/${potentialLocale}/reports`
             : '/reports';
@@ -439,6 +456,6 @@ export async function middleware(request: NextRequest) {
 export const config = {
    matcher: [
       // Match all paths except static files
-      '/((?!_next/static|_next/image|favicon.ico).*)',
+      '/((?!api|_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp|woff2?|ttf|otf)$).*)',
    ],
 };
