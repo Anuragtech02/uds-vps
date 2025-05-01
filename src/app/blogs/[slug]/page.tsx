@@ -172,7 +172,7 @@ const Blog = async (data: any) => {
    return (
       <div className='bg-s-50'>
          <div className='mt-0' />
-         <Header blog={blog} />
+         <Header blog={blog} locale='en' />
          <div className='container'>
             <div className='flex flex-col gap-6 py-12 md:gap-10 md:py-4 lg:flex-row'>
                <div className='flex-[0.7]'>

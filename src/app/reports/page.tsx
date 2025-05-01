@@ -135,8 +135,17 @@ export async function generateStaticParams() {
 
 const ITEMS_PER_PAGE = 10;
 
-// Define a cache for storing pre-fetched data
-let reportCache = new Map();
+// Define cache expiry time in seconds
+const CACHE_EXPIRY_TIME = 3600; // Cache expires after 1 hour
+
+// Define a cache for storing pre-fetched data with expiration
+interface CacheEntry<T> {
+   data: T;
+   expiresAt: number;
+}
+
+let reportCache = new Map<string, CacheEntry<any>>();
+
 interface CacheResponse {
    data: Array<{
       attributes: {
@@ -146,8 +155,8 @@ interface CacheResponse {
    }>;
 }
 
-let industriesCache: CacheResponse | null = null;
-let geographiesCache: CacheResponse | null = null;
+let industriesCache: CacheEntry<CacheResponse> | null = null;
+let geographiesCache: CacheEntry<CacheResponse> | null = null;
 
 const ReportStore: FC<ReportStoreProps> = async ({ searchParams }) => {
    const viewType = searchParams.viewType || 'list';
@@ -160,6 +169,9 @@ const ReportStore: FC<ReportStoreProps> = async ({ searchParams }) => {
 
    // Create a cache key based on the current filters and pagination
    const cacheKey = `${currentPage}_${sortBy}_${industryFilters.join('_')}_${geographyFilters.join('_')}`;
+
+   // Get current timestamp for cache expiry checks
+   const now = Date.now();
 
    // Process filters for the API query
    const filters = industryFilters.concat(geographyFilters);
@@ -180,11 +192,19 @@ const ReportStore: FC<ReportStoreProps> = async ({ searchParams }) => {
 
    // Try to get data from cache first
    if (reportCache.has(cacheKey)) {
-      // console.log('Yes from cache');
-      reportsList = reportCache.get(cacheKey);
-      // console.log('Reports', reportsList);
-   } else {
-      // Fetch reports if not in cache
+      const cachedEntry = reportCache.get(cacheKey)!;
+
+      // Check if cache is still valid
+      if (cachedEntry.expiresAt > now) {
+         reportsList = cachedEntry.data;
+      } else {
+         // Cache expired, remove it
+         reportCache.delete(cacheKey);
+      }
+   }
+
+   // If not in cache or cache expired, fetch fresh data
+   if (!reportsList) {
       reportsList = await getAllReports({
          page: currentPage,
          limit: ITEMS_PER_PAGE,
@@ -196,41 +216,51 @@ const ReportStore: FC<ReportStoreProps> = async ({ searchParams }) => {
          return null;
       });
 
-      // console.log('Fetched', reportsList);
-
-      // Store in cache
+      // Store in cache with expiration
       if (reportsList) {
-         reportCache.set(cacheKey, reportsList);
+         reportCache.set(cacheKey, {
+            data: reportsList,
+            expiresAt: now + CACHE_EXPIRY_TIME * 1000,
+         });
       }
    }
 
-   // Fetch and cache industries and geographies (these change less frequently)
-   if (!industriesCache) {
+   // Fetch and cache industries (check expiration)
+   if (!industriesCache || industriesCache.expiresAt <= now) {
       industriesData = await getIndustries().catch((error) => {
          console.error('Error fetching industries:', error);
          return null;
       });
+
       if (industriesData) {
-         industriesCache = industriesData;
+         industriesCache = {
+            data: industriesData,
+            expiresAt: now + CACHE_EXPIRY_TIME * 1000,
+         };
       } else {
          industriesData = { data: [] };
       }
    } else {
-      industriesData = industriesCache;
+      industriesData = industriesCache.data;
    }
 
-   if (!geographiesCache) {
+   // Fetch and cache geographies (check expiration)
+   if (!geographiesCache || geographiesCache.expiresAt <= now) {
       geographiesData = await getGeographies().catch((error) => {
          console.error('Error fetching geographies:', error);
          return null;
       });
+
       if (geographiesData) {
-         geographiesCache = geographiesData;
+         geographiesCache = {
+            data: geographiesData,
+            expiresAt: now + CACHE_EXPIRY_TIME * 1000,
+         };
       } else {
          geographiesData = { data: [] };
       }
    } else {
-      geographiesData = geographiesCache;
+      geographiesData = geographiesCache.data;
    }
 
    const totalItems = reportsList?.meta?.pagination?.total || 0;
