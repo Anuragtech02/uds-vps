@@ -196,8 +196,10 @@ const ReportStore: FC<ReportStoreProps> = async ({ searchParams }) => {
 
       // Check if cache is still valid
       if (cachedEntry.expiresAt > now) {
+         console.log('Using cached data for reports');
          reportsList = cachedEntry.data;
       } else {
+         console.log('Cache expired for reports, fetching fresh data');
          // Cache expired, remove it
          reportCache.delete(cacheKey);
       }

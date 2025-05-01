@@ -3,7 +3,7 @@ import NewsBody from '@/components/News/NewsBody';
 import NewsSidebar from '@/components/News/NewsSidebar';
 import Header from '@/components/News/Header';
 import RelatedNews from '@/components/News/RelatedNews';
-import { getBlogDetails, getNewsBySlug } from '@/utils/api/services';
+import { getNewsBySlug } from '@/utils/api/services';
 import ClientSearchHero from '@/components/Home/ClientSearchHero';
 import { redirect } from 'next/navigation';
 import { absoluteUrl } from '@/utils/generic-methods';
