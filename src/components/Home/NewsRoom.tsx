@@ -4,6 +4,8 @@ import newPlaceHolder from '@/assets/img/newPlaceholder.jpg';
 import { CalendarSvg, UserSvg } from '../commons/Icons';
 import Link from 'next/link';
 import { LocalizedLink } from '../commons/LocalizedLink';
+import { TRANSLATED_VALUES } from '@/utils/localeConstants';
+import { getFormattedDate } from '@/utils/generic-methods';
 
 // const newsItems = [
 //    {
@@ -36,15 +38,22 @@ const NewsRoom: React.FC<{
       blogs: Array<any>;
       newsArticles: Array<any>;
    };
-}> = ({ data }) => {
+   locale?: string;
+}> = ({ data, locale = 'en' }) => {
    return (
       <section className='min-h-max py-4 md:py-10'>
          <div className='container'>
             <div className='my-6 flex flex-col items-stretch gap-4 lg:my-10 lg:mt-0 lg:flex-row'>
                <div className='md:w-1/2'>
-                  <h3 className='mb-6 text-blue-2'>Our Blogs</h3>
+                  <h3 className='mb-6 text-blue-2'>
+                     {TRANSLATED_VALUES[locale]?.home.ourBlogs}
+                  </h3>
                   {data?.blogs.map((blog, index) => (
-                     <LocalizedLink href={`/blogs/${blog.slug}`} key={index}>
+                     <LocalizedLink
+                        href={`/blogs/${blog.slug}`}
+                        key={index}
+                        lang={locale}
+                     >
                         <div
                            className='rounded-xl bg-white p-6 transition-colors hover:bg-blue-1 hover:bg-opacity-10'
                            key={index}
@@ -85,13 +94,7 @@ const NewsRoom: React.FC<{
                            <div className='mt-4 flex items-center gap-6'>
                               <p className='flex items-center gap-2'>
                                  <CalendarSvg />{' '}
-                                 {new Date(
-                                    blog.oldPublishedAt || blog.publishedAt,
-                                 ).toLocaleDateString('en-US', {
-                                    month: 'long',
-                                    day: 'numeric',
-                                    year: 'numeric',
-                                 })}
+                                 {getFormattedDate(blog, locale)}
                               </p>
                               <p className='flex items-center gap-2'>
                                  <UserSvg />{' '}
@@ -103,10 +106,16 @@ const NewsRoom: React.FC<{
                   ))}
                </div>
                <div className='md:w-1/2'>
-                  <h3 className='mb-6 text-blue-2'>Latest News</h3>
+                  <h3 className='mb-6 text-blue-2'>
+                     {TRANSLATED_VALUES[locale]?.home.latestNews}
+                  </h3>
                   <div className='flex flex-col gap-6'>
                      {data?.newsArticles.map((news, index) => (
-                        <LocalizedLink href={`/news/${news.slug}`} key={index}>
+                        <LocalizedLink
+                           href={`/news/${news.slug}`}
+                           key={index}
+                           lang={locale}
+                        >
                            <div
                               key={index}
                               className='flex flex-col gap-4 rounded-xl bg-white p-6 transition-colors hover:bg-blue-1 hover:bg-opacity-10 md:flex-row'
@@ -128,13 +137,7 @@ const NewsRoom: React.FC<{
                                  </h4>
                                  <p className='my-2 flex items-center gap-2'>
                                     <CalendarSvg />
-                                    {new Date(
-                                       news.oldPublishedAt || news.publishedAt,
-                                    ).toLocaleDateString('en-US', {
-                                       month: 'long',
-                                       day: 'numeric',
-                                       year: 'numeric',
-                                    })}
+                                    {getFormattedDate(news, locale)}
                                  </p>
                               </div>
                            </div>

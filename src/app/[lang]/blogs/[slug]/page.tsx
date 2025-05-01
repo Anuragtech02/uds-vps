@@ -5,7 +5,7 @@ import BlogSidebar from '@/components/Blog/BlogSidebar';
 import Header from '@/components/Blog/Header';
 import RelatedBlogs from '@/components/Blog/RelatedBlogs';
 import ClientSearchHero from '@/components/Home/ClientSearchHero';
-import { getBlogDetails } from '@/utils/api/services';
+import { getBlogBySlug } from '@/utils/api/services';
 import { SUPPORTED_LOCALES } from '@/utils/constants';
 import { absoluteUrl } from '@/utils/generic-methods';
 import { Metadata } from 'next';
@@ -18,9 +18,10 @@ export async function generateMetadata({
 }: {
    params: {
       slug: string;
+      lang: string;
    };
 }): Promise<Metadata> {
-   const blogDataList = await getBlogDetails(params.slug);
+   const blogDataList = await getBlogBySlug(params.slug, params.lang);
    const blogPage = blogDataList.data?.length > 0 ? blogDataList.data[0] : null;
 
    if (!blogPage) {
@@ -152,11 +153,11 @@ export async function generateMetadata({
 }
 
 const Blog = async (data: any) => {
-   const { slug } = data?.params;
-   let blogDetails: Awaited<ReturnType<typeof getBlogDetails>>;
+   const { slug, lang } = data?.params;
+   let blogDetails: Awaited<ReturnType<typeof getBlogBySlug>>;
 
    try {
-      blogDetails = await getBlogDetails(slug);
+      blogDetails = await getBlogBySlug(slug, lang);
    } catch (error) {
       console.error('Error fetching blog details:', error);
    }
@@ -172,7 +173,7 @@ const Blog = async (data: any) => {
    return (
       <div className='bg-s-50'>
          <div className='mt-0' />
-         <Header blog={blog} />
+         <Header blog={blog} locale={lang} />
          <div className='container'>
             <div className='flex flex-col gap-6 py-12 md:gap-10 md:py-4 lg:flex-row'>
                <div className='flex-[0.7]'>

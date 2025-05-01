@@ -5,7 +5,7 @@ import BlogSidebar from '@/components/Blog/BlogSidebar';
 import Header from '@/components/Blog/Header';
 import RelatedBlogs from '@/components/Blog/RelatedBlogs';
 import ClientSearchHero from '@/components/Home/ClientSearchHero';
-import { getBlogDetails } from '@/utils/api/services';
+import { getBlogBySlug } from '@/utils/api/services';
 import { SUPPORTED_LOCALES } from '@/utils/constants';
 import { absoluteUrl } from '@/utils/generic-methods';
 import { Metadata } from 'next';
@@ -20,7 +20,7 @@ export async function generateMetadata({
       slug: string;
    };
 }): Promise<Metadata> {
-   const blogDataList = await getBlogDetails(params.slug);
+   const blogDataList = await getBlogBySlug(params.slug);
    const blogPage = blogDataList.data?.length > 0 ? blogDataList.data[0] : null;
 
    if (!blogPage) {
@@ -153,10 +153,10 @@ export async function generateMetadata({
 
 const Blog = async (data: any) => {
    const { slug } = data?.params;
-   let blogDetails: Awaited<ReturnType<typeof getBlogDetails>>;
+   let blogDetails: Awaited<ReturnType<typeof getBlogBySlug>>;
 
    try {
-      blogDetails = await getBlogDetails(slug);
+      blogDetails = await getBlogBySlug(slug);
    } catch (error) {
       console.error('Error fetching blog details:', error);
    }

@@ -120,7 +120,15 @@ export async function generateMetadata({
    };
 }
 
-const News = async ({ searchParams }: { searchParams: SearchParams }) => {
+const News = async ({
+   searchParams,
+   params,
+}: {
+   searchParams: SearchParams;
+   params: {
+      lang: string;
+   };
+}) => {
    const viewType = searchParams.viewType || 'grid';
    const industryFilters =
       searchParams.industries?.split(',').filter(Boolean) || [];
@@ -143,12 +151,13 @@ const News = async ({ searchParams }: { searchParams: SearchParams }) => {
    );
 
    const [newsListData, industriesData] = await Promise.all([
-      getNewsListingPage(
-         currentPage,
-         ITEMS_PER_PAGE,
-         filtersQuery,
+      getNewsListingPage({
+         page: currentPage,
+         limit: ITEMS_PER_PAGE,
+         filters: filtersQuery,
          sortBy,
-      ).catch((error) => {
+         locale: params.lang,
+      }).catch((error) => {
          console.error('Error fetching news:', error);
          return null;
       }),

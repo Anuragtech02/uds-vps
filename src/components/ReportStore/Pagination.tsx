@@ -3,6 +3,8 @@
 import React from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { BiChevronLeft, BiChevronRight } from 'react-icons/bi';
+import { useLocale } from '@/utils/LocaleContext';
+import { TRANSLATED_VALUES } from '@/utils/localeConstants';
 
 interface SearchParams {
    industries?: string;
@@ -24,6 +26,7 @@ const Pagination: React.FC<PaginationProps> = ({
 }) => {
    const router = useRouter();
    const pathname = usePathname();
+   const { locale } = useLocale();
 
    const handlePageChange = (newPage: number) => {
       const params = new URLSearchParams({
@@ -46,10 +49,12 @@ const Pagination: React.FC<PaginationProps> = ({
             aria-label='Previous page'
          >
             <BiChevronLeft className='mr-1 h-5 w-5' />
-            Previous
+            {TRANSLATED_VALUES[locale]?.commons.prev}
          </button>
          <span className='text-sm font-medium text-gray-700'>
-            Page <span className='font-bold'>{currentPage}</span> of{' '}
+            {TRANSLATED_VALUES[locale]?.commons.page}{' '}
+            <span className='font-bold'>{currentPage}</span>{' '}
+            {TRANSLATED_VALUES[locale]?.commons.of}{' '}
             <span className='font-bold'>{totalPages}</span>
          </span>
          <button
@@ -58,7 +63,7 @@ const Pagination: React.FC<PaginationProps> = ({
             className='flex items-center justify-center rounded-md border border-gray-300 bg-white px-3 py-2 text-sm font-medium text-gray-700 shadow-sm transition-colors hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50'
             aria-label='Next page'
          >
-            Next
+            {TRANSLATED_VALUES[locale]?.commons.next}
             <BiChevronRight className='ml-1 h-5 w-5' />
          </button>
       </div>

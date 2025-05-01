@@ -10,11 +10,12 @@ import {
 import ReportListLoading from '@/components/ReportStore/ReportListLoading';
 import Pagination from '@/components/ReportStore/Pagination';
 import ViewToggle from '@/components/Report/ViewToggle';
-import { absoluteUrl } from '@/utils/generic-methods';
+import { absoluteUrl, getFormattedDate } from '@/utils/generic-methods';
 import { Metadata } from 'next';
 import { LOGO_URL_DARK } from '@/utils/constants';
 import FilterBar from '@/components/ReportStore/FilterBar';
 import { Media } from '@/components/StrapiImage/StrapiImage';
+import { TRANSLATED_VALUES } from '@/utils/localeConstants';
 
 interface SearchParams {
    industries?: string;
@@ -160,7 +161,9 @@ const ReportStore: FC<ReportStoreProps> = async ({ searchParams, params }) => {
 
    return (
       <div className='container pt-40 sm:pt-48'>
-         <h1 className='mt-5 text-center font-bold'>Report Store</h1>
+         <h1 className='mt-5 text-center font-bold'>
+            {TRANSLATED_VALUES[params.lang]?.commons.reportStore}
+         </h1>
 
          <FilterBar
             industries={industriesData?.data || []}
@@ -211,14 +214,10 @@ const ReportStore: FC<ReportStoreProps> = async ({ searchParams, params }) => {
                            <ReportStoreItem
                               key={report.attributes.slug}
                               title={report.attributes.title}
-                              date={new Date(
-                                 report.attributes.oldPublishedAt ||
-                                    report.attributes.publishedAt,
-                              ).toLocaleDateString('en-US', {
-                                 year: 'numeric',
-                                 month: 'long',
-                                 day: 'numeric',
-                              })}
+                              date={getFormattedDate(
+                                 report.attributes,
+                                 params.lang,
+                              )}
                               slug={report.attributes.slug}
                               description={
                                  report.attributes.shortDescription?.slice(

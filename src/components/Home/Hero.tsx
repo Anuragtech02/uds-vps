@@ -11,7 +11,7 @@ import { Suspense } from 'react';
 import { BiLoaderCircle } from 'react-icons/bi';
 import { LocalizedLink } from '../commons/LocalizedLink';
 
-const Hero: React.FC<{ data: any }> = ({ data }) => {
+const Hero: React.FC<{ data: any; locale?: string }> = ({ data, locale }) => {
    const heroSection = {
       heroMainHeading: data.data.attributes.heroMainHeading,
       heroSearchPlaceholder: data.data.attributes.heroSearchPlaceholder,
@@ -59,7 +59,10 @@ const Hero: React.FC<{ data: any }> = ({ data }) => {
                   <ClientSearchHero />
 
                   <div className='mt-4 flex flex-col gap-2 py-4 md:mt-10 lg:flex-row lg:items-center'>
-                     <LocalizedLink href={heroSection.heroPrimaryCTA.link}>
+                     <LocalizedLink
+                        href={heroSection.heroPrimaryCTA.link}
+                        lang={locale}
+                     >
                         <Button
                            className='w-full lg:w-auto'
                            size='large'
@@ -69,7 +72,10 @@ const Hero: React.FC<{ data: any }> = ({ data }) => {
                            {heroSection.heroPrimaryCTA.title}
                         </Button>
                      </LocalizedLink>
-                     <LocalizedLink href={heroSection.heroSecondaryCTA.link}>
+                     <LocalizedLink
+                        href={heroSection.heroSecondaryCTA.link}
+                        lang={locale}
+                     >
                         <Button
                            className='w-full lg:w-auto'
                            size='large'
@@ -82,7 +88,7 @@ const Hero: React.FC<{ data: any }> = ({ data }) => {
                   </div>
                </div>
                <div className='relative w-full md:w-[40%]'>
-                  <div className='relative mx-auto aspect-square h-[400px] xl:h-[420px] w-[80%] overflow-hidden rounded-xl pb-10 md:ml-auto md:pb-0'>
+                  <div className='relative mx-auto aspect-square h-[400px] w-[80%] overflow-hidden rounded-xl pb-10 md:ml-auto md:pb-0 xl:h-[420px]'>
                      <StrapiImage
                         media={heroSection.heroImage}
                         size='medium'

@@ -175,8 +175,8 @@ async function Home({
             sortBy: 'oldPublishedAt:desc',
             locale: params.lang,
          }),
-         getBlogsListingPage(1, 1),
-         getNewsListingPage(1, 3),
+         getBlogsListingPage({ page: 1, limit: 1, locale: params.lang }),
+         getNewsListingPage({ page: 1, limit: 3, locale: params.lang }),
       ]);
    } catch (error) {
       console.error('Error fetching upcoming reports:', error);
@@ -212,13 +212,14 @@ async function Home({
 
    return (
       <>
-         <Hero data={homePage} />
+         <Hero data={homePage} locale={params.lang} />
          <RecentResearch data={homePage} />
          <Testimonials data={homePage} />
          <LatestResearch
             data={homePage}
             reports={latestReportList}
             upcomingReports={upcomingReportList}
+            locale={params.lang}
          />
          <MediaCitation mediaCitation={mediaCitation} />
          <UpcomingReports
@@ -231,6 +232,7 @@ async function Home({
                   (newsArticle: any) => newsArticle.attributes,
                ),
             }}
+            locale={params.lang}
          />
       </>
    );

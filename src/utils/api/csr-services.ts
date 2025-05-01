@@ -322,11 +322,19 @@ const getFilterQuery = (
       .join('&');
 };
 
-export const getBlogsListingPageClient = async (
+interface BlogsListingConfig {
+   page?: number;
+   limit?: number;
+   filters?: Record<string, string | number | boolean>;
+   locale?: string;
+}
+
+export const getBlogsListingPageClient = async ({
    page = 1,
    limit = 10,
    filters = {},
-) => {
+   locale = 'en',
+}: BlogsListingConfig) => {
    try {
       const populateQuery = buildPopulateQuery([
          'industry.name',
@@ -337,7 +345,8 @@ export const getBlogsListingPageClient = async (
       const paginationQuery = getPaginationQuery(page, limit);
       const filterQuery = getFilterQuery(filters);
       const sortQuery = 'sort[0]=oldPublishedAt:desc';
-      const query = `${populateQuery}&${paginationQuery}&${filterQuery}&${sortQuery}`;
+      const localeQuery = `&locale=${encodeURIComponent(locale)}`;
+      const query = `${populateQuery}&${paginationQuery}&${filterQuery}&${sortQuery}${localeQuery}`;
       const response = await fetchClientCSR('/blogs?' + query, {
          headers: getAuthHeaders(),
       });
@@ -348,11 +357,19 @@ export const getBlogsListingPageClient = async (
    }
 };
 
-export const getNewsListingPageClient = async (
+interface NewsListingConfig {
+   page?: number;
+   limit?: number;
+   filters?: Record<string, string | number | boolean>;
+   locale?: string;
+}
+
+export const getNewsListingPageClient = async ({
    page = 1,
    limit = 10,
    filters = {},
-) => {
+   locale = 'en',
+}: NewsListingConfig) => {
    try {
       const populateQuery = buildPopulateQuery([
          'industry.name',
@@ -363,7 +380,7 @@ export const getNewsListingPageClient = async (
       const paginationQuery = getPaginationQuery(page, limit);
       const filterQuery = getFilterQuery(filters);
       const sortQuery = 'sort[0]=oldPublishedAt:desc';
-      const query = `${populateQuery}&${paginationQuery}&${filterQuery}&${sortQuery}`;
+      const query = `${populateQuery}&${paginationQuery}&${filterQuery}&${sortQuery}&locale=${encodeURIComponent(locale)}`;
       const response = await fetchClientCSR('/news-articles?' + query, {
          headers: getAuthHeaders(),
       });

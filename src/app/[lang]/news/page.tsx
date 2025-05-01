@@ -11,7 +11,8 @@ import {
    getNewsListingPage,
 } from '@/utils/api/services';
 import { LOGO_URL_DARK } from '@/utils/constants';
-import { absoluteUrl } from '@/utils/generic-methods';
+import { absoluteUrl, getFormattedDate } from '@/utils/generic-methods';
+import { TRANSLATED_VALUES } from '@/utils/localeConstants';
 import { Metadata } from 'next';
 import Link from 'next/link';
 
@@ -121,14 +122,22 @@ export async function generateMetadata({
    };
 }
 
-const News = async ({ searchParams }: { searchParams: SearchParams }) => {
+const News = async ({
+   searchParams,
+   params,
+}: {
+   searchParams: SearchParams;
+   params: {
+      lang: string;
+   };
+}) => {
    const viewType = searchParams.viewType || 'grid';
    const industryFilters =
       searchParams.industries?.split(',').filter(Boolean) || [];
    const geographyFilters =
       searchParams.geographies?.split(',').filter(Boolean) || [];
    const currentPage = parseInt(searchParams.page || '1', 10);
-   const sortBy = searchParams.sortBy || 'relevance';
+   const sortBy = searchParams.sortBy || 'oldPublishedAt:desc';
 
    const filters = industryFilters.concat(geographyFilters);
    const filtersQuery = filters.reduce(
@@ -144,12 +153,13 @@ const News = async ({ searchParams }: { searchParams: SearchParams }) => {
    );
 
    const [newsListData, industriesData] = await Promise.all([
-      getNewsListingPage(
-         currentPage,
-         ITEMS_PER_PAGE,
-         filtersQuery,
+      getNewsListingPage({
+         page: currentPage,
+         limit: ITEMS_PER_PAGE,
+         filters: filtersQuery,
          sortBy,
-      ).catch((error) => {
+         locale: params.lang,
+      }).catch((error) => {
          console.error('Error fetching news:', error);
          return null;
       }),
@@ -190,7 +200,9 @@ const News = async ({ searchParams }: { searchParams: SearchParams }) => {
 
    return (
       <div className='container pt-40'>
-         <h1 className='mt-5 text-center font-bold'>News</h1>
+         <h1 className='mt-5 text-center font-bold'>
+            {TRANSLATED_VALUES[params.lang]?.header.news}
+         </h1>
 
          <FilterBar
             industries={industriesData?.data || []}
@@ -225,13 +237,7 @@ const News = async ({ searchParams }: { searchParams: SearchParams }) => {
                            key={news.id}
                            title={news.title}
                            thumbnailImage={news.thumbnailImage}
-                           date={new Intl.DateTimeFormat('en-IN', {
-                              day: '2-digit',
-                              month: 'short',
-                              year: 'numeric',
-                           }).format(
-                              new Date(news.oldPublishedAt || news.publishedAt),
-                           )}
+                           date={getFormattedDate(news, params.lang)}
                            slug={news.slug}
                            viewType={viewType}
                         />

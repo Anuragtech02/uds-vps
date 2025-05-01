@@ -16,6 +16,22 @@ export const SUPPORTED_LOCALES = [
    'es',
 ] as const;
 
+export const LOCALE_NAMES = [
+   { locale: 'en', title: 'English' },
+   { locale: 'ru', title: 'Russian' },
+   { locale: 'ar', title: 'Arabic' },
+   { locale: 'de', title: 'German' },
+   { locale: 'fr', title: 'French' },
+   { locale: 'zh-Hant-TW', title: 'Traditional Chinese' },
+   { locale: 'ja', title: 'Japanese' },
+   { locale: 'ko', title: 'Korean' },
+   { locale: 'vi', title: 'Vietnamese' },
+   { locale: 'it', title: 'Italian' },
+   { locale: 'pl', title: 'Polish' },
+   { locale: 'zh-CN', title: 'Simplified Chinese' },
+   { locale: 'es', title: 'Spanish' },
+];
+
 export const validRoutes = [
    'about-us',
    'blogs',

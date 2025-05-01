@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { SUPPORTED_LOCALES } from '@/utils/constants';
+import { LOCALE_NAMES, SUPPORTED_LOCALES } from '@/utils/constants';
 
 const LocaleSelector = () => {
    const router = useRouter();
@@ -58,7 +58,8 @@ const LocaleSelector = () => {
       >
          {SUPPORTED_LOCALES.map((locale) => (
             <option key={locale} value={locale}>
-               {locale.toUpperCase()}
+               {LOCALE_NAMES.find((loc) => loc.locale === locale)?.title ||
+                  locale}
             </option>
          ))}
       </select>

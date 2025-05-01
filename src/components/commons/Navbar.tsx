@@ -1,3 +1,4 @@
+'use client';
 import React from 'react';
 import { LocalizedLink } from './LocalizedLink';
 import ClientSearchHero from '../Home/ClientSearchHero';
@@ -9,6 +10,7 @@ import { DesktopMenuItem } from './MenuItemsClient';
 // Import industry icons dynamically to reduce initial load
 import dynamic from 'next/dynamic';
 import LocaleSelector from './LocaleSelector';
+import { useLocale } from '@/utils/LocaleContext';
 
 const MobileMenuClient = dynamic(() => import('./MobileMenuClient'));
 
@@ -33,17 +35,13 @@ interface INavbarProps {
       slug: string;
       name: string;
    }>;
-   locale?: string;
 }
 
 const exclude = ['unknown', 'medical devices', 'pharmaceuticals'];
 
-const Navbar: React.FC<INavbarProps> = ({
-   header,
-   mainMenu,
-   industries,
-   locale = 'en',
-}) => {
+const Navbar: React.FC<INavbarProps> = ({ header, mainMenu, industries }) => {
+   const { locale } = useLocale();
+
    return (
       <div className='container'>
          <nav className='flex items-center justify-between rounded-md bg-blue-1 px-2 py-2 lg:px-8'>
@@ -74,7 +72,12 @@ const Navbar: React.FC<INavbarProps> = ({
             <ul className='hidden flex-wrap items-center gap-4 text-white sm:flex'>
                {mainMenu.map((item, index) =>
                   item.title?.toLowerCase()?.includes('industr') ? (
-                     <a key={index} title='industries' href={item.url ?? ''}>
+                     <LocalizedLink
+                        key={index}
+                        title='industries'
+                        href={item.url ?? ''}
+                        lang={locale}
+                     >
                         <DesktopMenuItem
                            item={{
                               ...item,
@@ -92,7 +95,7 @@ const Navbar: React.FC<INavbarProps> = ({
                            }}
                            depth={0}
                         />
-                     </a>
+                     </LocalizedLink>
                   ) : (
                      <DesktopMenuItem key={index} item={item} depth={0} />
                   ),

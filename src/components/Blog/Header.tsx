@@ -3,8 +3,13 @@ import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { CalendarSvg, TagIcon } from '../commons/Icons';
 import { LocalizedLink } from '../commons/LocalizedLink';
+import { getFormattedDate } from '@/utils/generic-methods';
+import { TRANSLATED_VALUES } from '@/utils/localeConstants';
 
-const Header: React.FC<{ blog: any }> = ({ blog }) => {
+const Header: React.FC<{ blog: any; locale: string }> = ({
+   blog,
+   locale = 'en',
+}) => {
    const headerRef1 = useRef<HTMLDivElement>(null);
    const headerRef2 = useRef<HTMLDivElement>(null);
    const [showSecondHeader, setShowSecondHeader] = useState(false);
@@ -38,11 +43,7 @@ const Header: React.FC<{ blog: any }> = ({ blog }) => {
    });
 
    const author = blog?.author?.data?.attributes;
-   const publishedAt = new Intl.DateTimeFormat('en-GB', {
-      day: '2-digit',
-      month: 'long',
-      year: 'numeric',
-   }).format(new Date(blog?.oldPublishedAt || blog?.publishedAt));
+   const publishedAt = getFormattedDate(blog, locale);
 
    return (
       <>
@@ -61,9 +62,15 @@ const Header: React.FC<{ blog: any }> = ({ blog }) => {
                            <LocalizedLink
                               key={index}
                               href={`/blogs?industries=${industry?.slug}`}
+                              lang={locale}
                            >
                               <div className='flex items-center gap-2 rounded-full border border-s-300 bg-s-100 px-4 py-1 text-blue-4'>
-                                 <TagIcon /> {industry?.name}
+                                 <TagIcon />{' '}
+                                 {
+                                    TRANSLATED_VALUES[locale]?.industries?.[
+                                       industry?.name
+                                    ]
+                                 }
                               </div>
                            </LocalizedLink>
                         ))}
@@ -80,7 +87,8 @@ const Header: React.FC<{ blog: any }> = ({ blog }) => {
                                  className='h-12 w-12 rounded-full'
                               /> */}
                               <p className='text-s-600'>
-                                 Author: {author?.name}
+                                 {TRANSLATED_VALUES[locale]?.commons.author}:{' '}
+                                 {author?.name}
                               </p>
                            </div>
                         )}

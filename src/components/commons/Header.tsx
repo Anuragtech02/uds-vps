@@ -17,8 +17,6 @@ const Header = ({
    header,
    industries,
    mainMenu,
-   pathname,
-   locale = 'en',
 }: {
    header: IHeader;
    industries: any;
@@ -38,7 +36,6 @@ const Header = ({
                header={header}
                mainMenu={mainMenu}
                industries={industries}
-               locale={locale}
             />
             <HeaderStickyClient />
          </div>

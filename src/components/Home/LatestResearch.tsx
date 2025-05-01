@@ -7,12 +7,14 @@ import Slider from 'react-slick';
 import Button from '../commons/Button';
 import PreBookCTA from '../commons/PreBookCTA';
 import { SLICK_COMMON_SETTINGS } from '@/utils/constants';
+import { getFormattedDate } from '@/utils/generic-methods';
 
 const LatestResearch: React.FC<{
    data: any;
    reports: any;
    upcomingReports: any;
-}> = ({ data, reports, upcomingReports }) => {
+   locale?: string;
+}> = ({ data, reports, upcomingReports, locale }) => {
    const settings = {
       ...SLICK_COMMON_SETTINGS,
       slidesToShow: 4,
@@ -106,13 +108,8 @@ const LatestResearch: React.FC<{
                               report?.highlightImage?.data?.attributes ||
                               sampleImage
                            }
-                           date={new Date(
-                              report?.oldPublishedAt || report?.publishedAt,
-                           ).toLocaleDateString(undefined, {
-                              year: 'numeric',
-                              month: 'long',
-                              day: 'numeric',
-                           })}
+                           date={getFormattedDate(report, locale)}
+                           locale={locale}
                         />
                      </div>
                   ))}

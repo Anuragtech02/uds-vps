@@ -5,6 +5,8 @@ import { useParams, useRouter } from 'next/navigation';
 import { FiSliders } from 'react-icons/fi'; // or use FaFilter from 'react-icons/fa'
 import { BiChevronDown } from 'react-icons/bi';
 import { IoCloseOutline } from 'react-icons/io5';
+import { useLocale } from '@/utils/LocaleContext';
+import { TRANSLATED_VALUES } from '@/utils/localeConstants';
 
 interface FilterItem {
    attributes: {
@@ -35,7 +37,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
    const [industryDropdown, setIndustryDropdown] = useState(false);
    const [geographyDropdown, setGeographyDropdown] = useState(false);
    const [sortDropdown, setSortDropdown] = useState(false);
-   const locale = (params?.locale as string) || 'en';
+   const { locale } = useLocale();
 
    const industryRef = useRef<HTMLDivElement>(null);
    const geographyRef = useRef<HTMLDivElement>(null);
@@ -171,8 +173,10 @@ const FilterBar: React.FC<FilterBarProps> = ({
          blogs: 'Blogs',
       } as const;
 
+      const localeTranslations = TRANSLATED_VALUES?.[locale].header;
+
       const key = redirectPath.split('/')[1] as keyof typeof names;
-      return names[key] || 'Reports';
+      return localeTranslations[names[key]?.toLowerCase()] || 'Reports';
    }
 
    return (
@@ -181,7 +185,10 @@ const FilterBar: React.FC<FilterBarProps> = ({
             {/* Added Filter Label */}
             <div className='flex items-center gap-2 text-gray-600'>
                <FiSliders className='h-5 w-5' />
-               <span className='font-medium'>Filter {getHeaderName()} By:</span>
+               <span className='font-medium'>
+                  {TRANSLATED_VALUES[locale]?.commons.filter} {getHeaderName()}{' '}
+                  {TRANSLATED_VALUES[locale]?.commons.by}:
+               </span>
             </div>
 
             <div className='flex flex-wrap items-center gap-4'>
@@ -194,7 +201,8 @@ const FilterBar: React.FC<FilterBarProps> = ({
                      }}
                      className='flex items-center gap-2 rounded-lg border px-4 py-2 hover:bg-gray-50'
                   >
-                     Industry <BiChevronDown className='h-5 w-5' />
+                     {TRANSLATED_VALUES[locale]?.commons.industry}{' '}
+                     <BiChevronDown className='h-5 w-5' />
                   </button>
                   {industryDropdown && (
                      <div className='absolute top-full z-[4] mt-2 max-h-[60vh] w-64 overflow-y-auto rounded-lg bg-white p-4 shadow-lg'>
@@ -216,7 +224,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
                                  htmlFor={`industry-${slug}`}
                                  className='cursor-pointer'
                               >
-                                 {name}
+                                 {TRANSLATED_VALUES[locale]?.industries?.[name]}
                               </label>
                            </div>
                         ))}
@@ -234,7 +242,8 @@ const FilterBar: React.FC<FilterBarProps> = ({
                         }}
                         className='flex items-center gap-2 rounded-lg border px-4 py-2 hover:bg-gray-50'
                      >
-                        Geography <BiChevronDown className='h-5 w-5' />
+                        {TRANSLATED_VALUES[locale]?.commons.geography}{' '}
+                        <BiChevronDown className='h-5 w-5' />
                      </button>
                      {geographyDropdown && (
                         <div className='absolute top-full mt-2 max-h-[60vh] w-64 overflow-y-auto rounded-lg bg-white p-4 shadow-lg'>
@@ -279,19 +288,26 @@ const FilterBar: React.FC<FilterBarProps> = ({
                      }}
                      className='flex items-center gap-2 rounded-lg border px-4 py-2 hover:bg-gray-50'
                   >
-                     Sort By <BiChevronDown className='h-5 w-5' />
+                     {TRANSLATED_VALUES[locale]?.commons.sortBy}{' '}
+                     <BiChevronDown className='h-5 w-5' />
                   </button>
                   {sortDropdown && (
                      <div className='absolute top-full mt-2 w-48 rounded-lg bg-white p-2 shadow-lg'>
                         {[
-                           { value: 'relevance', label: 'Most Relevant' },
+                           {
+                              value: 'relevance',
+                              label: TRANSLATED_VALUES[locale]?.commons
+                                 .mostRelevant,
+                           },
                            {
                               value: 'oldPublishedAt:desc',
-                              label: 'Newest First',
+                              label: TRANSLATED_VALUES[locale]?.commons
+                                 .newestFirst,
                            },
                            {
                               value: 'oldPublishedAt:asc',
-                              label: 'Oldest First',
+                              label: TRANSLATED_VALUES[locale]?.commons
+                                 .oldestFirst,
                            },
                         ].map((option) => (
                            <button

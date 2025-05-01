@@ -144,12 +144,13 @@ const Blog = async ({
    );
 
    const [blogListData, industriesData, geographiesData] = await Promise.all([
-      getBlogsListingPage(
-         currentPage,
-         ITEMS_PER_PAGE,
-         filtersQuery,
+      getBlogsListingPage({
+         page: currentPage,
+         limit: ITEMS_PER_PAGE,
+         filters: filtersQuery,
          sortBy,
-      ).catch((error) => {
+         locale: 'en',
+      }).catch((error) => {
          console.error('Error fetching blogs:', error);
          return null;
       }),

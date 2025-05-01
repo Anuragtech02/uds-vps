@@ -4,6 +4,9 @@ import React, { useEffect, useState } from 'react';
 import BlogItem from './BlogItem';
 import { LocalizedLink } from '../commons/LocalizedLink';
 import { getBlogsListingPageClient } from '@/utils/api/csr-services';
+import { useLocale } from '@/utils/LocaleContext';
+import { TRANSLATED_VALUES } from '@/utils/localeConstants';
+import { getFormattedDate } from '@/utils/generic-methods';
 
 interface Industry {
    attributes: {
@@ -28,6 +31,8 @@ const RelatedBlogs: React.FC<RelatedBlogsProps> = ({
    const [relatedBlogs, setRelatedBlogs] = useState<any[]>([]);
    const [isLoading, setIsLoading] = useState(true);
 
+   const { locale } = useLocale();
+
    useEffect(() => {
       const fetchRelatedBlogs = async () => {
          try {
@@ -43,11 +48,12 @@ const RelatedBlogs: React.FC<RelatedBlogsProps> = ({
                {} as Record<string, string>,
             );
 
-            const response = await getBlogsListingPageClient(
-               1,
-               ITEMS_PER_PAGE,
-               industryFilters,
-            );
+            const response = await getBlogsListingPageClient({
+               page: 1,
+               limit: ITEMS_PER_PAGE,
+               filters: industryFilters,
+               locale: locale,
+            });
 
             // Filter out the current blog and limit to 6 items
             const filteredBlogs =
@@ -72,7 +78,7 @@ const RelatedBlogs: React.FC<RelatedBlogsProps> = ({
       return (
          <div className='mt-4'>
             <h2 className='mb-6 text-2xl font-semibold text-gray-900'>
-               Related Articles
+               {TRANSLATED_VALUES[locale]?.blog.relatedBlogs}
             </h2>
             <div className='grid gap-6 md:grid-cols-2'>
                {[...Array(4)].map((_, index) => (
@@ -99,7 +105,7 @@ const RelatedBlogs: React.FC<RelatedBlogsProps> = ({
    return (
       <div className='mt-4 pb-4'>
          <h2 className='mb-6 text-2xl font-semibold text-gray-900'>
-            Related Blogs
+            {TRANSLATED_VALUES[locale]?.blog.relatedBlogs}
          </h2>
          <div className='grid gap-6 md:grid-cols-2'>
             {relatedBlogs.map((blog: any) => (
@@ -118,16 +124,7 @@ const RelatedBlogs: React.FC<RelatedBlogsProps> = ({
                         blog.attributes.shortDescription?.substring(0, 80) +
                         '...'
                      }
-                     date={new Intl.DateTimeFormat('en-IN', {
-                        day: '2-digit',
-                        month: 'short',
-                        year: 'numeric',
-                     }).format(
-                        new Date(
-                           blog.attributes.oldPublishedAt ||
-                              blog.attributes.publishedAt,
-                        ),
-                     )}
+                     date={getFormattedDate(blog.attributes, locale)}
                      slug={blog.attributes.slug}
                   />
                </LocalizedLink>

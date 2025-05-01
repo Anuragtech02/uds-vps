@@ -10,7 +10,8 @@ import {
    getIndustries,
 } from '@/utils/api/services';
 import { LOGO_URL_DARK } from '@/utils/constants';
-import { absoluteUrl } from '@/utils/generic-methods';
+import { absoluteUrl, getFormattedDate } from '@/utils/generic-methods';
+import { TRANSLATED_VALUES } from '@/utils/localeConstants';
 import { Metadata } from 'next';
 
 interface blogsItem {
@@ -119,8 +120,12 @@ const ITEMS_PER_PAGE = 10;
  */
 const Blog = async ({
    searchParams,
+   params,
 }: {
    searchParams: SearchParams;
+   params: {
+      lang: string;
+   };
 }): Promise<JSX.Element> => {
    const viewType = searchParams.viewType || 'list';
    const industryFilters =
@@ -144,12 +149,13 @@ const Blog = async ({
    );
 
    const [blogListData, industriesData, geographiesData] = await Promise.all([
-      getBlogsListingPage(
-         currentPage,
-         ITEMS_PER_PAGE,
-         filtersQuery,
+      getBlogsListingPage({
+         page: currentPage,
+         limit: ITEMS_PER_PAGE,
+         filters: filtersQuery,
          sortBy,
-      ).catch((error) => {
+         locale: params.lang,
+      }).catch((error) => {
          console.error('Error fetching blogs:', error);
          return null;
       }),
@@ -219,20 +225,16 @@ const Blog = async ({
                >
                   {blogList?.length > 0 ? (
                      blogList.map((blog: blogsItem, i: number) => (
-                        <LocalizedLink href={`/blogs/${blog?.slug}`} key={i}>
+                        <LocalizedLink
+                           href={`/blogs/${blog?.slug}`}
+                           key={i}
+                           lang={params.lang}
+                        >
                            <BlogItem
                               title={blog?.title}
                               thumbnailImage={blog?.thumbnailImage}
                               shortDescription={blog?.shortDescription}
-                              date={new Intl.DateTimeFormat('en-IN', {
-                                 day: '2-digit',
-                                 month: 'short',
-                                 year: 'numeric',
-                              }).format(
-                                 new Date(
-                                    blog?.oldPublishedAt || blog?.publishedAt,
-                                 ),
-                              )}
+                              date={getFormattedDate(blog, params.lang)}
                               slug={blog?.slug}
                               viewType={viewType}
                            />
@@ -240,7 +242,7 @@ const Blog = async ({
                      ))
                   ) : (
                      <p className='rounded bg-gray-100 p-4 text-2xl font-bold text-gray-600'>
-                        No Blogs found
+                        {TRANSLATED_VALUES[params.lang]?.commons.noResultsFound}
                      </p>
                   )}
                </div>

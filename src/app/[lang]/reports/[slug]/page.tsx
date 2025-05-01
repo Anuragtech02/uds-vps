@@ -40,9 +40,10 @@ export async function generateMetadata({
 }: {
    params: {
       slug: string;
+      lang: string;
    };
 }): Promise<Metadata> {
-   const reportDataList = await getReportsPageBySlug(params.slug);
+   const reportDataList = await getReportsPageBySlug(params.slug, params.lang);
    const reportPage =
       reportDataList.data?.length > 0 ? reportDataList.data[0] : null;
 

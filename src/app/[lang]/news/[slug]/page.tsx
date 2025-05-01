@@ -3,7 +3,7 @@ import NewsBody from '@/components/News/NewsBody';
 import NewsSidebar from '@/components/News/NewsSidebar';
 import Header from '@/components/News/Header';
 import RelatedNews from '@/components/News/RelatedNews';
-import { getBlogDetails, getNewsBySlug } from '@/utils/api/services';
+import { getNewsBySlug } from '@/utils/api/services';
 import ClientSearchHero from '@/components/Home/ClientSearchHero';
 import { redirect } from 'next/navigation';
 import { absoluteUrl } from '@/utils/generic-methods';
@@ -17,9 +17,10 @@ export async function generateMetadata({
 }: {
    params: {
       slug: string;
+      lang: string;
    };
 }): Promise<Metadata> {
-   const newsDataList = await getNewsBySlug(params.slug);
+   const newsDataList = await getNewsBySlug(params.slug, params.lang);
    const newsPage = newsDataList.data?.length > 0 ? newsDataList.data[0] : null;
 
    if (!newsPage) {
@@ -151,11 +152,11 @@ export async function generateMetadata({
 }
 
 const News = async (props: any) => {
-   const { slug } = props?.params;
+   const { slug, lang: locale = 'en' } = props?.params;
    let newsArticle: Awaited<ReturnType<typeof getNewsBySlug>>;
 
    try {
-      newsArticle = await getNewsBySlug(slug);
+      newsArticle = await getNewsBySlug(slug, locale);
    } catch (error) {
       console.error('Error fetching news details:', error);
       // redirect to not found page
@@ -163,7 +164,7 @@ const News = async (props: any) => {
    }
 
    if (!newsArticle?.data?.length) {
-      redirect('/en/not-found');
+      redirect(`/${locale}/not-found`);
    }
 
    let newsArticleData = newsArticle?.data?.[0]?.attributes;
@@ -192,6 +193,7 @@ const News = async (props: any) => {
                <RelatedNews
                   currentNewsId={currentNewsId}
                   industries={industries}
+                  locale={locale}
                />
             )}
          </div>

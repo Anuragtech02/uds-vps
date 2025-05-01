@@ -4,6 +4,8 @@ import { BiChevronDown } from 'react-icons/bi';
 import { LocalizedLink } from './LocalizedLink';
 import { useState } from 'react';
 import dynamic from 'next/dynamic';
+import { useLocale } from '@/utils/LocaleContext';
+import { TRANSLATED_VALUES } from '@/utils/localeConstants';
 
 // Create dynamic imports for industry icons
 const AerospaceAndDefense = dynamic(
@@ -136,6 +138,7 @@ export const DesktopMenuItem: React.FC<{ item: MenuItem; depth: number }> = ({
    depth,
 }) => {
    const [isOpen, setIsOpen] = useState(false);
+   const { locale } = useLocale();
 
    const handleMouseEnter = () => setIsOpen(true);
    const handleMouseLeave = () => setIsOpen(false);
@@ -149,7 +152,9 @@ export const DesktopMenuItem: React.FC<{ item: MenuItem; depth: number }> = ({
          >
             <div className='flex cursor-pointer items-center rounded-md px-2 py-2 text-white hover:bg-blue-3'>
                <span className='max-w-[200px] whitespace-normal break-words'>
-                  {item.title}
+                  {TRANSLATED_VALUES[locale].header?.[
+                     item.title.toLowerCase()
+                  ] || item.title}
                </span>
                <BiChevronDown
                   className={`ml-1 flex-shrink-0 text-xl ${isOpen ? 'rotate-180' : ''} transition-transform`}
@@ -167,6 +172,7 @@ export const DesktopMenuItem: React.FC<{ item: MenuItem; depth: number }> = ({
                               key={index}
                               href={child.url ?? ''}
                               className='flex items-start break-words py-2 text-s-800 hover:text-blue-600'
+                              lang={locale}
                            >
                               {child.url?.includes('industries=') && (
                                  <div className='mr-2'>
@@ -177,7 +183,13 @@ export const DesktopMenuItem: React.FC<{ item: MenuItem; depth: number }> = ({
                                     ] || <IconPlaceholder />}
                                  </div>
                               )}
-                              <span className='-mt-1'>{child.title}</span>
+                              <span className='-mt-1'>
+                                 {
+                                    TRANSLATED_VALUES[locale]?.industries?.[
+                                       child.title
+                                    ]
+                                 }
+                              </span>
                            </LocalizedLink>
                         ))}
                      </div>
@@ -196,7 +208,7 @@ export const DesktopMenuItem: React.FC<{ item: MenuItem; depth: number }> = ({
       >
          {item.children && item.children.length > 0 ? (
             <>
-               <LocalizedLink href={item.url ?? ''}>
+               <LocalizedLink href={item.url ?? ''} lang={locale}>
                   <div
                      className={`flex items-center justify-between rounded-md ${
                         depth > 0
@@ -205,7 +217,9 @@ export const DesktopMenuItem: React.FC<{ item: MenuItem; depth: number }> = ({
                      }`}
                   >
                      <span className='max-w-[200px] whitespace-normal break-words'>
-                        {item.title}
+                        {TRANSLATED_VALUES[locale].header?.[
+                           item.title.toLowerCase()
+                        ] || item.title}
                      </span>
                      <BiChevronDown
                         className={`ml-1 flex-shrink-0 text-xl ${isOpen ? 'rotate-180' : ''} transition-transform`}
@@ -234,9 +248,12 @@ export const DesktopMenuItem: React.FC<{ item: MenuItem; depth: number }> = ({
                      ? 'text-s-800 hover:bg-gray-100'
                      : 'text-white hover:bg-blue-3'
                }`}
+               lang={locale}
             >
                <span className='whitespace-normal break-words'>
-                  {item.title}
+                  {TRANSLATED_VALUES[locale].header?.[
+                     item.title.toLowerCase()
+                  ] || item.title}
                </span>
             </LocalizedLink>
          )}

@@ -3,11 +3,16 @@ import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { CalendarSvg, CommentSvg, TagIcon } from '../commons/Icons';
 import { LocalizedLink } from '../commons/LocalizedLink';
+import { useLocale } from '@/utils/LocaleContext';
+import { TRANSLATED_VALUES } from '@/utils/localeConstants';
+import { getFormattedDate } from '@/utils/generic-methods';
 
 const Header: React.FC<{ newsArticle: any }> = ({ newsArticle }) => {
    const headerRef1 = useRef<HTMLDivElement>(null);
    const headerRef2 = useRef<HTMLDivElement>(null);
    const [showSecondHeader, setShowSecondHeader] = useState(false);
+
+   const { locale } = useLocale();
 
    useEffect(() => {
       const handleScroll = () => {
@@ -31,11 +36,7 @@ const Header: React.FC<{ newsArticle: any }> = ({ newsArticle }) => {
    }, [showSecondHeader]);
 
    const author = newsArticle?.author?.data?.attributes;
-   const publishedAt = new Intl.DateTimeFormat('en-GB', {
-      day: '2-digit',
-      month: 'long',
-      year: 'numeric',
-   }).format(new Date(newsArticle?.oldPublishedAt || newsArticle?.publishedAt));
+   const publishedAt = getFormattedDate(newsArticle, locale);
 
    const industries = newsArticle?.industries?.data?.map((industry: any) => {
       return {
@@ -73,7 +74,12 @@ const Header: React.FC<{ newsArticle: any }> = ({ newsArticle }) => {
                               href={`/news?industries=${industry?.slug}`}
                            >
                               <div className='flex items-center gap-2 rounded-full border border-s-300 bg-s-100 px-4 py-1 text-blue-4'>
-                                 <TagIcon /> {industry?.name}
+                                 <TagIcon />{' '}
+                                 {
+                                    TRANSLATED_VALUES[locale].industries?.[
+                                       industry?.name
+                                    ]
+                                 }
                               </div>
                            </LocalizedLink>
                         ))}
@@ -90,7 +96,8 @@ const Header: React.FC<{ newsArticle: any }> = ({ newsArticle }) => {
                                  className='h-12 w-12 rounded-full'
                               /> */}
                               <p className='text-s-600'>
-                                 Author: {author?.name}
+                                 {TRANSLATED_VALUES[locale]?.commons.author}:{' '}
+                                 {author?.name}
                               </p>
                            </div>
                         )}

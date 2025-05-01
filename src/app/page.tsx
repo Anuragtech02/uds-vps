@@ -169,8 +169,8 @@ async function Home() {
             },
             sortBy: 'oldPublishedAt:desc',
          }),
-         getBlogsListingPage(1, 1),
-         getNewsListingPage(1, 3),
+         getBlogsListingPage({ page: 1, limit: 1 }),
+         getNewsListingPage({ page: 1, limit: 3 }),
       ]);
    } catch (error) {
       console.error('Error fetching upcoming reports:', error);

@@ -4,6 +4,8 @@ import React, { useEffect, useState } from 'react';
 import NewsItem from './NewsItem';
 import { LocalizedLink } from '../commons/LocalizedLink';
 import { getNewsListingPageClient } from '@/utils/api/csr-services';
+import { getFormattedDate } from '@/utils/generic-methods';
+import { TRANSLATED_VALUES } from '@/utils/localeConstants';
 
 interface Industry {
    attributes: {
@@ -17,6 +19,7 @@ interface RelatedNewsProps {
    industries: {
       data: Industry[];
    };
+   locale?: string;
 }
 
 const ITEMS_PER_PAGE = 10;
@@ -24,6 +27,7 @@ const ITEMS_PER_PAGE = 10;
 const RelatedNews: React.FC<RelatedNewsProps> = ({
    currentNewsId,
    industries,
+   locale = 'en',
 }) => {
    const [relatedNews, setRelatedNews] = useState<any[]>([]);
    const [isLoading, setIsLoading] = useState(true);
@@ -43,11 +47,12 @@ const RelatedNews: React.FC<RelatedNewsProps> = ({
                {} as Record<string, string>,
             );
 
-            const response = await getNewsListingPageClient(
-               1,
-               ITEMS_PER_PAGE,
-               industryFilters,
-            );
+            const response = await getNewsListingPageClient({
+               page: 1,
+               limit: ITEMS_PER_PAGE,
+               filters: industryFilters,
+               locale: locale,
+            });
 
             // Filter out the current newsArticle and limit to 6 items
             const filteredNews =
@@ -59,7 +64,7 @@ const RelatedNews: React.FC<RelatedNewsProps> = ({
 
             setRelatedNews(filteredNews);
          } catch (error) {
-            console.error('Error fetching related blogs:', error);
+            console.error('Error fetching related news:', error);
          } finally {
             setIsLoading(false);
          }
@@ -74,7 +79,7 @@ const RelatedNews: React.FC<RelatedNewsProps> = ({
       return (
          <div className='mt-4'>
             <h2 className='mb-6 text-2xl font-semibold text-gray-900'>
-               Related Articles
+               {TRANSLATED_VALUES[locale]?.news.relatedNews}
             </h2>
             <div className='grid gap-6 md:grid-cols-2 lg:grid-cols-3'>
                {[...Array(4)].map((_, index) => (
@@ -101,7 +106,7 @@ const RelatedNews: React.FC<RelatedNewsProps> = ({
    return (
       <div className='mt-4 pb-4'>
          <h2 className='mb-6 text-2xl font-semibold text-gray-900'>
-            Related News
+            {TRANSLATED_VALUES[locale]?.news.relatedNews}
          </h2>
          <div className='grid gap-6 md:grid-cols-2 lg:grid-cols-3'>
             {relatedNews.map((newsArticle: any) => (
@@ -113,16 +118,7 @@ const RelatedNews: React.FC<RelatedNewsProps> = ({
                         : newsArticle.attributes.title
                   }
                   thumbnailImage={newsArticle.attributes.thumbnailImage}
-                  date={new Intl.DateTimeFormat('en-IN', {
-                     day: '2-digit',
-                     month: 'short',
-                     year: 'numeric',
-                  }).format(
-                     new Date(
-                        newsArticle.attributes.oldPublishedAt ||
-                           newsArticle.attributes.publishedAt,
-                     ),
-                  )}
+                  date={getFormattedDate(newsArticle.attributes, locale)}
                   slug={newsArticle.attributes.slug}
                />
             ))}

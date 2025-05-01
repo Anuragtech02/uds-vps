@@ -142,12 +142,21 @@ export const getAllReports = cache(
    },
 );
 
-export const getNewsListingPage = async (
+type NewsListingConfig = {
+   page?: number;
+   limit?: number;
+   filters?: Record<string, string | number | boolean>;
+   sortBy?: string;
+   locale?: string;
+};
+
+export const getNewsListingPage = async ({
    page = 1,
    limit = 10,
    filters = {},
-   sortBy: string = 'relevance',
-) => {
+   sortBy = 'relevance',
+   locale = 'en',
+}: NewsListingConfig) => {
    try {
       let sort = '';
       switch (sortBy) {
@@ -169,7 +178,9 @@ export const getNewsListingPage = async (
       const paginationQuery = getPaginationQuery(page, limit);
       const filterQuery = getFilterQuery(filters);
       const sortQuery = sort !== 'relevance' ? `sort[0]=${sort}` : '';
-      const query = `${populateQuery}&${paginationQuery}&${filterQuery}&${sortQuery}`;
+      const query = `${populateQuery}&${paginationQuery}&${filterQuery}&${sortQuery}&locale=${encodeURIComponent(
+         locale,
+      )}`;
       const response = await fetchClient('/news-articles?' + query, {
          headers: getAuthHeaders(),
       });
@@ -180,12 +191,21 @@ export const getNewsListingPage = async (
    }
 };
 
-export const getBlogsListingPage = async (
+type BlogListingConfig = {
+   page?: number;
+   limit?: number;
+   filters?: Record<string, string | number | boolean>;
+   sortBy?: string;
+   locale?: string;
+};
+
+export const getBlogsListingPage = async ({
    page = 1,
    limit = 10,
    filters = {},
-   sortBy: string = 'relevance',
-) => {
+   sortBy = 'relevance',
+   locale = 'en',
+}: BlogListingConfig) => {
    try {
       let sort = '';
       switch (sortBy) {
@@ -207,7 +227,8 @@ export const getBlogsListingPage = async (
       const paginationQuery = getPaginationQuery(page, limit);
       const filterQuery = getFilterQuery(filters);
       const sortQuery = sort !== 'relevance' ? `sort[0]=${sort}` : '';
-      const query = `${populateQuery}&${paginationQuery}&${filterQuery}&${sortQuery}`;
+      const localeQuery = locale ? `&locale=${locale}` : '';
+      const query = `${populateQuery}&${paginationQuery}&${filterQuery}&${sortQuery}${localeQuery}`;
       const response = await fetchClient('/blogs?' + query, {
          headers: getAuthHeaders(),
       });
@@ -351,7 +372,7 @@ export const getContagePageData = async () => {
    }
 };
 
-export const getBlogDetails = async (slug: string) => {
+export const getBlogBySlug = async (slug: string, locale: string = 'en') => {
    try {
       const populateQuery = buildPopulateQuery([
          'thumbnailImage',
@@ -360,8 +381,9 @@ export const getBlogDetails = async (slug: string) => {
          'author.profilePicture',
          'seo.metaImage.url',
       ]);
+      const localeQuery = locale ? `&locale=${locale}` : '';
       const response = await fetchClient(
-         `/blogs?filters[slug][$eq]=${slug}&` + populateQuery,
+         `/blogs?filters[slug][$eq]=${slug}&` + populateQuery + localeQuery,
          {
             headers: getAuthHeaders(),
          },
@@ -373,7 +395,7 @@ export const getBlogDetails = async (slug: string) => {
    }
 };
 
-export const getNewsBySlug = async (slug: string) => {
+export const getNewsBySlug = async (slug: string, locale = 'en') => {
    try {
       const populateQuery = buildPopulateQuery([
          'thumbnailImage',
@@ -382,8 +404,11 @@ export const getNewsBySlug = async (slug: string) => {
          'author.profilePicture',
          'seo.metaImage.url',
       ]);
+
       const response = await fetchClient(
-         `/news-articles?filters[slug][$eq]=${slug}&` + populateQuery,
+         `/news-articles?filters[slug][$eq]=${slug}&` +
+            populateQuery +
+            `&locale=${encodeURIComponent(locale)}`,
          {
             headers: getAuthHeaders(),
          },
@@ -588,7 +613,6 @@ export const getMostViewedReports = cache(async (limit = 50) => {
  */
 export const getReportsPageBySlug = cache(
    async (slug: string, locale: string = 'en') => {
-      console.log(slug, locale);
       try {
          const populateQuery = buildPopulateQuery([
             'industry.name',
