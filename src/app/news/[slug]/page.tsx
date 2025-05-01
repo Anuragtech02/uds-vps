@@ -156,6 +156,7 @@ const News = async (props: any) => {
 
    try {
       newsArticle = await getNewsBySlug(slug);
+      console.log('Yes', newsArticle);
    } catch (error) {
       console.error('Error fetching news details:', error);
       // redirect to not found page
@@ -163,6 +164,7 @@ const News = async (props: any) => {
    }
 
    if (!newsArticle?.data?.length) {
+      console.log('Article not found');
       redirect('/en/not-found');
    }
 

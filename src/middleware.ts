@@ -81,7 +81,12 @@ export async function middleware(request: NextRequest) {
       pathname.startsWith('/news/')
    ) {
       console.log('Bypassing middleware for special path');
-      return NextResponse.next();
+      return setLocaleCookies(
+         request,
+         NextResponse.next(),
+         defaultLocale,
+         currentHost,
+      );
    }
 
    // 2. Handle direct locale URLs (very important - add this!)

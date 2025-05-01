@@ -405,10 +405,15 @@ export const getNewsBySlug = async (slug: string, locale = 'en') => {
          'seo.metaImage.url',
       ]);
 
+      const localeQuery =
+         locale && locale !== 'en'
+            ? `&locale=${encodeURIComponent(locale)}`
+            : '';
+
       const response = await fetchClient(
          `/news-articles?filters[slug][$eq]=${slug}&` +
             populateQuery +
-            `&locale=${encodeURIComponent(locale)}`,
+            localeQuery,
          {
             headers: getAuthHeaders(),
          },

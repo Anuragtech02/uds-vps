@@ -35,7 +35,7 @@ const Breadcrumbs: React.FC<Props> = ({ industry, locale = 'en' }) => {
                href={`/reports/?industries=${industry.slug}`}
                className='block truncate'
             >
-               {industry.name}
+               {TRANSLATED_VALUES[locale]?.industries?.[industry.name]}
             </LocalizedLink>
          </p>
       </div>
