@@ -47,8 +47,26 @@ const LocaleSelector = () => {
       // Refresh the current route to update all components
       router.refresh();
 
+      // Set or remove RTL class on body based on locale
+      if (newLocale === 'ar') {
+         document.body.classList.add('rtl');
+      } else {
+         document.body.classList.remove('rtl');
+      }
+
       setCurrentLocale(newLocale);
    };
+
+   // Also handle RTL on initial load
+   useEffect(() => {
+      if (typeof window !== 'undefined') {
+         if (currentLocale === 'ar') {
+            document.body.classList.add('rtl');
+         } else {
+            document.body.classList.remove('rtl');
+         }
+      }
+   }, [currentLocale]);
 
    return (
       <select
