@@ -44,6 +44,9 @@ const LocaleSelector = () => {
       const newPath = segments.join('/');
       router.push(newPath);
 
+      // Refresh the current route to update all components
+      router.refresh();
+
       setCurrentLocale(newLocale);
    };
 
