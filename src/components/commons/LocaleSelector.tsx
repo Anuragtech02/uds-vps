@@ -45,7 +45,7 @@ const LocaleSelector = () => {
       router.push(newPath);
 
       // Refresh the current route to update all components
-      router.refresh();
+      router.replace(newPath);
 
       // Set or remove RTL class on body based on locale
       if (newLocale === 'ar') {
