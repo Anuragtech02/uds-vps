@@ -503,10 +503,19 @@ details[open] .icon {
    display: none !important;
 }
 
+.left-auto-margin {
+   margin-left: auto;
+}
+
 /* RTL Support for Arabic Language */
 .rtl {
    direction: rtl !important;
    text-align: right !important;
+
+   .left-auto-margin {
+      margin-left: 0 !important;
+      margin-right: auto !important;
+   }
 
    .report-content {
       direction: rtl !important;

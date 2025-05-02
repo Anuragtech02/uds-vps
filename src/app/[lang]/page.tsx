@@ -26,8 +26,14 @@ const LatestResearch = dynamic(
    () => import('@/components/Home/LatestResearch'),
 );
 
-export async function generateMetadata(): Promise<Metadata> {
-   const homePage = await getHomePage();
+export async function generateMetadata({
+   params,
+}: {
+   params: {
+      lang: string;
+   };
+}): Promise<Metadata> {
+   const homePage = await getHomePage('en');
    const { attributes } = homePage.data;
    const seo = attributes?.seo;
 

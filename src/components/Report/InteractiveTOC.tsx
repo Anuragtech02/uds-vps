@@ -47,7 +47,7 @@ export default function InteractiveTOC({
                      expandAll();
                   }
                }}
-               className='ml-auto font-medium text-blue-1 hover:text-blue-2 hover:underline'
+               className='left-auto-margin font-medium text-blue-1 hover:text-blue-2 hover:underline'
                type='button'
             >
                {expandedSections.size === tableOfContent.length

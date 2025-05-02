@@ -9,9 +9,11 @@ import { SUPPORTED_LOCALES } from '@/utils/constants';
 import { absoluteUrl } from '@/utils/generic-methods';
 import { Metadata } from 'next';
 
-export async function generateMetadata(): Promise<Metadata> {
+export async function generateMetadata(params: {
+   lang: string;
+}): Promise<Metadata> {
    try {
-      const aboutData = await getAboutPage();
+      const aboutData = await getAboutPage(params.lang);
       const { attributes } = aboutData.data;
       const seo = attributes?.seo;
 
@@ -141,11 +143,13 @@ interface heroItem {
       id: number;
    };
 }
-const About = async () => {
+const About: React.FC<{
+   params: { lang: string };
+}> = async ({ params }) => {
    let data: Awaited<ReturnType<typeof getAboutPage>>;
 
    try {
-      data = await getAboutPage();
+      data = await getAboutPage(params.lang);
    } catch (error) {
       console.error('Error fetching about page:', error);
    }
@@ -198,6 +202,12 @@ const About = async () => {
 
 // export default About;
 
-export default function Page() {
-   return <About />;
+export default function Page({
+   params,
+}: {
+   params: {
+      lang: string;
+   };
+}) {
+   return <About params={params} />;
 }

@@ -4,8 +4,12 @@ import { getDisclaimer } from '@/utils/api/services';
 
 // export const runtime = 'edge';
 
-const page = async () => {
-   const res = await getDisclaimer();
+const Page: React.FC<{
+   params: {
+      lang: string;
+   };
+}> = async ({ params }) => {
+   const res = await getDisclaimer(params.lang);
    const data = res.data.attributes;
 
    return (
@@ -35,4 +39,4 @@ const page = async () => {
    );
 };
 
-export default page;
+export default Page;

@@ -34,7 +34,7 @@ const getFilterQuery = (
       .join('&');
 };
 
-export const getHomePage = async () => {
+export const getHomePage = async (locale = 'en') => {
    try {
       const populateQuery = buildPopulateQuery([
          'heroPrimaryCTA.link',
@@ -49,9 +49,13 @@ export const getHomePage = async () => {
          'mediaSectionLogos.url',
          'seo.metaImage.url',
       ]);
-      const response = await fetchClient('/home-page?' + populateQuery, {
-         headers: getAuthHeaders(),
-      });
+      const localeQuery = locale ? `&locale=${locale}` : '';
+      const response = await fetchClient(
+         '/home-page?' + populateQuery + localeQuery,
+         {
+            headers: getAuthHeaders(),
+         },
+      );
       return await response;
    } catch (error) {
       console.error('Error fetching products:', error);
@@ -273,7 +277,7 @@ export const getGeographies = cache(async (page = 1, limit = 100) => {
    }
 });
 
-export const getAboutPage = async () => {
+export const getAboutPage = async (locale = 'en') => {
    try {
       const populateQuery = buildPopulateQuery([
          'heroPrimaryCTAButton',
@@ -288,9 +292,13 @@ export const getAboutPage = async () => {
          'mediaSecrtionLogos',
          'seo.metaImage.url',
       ]);
-      const response = await fetchClient('/about-page?' + populateQuery, {
-         headers: getAuthHeaders(),
-      });
+      const localeQuery = locale ? `&locale=${locale}` : '';
+      const response = await fetchClient(
+         '/about-page?' + populateQuery + localeQuery,
+         {
+            headers: getAuthHeaders(),
+         },
+      );
       return await response;
    } catch (error) {
       console.error('Error fetching News:', error);
@@ -353,7 +361,7 @@ export const getFooterQuickLinks = async () => {
    }
 };
 
-export const getContagePageData = async () => {
+export const getContagePageData = async (locale = 'en') => {
    try {
       const populateQuery = buildPopulateQuery([
          'contactDetailsList',
@@ -362,9 +370,13 @@ export const getContagePageData = async () => {
          'socialMediaSectionIconsList.icon',
          'contactFormFields',
       ]);
-      const response = await fetchClient('/contact-page?' + populateQuery, {
-         headers: getAuthHeaders(),
-      });
+      const localeQuery = locale ? `&locale=${locale}` : '';
+      const response = await fetchClient(
+         '/contact-page?' + populateQuery + localeQuery,
+         {
+            headers: getAuthHeaders(),
+         },
+      );
       return await response;
    } catch (error) {
       console.error('Error fetching main menu:', error);
@@ -475,12 +487,16 @@ export const getServiceBySlug = async (slug: string) => {
    }
 };
 
-export const getPrivacyPolicy = async () => {
+export const getPrivacyPolicy = async (locale = 'en') => {
    const populateQuery = buildPopulateQuery(['seo.metaImage.url']);
+   const localeQuery = locale ? `&locale=${locale}` : '';
    try {
-      const response = await fetchClient('/privacy-policy?' + populateQuery, {
-         headers: getAuthHeaders(),
-      });
+      const response = await fetchClient(
+         '/privacy-policy?' + populateQuery + localeQuery,
+         {
+            headers: getAuthHeaders(),
+         },
+      );
       return await response;
    } catch (error) {
       console.error('Error fetching privacy policy:', error);
@@ -488,12 +504,16 @@ export const getPrivacyPolicy = async () => {
    }
 };
 
-export const getTermsAndConditions = async () => {
+export const getTermsAndConditions = async (locale = 'en') => {
    const populateQuery = buildPopulateQuery(['seo.metaImage.url']);
+   const localeQuery = `&locale=${encodeURIComponent(locale)}`;
    try {
-      const response = await fetchClient('/t-and-c?' + populateQuery, {
-         headers: getAuthHeaders(),
-      });
+      const response = await fetchClient(
+         '/t-and-c?' + populateQuery + localeQuery,
+         {
+            headers: getAuthHeaders(),
+         },
+      );
       return await response;
    } catch (error) {
       console.error('Error fetching terms and conditions:', error);
@@ -501,12 +521,16 @@ export const getTermsAndConditions = async () => {
    }
 };
 
-export const getLegal = async () => {
+export const getLegal = async (locale = 'en') => {
    const populateQuery = buildPopulateQuery(['seo.metaImage.url']);
+   const localeQuery = locale ? `&locale=${locale}` : '';
    try {
-      const response = await fetchClient('/legal?' + populateQuery, {
-         headers: getAuthHeaders(),
-      });
+      const response = await fetchClient(
+         '/legal?' + populateQuery + localeQuery,
+         {
+            headers: getAuthHeaders(),
+         },
+      );
       return await response;
    } catch (error) {
       console.error('Error fetching legal:', error);
@@ -514,12 +538,16 @@ export const getLegal = async () => {
    }
 };
 
-export const getDisclaimer = async () => {
+export const getDisclaimer = async (locale = 'en') => {
    const populateQuery = buildPopulateQuery(['seo.metaImage.url']);
+   const localeQuery = locale ? `&locale=${locale}` : '';
    try {
-      const response = await fetchClient('/disclaimer?' + populateQuery, {
-         headers: getAuthHeaders(),
-      });
+      const response = await fetchClient(
+         '/disclaimer?' + populateQuery + localeQuery,
+         {
+            headers: getAuthHeaders(),
+         },
+      );
       return await response;
    } catch (error) {
       console.error('Error fetching disclaimer:', error);
@@ -527,11 +555,12 @@ export const getDisclaimer = async () => {
    }
 };
 
-export const getCancellationPolicy = async () => {
+export const getCancellationPolicy = async (locale = 'en') => {
    const populateQuery = buildPopulateQuery(['seo.metaImage.url']);
+   const localeQuery = locale ? `&locale=${locale}` : '';
    try {
       const response = await fetchClient(
-         '/cancellation-policy?' + populateQuery,
+         '/cancellation-policy?' + populateQuery + localeQuery,
          {
             headers: getAuthHeaders(),
          },
