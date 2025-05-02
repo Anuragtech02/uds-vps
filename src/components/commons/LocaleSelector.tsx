@@ -42,7 +42,7 @@ const LocaleSelector = () => {
 
       // Update the URL without full page reload
       const newPath = segments.join('/');
-      router.push(newPath);
+      // router.push(newPath);
 
       // Refresh the current route to update all components
       router.replace(newPath);
