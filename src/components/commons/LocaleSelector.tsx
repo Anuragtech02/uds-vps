@@ -44,8 +44,7 @@ const LocaleSelector = () => {
       const newPath = segments.join('/');
       // router.push(newPath);
 
-      // Refresh the current route to update all components
-      router.replace(newPath);
+      window.location.href = newPath;
 
       // Set or remove RTL class on body based on locale
       if (newLocale === 'ar') {
