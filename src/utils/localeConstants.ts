@@ -101,7 +101,7 @@ export const TRANSLATED_VALUES: {
          researchMethodology: 'Research Methodology',
          related: 'Related',
          faqs: 'FAQs',
-         liceenseOptions: 'License Options',
+         licenseOptions: 'License Options',
          requestForCustomization: 'Request for Customization',
          customersWhoBoughtThisAlsoBought:
             'Customers who bought this item also bought',
@@ -202,7 +202,7 @@ export const TRANSLATED_VALUES: {
          researchMethodology: 'Metodología de investigación',
          related: 'Relacionados',
          faqs: 'Preguntas frecuentes',
-         liceenseOptions: 'Opciones de licencia',
+         licenseOptions: 'Opciones de licencia',
          requestForCustomization: 'Solicitar personalización',
          customersWhoBoughtThisAlsoBought:
             'Los clientes que compraron este artículo también compraron',
@@ -304,7 +304,7 @@ export const TRANSLATED_VALUES: {
          researchMethodology: 'Методология исследования',
          related: 'Связанные',
          faqs: 'Часто задаваемые вопросы',
-         liceenseOptions: 'Варианты лицензии',
+         licenseOptions: 'Варианты лицензии',
          requestForCustomization: 'Запрос на настройку',
          customersWhoBoughtThisAlsoBought:
             'Клиенты, купившие этот товар, также купили',
@@ -403,7 +403,7 @@ export const TRANSLATED_VALUES: {
          researchMethodology: 'منهجية البحث',
          related: 'ذات صلة',
          faqs: 'الأسئلة الشائعة',
-         liceenseOptions: 'خيارات الترخيص',
+         licenseOptions: 'خيارات الترخيص',
          requestForCustomization: 'طلب التخصيص',
          customersWhoBoughtThisAlsoBought:
             'العملاء الذين اشتروا هذا المنتج اشتروا أيضًا',
@@ -503,7 +503,7 @@ export const TRANSLATED_VALUES: {
          researchMethodology: 'Forschungsmethodik',
          related: 'Verwandt',
          faqs: 'FAQs',
-         liceenseOptions: 'Lizenzoptionen',
+         licenseOptions: 'Lizenzoptionen',
          requestForCustomization: 'Anpassung anfordern',
          customersWhoBoughtThisAlsoBought:
             'Kunden, die diesen Artikel gekauft haben, kauften auch',
@@ -604,7 +604,7 @@ export const TRANSLATED_VALUES: {
          researchMethodology: 'Méthodologie de recherche',
          related: 'Connexes',
          faqs: 'FAQ',
-         liceenseOptions: 'Options de licence',
+         licenseOptions: 'Options de licence',
          requestForCustomization: 'Demande de personnalisation',
          customersWhoBoughtThisAlsoBought:
             'Les clients qui ont acheté cet article ont également acheté',
@@ -701,7 +701,7 @@ export const TRANSLATED_VALUES: {
          researchMethodology: '研究方法',
          related: '相關',
          faqs: '常見問題',
-         liceenseOptions: '授權選項',
+         licenseOptions: '授權選項',
          requestForCustomization: '請求客製化',
          customersWhoBoughtThisAlsoBought: '購買此商品的客戶也購買了',
       },
@@ -798,7 +798,7 @@ export const TRANSLATED_VALUES: {
          researchMethodology: '調査方法',
          related: '関連',
          faqs: 'よくある質問',
-         liceenseOptions: 'ライセンスオプション',
+         licenseOptions: 'ライセンスオプション',
          requestForCustomization: 'カスタマイズのリクエスト',
          customersWhoBoughtThisAlsoBought:
             'この商品を購入したお客様はこれも購入しました',
@@ -896,7 +896,7 @@ export const TRANSLATED_VALUES: {
          researchMethodology: '연구 방법론',
          related: '관련',
          faqs: '자주 묻는 질문',
-         liceenseOptions: '라이선스 옵션',
+         licenseOptions: '라이선스 옵션',
          requestForCustomization: '맞춤 설정 요청',
          customersWhoBoughtThisAlsoBought:
             '이 상품을 구매한 고객님들도 함께 구매하신 상품',
@@ -994,7 +994,7 @@ export const TRANSLATED_VALUES: {
          researchMethodology: 'Phương pháp nghiên cứu',
          related: 'Liên quan',
          faqs: 'Câu hỏi thường gặp',
-         liceenseOptions: 'Tùy chọn giấy phép',
+         licenseOptions: 'Tùy chọn giấy phép',
          requestForCustomization: 'Yêu cầu tùy chỉnh',
          customersWhoBoughtThisAlsoBought:
             'Khách hàng đã mua mặt hàng này cũng đã mua',
@@ -1094,7 +1094,7 @@ export const TRANSLATED_VALUES: {
          researchMethodology: 'Metodologia di ricerca',
          related: 'Correlati',
          faqs: 'FAQ',
-         liceenseOptions: 'Opzioni di licenza',
+         licenseOptions: 'Opzioni di licenza',
          requestForCustomization: 'Richiedi personalizzazione',
          customersWhoBoughtThisAlsoBought:
             'I clienti che hanno acquistato questo articolo hanno acquistato anche',
@@ -1195,7 +1195,7 @@ export const TRANSLATED_VALUES: {
          researchMethodology: 'Metodologia badań',
          related: 'Powiązane',
          faqs: 'FAQ',
-         liceenseOptions: 'Opcje licencji',
+         licenseOptions: 'Opcje licencji',
          requestForCustomization: 'Zamów dostosowanie',
          customersWhoBoughtThisAlsoBought:
             'Klienci, którzy kupili ten przedmiot, kupili również',
@@ -1292,7 +1292,7 @@ export const TRANSLATED_VALUES: {
          researchMethodology: '研究方法',
          related: '相关',
          faqs: '常见问题',
-         liceenseOptions: '许可选项',
+         licenseOptions: '许可选项',
          requestForCustomization: '请求定制',
          customersWhoBoughtThisAlsoBought: '购买此商品的客户也购买了',
       },
