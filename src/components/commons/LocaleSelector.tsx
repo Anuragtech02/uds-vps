@@ -28,7 +28,7 @@ const LocaleSelector = () => {
 
       // Remove existing language segment if present
       if (
-         segments[1]?.length === 2 &&
+         segments[1] &&
          // @ts-ignore
          SUPPORTED_LOCALES.includes(segments[1])
       ) {
