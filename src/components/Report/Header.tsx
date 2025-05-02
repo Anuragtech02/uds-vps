@@ -168,7 +168,11 @@ const Header: React.FC<{ data: any; locale: string }> = ({
                                  <LocalizedLink
                                     href={`/reports/?industries=${reportHeaderData.industry.slug}`}
                                  >
-                                    {reportHeaderData.industry.name}
+                                    {
+                                       TRANSLATED_VALUES[locale]?.industries[
+                                          reportHeaderData.industry.name
+                                       ]
+                                    }
                                  </LocalizedLink>
                               </p>
                            </div>
