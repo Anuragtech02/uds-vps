@@ -9,11 +9,14 @@ import { SUPPORTED_LOCALES } from '@/utils/constants';
 import { absoluteUrl } from '@/utils/generic-methods';
 import { Metadata } from 'next';
 
-export async function generateMetadata(params: {
-   lang: string;
+export async function generateMetadata({
+   params,
+}: {
+   params: any;
 }): Promise<Metadata> {
+   const { lang } = params;
    try {
-      const aboutData = await getAboutPage(params.lang);
+      const aboutData = await getAboutPage(lang);
       const { attributes } = aboutData.data;
       const seo = attributes?.seo;
 
