@@ -4,8 +4,12 @@ import { getTermsAndConditions } from '@/utils/api/services';
 
 // export const runtime = 'edge';
 
-const page = async () => {
-   const res = await getTermsAndConditions();
+const page: React.FC<{
+   params: {
+      lang: string;
+   };
+}> = async ({ params }) => {
+   const res = await getTermsAndConditions(params.lang);
    const data = res.data.attributes;
 
    return (

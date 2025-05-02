@@ -4,8 +4,12 @@ import { getLegal } from '@/utils/api/services';
 
 // export const runtime = 'edge';
 
-const page = async () => {
-   const res = await getLegal();
+const page: React.FC<{
+   params: {
+      lang: string;
+   };
+}> = async ({ params }) => {
+   const res = await getLegal(params.lang);
    const data = res.data.attributes;
 
    return (

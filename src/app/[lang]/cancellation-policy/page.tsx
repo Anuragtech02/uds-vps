@@ -11,9 +11,15 @@ import { SUPPORTED_LOCALES } from '@/utils/constants';
 export const revalidate = 86400;
 
 // Generate metadata for the Cancellation Policy page
-export async function generateMetadata(): Promise<Metadata> {
+export async function generateMetadata({
+   params,
+}: {
+   params: {
+      lang: string;
+   };
+}): Promise<Metadata> {
    try {
-      const cancellationPolicyData = await getCancellationPolicy();
+      const cancellationPolicyData = await getCancellationPolicy(params.lang);
       const { attributes } = cancellationPolicyData.data;
       const seo = attributes?.seo;
 
@@ -137,9 +143,13 @@ export async function generateMetadata(): Promise<Metadata> {
    }
 }
 
-const CancellationPolicy = async () => {
+const CancellationPolicy: React.FC<{
+   params: {
+      lang: string;
+   };
+}> = async ({ params }) => {
    try {
-      const res = await getCancellationPolicy();
+      const res = await getCancellationPolicy(params.lang);
       const data = res.data.attributes;
 
       return (

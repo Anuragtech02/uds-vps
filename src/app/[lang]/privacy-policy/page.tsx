@@ -1,11 +1,16 @@
 import ClientSearchHero from '@/components/Home/ClientSearchHero';
 import NewsSidebar from '@/components/News/NewsSidebar';
 import { getPrivacyPolicy } from '@/utils/api/services';
+import React from 'react';
 
 // export const runtime = 'edge';
 
-const page = async () => {
-   const res = await getPrivacyPolicy();
+const page: React.FC<{
+   params: {
+      lang: string;
+   };
+}> = async ({ params }) => {
+   const res = await getPrivacyPolicy(params.lang);
    const data = res.data.attributes;
 
    return (
