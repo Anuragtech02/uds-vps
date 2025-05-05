@@ -136,6 +136,8 @@ export const TRANSLATED_VALUES: {
          requestForCustomization: 'Request for Customization',
          customersWhoBoughtThisAlsoBought:
             'Customers who bought this item also bought',
+         expandAll: 'Expand All',
+         collapseAll: 'Collapse All',
       },
       about: {},
       contact: {
@@ -288,6 +290,8 @@ export const TRANSLATED_VALUES: {
          requestForCustomization: 'Solicitar personalización',
          customersWhoBoughtThisAlsoBought:
             'Los clientes que compraron este artículo también compraron',
+         expandAll: 'Expandir todo',
+         collapseAll: 'Colapsar todo',
       },
       about: {},
       contact: {
@@ -441,6 +445,8 @@ export const TRANSLATED_VALUES: {
          requestForCustomization: 'Запрос на настройку',
          customersWhoBoughtThisAlsoBought:
             'Клиенты, купившие этот товар, также купили',
+         expandAll: 'Развернуть все',
+         collapseAll: 'Свернуть все',
       },
       about: {},
       contact: {
@@ -591,6 +597,8 @@ export const TRANSLATED_VALUES: {
          requestForCustomization: 'طلب التخصيص',
          customersWhoBoughtThisAlsoBought:
             'العملاء الذين اشتروا هذا المنتج اشتروا أيضًا',
+         expandAll: 'توسيع الكل',
+         collapseAll: 'طي الكل',
       },
       about: {},
       contact: {
@@ -742,6 +750,8 @@ export const TRANSLATED_VALUES: {
          requestForCustomization: 'Anpassung anfordern',
          customersWhoBoughtThisAlsoBought:
             'Kunden, die diesen Artikel gekauft haben, kauften auch',
+         expandAll: 'Alles erweitern',
+         collapseAll: 'Alles einklappen',
       },
       about: {},
       contact: {
@@ -894,6 +904,8 @@ export const TRANSLATED_VALUES: {
          requestForCustomization: 'Demande de personnalisation',
          customersWhoBoughtThisAlsoBought:
             'Les clients qui ont acheté cet article ont également acheté',
+         expandAll: 'Tout développer',
+         collapseAll: 'Tout réduire',
       },
       about: {},
       contact: {
@@ -1039,6 +1051,8 @@ export const TRANSLATED_VALUES: {
          licenseOptions: '授權選項',
          requestForCustomization: '請求客製化',
          customersWhoBoughtThisAlsoBought: '購買此商品的客戶也購買了',
+         expandAll: '展開全部',
+         collapseAll: '收起全部',
       },
       about: {},
       contact: {
@@ -1188,6 +1202,8 @@ export const TRANSLATED_VALUES: {
          requestForCustomization: 'カスタマイズのリクエスト',
          customersWhoBoughtThisAlsoBought:
             'この商品を購入したお客様はこれも購入しました',
+         expandAll: 'すべて展開',
+         collapseAll: 'すべて折りたたむ',
       },
       about: {},
       contact: {
@@ -1337,6 +1353,8 @@ export const TRANSLATED_VALUES: {
          requestForCustomization: '맞춤 설정 요청',
          customersWhoBoughtThisAlsoBought:
             '이 상품을 구매한 고객님들도 함께 구매하신 상품',
+         expandAll: '모두 확장',
+         collapseAll: '모두 축소',
       },
       about: {},
       contact: {
@@ -1486,6 +1504,8 @@ export const TRANSLATED_VALUES: {
          requestForCustomization: 'Yêu cầu tùy chỉnh',
          customersWhoBoughtThisAlsoBought:
             'Khách hàng đã mua mặt hàng này cũng đã mua',
+         expandAll: 'Mở rộng tất cả',
+         collapseAll: 'Thu gọn tất cả',
       },
       about: {},
       contact: {
@@ -1638,6 +1658,8 @@ export const TRANSLATED_VALUES: {
          requestForCustomization: 'Richiedi personalizzazione',
          customersWhoBoughtThisAlsoBought:
             'I clienti che hanno acquistato questo articolo hanno acquistato anche',
+         expandAll: 'Espandi tutto',
+         collapseAll: 'Riduci tutto',
       },
       about: {},
       contact: {
@@ -1791,6 +1813,8 @@ export const TRANSLATED_VALUES: {
          requestForCustomization: 'Zamów dostosowanie',
          customersWhoBoughtThisAlsoBought:
             'Klienci, którzy kupili ten przedmiot, kupili również',
+         expandAll: 'Rozwiń wszystko',
+         collapseAll: 'Zwiń wszystko',
       },
       about: {},
       contact: {
@@ -1937,6 +1961,8 @@ export const TRANSLATED_VALUES: {
          licenseOptions: '许可选项',
          requestForCustomization: '请求定制',
          customersWhoBoughtThisAlsoBought: '购买此商品的客户也购买了',
+         expandAll: '展开全部',
+         collapseAll: '收起全部',
       },
       about: {},
       contact: {

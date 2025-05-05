@@ -3,6 +3,8 @@
 
 import { useState } from 'react';
 import TableOfContentItem from './TableOfContentItem';
+import { TRANSLATED_VALUES } from '@/utils/localeConstants';
+import { useLocale } from '@/utils/LocaleContext';
 
 interface InteractiveTOCProps {
    tableOfContent: any[];
@@ -36,6 +38,8 @@ export default function InteractiveTOC({
       setExpandedSections(new Set());
    };
 
+   const { locale } = useLocale();
+
    return (
       <>
          <div className='-mt-6 mb-4 flex w-full items-center justify-start'>
@@ -51,8 +55,8 @@ export default function InteractiveTOC({
                type='button'
             >
                {expandedSections.size === tableOfContent.length
-                  ? 'Collapse All'
-                  : 'Expand All'}
+                  ? TRANSLATED_VALUES[locale]?.report?.collapseAll
+                  : TRANSLATED_VALUES[locale]?.report?.expandAll}
             </button>
          </div>
          <ol id='table-of-content'>

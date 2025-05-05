@@ -88,8 +88,8 @@ const ReportBlockData: React.FC<ReportBlockDataProps> = ({ data }) => {
                      type='button'
                   >
                      {expandedSections.size === data.tableOfContent.length
-                        ? 'Collapse All'
-                        : 'Expand All'}
+                        ? TRANSLATED_VALUES[locale]?.report?.collapseAll
+                        : TRANSLATED_VALUES[locale]?.report?.expandAll}
                   </button>
                </div>
             </div>
