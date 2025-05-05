@@ -41,7 +41,7 @@ const Topbar = ({ header }: ITopbarProps) => {
                   wrapperClassName='h-10 w-24 object-contain md:h-[80px] md:w-[200px] flex justify-start items-center'
                />
             </LocalizedLink>
-            <div className='slg:hidden block'>
+            <div className='block lg:hidden'>
                <LocaleSelector theme='light' size='small' />
             </div>
             <div className='hidden flex-1 lg:block'>
