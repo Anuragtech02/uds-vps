@@ -215,10 +215,11 @@ const ReportDetailPage: React.FC<{
 
       // Get industry ID for related reports
       const industryId = reportPage?.attributes?.industry?.data?.id;
+      const cahceKey = `relatedReports_${industryId}_${params.lang}`;
 
       // Check if related reports for this industry are already in cache
-      if (industryId && relatedReportsCache.has(industryId)) {
-         relatedReportsData = relatedReportsCache.get(industryId);
+      if (industryId && relatedReportsCache.has(cahceKey)) {
+         relatedReportsData = relatedReportsCache.get(cahceKey);
       } else if (industryId) {
          // Fetch related reports if not in cache
          const relatedReports = await getAllReports({
@@ -236,7 +237,7 @@ const ReportDetailPage: React.FC<{
 
          // Store in cache (if there are results)
          if (relatedReportsData.length > 0) {
-            relatedReportsCache.set(industryId, relatedReportsData);
+            relatedReportsCache.set(cahceKey, relatedReportsData);
          }
       }
    } catch (err) {
