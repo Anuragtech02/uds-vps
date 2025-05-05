@@ -190,7 +190,7 @@ const About = async () => {
 
    return (
       <>
-         <Hero hero={hero} />
+         <Hero hero={hero} locale='en' />
          <AboutData about={about} />
          <MediaCitation mediaCitation={mediaCitation} />
          <AboutCta ctaBanner={ctaBanner} />
