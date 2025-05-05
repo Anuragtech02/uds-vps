@@ -62,7 +62,11 @@ const Footer = ({ footer, quickLinks }: any) => {
                      href={footer?.footerCTA?.ctaButton?.link ?? '/contact'}
                   >
                      <Button variant='primary' className='mx-auto mt-10'>
-                        {footer?.footerCTA?.ctaButton?.title}
+                        {
+                           TRANSLATED_VALUES[locale]?.footer?.[
+                              footer?.footerCTA?.ctaButton?.title
+                           ]
+                        }
                      </Button>
                   </LocalizedLink>
                </div>

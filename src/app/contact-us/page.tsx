@@ -1,7 +1,7 @@
 // export const runtime = 'edge';
 import ContactDetails from '@/components/Contact/ContactDetails';
 import ContactForm from '@/components/Contact/ContactForm';
-import { getContagePageData } from '@/utils/api/services';
+import { getContactPageData } from '@/utils/api/services';
 import { SUPPORTED_LOCALES } from '@/utils/constants';
 import { absoluteUrl } from '@/utils/generic-methods';
 import { Metadata } from 'next';
@@ -12,7 +12,7 @@ export const revalidate = 86400;
 // Enhanced metadata with more SEO attributes
 export async function generateMetadata(): Promise<Metadata> {
    try {
-      const contactData = await getContagePageData();
+      const contactData = await getContactPageData();
       const { attributes } = contactData.data;
       const seo = attributes?.seo;
 
@@ -137,10 +137,10 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 const Contact = async () => {
-   let contactPageData: Awaited<ReturnType<typeof getContagePageData>>;
+   let contactPageData: Awaited<ReturnType<typeof getContactPageData>>;
 
    try {
-      contactPageData = await getContagePageData();
+      contactPageData = await getContactPageData();
    } catch (error) {
       console.error('Error fetching main menu:', error);
    }

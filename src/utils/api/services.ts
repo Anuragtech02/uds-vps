@@ -361,7 +361,7 @@ export const getFooterQuickLinks = async () => {
    }
 };
 
-export const getContagePageData = async (locale = 'en') => {
+export const getContactPageData = async (locale = 'en') => {
    try {
       const populateQuery = buildPopulateQuery([
          'contactDetailsList',

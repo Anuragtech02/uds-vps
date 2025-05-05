@@ -112,7 +112,7 @@ const CollapsibleLicenseOptions: React.FC<CollapsibleLicenseOptionsProps> = ({
                      className='cursor-pointer px-4 py-3'
                      onClick={() => toggleLicense(index)}
                   >
-                     <div className='flex flex-wrap items-start justify-between xl:flex-nowrap'>
+                     <div className='flex flex-wrap items-start justify-between 2xl:flex-nowrap'>
                         <div className='flex items-start gap-3'>
                            <input
                               type='radio'

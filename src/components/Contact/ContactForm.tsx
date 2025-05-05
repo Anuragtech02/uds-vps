@@ -5,6 +5,8 @@ import CustomPhoneInput from '../CustomPhoneInput';
 import countryList from '@/assets/utils/countries.json';
 import Script from 'next/script';
 import { submitForm } from '@/utils/api/csr-services';
+import { useLocale } from '@/utils/LocaleContext';
+import { TRANSLATED_VALUES } from '@/utils/localeConstants';
 
 const ContactForm = () => {
    const [formFields, setFormFields] = useState({
@@ -21,6 +23,8 @@ const ContactForm = () => {
    const [success, setSuccess] = useState(false);
    const widgetIdRef = useRef<string>('');
    const turnstileContainerId = 'turnstile-container'; // Keep this consistent
+
+   const { locale } = useLocale();
 
    const cleanupTurnstile = () => {
       if (widgetIdRef.current && window.turnstile) {
@@ -166,11 +170,16 @@ const ContactForm = () => {
                onSubmit={handleSubmit}
                className='space-y-6 text-sm md:space-y-8'
             >
-               <p className='text-[1.625rem] text-blue-1'>Get in Touch</p>
+               <p className='text-[1.625rem] text-blue-1'>
+                  {TRANSLATED_VALUES[locale]?.contact.getInTouch}
+               </p>
 
                <div className='flex flex-col gap-4 md:flex-row md:items-center'>
                   <div className='shrink grow basis-0 space-y-1'>
-                     <label htmlFor='fullName'>Full Name*</label>
+                     <label htmlFor='fullName'>
+                        {' '}
+                        {TRANSLATED_VALUES[locale]?.contact.fullName}*
+                     </label>
                      <input
                         type='text'
                         id='fullName'
@@ -178,7 +187,9 @@ const ContactForm = () => {
                         required
                         value={formFields.fullName}
                         onChange={handleInputChange}
-                        placeholder='Enter your full name'
+                        placeholder={
+                           TRANSLATED_VALUES[locale]?.contact.enterYourFullName
+                        }
                         className='w-full rounded-md border border-s-300 p-3'
                      />
                   </div>
@@ -192,7 +203,9 @@ const ContactForm = () => {
 
                <div className='flex flex-col gap-4 md:flex-row md:items-center'>
                   <div className='shrink grow basis-0 space-y-1'>
-                     <label htmlFor='businessEmail'>Business Email*</label>
+                     <label htmlFor='businessEmail'>
+                        {TRANSLATED_VALUES[locale]?.contact.businessEmail}*
+                     </label>
                      <input
                         type='email'
                         id='businessEmail'
@@ -200,12 +213,17 @@ const ContactForm = () => {
                         required
                         value={formFields.businessEmail}
                         onChange={handleInputChange}
-                        placeholder='Enter your business email'
+                        placeholder={
+                           TRANSLATED_VALUES[locale]?.contact
+                              .enterYourBusinessEmail
+                        }
                         className='w-full rounded-md border border-s-300 p-3'
                      />
                   </div>
                   <div className='shrink grow basis-0 space-y-1'>
-                     <label htmlFor='country'>Country</label>
+                     <label htmlFor='country'>
+                        {TRANSLATED_VALUES[locale]?.contact.country}
+                     </label>
                      <select
                         id='country'
                         name='country'
@@ -214,7 +232,10 @@ const ContactForm = () => {
                         className='w-full rounded-md border border-s-300 p-3'
                      >
                         <option className='opacity-50' value=''>
-                           Select your country
+                           {
+                              TRANSLATED_VALUES[locale]?.contact
+                                 .selectYourCountry
+                           }
                         </option>
                         {countryList?.map((country) => (
                            <option key={country.code} value={country.name}>
@@ -227,7 +248,9 @@ const ContactForm = () => {
 
                <div className='flex flex-col gap-4 md:flex-row md:items-center'>
                   <div className='shrink grow basis-0 space-y-1'>
-                     <label htmlFor='company'>Company*</label>
+                     <label htmlFor='company'>
+                        {TRANSLATED_VALUES[locale]?.contact.company}*
+                     </label>
                      <input
                         type='text'
                         id='company'
@@ -235,20 +258,26 @@ const ContactForm = () => {
                         required
                         value={formFields.company}
                         onChange={handleInputChange}
-                        placeholder='Enter your company name'
+                        placeholder={
+                           TRANSLATED_VALUES[locale]?.contact.enterYourCompany
+                        }
                         className='w-full rounded-md border border-s-300 p-3'
                      />
                   </div>
                </div>
 
                <div className='space-y-1'>
-                  <label htmlFor='message'>Message</label>
+                  <label htmlFor='message'>
+                     {TRANSLATED_VALUES[locale]?.contact.message}
+                  </label>
                   <textarea
                      name='message'
                      id='message'
                      value={formFields.message}
                      onChange={handleInputChange}
-                     placeholder='Enter your message'
+                     placeholder={
+                        TRANSLATED_VALUES[locale]?.contact.enterYourMessage
+                     }
                      className='min-h-32 w-full rounded-md border border-s-300 p-3'
                   />
                </div>
@@ -275,7 +304,9 @@ const ContactForm = () => {
                         type='submit'
                         disabled={isSubmitting}
                      >
-                        {isSubmitting ? 'Sending...' : 'Send Message'}
+                        {isSubmitting
+                           ? 'Sending...'
+                           : TRANSLATED_VALUES[locale]?.contact.sendMessage}
                      </Button>
                   </div>
                </div>
