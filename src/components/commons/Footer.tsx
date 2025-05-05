@@ -1,3 +1,4 @@
+'use client';
 import Image from 'next/image';
 import earth from '@/assets/img/earth-min.png';
 import Button from './Button';
@@ -14,11 +15,14 @@ import Popup from '../Popup';
 import DemoRequestForm from '../Home/DemoRequestForm';
 import { FaPinterest, FaYoutube } from 'react-icons/fa';
 import StrapiImage from '../StrapiImage/StrapiImage';
+import { TRANSLATED_VALUES } from '@/utils/localeConstants';
+import { useLocale } from '@/utils/LocaleContext';
 
 const LOGO_DIMENSIONS = { width: 150, height: 50 };
 const EARTH_DIMENSIONS = { width: 1920, height: 1080 };
 
 const Footer = ({ footer, quickLinks }: any) => {
+   const { locale } = useLocale();
    return (
       <>
          {/* {invalidRoutes.includes(pathname) ? null : (
@@ -40,9 +44,12 @@ const Footer = ({ footer, quickLinks }: any) => {
                <div className='container relative z-[3]'>
                   <div className='min-h-[60px]'>
                      <p
-                        className='text-[2.25rem] font-bold md:text-[3.5rem]'
+                        className='text-[2.25rem] font-bold md:text-[3rem]'
                         dangerouslySetInnerHTML={{
-                           __html: footer?.footerCTA?.title,
+                           __html:
+                              TRANSLATED_VALUES[locale]?.footer?.[
+                                 footer?.footerCTA?.title
+                              ],
                         }}
                      ></p>
                   </div>
@@ -76,7 +83,11 @@ const Footer = ({ footer, quickLinks }: any) => {
                         </div>
                      </LocalizedLink>
                      <p className='mt-4 text-blue-9 md:w-2/3'>
-                        {footer?.companyInfo?.companyDescription}
+                        {
+                           TRANSLATED_VALUES[locale]?.footer?.[
+                              footer?.companyInfo?.companyDescription
+                           ]
+                        }
                      </p>
                      <div className='mt-4 flex space-x-4 md:mt-8'>
                         <a
@@ -138,7 +149,9 @@ const Footer = ({ footer, quickLinks }: any) => {
 
                   {/* Quick Links */}
                   <div>
-                     <p className='mb-4 text-lg text-white'>QUICK LINKS</p>
+                     <p className='mb-4 text-lg text-white'>
+                        {TRANSLATED_VALUES[locale]?.footer?.quickLinks}
+                     </p>
                      <ul className='space-y-2'>
                         {quickLinks?.map((item: any) => (
                            <li key={item?.title}>
@@ -146,7 +159,9 @@ const Footer = ({ footer, quickLinks }: any) => {
                                  href={item?.url ?? ''}
                                  className='hover:text-gray-300 hover:underline'
                               >
-                                 {item?.title}
+                                 {TRANSLATED_VALUES[locale]?.footer?.[
+                                    item?.title
+                                 ] || item?.title}
                               </LocalizedLink>
                            </li>
                         ))}
@@ -156,7 +171,7 @@ const Footer = ({ footer, quickLinks }: any) => {
                   {/* Industry Verticals */}
                   <div>
                      <p className='mb-4 text-lg text-white'>
-                        INDUSTRY VERTICALS
+                        {TRANSLATED_VALUES[locale]?.footer?.industryVerticals}
                      </p>
                      <ul className='space-y-2'>
                         {footer?.industries?.map((item: any) => (
@@ -165,7 +180,11 @@ const Footer = ({ footer, quickLinks }: any) => {
                                  href={`/reports?industries=${item?.slug}`}
                                  className='hover:text-gray-300 hover:underline'
                               >
-                                 {item?.name}
+                                 {
+                                    TRANSLATED_VALUES[locale]?.industries?.[
+                                       item?.name
+                                    ]
+                                 }
                               </LocalizedLink>
                            </li>
                         ))}
@@ -174,7 +193,7 @@ const Footer = ({ footer, quickLinks }: any) => {
                               href='/reports'
                               className='hover:text-gray-300 hover:underline'
                            >
-                              View All
+                              {TRANSLATED_VALUES[locale]?.footer?.viewAll}
                            </LocalizedLink>
                         </li>
                      </ul>
@@ -182,7 +201,9 @@ const Footer = ({ footer, quickLinks }: any) => {
 
                   {/* Contact */}
                   <div>
-                     <p className='mb-4 text-lg text-white'>CONTACT</p>
+                     <p className='mb-4 text-lg text-white'>
+                        {TRANSLATED_VALUES[locale]?.footer?.contact}
+                     </p>
                      <p className='mb-2'>
                         C-80B, Sector 8, Noida, Uttar Pradesh- 201301, India
                      </p>
@@ -203,7 +224,12 @@ const Footer = ({ footer, quickLinks }: any) => {
                            variant='light'
                            className='border border-blue-9 !bg-blue-1 text-blue-9'
                         >
-                           Send An Enquiry →
+                           {
+                              TRANSLATED_VALUES[locale]?.footer?.[
+                                 'Send An Enquiry'
+                              ]
+                           }{' '}
+                           →
                         </Button>
                      </LocalizedLink>
                   </div>

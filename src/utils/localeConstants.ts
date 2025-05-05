@@ -1,10 +1,9 @@
-import { SUPPORTED_LOCALES } from './constants';
-
 export const TRANSLATED_VALUES: {
    [key: string]: {
       commons: any;
       industries: any;
       header: any;
+      footer: any;
       home: any;
       report: any;
       about: any;
@@ -89,6 +88,26 @@ export const TRANSLATED_VALUES: {
          reading: 'Reading',
          industry: 'Industry',
          geography: 'Geography',
+      },
+      footer: {
+         'Privacy Policy': 'Privacy Policy',
+         'Terms & Conditions': 'Terms & Conditions',
+         Legal: 'Legal',
+         'Cancellation Policy': 'Cancellation Policy',
+         Home: 'Home',
+         About: 'About',
+         Contact: 'Contact',
+         Disclaimer: 'Disclaimer',
+         viewAll: 'View All',
+         'Send An Enquiry': 'Send An Enquiry',
+         'UnivDatos is a rapidly growing market research firm delivering market intelligence and consulting services since 2013':
+            'UnivDatos is a rapidly growing market research firm delivering market intelligence and consulting services since 2013',
+         'Become our client': 'Become our client',
+         quickLinks: 'QUICK LINKS',
+         industryVerticals: 'INDUSTRY VERTICALS',
+         contact: 'CONTACT',
+         'Order your tailored research report now!':
+            'Order your tailored research report now!',
       },
       home: {
          ourBlogs: 'Our Blogs',
@@ -201,6 +220,26 @@ export const TRANSLATED_VALUES: {
          reading: 'Leyendo',
          industry: 'Industria',
          geography: 'Geografía',
+      },
+      footer: {
+         'Privacy Policy': 'Política de privacidad',
+         'Terms & Conditions': 'Términos y condiciones',
+         Legal: 'Legal',
+         'Cancellation Policy': 'Política de cancelación',
+         Home: 'Inicio',
+         About: 'Acerca de',
+         Contact: 'Contacto',
+         Disclaimer: 'Descargo de responsabilidad',
+         viewAll: 'Ver todo',
+         'Send An Enquiry': 'Enviar una consulta',
+         'UnivDatos is a rapidly growing market research firm delivering market intelligence and consulting services since 2013':
+            'UnivDatos es una empresa de investigación de mercado en rápido crecimiento que ofrece inteligencia de mercado y servicios de consultoría desde 2013',
+         'Become our client': 'Conviértete en nuestro cliente',
+         quickLinks: 'ENLACES RÁPIDOS',
+         industryVerticals: 'VERTICALES DE LA INDUSTRIA',
+         contact: 'CONTACTO',
+         'Order your tailored research report now!':
+            '¡Ordena tu informe de investigación personalizado ahora!',
       },
       home: {
          ourBlogs: 'Nuestros Blogs',
@@ -315,6 +354,26 @@ export const TRANSLATED_VALUES: {
          industry: 'Отрасль',
          geography: 'География',
       },
+      footer: {
+         'Privacy Policy': 'Политика конфиденциальности',
+         'Terms & Conditions': 'Условия и положения',
+         Legal: 'Юридическая информация',
+         'Cancellation Policy': 'Политика отмены',
+         Home: 'Главная',
+         About: 'О нас',
+         Contact: 'Контакты',
+         Disclaimer: 'Отказ от ответственности',
+         viewAll: 'Смотреть все',
+         'Send An Enquiry': 'Отправить запрос',
+         'UnivDatos is a rapidly growing market research firm delivering market intelligence and consulting services since 2013':
+            'UnivDatos - быстрорастущая компания в области рыночных исследований, предоставляющая услуги рыночной аналитики и консультирования с 2013 года',
+         'Become our client': 'Станьте нашим клиентом',
+         quickLinks: 'БЫСТРЫЕ ССЫЛКИ',
+         industryVerticals: 'ОТРАСЛЕВЫЕ ВЕРТИКАЛИ',
+         contact: 'КОНТАКТ',
+         'Order your tailored research report now!':
+            'Закажите свой индивидуальный отчет по исследованию сейчас!',
+      },
       home: {
          ourBlogs: 'Наши блоги',
          latestNews: 'Последние новости',
@@ -424,6 +483,26 @@ export const TRANSLATED_VALUES: {
          reading: 'قراءة',
          industry: 'صناعة',
          geography: 'جغرافيا',
+      },
+      footer: {
+         'Privacy Policy': 'سياسة الخصوصية',
+         'Terms & Conditions': 'الشروط والأحكام',
+         Legal: 'قانوني',
+         'Cancellation Policy': 'سياسة الإلغاء',
+         Home: 'الرئيسية',
+         About: 'معلومات عنا',
+         Contact: 'اتصل',
+         Disclaimer: 'إخلاء المسؤولية',
+         viewAll: 'عرض الكل',
+         'Send An Enquiry': 'إرسال استفسار',
+         'UnivDatos is a rapidly growing market research firm delivering market intelligence and consulting services since 2013':
+            'UnivDatos هي شركة أبحاث سوقية سريعة النمو تقدم خدمات استخبارات السوق والاستشارات منذ عام 2013',
+         'Become our client': 'كن عميلنا',
+         quickLinks: 'روابط سريعة',
+         industryVerticals: 'القطاعات الصناعية',
+         contact: 'اتصل',
+         'Order your tailored research report now!':
+            'اطلب تقرير البحث المخصص الخاص بك الآن!',
       },
       home: {
          ourBlogs: 'مدوناتنا',
@@ -535,6 +614,26 @@ export const TRANSLATED_VALUES: {
          reading: 'Lesen',
          industry: 'Industrie',
          geography: 'Geografie',
+      },
+      footer: {
+         'Privacy Policy': 'Datenschutzrichtlinie',
+         'Terms & Conditions': 'Allgemeine Geschäftsbedingungen',
+         Legal: 'Rechtliches',
+         'Cancellation Policy': 'Stornierungsbedingungen',
+         Home: 'Startseite',
+         About: 'Über uns',
+         Contact: 'Kontakt',
+         Disclaimer: 'Haftungsausschluss',
+         viewAll: 'Alle anzeigen',
+         'Send An Enquiry': 'Eine Anfrage senden',
+         'UnivDatos is a rapidly growing market research firm delivering market intelligence and consulting services since 2013':
+            'UnivDatos ist ein schnell wachsendes Marktforschungsunternehmen, das seit 2013 Marktinformationen und Beratungsdienste anbietet',
+         'Become our client': 'Werden Sie unser Kunde',
+         quickLinks: 'Schnellzugriff',
+         industryVerticals: 'Branchenvertikalen',
+         contact: 'Kontakt',
+         'Order your tailored research report now!':
+            'Bestellen Sie jetzt Ihren maßgeschneiderten Forschungsbericht!',
       },
       home: {
          ourBlogs: 'Unsere Blogs',
@@ -648,6 +747,26 @@ export const TRANSLATED_VALUES: {
          industry: 'Industrie',
          geography: 'Géographie',
       },
+      footer: {
+         'Privacy Policy': 'Politique de confidentialité',
+         'Terms & Conditions': 'Termes et conditions',
+         Legal: 'Juridique',
+         'Cancellation Policy': "Politique d'annulation",
+         Home: 'Accueil',
+         About: 'À propos de nous',
+         Contact: 'Contact',
+         Disclaimer: 'Avertissement',
+         viewAll: 'Tout afficher',
+         'Send An Enquiry': 'Envoyer une demande',
+         'UnivDatos is a rapidly growing market research firm delivering market intelligence and consulting services since 2013':
+            "UnivDatos est une entreprise de recherche de marché en pleine croissance qui fournit des services d'intelligence de marché et de conseil depuis 2013",
+         'Become our client': 'Devenez notre client',
+         quickLinks: 'LIENS RAPIDES',
+         industryVerticals: 'VERTICALES INDUSTRIELLES',
+         contact: 'CONTACT',
+         'Order your tailored research report now!':
+            'Commandez dès maintenant votre rapport de recherche sur mesure !',
+      },
       home: {
          ourBlogs: 'Nos Blogs',
          latestNews: 'Dernières Nouvelles',
@@ -744,6 +863,26 @@ export const TRANSLATED_VALUES: {
          reading: '閱讀',
          industry: '產業',
          geography: '地理',
+      },
+      footer: {
+         'Privacy Policy': '隱私權政策',
+         'Terms & Conditions': '條款與條件',
+         Legal: '法律',
+         'Cancellation Policy': '取消政策',
+         Home: '首頁',
+         About: '關於我們',
+         Contact: '聯絡我們',
+         Disclaimer: '免責聲明',
+         viewAll: '查看全部',
+         'Send An Enquiry': '發送查詢',
+         'UnivDatos is a rapidly growing market research firm delivering market intelligence and consulting services since 2013':
+            'UnivDatos是一家快速成長的市場研究公司，自2013年以來提供市場情報和諮詢服務',
+         'Become our client': '成為我們的客戶',
+         quickLinks: '快速連結',
+         industryVerticals: '產業縱向',
+         contact: '聯絡',
+         'Order your tailored research report now!':
+            '立即訂購您的量身定制研究報告！',
       },
       services: {
          'Market Research Reports': '市場研究報告',
@@ -862,6 +1001,26 @@ export const TRANSLATED_VALUES: {
          industry: '業界',
          geography: '地理',
       },
+      footer: {
+         'Privacy Policy': 'プライバシーポリシー',
+         'Terms & Conditions': '利用規約',
+         Legal: '法律',
+         'Cancellation Policy': 'キャンセルポリシー',
+         Home: 'ホーム',
+         About: '弊社について',
+         Contact: 'お問い合わせ',
+         Disclaimer: '免責事項',
+         viewAll: 'すべて表示',
+         'Send An Enquiry': 'お問い合わせを送信',
+         'UnivDatos is a rapidly growing market research firm delivering market intelligence and consulting services since 2013':
+            'UnivDatosは、2013年から市場インテリジェンスとコンサルティングサービスを提供している急成長中の市場調査会社です。',
+         'Become our client': 'クライアントになる',
+         quickLinks: 'クイックリンク',
+         industryVerticals: '業界バーティカル',
+         contact: 'お問い合わせ',
+         'Order your tailored research report now!':
+            '今すぐカスタマイズされた調査レポートを注文してください！',
+      },
       home: {
          ourBlogs: '当社のブログ',
          latestNews: '最新ニュース',
@@ -969,6 +1128,26 @@ export const TRANSLATED_VALUES: {
          reading: '읽기',
          industry: '산업',
          geography: '지리학',
+      },
+      footer: {
+         'Privacy Policy': '개인 정보 보호 정책',
+         'Terms & Conditions': '이용 약관',
+         Legal: '법률',
+         'Cancellation Policy': '취소 정책',
+         Home: '홈',
+         About: '회사 소개',
+         Contact: '문의하기',
+         Disclaimer: '면책 조항',
+         viewAll: '모두보기',
+         'Send An Enquiry': '문의 보내기',
+         'UnivDatos is a rapidly growing market research firm delivering market intelligence and consulting services since 2013':
+            'UnivDatos는 2013년부터 시장 정보 및 컨설팅 서비스를 제공하는 빠르게 성장하는 시장 조사 회사입니다.',
+         'Become our client': '고객이 되십시오',
+         quickLinks: '빠른 링크',
+         industryVerticals: '산업 수직',
+         contact: '문의하기',
+         'Order your tailored research report now!':
+            '지금 맞춤형 연구 보고서를 주문하세요!',
       },
       home: {
          ourBlogs: '우리 블로그',
@@ -1078,6 +1257,26 @@ export const TRANSLATED_VALUES: {
          reading: 'Đọc',
          industry: 'Ngành',
          geography: 'Địa lý',
+      },
+      footer: {
+         'Privacy Policy': 'Chính sách bảo mật',
+         'Terms & Conditions': 'Điều khoản & Điều kiện',
+         Legal: 'Pháp lý',
+         'Cancellation Policy': 'Chính sách hủy',
+         Home: 'Trang chủ',
+         About: 'Về chúng tôi',
+         Contact: 'Liên hệ với chúng tôi',
+         Disclaimer: 'Tuyên bố từ chối trách nhiệm',
+         viewAll: 'Xem tất cả',
+         'Send An Enquiry': 'Gửi yêu cầu',
+         'UnivDatos is a rapidly growing market research firm delivering market intelligence and consulting services since 2013':
+            'UnivDatos là một công ty nghiên cứu thị trường đang phát triển nhanh chóng, cung cấp dịch vụ thông tin thị trường và tư vấn từ năm 2013',
+         'Become our client': 'Trở thành khách hàng của chúng tôi',
+         quickLinks: 'LIÊN KẾT NHANH',
+         industryVerticals: 'NGÀNH NGHỀ',
+         contact: 'LIÊN HỆ',
+         'Order your tailored research report now!':
+            'Đặt hàng báo cáo nghiên cứu được thiết kế riêng của bạn ngay bây giờ!',
       },
       home: {
          ourBlogs: 'Blog của chúng tôi',
@@ -1189,6 +1388,26 @@ export const TRANSLATED_VALUES: {
          reading: 'Lettura',
          industry: 'Settore',
          geography: 'Geografia',
+      },
+      footer: {
+         'Privacy Policy': 'Informativa sulla privacy',
+         'Terms & Conditions': 'Termini e condizioni',
+         Legal: 'Legale',
+         'Cancellation Policy': 'Politica di cancellazione',
+         Home: 'Home',
+         About: 'Chi siamo',
+         Contact: 'Contattaci',
+         Disclaimer: 'Disclaimer',
+         viewAll: 'Visualizza tutto',
+         'Send An Enquiry': 'Invia una richiesta',
+         'UnivDatos is a rapidly growing market research firm delivering market intelligence and consulting services since 2013':
+            'UnivDatos è una società di ricerca di mercato in rapida crescita che fornisce servizi di intelligenza di mercato e consulenza dal 2013.',
+         'Become our client': 'Diventa nostro cliente',
+         quickLinks: 'Collegamenti rapidi',
+         industryVerticals: 'Settori industriali',
+         contact: 'Contattaci',
+         'Order your tailored research report now!':
+            'Ordina ora il tuo rapporto di ricerca personalizzato!',
       },
       home: {
          ourBlogs: 'I nostri blog',
@@ -1302,6 +1521,26 @@ export const TRANSLATED_VALUES: {
          industry: 'Branża',
          geography: 'Geografia',
       },
+      footer: {
+         'Privacy Policy': 'Polityka prywatności',
+         'Terms & Conditions': 'Regulamin',
+         Legal: 'Informacje prawne',
+         'Cancellation Policy': 'Zasady anulowania',
+         Home: 'Strona główna',
+         About: 'O nas',
+         Contact: 'Kontakt',
+         Disclaimer: 'Zastrzeżenia prawne',
+         viewAll: 'Zobacz wszystko',
+         'Send An Enquiry': 'Wyślij zapytanie',
+         'UnivDatos is a rapidly growing market research firm delivering market intelligence and consulting services since 2013':
+            'UnivDatos to szybko rozwijająca się firma badawcza, która od 2013 roku dostarcza usługi analizy rynku i doradztwa.',
+         'Become our client': 'Zostań naszym klientem',
+         quickLinks: 'Szybkie linki',
+         industryVerticals: 'Branże',
+         contact: 'Kontakt',
+         'Order your tailored research report now!':
+            'Zamów teraz swój dostosowany raport badawczy!',
+      },
       home: {
          ourBlogs: 'Nasze blogi',
          latestNews: 'Najnowsze wiadomości',
@@ -1407,6 +1646,26 @@ export const TRANSLATED_VALUES: {
          reading: '阅读',
          industry: '产业',
          geography: '地理',
+      },
+      footer: {
+         'Privacy Policy': '隐私政策',
+         'Terms & Conditions': '条款与条件',
+         Legal: '法律',
+         'Cancellation Policy': '取消政策',
+         Home: '首页',
+         About: '关于我们',
+         Contact: '联系我们',
+         Disclaimer: '免责声明',
+         viewAll: '查看全部',
+         'Send An Enquiry': '发送查询',
+         'UnivDatos is a rapidly growing market research firm delivering market intelligence and consulting services since 2013':
+            'UnivDatos是一家快速增长的市场研究公司，自2013年以来提供市场情报和咨询服务。',
+         'Become our client': '成为我们的客户',
+         quickLinks: '快速链接',
+         industryVerticals: '行业垂直',
+         contact: '联系我们',
+         'Order your tailored research report now!':
+            '立即订购您的定制研究报告！',
       },
       home: {
          ourBlogs: '我们的博客',
