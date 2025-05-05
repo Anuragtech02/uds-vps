@@ -78,6 +78,7 @@ export const MobileMenuItem: React.FC<{
    onClick: () => void;
 }> = ({ item, depth, onClick }) => {
    const [isOpen, setIsOpen] = useState(false);
+   const { locale } = useLocale();
 
    return (
       <li className={`w-full ${depth > 0 ? 'pl-4' : ''}`}>
@@ -118,6 +119,7 @@ export const MobileMenuItem: React.FC<{
                   e.stopPropagation();
                   onClick();
                }}
+               lang={locale}
             >
                {depth > 0 && item.url?.includes('industries=') && (
                   <div className='mr-2'>

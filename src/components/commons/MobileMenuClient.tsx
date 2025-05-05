@@ -144,6 +144,7 @@ const MobileMenuItem: React.FC<{
                   e.stopPropagation();
                   onClick();
                }}
+               lang={locale}
             >
                {depth > 0 && item.url?.includes('industries=') && (
                   <div className='mr-2'>
@@ -222,7 +223,10 @@ const MobileMenuClient: React.FC<Props> = ({
                )}
             </ul>
             <div className='sticky bottom-0 mt-4 h-[70px] bg-blue-2 px-2'>
-               <LocalizedLink href={header?.ctaButton?.link ?? ''}>
+               <LocalizedLink
+                  href={header?.ctaButton?.link ?? ''}
+                  lang={locale}
+               >
                   <Button className='w-full'>{header?.ctaButton?.title}</Button>
                </LocalizedLink>
             </div>

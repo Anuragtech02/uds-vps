@@ -12,6 +12,7 @@ import {
    removeItemFromCart,
 } from '@/utils/cart-utils.util';
 import { LocalizedLink } from '../commons/LocalizedLink';
+import { useLocale } from '@/utils/LocaleContext';
 
 // Define types for cart items
 interface License {
@@ -28,6 +29,8 @@ interface Report {
 const Order = () => {
    const [cartData, setCartData] = useState<ICartItem[]>([]);
    const [totalCost, setTotalCost] = useState<number>(0);
+
+   const { locale } = useLocale();
 
    // Function to calculate total cost with proper typing
    const updateTotalCost = (cart: ICartItem[]) => {
@@ -88,13 +91,18 @@ const Order = () => {
                Your personal data will be used to process your order, support
                your experience throughout this website, and for other purposes
                described in our{' '}
-               <LocalizedLink className='underline' href='/privacy-policy'>
+               <LocalizedLink
+                  className='underline'
+                  href='/privacy-policy'
+                  lang={locale}
+               >
                   privacy policy
                </LocalizedLink>
                . <br />I have read and agree to the website{' '}
                <LocalizedLink
                   className='underline'
                   href='/terms-and-conditions'
+                  lang={locale}
                >
                   terms and conditions
                </LocalizedLink>

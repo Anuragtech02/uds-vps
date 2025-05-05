@@ -1,8 +1,15 @@
 import BlogItem from '../Blog/BlogItem';
 import newsPlaceholder from '@/assets/img/thumbnail_news.jpg';
 import { LocalizedLink } from '../commons/LocalizedLink';
+import { getFormattedDate } from '@/utils/generic-methods';
 
-const BlogResults = ({ blogs }: { blogs: Array<any> }) => {
+const BlogResults = ({
+   blogs,
+   locale = 'en',
+}: {
+   blogs: Array<any>;
+   locale: string;
+}) => {
    return (
       <div className='flex flex-col gap-4'>
          {blogs?.map((blog: any) => (
@@ -14,9 +21,7 @@ const BlogResults = ({ blogs }: { blogs: Array<any> }) => {
                      width: 100,
                      height: 100,
                   }}
-                  date={new Date(
-                     blog?.oldPublishedAt || blog?.publishedAt,
-                  ).toDateString()}
+                  date={getFormattedDate(blog, locale)}
                   title={blog?.title}
                   shortDescription={blog?.shortDescription}
                   slug={blog?.slug}

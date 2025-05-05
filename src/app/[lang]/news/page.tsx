@@ -240,6 +240,7 @@ const News = async ({
                            date={getFormattedDate(news, params.lang)}
                            slug={news.slug}
                            viewType={viewType}
+                           locale={params.lang}
                         />
                      ))
                   ) : (

@@ -15,6 +15,7 @@ interface NewsItemProps {
       height: number;
    };
    viewType?: string;
+   locale?: string;
 }
 
 const NewsItem: FC<NewsItemProps> = ({
@@ -23,9 +24,10 @@ const NewsItem: FC<NewsItemProps> = ({
    slug,
    thumbnailImage,
    viewType = 'grid',
+   locale = 'en',
 }) => {
    return (
-      <LocalizedLink href={`/news/${slug}`}>
+      <LocalizedLink href={`/news/${slug}`} lang={locale}>
          <div
             className={`group h-full rounded-xl border border-s-300 bg-white p-6 transition-all duration-300 hover:shadow-lg ${
                viewType === 'list'

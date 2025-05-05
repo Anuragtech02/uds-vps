@@ -11,7 +11,8 @@ const PreBookCTA: React.FC<{
       link: string;
       title: string;
    };
-}> = ({ title, ctaButton }) => {
+   locale?: string;
+}> = ({ title, ctaButton, locale = 'en' }) => {
    return (
       <div className='relative overflow-hidden rounded-xl bg-blue-1 p-8 py-12 text-white'>
          <Image
@@ -28,7 +29,7 @@ const PreBookCTA: React.FC<{
                   __html: title,
                }}
             ></h2>
-            <LocalizedLink href={ctaButton?.link || '/contact'}>
+            <LocalizedLink href={ctaButton?.link || '/contact'} lang={locale}>
                <Button
                   size='large'
                   variant='light'

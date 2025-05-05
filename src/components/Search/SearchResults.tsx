@@ -5,6 +5,8 @@ import NewsResults from './NewsResults';
 import BlogResults from './BlogResults';
 import { searchContent } from '@/utils/api/csr-services';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { useLocale } from '@/utils/LocaleContext';
+import { TRANSLATED_VALUES } from '@/utils/localeConstants';
 
 const ITEMS_PER_PAGE = 10;
 
@@ -50,6 +52,8 @@ const SearchResults = () => {
       'news-article': { data: [], total: 0 },
       blog: { data: [], total: 0 },
    });
+
+   const { locale } = useLocale();
 
    const fetchResults = useCallback(async () => {
       setIsLoading(true);
@@ -105,9 +109,15 @@ const SearchResults = () => {
          const params = new URLSearchParams(searchParams.toString());
          params.set('tab', newTab);
          params.set(`${newTab}Page`, newPage.toString());
+
+         // Ensure locale is preserved in the URL
+         if (locale && !params.has('locale')) {
+            params.set('locale', locale);
+         }
+
          router.push(`?${params.toString()}`);
       },
-      [router, searchParams],
+      [router, searchParams, locale],
    );
 
    // Handle tab change
@@ -164,7 +174,7 @@ const SearchResults = () => {
                disabled={data.report.total === 0}
                type='button'
             >
-               Reports ({data.report.total})
+               {TRANSLATED_VALUES[locale]?.header.reports} ({data.report.total})
             </button>
             <button
                className={`cursor-pointer rounded-md border border-s-300 px-4 py-2 text-sm ${
@@ -176,7 +186,8 @@ const SearchResults = () => {
                disabled={data['news-article'].total === 0}
                type='button'
             >
-               News ({data['news-article'].total})
+               {TRANSLATED_VALUES[locale]?.header.news} (
+               {data['news-article'].total})
             </button>
             <button
                className={`cursor-pointer rounded-md border border-s-300 px-4 py-2 text-sm ${
@@ -188,7 +199,7 @@ const SearchResults = () => {
                disabled={data.blog.total === 0}
                type='button'
             >
-               Blogs ({data.blog.total})
+               {TRANSLATED_VALUES[locale]?.header.blogs} ({data.blog.total})
             </button>
          </div>
 
@@ -199,13 +210,19 @@ const SearchResults = () => {
             ) : (
                <>
                   {activeTab === 'reports' && (
-                     <ReportResults reports={data.report.data} />
+                     <ReportResults
+                        reports={data.report.data}
+                        locale={locale}
+                     />
                   )}
                   {activeTab === 'news' && (
-                     <NewsResults news={data['news-article'].data} />
+                     <NewsResults
+                        news={data['news-article'].data}
+                        locale={locale}
+                     />
                   )}
                   {activeTab === 'blogs' && (
-                     <BlogResults blogs={data.blog.data} />
+                     <BlogResults blogs={data.blog.data} locale={locale} />
                   )}
 
                   {!hasSearched && (
@@ -218,7 +235,10 @@ const SearchResults = () => {
                      Object.values(data).every((item) => !item.data.length) && (
                         <div className='mt-8 text-center'>
                            <p className='text-lg text-gray-600'>
-                              No results found
+                              {
+                                 TRANSLATED_VALUES[locale]?.commons
+                                    .noResultsFound
+                              }
                            </p>
                            <p className='mt-2 text-gray-500'>
                               Try adjusting your search terms or filters
@@ -237,10 +257,12 @@ const SearchResults = () => {
                   disabled={currentPage === 1}
                   className='flex items-center justify-center rounded-md border border-gray-300 bg-white px-3 py-2 text-sm font-medium text-gray-700 shadow-sm transition-colors hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50'
                >
-                  Previous
+                  {TRANSLATED_VALUES[locale]?.commons.prev}
                </button>
                <span className='text-sm text-gray-700'>
-                  Page <span className='font-medium'>{currentPage}</span> of{' '}
+                  {TRANSLATED_VALUES[locale]?.commons.page}{' '}
+                  <span className='font-medium'>{currentPage}</span>{' '}
+                  {TRANSLATED_VALUES[locale]?.commons.of}{' '}
                   <span className='font-medium'>{totalPages}</span>
                </span>
                <button
@@ -248,7 +270,7 @@ const SearchResults = () => {
                   disabled={currentPage === totalPages}
                   className='flex items-center justify-center rounded-md border border-gray-300 bg-white px-3 py-2 text-sm font-medium text-gray-700 shadow-sm transition-colors hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50'
                >
-                  Next
+                  {TRANSLATED_VALUES[locale]?.commons.next}
                </button>
             </div>
          )}

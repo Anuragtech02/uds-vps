@@ -195,10 +195,10 @@ const About: React.FC<{
 
    return (
       <>
-         <Hero hero={hero} />
+         <Hero hero={hero} locale={params.lang} />
          <AboutData about={about} />
          <MediaCitation mediaCitation={mediaCitation} />
-         <AboutCta ctaBanner={ctaBanner} />
+         <AboutCta ctaBanner={ctaBanner} locale={params.lang} />
       </>
    );
 };

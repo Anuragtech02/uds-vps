@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import Button from '../commons/Button';
 import { LocalizedLink } from '../commons/LocalizedLink';
 interface heroItem {
@@ -14,7 +13,7 @@ interface heroItem {
       id: number;
    };
 }
-const Hero = ({ hero }: { hero: heroItem }) => {
+const Hero = ({ hero, locale = 'en' }: { hero: heroItem; locale: string }) => {
    return (
       <section className='relative min-h-max flex-col bg-white pt-40'>
          <div className='container'>
@@ -61,12 +60,18 @@ const Hero = ({ hero }: { hero: heroItem }) => {
                      {/* {hero?.heroHeading} */}
                   </h1>
                   <div className='flex items-center justify-center gap-4 pt-6 md:pt-10'>
-                     <LocalizedLink href={hero?.heroPrimaryCTAButton?.link}>
+                     <LocalizedLink
+                        href={hero?.heroPrimaryCTAButton?.link}
+                        lang={locale}
+                     >
                         <Button variant='secondary'>
                            {hero?.heroPrimaryCTAButton?.title}
                         </Button>
                      </LocalizedLink>
-                     <LocalizedLink href={hero?.heroSecondaryCTAButton?.link}>
+                     <LocalizedLink
+                        href={hero?.heroSecondaryCTAButton?.link}
+                        lang={locale}
+                     >
                         <Button variant='light'>
                            {hero?.heroSecondaryCTAButton?.title}
                         </Button>

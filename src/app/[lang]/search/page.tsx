@@ -7,6 +7,7 @@ import SearchResults from '@/components/Search/SearchResults';
 import { getGeographies, getIndustries } from '@/utils/api/services';
 import { LOGO_URL_DARK, SEARCH_IMAGE_URL } from '@/utils/constants';
 import { absoluteUrl } from '@/utils/generic-methods';
+import { TRANSLATED_VALUES } from '@/utils/localeConstants';
 import { Metadata } from 'next';
 import { Suspense } from 'react';
 import { BiLoaderCircle } from 'react-icons/bi';
@@ -20,13 +21,14 @@ export async function generateMetadata({
 }): Promise<Metadata> {
    const searchQuery = searchParams?.q || '';
    const { locale } = params;
+
    const title = searchQuery
-      ? `Search Results for "${searchQuery}" - UnivDatos Market Research`
-      : 'Search Market Research Reports - UnivDatos';
+      ? `${TRANSLATED_VALUES[locale]?.commons.searchResultsFor + ' ' + searchQuery} - UnivDatos ${TRANSLATED_VALUES[locale]?.commons.marketResearch}`
+      : `${TRANSLATED_VALUES[locale]?.commons?.searchMarketResearch} - UnivDatos'`;
 
    const description = searchQuery
-      ? `Find market research reports and industry analysis related to "${searchQuery}". Browse comprehensive research studies, market data, and business insights.`
-      : 'Search through our extensive collection of market research reports, industry analysis, and business insights. Find the data you need to make informed decisions.';
+      ? `${TRANSLATED_VALUES[locale]?.commons.findMarketResearchReports.replace('<QUERY>', searchQuery)}`
+      : `${TRANSLATED_VALUES[locale]?.commons?.searchThrough}`;
 
    return {
       title,
@@ -111,9 +113,12 @@ interface SearchParams {
 
 interface SearchListProps {
    searchParams: SearchParams;
+   params: {
+      lang: string;
+   };
 }
 
-const Search: React.FC<SearchListProps> = async ({ searchParams }) => {
+const Search: React.FC<SearchListProps> = async ({ searchParams, params }) => {
    const currentPage = parseInt(searchParams.page || '1', 10);
 
    const [industries, geographies] = await Promise.all([
@@ -135,12 +140,14 @@ const Search: React.FC<SearchListProps> = async ({ searchParams }) => {
                currentFilters={currentFilters}
                searchQuery={searchParams.q}
                sortBy={searchParams.sortBy}
+               locale={params.lang}
             />
 
             <div className='flex flex-col items-start gap-6 md:flex-row md:gap-10'>
                <div className='flex-[0.6] space-y-4 md:space-y-6'>
                   <p className='text-[1.75rem] font-semibold text-s-500'>
-                     Search results for: &quot;{searchParams?.q}&quot;
+                     {TRANSLATED_VALUES[params?.lang]?.commons.searchResultsFor}
+                     : &quot;{searchParams?.q}&quot;
                   </p>
 
                   <Suspense

@@ -39,6 +39,14 @@ export const TRANSLATED_VALUES: {
          page: 'Page',
          of: 'of',
          noResultsFound: 'No results found',
+         filterResultsBy: 'Filter Results By',
+         searchResultsFor: 'Search results for',
+         marketResearch: 'Market Research',
+         searchMarketResearch: 'Search Market Research',
+         findMarketResearchReports:
+            'Find market research reports and industry analysis related to <QUERY>. Browse comprehensive research studies, market data, and business insights.',
+         searchThrough:
+            'Search through our extensive collection of market research reports, industry analysis, and business insights. Find the data you need to make informed decisions.',
       },
       industries: {
          'Aerospace and Defence': 'Aerospace and Defence',
@@ -193,6 +201,14 @@ export const TRANSLATED_VALUES: {
          page: 'Página',
          of: 'de',
          noResultsFound: 'No se encontraron resultados',
+         filterResultsBy: 'Filtrar resultados por',
+         searchResultsFor: 'Resultados de búsqueda para',
+         marketResearch: 'Investigación de mercado',
+         searchMarketResearch: 'Buscar investigación de mercado',
+         findMarketResearchReports:
+            'Encuentra informes de investigación de mercado y análisis de la industria relacionados con <QUERY>. Navega por estudios de investigación completos, datos de mercado e información empresarial.',
+         searchThrough:
+            'Busca en nuestra extensa colección de informes de investigación de mercado, análisis de la industria e información empresarial. Encuentra los datos que necesitas para tomar decisiones informadas.',
       },
       industries: {
          'Aerospace and Defence': 'Aeroespacial y Defensa',
@@ -347,6 +363,14 @@ export const TRANSLATED_VALUES: {
          page: 'Страница',
          of: 'из',
          noResultsFound: 'Результаты не найдены',
+         filterResultsBy: 'Отфильтровать результаты по',
+         searchResultsFor: 'Результаты поиска для',
+         marketResearch: 'Маркетинговые исследования',
+         searchMarketResearch: 'Поиск маркетинговых исследований',
+         findMarketResearchReports:
+            'Найдите отчеты по маркетинговым исследованиям и анализу отрасли, связанные с <QUERY>. Просмотрите полные исследования, рыночные данные и бизнес-инсайты.',
+         searchThrough:
+            'Ищите в нашей обширной коллекции отчетов по маркетинговым исследованиям, анализа отрасли и бизнес-инсайтов. Найдите данные, которые вам нужны для принятия обоснованных решений.',
       },
       industries: {
          'Aerospace and Defence': 'Аэрокосмическая и оборонная промышленность',
@@ -502,6 +526,14 @@ export const TRANSLATED_VALUES: {
          page: 'صفحة',
          of: 'من',
          noResultsFound: 'لا توجد نتائج',
+         filterResultsBy: 'تصفية النتائج حسب',
+         searchResultsFor: 'نتائج البحث عن',
+         marketResearch: 'أبحاث السوق',
+         searchMarketResearch: 'بحث أبحاث السوق',
+         findMarketResearchReports:
+            'ابحث عن تقارير أبحاث السوق وتحليل الصناعة المتعلقة بـ <QUERY>. تصفح دراسات بحثية شاملة وبيانات سوقية ورؤى تجارية.',
+         searchThrough:
+            'ابحث في مجموعتنا الواسعة من تقارير أبحاث السوق وتحليل الصناعة ورؤى الأعمال. ابحث عن البيانات التي تحتاجها لاتخاذ قرارات مستنيرة.',
       },
       industries: {
          'Aerospace and Defence': 'الفضاء والدفاع',
@@ -654,6 +686,14 @@ export const TRANSLATED_VALUES: {
          page: 'Seite',
          of: 'von',
          noResultsFound: 'Keine Ergebnisse gefunden',
+         filterResultsBy: 'Ergebnisse filtern nach',
+         searchResultsFor: 'Suchergebnisse für',
+         marketResearch: 'Marktforschung',
+         searchMarketResearch: 'Marktforschung durchsuchen',
+         findMarketResearchReports:
+            'Finden Sie Marktforschungsberichte und Branchenanalysen zu <QUERY>. Durchsuchen Sie umfassende Forschungsstudien, Marktdaten und Geschäftseinblicke.',
+         searchThrough:
+            'Durchsuchen Sie unsere umfangreiche Sammlung von Marktforschungsberichten, Branchenanalysen und Geschäftseinblicken. Finden Sie die Daten, die Sie für fundierte Entscheidungen benötigen.',
       },
       industries: {
          'Aerospace and Defence': 'Luft- und Raumfahrt und Verteidigung',
@@ -807,6 +847,14 @@ export const TRANSLATED_VALUES: {
          page: 'Page',
          of: 'de',
          noResultsFound: 'Aucun résultat trouvé',
+         filterResultsBy: 'Filtrer les résultats par',
+         searchResultsFor: 'Résultats de recherche pour',
+         marketResearch: 'Étude de marché',
+         searchMarketResearch: 'Rechercher des études de marché',
+         findMarketResearchReports:
+            "Trouvez des rapports d'étude de marché et des analyses sectorielles liés à <QUERY>. Parcourez des études de recherche complètes, des données de marché et des informations commerciales.",
+         searchThrough:
+            "Recherchez dans notre vaste collection de rapports d'études de marché, d'analyses sectorielles et d'informations commerciales. Trouvez les données dont vous avez besoin pour prendre des décisions éclairées.",
       },
       industries: {
          'Aerospace and Defence': 'Aérospatiale et Défense',
@@ -961,6 +1009,14 @@ export const TRANSLATED_VALUES: {
          page: '頁面',
          of: '的',
          noResultsFound: '找不到結果',
+         filterResultsBy: '按結果篩選',
+         searchResultsFor: '搜尋結果：',
+         marketResearch: '市場研究',
+         searchMarketResearch: '搜尋市場研究',
+         findMarketResearchReports:
+            '查找與<QUERY>相關的市場研究報告和行業分析。瀏覽全面的研究報告、市場數據和商業洞察。',
+         searchThrough:
+            '搜尋我們廣泛的市場研究報告、行業分析和商業洞察集合。查找您需要的數據，做出明智的決策。',
       },
       industries: {
          'Aerospace and Defence': '航空航天與國防',
@@ -1108,6 +1164,14 @@ export const TRANSLATED_VALUES: {
          page: 'ページ',
          of: 'の',
          noResultsFound: '結果が見つかりませんでした',
+         filterResultsBy: '結果のフィルタ条件',
+         searchResultsFor: '検索結果：',
+         marketResearch: '市場調査',
+         searchMarketResearch: '市場調査を検索',
+         findMarketResearchReports:
+            '<QUERY>に関連する市場調査レポートと業界分析を見つけましょう。包括的な研究調査、市場データ、ビジネスインサイトを閲覧できます。',
+         searchThrough:
+            '市場調査レポート、業界分析、ビジネスインサイトの広範なコレクションを検索してください。情報に基づいた意思決定に必要なデータを見つけましょう。',
       },
       industries: {
          'Aerospace and Defence': '航空宇宙および防衛',
@@ -1260,6 +1324,14 @@ export const TRANSLATED_VALUES: {
          page: '페이지',
          of: '의',
          noResultsFound: '결과를 찾을 수 없습니다',
+         filterResultsBy: '결과 필터링 기준',
+         searchResultsFor: '검색 결과',
+         marketResearch: '시장 조사',
+         searchMarketResearch: '시장 조사 검색',
+         findMarketResearchReports:
+            '<QUERY>와 관련된 시장 조사 보고서 및 산업 분석을 찾으세요. 포괄적인 연구 조사, 시장 데이터 및 비즈니스 인사이트를 찾아보세요.',
+         searchThrough:
+            '광범위한 시장 조사 보고서, 산업 분석 및 비즈니스 인사이트 컬렉션을 검색하세요. 정보에 기반한 결정을 내리는 데 필요한.데이터를 찾으세요.',
       },
       industries: {
          'Aerospace and Defence': '항공 우주 및 방위',
@@ -1410,6 +1482,14 @@ export const TRANSLATED_VALUES: {
          page: 'Trang',
          of: 'của',
          noResultsFound: 'Không tìm thấy kết quả',
+         filterResultsBy: 'Lọc kết quả theo',
+         searchResultsFor: 'Kết quả tìm kiếm cho',
+         marketResearch: 'Nghiên cứu thị trường',
+         searchMarketResearch: 'Tìm kiếm nghiên cứu thị trường',
+         findMarketResearchReports:
+            'Tìm báo cáo nghiên cứu thị trường và phân tích ngành liên quan đến <QUERY>. Duyệt qua các nghiên cứu toàn diện, dữ liệu thị trường và thông tin kinh doanh.',
+         searchThrough:
+            'Tìm kiếm trong bộ sưu tập đa dạng các báo cáo nghiên cứu thị trường, phân tích ngành và thông tin kinh doanh của chúng tôi. Tìm dữ liệu bạn cần để đưa ra quyết định sáng suốt.',
       },
       industries: {
          'Aerospace and Defence': 'Hàng không vũ trụ và quốc phòng',
@@ -1562,6 +1642,14 @@ export const TRANSLATED_VALUES: {
          page: 'Pagina',
          of: 'di',
          noResultsFound: 'Nessun risultato trovato',
+         filterResultsBy: 'Filtra risultati per',
+         searchResultsFor: 'Risultati della ricerca per',
+         marketResearch: 'Ricerca di mercato',
+         searchMarketResearch: 'Cerca ricerca di mercato',
+         findMarketResearchReports:
+            'Trova rapporti di ricerca di mercato e analisi industriali relative a <QUERY>. Sfoglia studi di ricerca completi, dati di mercato e approfondimenti aziendali.',
+         searchThrough:
+            'Cerca nella nostra vasta collezione di rapporti di ricerca di mercato, analisi industriali e approfondimenti aziendali. Trova i dati di cui hai bisogno per prendere decisioni informate.',
       },
       industries: {
          'Aerospace and Defence': 'Aerospaziale e Difesa',
@@ -1716,6 +1804,14 @@ export const TRANSLATED_VALUES: {
          page: 'Strona',
          of: 'z',
          noResultsFound: 'Nie znaleziono wyników',
+         filterResultsBy: 'Filtruj wyniki według',
+         searchResultsFor: 'Wyniki wyszukiwania dla',
+         marketResearch: 'Badania rynkowe',
+         searchMarketResearch: 'Szukaj badań rynkowych',
+         findMarketResearchReports:
+            'Znajdź raporty badań rynkowych i analizy branżowe związane z <QUERY>. Przeglądaj kompleksowe badania, dane rynkowe i informacje biznesowe.',
+         searchThrough:
+            'Przeszukaj naszą obszerną kolekcję raportów badań rynkowych, analiz branżowych i informacji biznesowych. Znajdź dane potrzebne do podejmowania świadomych decyzji.',
       },
       industries: {
          'Aerospace and Defence': 'Przemysł lotniczy i obronny',
@@ -1871,6 +1967,14 @@ export const TRANSLATED_VALUES: {
          page: '页面',
          of: '的',
          noResultsFound: '找不到结果',
+         filterResultsBy: '按以下条件筛选结果',
+         searchResultsFor: '搜索结果：',
+         marketResearch: '市场研究',
+         searchMarketResearch: '搜索市场研究',
+         findMarketResearchReports:
+            '查找与<QUERY>相关的市场研究报告和行业分析。浏览全面的研究报告、市场数据和商业洞察。',
+         searchThrough:
+            '搜索我们广泛的市场研究报告、行业分析和商业洞察集合。查找您需要的数据，做出明智的决策。',
       },
       industries: {
          'Aerospace and Defence': '航空航天与国防',

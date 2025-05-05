@@ -6,6 +6,8 @@ import countryList from '@/assets/utils/countries.json';
 import { submitForm } from '@/utils/api/csr-services';
 import CustomPhoneInput from '../CustomPhoneInput';
 import { sendGAEvent } from '@next/third-parties/google';
+import { useLocale } from '@/utils/LocaleContext';
+import { TRANSLATED_VALUES } from '@/utils/localeConstants';
 
 const GetCallBackForm = () => {
    const [formFields, setFormFields] = useState({
@@ -32,6 +34,8 @@ const GetCallBackForm = () => {
          }
       }
    };
+
+   const { locale } = useLocale();
 
    const initializeTurnstile = () => {
       // Clean up existing widget first
@@ -180,12 +184,12 @@ const GetCallBackForm = () => {
 
          <div className='rounded-xl border border-s-300 p-4 md:p-6'>
             <p className='mb-4 font-semibold text-s-700 md:text-lg'>
-               Get a call back
+               {TRANSLATED_VALUES[locale]?.commons?.getCallback}
             </p>
             <form onSubmit={handleSubmit} className='space-y-4 md:space-y-6'>
                <div className='flex flex-col gap-1'>
                   <label htmlFor='fullName' className='text-sm font-semibold'>
-                     Name*
+                     {TRANSLATED_VALUES[locale]?.contact?.fullName}*
                   </label>
                   <input
                      type='text'
@@ -194,7 +198,9 @@ const GetCallBackForm = () => {
                      required
                      value={formFields.fullName}
                      onChange={handleInputChange}
-                     placeholder='Enter your name'
+                     placeholder={
+                        TRANSLATED_VALUES[locale]?.contact?.enterYourFullName
+                     }
                      className='rounded-md border border-s-300 p-2 text-sm md:text-base'
                   />
                </div>
@@ -214,7 +220,7 @@ const GetCallBackForm = () => {
                      htmlFor='businessEmail'
                      className='text-sm font-semibold'
                   >
-                     Business Email*
+                     {TRANSLATED_VALUES[locale]?.contact?.businessEmail}*
                   </label>
                   <input
                      type='businessEmail'
@@ -223,14 +229,17 @@ const GetCallBackForm = () => {
                      required
                      value={formFields.businessEmail}
                      onChange={handleInputChange}
-                     placeholder='Enter your email'
+                     placeholder={
+                        TRANSLATED_VALUES[locale]?.contact
+                           ?.enterYourBusinessEmail
+                     }
                      className='rounded-md border border-s-300 p-2 text-sm md:text-base'
                   />
                </div>
 
                <div className='flex flex-col gap-1'>
                   <label htmlFor='country' className='text-sm font-semibold'>
-                     Country*
+                     {TRANSLATED_VALUES[locale]?.contact?.country}*
                   </label>
                   <select
                      id='country'
@@ -241,7 +250,7 @@ const GetCallBackForm = () => {
                      className='rounded-md border border-s-300 p-2 text-sm md:text-base'
                   >
                      <option value='' className='text-gray-400'>
-                        Select your country
+                        {TRANSLATED_VALUES[locale]?.contact?.selectYourCountry}
                      </option>
                      {countryList?.map((country) => (
                         <option key={country.code} value={country.name}>
@@ -253,7 +262,7 @@ const GetCallBackForm = () => {
 
                <div className='flex flex-col gap-1'>
                   <label htmlFor='message' className='text-sm font-semibold'>
-                     Message*
+                     {TRANSLATED_VALUES[locale]?.contact?.message}*
                   </label>
                   <textarea
                      id='message'
@@ -261,7 +270,9 @@ const GetCallBackForm = () => {
                      required
                      value={formFields.message}
                      onChange={handleInputChange}
-                     placeholder='Enter your message'
+                     placeholder={
+                        TRANSLATED_VALUES[locale]?.contact?.enterYourMessage
+                     }
                      className='rounded-md border border-s-300 p-2 text-sm md:text-base'
                      rows={4}
                   />
@@ -277,7 +288,7 @@ const GetCallBackForm = () => {
                   </div>
                ) : submitSuccess ? (
                   <div className='rounded-md bg-green-50 p-4 text-green-800'>
-                     Thank you! Your message has been sent successfully.
+                     {TRANSLATED_VALUES[locale]?.contact?.successMessage}
                   </div>
                ) : null}
 
@@ -288,7 +299,9 @@ const GetCallBackForm = () => {
                      type='submit'
                      disabled={isSubmitting}
                   >
-                     {isSubmitting ? 'Sending...' : 'Send Message'}
+                     {isSubmitting
+                        ? TRANSLATED_VALUES[locale]?.contact?.sending
+                        : TRANSLATED_VALUES[locale]?.contact?.sendMessage}
                   </Button>
                </div>
             </form>

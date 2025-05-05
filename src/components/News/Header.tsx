@@ -72,6 +72,7 @@ const Header: React.FC<{ newsArticle: any }> = ({ newsArticle }) => {
                            <LocalizedLink
                               key={index}
                               href={`/news?industries=${industry?.slug}`}
+                              lang={locale}
                            >
                               <div className='flex items-center gap-2 rounded-full border border-s-300 bg-s-100 px-4 py-1 text-blue-4'>
                                  <TagIcon />{' '}

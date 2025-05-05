@@ -120,6 +120,7 @@ const RelatedNews: React.FC<RelatedNewsProps> = ({
                   thumbnailImage={newsArticle.attributes.thumbnailImage}
                   date={getFormattedDate(newsArticle.attributes, locale)}
                   slug={newsArticle.attributes.slug}
+                  locale={locale}
                />
             ))}
          </div>

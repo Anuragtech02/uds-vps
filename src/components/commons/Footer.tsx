@@ -60,6 +60,7 @@ const Footer = ({ footer, quickLinks }: any) => {
                   )}
                   <LocalizedLink
                      href={footer?.footerCTA?.ctaButton?.link ?? '/contact'}
+                     lang={locale}
                   >
                      <Button variant='primary' className='mx-auto mt-10'>
                         {
@@ -75,7 +76,7 @@ const Footer = ({ footer, quickLinks }: any) => {
                <div className='grid grid-cols-1 gap-4 pt-12 text-blue-9 sm:gap-8 md:grid-cols-5'>
                   {/* Company Info */}
                   <div className='col-span-1 md:col-span-2'>
-                     <LocalizedLink href='/'>
+                     <LocalizedLink href='/' lang={locale}>
                         <div className='h-[50px] w-[150px]'>
                            <StrapiImage
                               media={footer?.companyInfo?.logo}
@@ -162,6 +163,7 @@ const Footer = ({ footer, quickLinks }: any) => {
                               <LocalizedLink
                                  href={item?.url ?? ''}
                                  className='hover:text-gray-300 hover:underline'
+                                 lang={locale}
                               >
                                  {TRANSLATED_VALUES[locale]?.footer?.[
                                     item?.title
@@ -183,6 +185,7 @@ const Footer = ({ footer, quickLinks }: any) => {
                               <LocalizedLink
                                  href={`/reports?industries=${item?.slug}`}
                                  className='hover:text-gray-300 hover:underline'
+                                 lang={locale}
                               >
                                  {
                                     TRANSLATED_VALUES[locale]?.industries?.[
@@ -196,6 +199,7 @@ const Footer = ({ footer, quickLinks }: any) => {
                            <LocalizedLink
                               href='/reports'
                               className='hover:text-gray-300 hover:underline'
+                              lang={locale}
                            >
                               {TRANSLATED_VALUES[locale]?.footer?.viewAll}
                            </LocalizedLink>
@@ -223,7 +227,7 @@ const Footer = ({ footer, quickLinks }: any) => {
                      >
                         {footer?.email}
                      </a>
-                     <LocalizedLink href='?popup=demo-request'>
+                     <LocalizedLink href='?popup=demo-request' lang={locale}>
                         <Button
                            variant='light'
                            className='border border-blue-9 !bg-blue-1 text-blue-9'

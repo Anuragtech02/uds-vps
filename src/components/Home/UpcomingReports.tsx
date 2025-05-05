@@ -130,6 +130,7 @@ const UpcomingReports: React.FC<{ data: any }> = ({ data }) => {
                      data.homePage?.data.attributes
                         ?.latestResearchSectionCTABanner
                   }
+                  locale={locale}
                />
             </div>
          </section>

@@ -127,6 +127,7 @@ const LatestResearch: React.FC<{
                         latestResearchSection.latestResearchSectionCTABanner
                            .ctaButton
                      }
+                     locale={locale}
                   />
                </>
             )}
