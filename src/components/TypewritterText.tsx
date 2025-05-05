@@ -1,7 +1,7 @@
 'use client';
 import { SUPPORTED_LOCALES } from '@/utils/constants';
-import { usePathname } from 'next/navigation';
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useLocale } from '@/utils/LocaleContext';
+import { useState, useEffect, useCallback } from 'react';
 
 const DUMMY_MARKETS = [
    'Energy Market',
@@ -72,44 +72,65 @@ const TypeWrapper: React.FC<{
    markets: string[];
    heading: string;
 }> = ({ markets = DUMMY_MARKETS, heading }) => {
-   const [containsLocale, setContainsLocale] = useState(false);
-   const pathname = usePathname();
-   const prevCookie = useRef(''); // Initialize as empty string - no document yet
+   const { locale } = useLocale();
 
-   useEffect(() => {
-      // **Check if 'document' is defined (browser environment)**
-      if (typeof document !== 'undefined') {
-         prevCookie.current = document.cookie; // Initialize *only* in browser
-         const checkCookieAndPathname = () => {
-            const hasCookie = document.cookie.includes('googtrans=');
-            setContainsLocale(
-               hasCookie ||
-                  SUPPORTED_LOCALES.some(
-                     (loc) =>
-                        pathname.startsWith(`/${loc}/`) ||
-                        pathname === `/${loc}`,
-                  ),
-            );
-         };
-
-         checkCookieAndPathname(); // Initial check in browser
-
-         const intervalId = setInterval(() => {
-            if (document.cookie !== prevCookie.current) {
-               // Cookie has changed!
-               prevCookie.current = document.cookie; // Update in browser
-               checkCookieAndPathname(); // Rerun logic in browser
-            }
-         }, 500);
-
-         return () => {
-            clearInterval(intervalId); // Cleanup in browser
-         };
-      }
-   }, [pathname]);
-
-   return !containsLocale ? (
+   return !locale || locale == 'en' ? (
       <TypewriterText markets={markets} heading={heading} />
+   ) : locale === 'ru' ? (
+      <>
+         Разблокировать <br /> <span>Отраслевые обзоры</span> с помощью
+         комплексного исследования
+      </>
+   ) : locale === 'ar' ? (
+      <>
+         افتح <br /> <span>رؤى الصناعة</span> مع بحث شامل
+      </>
+   ) : locale === 'de' ? (
+      <>
+         Entsperren <br /> <span>Branchen-Einblicke</span> mit umfassender
+         Recherche
+      </>
+   ) : locale === 'fr' ? (
+      <>
+         Débloquer <br /> <span>Aperçus du secteur</span> grâce à une recherche
+         exhaustive
+      </>
+   ) : locale === 'zh-Hant-TW' ? (
+      <>
+         解鎖 <br /> <span>產業洞察</span> 透過全面研究
+      </>
+   ) : locale === 'ja' ? (
+      <>
+         アンロック <br /> <span>業界の洞察</span> 包括的な調査で
+      </>
+   ) : locale === 'ko' ? (
+      <>
+         잠금 해제 <br /> <span>산업 통찰력</span> 종합적인 연구와 함께
+      </>
+   ) : locale === 'vi' ? (
+      <>
+         Mở khóa <br /> <span>Thông tin chi tiết về ngành</span> với nghiên cứu
+         toàn diện
+      </>
+   ) : locale === 'it' ? (
+      <>
+         Sblocca <br /> <span>Approfondimenti di settore</span> con una ricerca
+         completa
+      </>
+   ) : locale === 'pl' ? (
+      <>
+         Odblokuj <br /> <span>Wnioski z branży</span> dzięki kompleksowym
+         badaniom
+      </>
+   ) : locale === 'zh-CN' ? (
+      <>
+         解锁 <br /> <span>行业洞察</span> 通过全面研究
+      </>
+   ) : locale === 'es' ? (
+      <>
+         Desbloquear <br /> <span>Información del sector</span> con una
+         investigación exhaustiva
+      </>
    ) : (
       <>
          Unlock <br /> <span>Industry Insights</span> with Comprehensive

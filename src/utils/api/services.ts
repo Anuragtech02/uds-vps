@@ -58,7 +58,7 @@ export const getHomePage = async (locale = 'en') => {
       );
       return await response;
    } catch (error) {
-      console.error('Error fetching products:', error);
+      console.error('Error fetching homepage:', error);
       throw error;
    }
 };
@@ -140,7 +140,7 @@ export const getAllReports = cache(
          });
          return await response;
       } catch (error) {
-         console.error('Error fetching products:', error);
+         console.error('Error fetching all reports:', error);
          throw error;
       }
    },

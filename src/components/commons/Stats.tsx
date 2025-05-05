@@ -2,6 +2,8 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 import StrapiImage, { Media } from '../StrapiImage/StrapiImage';
+import { useLocale } from '@/utils/LocaleContext';
+import { TRANSLATED_VALUES } from '@/utils/localeConstants';
 
 interface StatData {
    title: string;
@@ -51,6 +53,8 @@ const Stats: React.FC<{ data: StatData[] }> = ({ data }) => {
    const [isVisible, setIsVisible] = useState(false);
    const containerRef = React.useRef<HTMLDivElement>(null);
 
+   const { locale } = useLocale();
+
    const onScroll = useCallback(() => {
       if (!containerRef.current) return;
 
@@ -72,7 +76,7 @@ const Stats: React.FC<{ data: StatData[] }> = ({ data }) => {
 
    return (
       <div>
-         <h3>Key Figures</h3>
+         <h3>{TRANSLATED_VALUES[locale]?.home?.keyFigures}</h3>
          <div
             ref={containerRef}
             className='mt-8 grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-5'
@@ -80,10 +84,10 @@ const Stats: React.FC<{ data: StatData[] }> = ({ data }) => {
             {data.map((stat) => (
                <div
                   key={stat.title}
-                  className='relative flex flex-col justify-between rounded-md border border-s-200 bg-white p-4 h-40'
+                  className='relative flex h-40 flex-col justify-between rounded-md border border-s-200 bg-white p-4'
                >
                   <p>{stat.title}</p>
-                  <h3 className='notranslate mt-6 font-bricolage text-4xl font-bold text-blue-4 md:text-5xl h-10'>
+                  <h3 className='notranslate mt-6 h-10 font-bricolage text-4xl font-bold text-blue-4 md:text-5xl'>
                      {isVisible ? (
                         <>
                            <Counter end={stat.countTo} duration={2000} />+

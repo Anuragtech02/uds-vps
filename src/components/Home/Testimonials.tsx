@@ -17,15 +17,17 @@ const Testimonials: React.FC<{ data: any }> = ({ data }) => {
       <section className='min-h-full w-full flex-col overflow-x-hidden'>
          <div className='w-full bg-white'>
             <div className='container w-full pt-8'>
-               <h2>
-                  Brands that <span>trust us!</span>
-               </h2>
+               <h2
+                  dangerouslySetInnerHTML={{
+                     __html: data.data.attributes.brandsSectionTitle,
+                  }}
+               ></h2>
             </div>
             <div className='my-4 bg-white py-6 md:my-0 md:py-10'>
                <BrandsMarquee logos={bankLogos} />
             </div>
          </div>
-         <div className='relative z-[1] w-full bg-blue-1 py-10'>
+         {/* <div className='relative z-[1] w-full bg-blue-1 py-10'>
             <div className='container'>
                <h2 className='text-center text-white'>
                   Read what our trusted{' '}
@@ -35,7 +37,7 @@ const Testimonials: React.FC<{ data: any }> = ({ data }) => {
                   <ReviewsSlider data={testimonialsList} />
                </div>
             </div>
-         </div>
+         </div> */}
       </section>
    );
 };

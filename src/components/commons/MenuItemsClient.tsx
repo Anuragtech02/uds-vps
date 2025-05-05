@@ -154,7 +154,9 @@ export const DesktopMenuItem: React.FC<{ item: MenuItem; depth: number }> = ({
                <span className='max-w-[200px] whitespace-normal break-words'>
                   {TRANSLATED_VALUES[locale].header?.[
                      item.title.toLowerCase()
-                  ] || item.title}
+                  ] ||
+                     TRANSLATED_VALUES[locale]?.services[item.title] ||
+                     item.title}
                </span>
                <BiChevronDown
                   className={`ml-1 flex-shrink-0 text-xl ${isOpen ? 'rotate-180' : ''} transition-transform`}
@@ -253,7 +255,9 @@ export const DesktopMenuItem: React.FC<{ item: MenuItem; depth: number }> = ({
                <span className='whitespace-normal break-words'>
                   {TRANSLATED_VALUES[locale].header?.[
                      item.title.toLowerCase()
-                  ] || item.title}
+                  ] ||
+                     TRANSLATED_VALUES[locale]?.services[item.title] ||
+                     item.title}
                </span>
             </LocalizedLink>
          )}

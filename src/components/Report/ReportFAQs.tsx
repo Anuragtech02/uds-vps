@@ -1,13 +1,16 @@
+import { TRANSLATED_VALUES } from '@/utils/localeConstants';
 import FAQItem from './ReportFaqItem';
 
 const ReportFAQs = ({
    data,
+   locale,
 }: {
    data: {
       attributes: {
          faqList: any[];
       };
    };
+   locale: string;
 }) => {
    const faqList = data?.attributes?.faqList || [];
 
@@ -29,7 +32,8 @@ const ReportFAQs = ({
          <div className='w-full sm:px-8' id='faq-section'>
             {faqList.length > 0 && (
                <h2 className='pb-8 text-center text-blue-1'>
-                  Frequently Asked Questions <span>FAQs</span>
+                  Frequently Asked Questions{' '}
+                  <span>{TRANSLATED_VALUES[locale]?.report.faqs}</span>
                </h2>
             )}
             <div className='mx-auto space-y-4'>

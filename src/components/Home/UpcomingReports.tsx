@@ -6,6 +6,8 @@ import sampleImage from '@/assets/img/sampleResearch.png';
 import Slider from 'react-slick';
 import CustomResearchCTA from '../commons/CustomResearchCTA';
 import { SLICK_COMMON_SETTINGS } from '@/utils/constants';
+import { getFormattedDate } from '@/utils/generic-methods';
+import { useLocale } from '@/utils/LocaleContext';
 
 const UpcomingReports: React.FC<{ data: any }> = ({ data }) => {
    const settings = {
@@ -54,6 +56,19 @@ const UpcomingReports: React.FC<{ data: any }> = ({ data }) => {
          },
       ],
    };
+   const { locale } = useLocale();
+
+   function getYear(report: {
+      publishedAt: string;
+      oldPublishedAt: string | null;
+   }) {
+      if (report.oldPublishedAt && new Date(report.oldPublishedAt)) {
+         return new Date(report.oldPublishedAt).getFullYear().toString();
+      }
+
+      return new Date(report.publishedAt).getFullYear().toString();
+   }
+
    return (
       data?.upcomingReports?.length > 0 && (
          <section className='block min-h-max pb-12 md:pb-20'>
@@ -63,31 +78,51 @@ const UpcomingReports: React.FC<{ data: any }> = ({ data }) => {
                </h2>
 
                <div className='my-8 md:my-16 md:mt-10'>
-                  <Slider {...settings}>
-                     {data?.upcomingReports?.map((data: any, index: number) => (
-                        <div key={index} className='h-full pr-4'>
-                           <ResearchCard
-                              type='upcoming'
-                              title={data.title}
-                              slug={data.slug}
-                              year={data.year}
-                              description={data.description}
-                              date={new Date(
-                                 data?.oldPublishedAt || data?.publishedAt,
-                              ).toLocaleDateString(undefined, {
-                                 year: 'numeric',
-                                 month: 'long',
-                                 day: 'numeric',
-                              })}
-                              sku={data.sku}
-                              image={
-                                 data?.highlightImage?.data?.attributes ||
-                                 sampleImage
-                              }
-                           />
-                        </div>
-                     ))}
-                  </Slider>
+                  {data?.upcomingReports?.length < 5 ? (
+                     <div className='grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'>
+                        {data?.upcomingReports?.map(
+                           (report: any, index: number) => (
+                              <div key={index}>
+                                 <ResearchCard
+                                    key={index}
+                                    type='latest'
+                                    title={report?.title}
+                                    slug={report?.slug}
+                                    year={getYear(report)}
+                                    image={
+                                       report?.highlightImage?.data
+                                          ?.attributes || sampleImage
+                                    }
+                                    date={getFormattedDate(report, locale)}
+                                    locale={locale}
+                                 />
+                              </div>
+                           ),
+                        )}
+                     </div>
+                  ) : (
+                     <Slider {...settings}>
+                        {data?.upcomingReports?.map(
+                           (report: any, index: number) => (
+                              <div key={index} className='pr-4'>
+                                 <ResearchCard
+                                    key={index}
+                                    type='latest'
+                                    title={report?.title}
+                                    slug={report?.slug}
+                                    year={getYear(report)}
+                                    image={
+                                       report?.highlightImage?.data
+                                          ?.attributes || sampleImage
+                                    }
+                                    date={getFormattedDate(report, locale)}
+                                    locale={locale}
+                                 />
+                              </div>
+                           ),
+                        )}
+                     </Slider>
+                  )}
                </div>
 
                <CustomResearchCTA

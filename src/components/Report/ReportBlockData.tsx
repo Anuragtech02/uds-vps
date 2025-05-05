@@ -1,6 +1,8 @@
 'use client';
 import { useEffect, useState } from 'react';
 import TableOfContentItem from './TableOfContentItem';
+import { TRANSLATED_VALUES } from '@/utils/localeConstants';
+import { useLocale } from '@/utils/LocaleContext';
 
 interface ReportBlockDataProps {
    data: any;
@@ -11,6 +13,8 @@ const ReportBlockData: React.FC<ReportBlockDataProps> = ({ data }) => {
       new Set(),
    );
    const [rmData, setRmData] = useState<string>(data.researchMethodology);
+
+   const { locale } = useLocale();
 
    const toggleSection = (index: number): void => {
       setExpandedSections((prev) => {
@@ -67,7 +71,7 @@ const ReportBlockData: React.FC<ReportBlockDataProps> = ({ data }) => {
          <div className='section-anchor'>
             <div className='mb-4 flex items-center justify-between'>
                <h2 className='text-2xl font-semibold text-blue-2'>
-                  Table of Contents
+                  {TRANSLATED_VALUES[locale]?.report?.tableOfContent}
                </h2>
                <div className='space-x-4'>
                   <button

@@ -60,6 +60,17 @@ export const TRANSLATED_VALUES: {
          'Energy and Power': 'Energy and Power',
          'Mining & Machinery': 'Mining & Machinery',
       },
+      services: {
+         'Market Research Reports': 'Market Research Reports',
+         'Market Intelligence and Advisory Services':
+            'Market Intelligence and Advisory Services',
+         'Full Time Analyst Engagement Services':
+            'Full Time Analyst Engagement Services',
+         'Procurement Research': 'Procurement Research',
+         'Data Analytics': 'Data Analytics',
+         'Primary Research': 'Primary Research',
+         'Business Support Solutions': 'Business Support Solutions',
+      },
       header: {
          home: 'Home',
          about: 'About Us',
@@ -91,6 +102,7 @@ export const TRANSLATED_VALUES: {
          readWhatOurTrusted: 'Read what our trusted',
          customers: 'customers',
          say: 'say',
+         keyFigures: 'Key Figures',
       },
       report: {
          reports: 'Reports',
@@ -116,7 +128,6 @@ export const TRANSLATED_VALUES: {
          news: 'News',
          relatedNews: 'Related News',
       },
-      services: {},
       cart: {},
    },
    es: {
@@ -161,6 +172,17 @@ export const TRANSLATED_VALUES: {
          'Energy and Power': 'Energía y Poder',
          'Mining & Machinery': 'Minería y Maquinaria',
       },
+      services: {
+         'Market Research Reports': 'Informes de Investigación de Mercado',
+         'Market Intelligence and Advisory Services':
+            'Servicios de Inteligencia de Mercado y Asesoramiento',
+         'Full Time Analyst Engagement Services':
+            'Servicios de Contratación de Analistas a Tiempo Completo',
+         'Procurement Research': 'Investigación de Adquisiciones',
+         'Data Analytics': 'Análisis de Datos',
+         'Primary Research': 'Investigación Primaria',
+         'Business Support Solutions': 'Soluciones de Soporte Empresarial',
+      },
       header: {
          home: 'Inicio',
          about: 'Acerca de nosotros',
@@ -192,6 +214,7 @@ export const TRANSLATED_VALUES: {
          readWhatOurTrusted: 'Lea lo que nuestros',
          customers: 'clientes',
          say: 'dicen',
+         keyFigures: 'Figuras clave',
       },
       report: {
          reports: 'Informes',
@@ -217,7 +240,6 @@ export const TRANSLATED_VALUES: {
          news: 'Noticias',
          relatedNews: 'Noticias relacionadas',
       },
-      services: {},
       cart: {},
    },
    ru: {
@@ -263,6 +285,17 @@ export const TRANSLATED_VALUES: {
          'Mining & Machinery':
             'Горнодобывающая промышленность и машиностроение',
       },
+      services: {
+         'Market Research Reports': 'Отчеты маркетинговых исследований',
+         'Market Intelligence and Advisory Services':
+            'Услуги рыночной аналитики и консультирования',
+         'Full Time Analyst Engagement Services':
+            'Услуги по привлечению аналитиков на полный рабочий день',
+         'Procurement Research': 'Исследования в сфере закупок',
+         'Data Analytics': 'Аналитика данных',
+         'Primary Research': 'Первичные исследования',
+         'Business Support Solutions': 'Решения для поддержки бизнеса',
+      },
       header: {
          home: 'Главная',
          about: 'О нас',
@@ -294,6 +327,7 @@ export const TRANSLATED_VALUES: {
          readWhatOurTrusted: 'Узнайте, что говорят наши',
          customers: 'клиенты',
          say: 'говорят',
+         keyFigures: 'Ключевые показатели',
       },
       report: {
          reports: 'Отчеты',
@@ -319,7 +353,6 @@ export const TRANSLATED_VALUES: {
          news: 'Новости',
          relatedNews: 'Связанные новости',
       },
-      services: {},
       cart: {},
    },
    ar: {
@@ -362,6 +395,17 @@ export const TRANSLATED_VALUES: {
          'Energy and Power': 'الطاقة',
          'Mining & Machinery': 'التعدين والآلات',
       },
+      services: {
+         'Market Research Reports': 'تقارير أبحاث السوق',
+         'Market Intelligence and Advisory Services':
+            'خدمات استخبارات السوق والاستشارات',
+         'Full Time Analyst Engagement Services':
+            'خدمات توظيف المحللين بدوام كامل',
+         'Procurement Research': 'أبحاث المشتريات',
+         'Data Analytics': 'تحليل البيانات',
+         'Primary Research': 'البحث الأولي',
+         'Business Support Solutions': 'حلول دعم الأعمال',
+      },
       header: {
          home: 'الرئيسية',
          about: 'معلومات عنا',
@@ -393,6 +437,7 @@ export const TRANSLATED_VALUES: {
          readWhatOurTrusted: 'اقرأ ما قاله',
          customers: 'عملائنا',
          say: 'يقولون',
+         keyFigures: 'الأرقام الرئيسية',
       },
       report: {
          reports: 'التقارير',
@@ -418,7 +463,6 @@ export const TRANSLATED_VALUES: {
          news: 'الأخبار',
          relatedNews: 'أخبار ذات صلة',
       },
-      services: {},
       cart: {},
    },
    de: {
@@ -462,6 +506,17 @@ export const TRANSLATED_VALUES: {
          'Energy and Power': 'Energie und Strom',
          'Mining & Machinery': 'Bergbau und Maschinenbau',
       },
+      services: {
+         'Market Research Reports': 'Marktforschungsberichte',
+         'Market Intelligence and Advisory Services':
+            'Marktinformations- und Beratungsdienste',
+         'Full Time Analyst Engagement Services':
+            'Vollzeit-Analysten-Engagement-Dienstleistungen',
+         'Procurement Research': 'Beschaffungsforschung',
+         'Data Analytics': 'Datenanalyse',
+         'Primary Research': 'Primärforschung',
+         'Business Support Solutions': 'Geschäftsunterstützungslösungen',
+      },
       header: {
          home: 'Startseite',
          about: 'Über uns',
@@ -493,6 +548,7 @@ export const TRANSLATED_VALUES: {
          readWhatOurTrusted: 'Lesen Sie, was unsere vertrauenswürdigen',
          customers: 'Kunden',
          say: 'sagen',
+         keyFigures: 'Schlüsselfiguren',
       },
       report: {
          reports: 'Berichte',
@@ -518,7 +574,6 @@ export const TRANSLATED_VALUES: {
          news: 'Nachrichten',
          relatedNews: 'Verwandte Nachrichten',
       },
-      services: {},
       cart: {},
    },
    fr: {
@@ -563,6 +618,17 @@ export const TRANSLATED_VALUES: {
          'Energy and Power': 'Énergie et Puissance',
          'Mining & Machinery': 'Mines & Machines',
       },
+      services: {
+         'Market Research Reports': "Rapports d'Étude de Marché",
+         'Market Intelligence and Advisory Services':
+            'Services de Veille et de Conseil sur le Marché',
+         'Full Time Analyst Engagement Services':
+            "Services d'Engagement d'Analystes à Temps Plein",
+         'Procurement Research': 'Recherche sur les Achats',
+         'Data Analytics': 'Analyse de Données',
+         'Primary Research': 'Recherche Primaire',
+         'Business Support Solutions': 'Solutions de Support aux Entreprises',
+      },
       header: {
          home: 'Accueil',
          about: 'À propos de nous',
@@ -594,6 +660,7 @@ export const TRANSLATED_VALUES: {
          readWhatOurTrusted: 'Découvrez ce que nos',
          customers: 'clients',
          say: 'disent',
+         keyFigures: 'Chiffres clés',
       },
       report: {
          reports: 'Rapports',
@@ -619,7 +686,6 @@ export const TRANSLATED_VALUES: {
          news: 'Actualités',
          relatedNews: 'Actualités connexes',
       },
-      services: {},
       cart: {},
    },
    'zh-Hant-TW': {
@@ -679,6 +745,15 @@ export const TRANSLATED_VALUES: {
          industry: '產業',
          geography: '地理',
       },
+      services: {
+         'Market Research Reports': '市場研究報告',
+         'Market Intelligence and Advisory Services': '市場情報與諮詢服務',
+         'Full Time Analyst Engagement Services': '全職分析師服務',
+         'Procurement Research': '採購研究',
+         'Data Analytics': '數據分析',
+         'Primary Research': '初級研究',
+         'Business Support Solutions': '業務支持解決方案',
+      },
       home: {
          ourBlogs: '我們的部落格',
          latestNews: '最新消息',
@@ -691,6 +766,7 @@ export const TRANSLATED_VALUES: {
          readWhatOurTrusted: '閱讀我們信任的',
          customers: '客戶',
          say: '說',
+         keyFigures: '關鍵數據',
       },
       report: {
          reports: '報告',
@@ -715,7 +791,6 @@ export const TRANSLATED_VALUES: {
          news: '新聞',
          relatedNews: '相關新聞',
       },
-      services: {},
       cart: {},
    },
    ja: {
@@ -758,6 +833,17 @@ export const TRANSLATED_VALUES: {
          'Energy and Power': 'エネルギーと電力',
          'Mining & Machinery': '鉱業と機械',
       },
+      services: {
+         'Market Research Reports': '市場調査レポート',
+         'Market Intelligence and Advisory Services':
+            '市場インテリジェンスとアドバイザリーサービス',
+         'Full Time Analyst Engagement Services':
+            'フルタイムアナリスト連携サービス',
+         'Procurement Research': '調達研究',
+         'Data Analytics': 'データ分析',
+         'Primary Research': '一次調査',
+         'Business Support Solutions': 'ビジネスサポートソリューション',
+      },
       header: {
          home: 'ホーム',
          about: '弊社について',
@@ -788,6 +874,7 @@ export const TRANSLATED_VALUES: {
          readWhatOurTrusted: '信頼されている',
          customers: 'お客様',
          say: 'の声',
+         keyFigures: '主要な数字',
       },
       report: {
          reports: 'レポート',
@@ -813,7 +900,6 @@ export const TRANSLATED_VALUES: {
          news: 'ニュース',
          relatedNews: '関連ニュース',
       },
-      services: {},
       cart: {},
    },
    ko: {
@@ -856,6 +942,16 @@ export const TRANSLATED_VALUES: {
          'Energy and Power': '에너지 및 전력',
          'Mining & Machinery': '광업 및 기계',
       },
+      services: {
+         'Market Research Reports': '시장 조사 보고서',
+         'Market Intelligence and Advisory Services':
+            '시장 정보 및 자문 서비스',
+         'Full Time Analyst Engagement Services': '전문가 분석 서비스',
+         'Procurement Research': '조달 연구',
+         'Data Analytics': '데이터 분석',
+         'Primary Research': '기초 연구',
+         'Business Support Solutions': '비즈니스 지원 솔루션',
+      },
       header: {
          home: '홈',
          about: '회사 소개',
@@ -886,6 +982,7 @@ export const TRANSLATED_VALUES: {
          readWhatOurTrusted: '신뢰할 수있는',
          customers: '고객',
          say: '의 말',
+         keyFigures: '주요 수치',
       },
       report: {
          reports: '보고서',
@@ -911,7 +1008,6 @@ export const TRANSLATED_VALUES: {
          news: '뉴스',
          relatedNews: '관련 뉴스',
       },
-      services: {},
       cart: {},
    },
    vi: {
@@ -954,6 +1050,17 @@ export const TRANSLATED_VALUES: {
          'Energy and Power': 'Năng lượng',
          'Mining & Machinery': 'Khai thác mỏ & Máy móc',
       },
+      services: {
+         'Market Research Reports': 'Báo cáo nghiên cứu thị trường',
+         'Market Intelligence and Advisory Services':
+            'Dịch vụ tư vấn và thông tin thị trường',
+         'Full Time Analyst Engagement Services':
+            'Dịch vụ phân tích toàn thời gian',
+         'Procurement Research': 'Nghiên cứu mua sắm',
+         'Data Analytics': 'Phân tích dữ liệu',
+         'Primary Research': 'Nghiên cứu sơ cấp',
+         'Business Support Solutions': 'Giải pháp hỗ trợ doanh nghiệp',
+      },
       header: {
          home: 'Trang chủ',
          about: 'Về chúng tôi',
@@ -984,6 +1091,7 @@ export const TRANSLATED_VALUES: {
          readWhatOurTrusted: 'Đọc những gì',
          customers: 'khách hàng',
          say: 'nói',
+         keyFigures: 'Các số liệu chính',
       },
       report: {
          reports: 'Báo cáo',
@@ -1009,7 +1117,6 @@ export const TRANSLATED_VALUES: {
          news: 'Tin tức',
          relatedNews: 'Tin tức liên quan',
       },
-      services: {},
       cart: {},
    },
    it: {
@@ -1054,6 +1161,17 @@ export const TRANSLATED_VALUES: {
          'Energy and Power': 'Energia ed Elettricità',
          'Mining & Machinery': 'Estrazione Mineraria e Macchinari',
       },
+      services: {
+         'Market Research Reports': 'Rapporti di Ricerca di Mercato',
+         'Market Intelligence and Advisory Services':
+            'Servizi di Intelligenza di Mercato e Consulenza',
+         'Full Time Analyst Engagement Services':
+            'Servizi di Coinvolgimento di Analista a Tempo Pieno',
+         'Procurement Research': 'Ricerca sugli Acquisti',
+         'Data Analytics': 'Analisi dei Dati',
+         'Primary Research': 'Ricerca Primaria',
+         'Business Support Solutions': 'Soluzioni di Supporto Aziendale',
+      },
       header: {
          home: 'Home',
          about: 'Chi siamo',
@@ -1084,6 +1202,7 @@ export const TRANSLATED_VALUES: {
          readWhatOurTrusted: 'Leggi cosa dicono i nostri',
          customers: 'clienti',
          say: 'dicono',
+         keyFigures: 'Numeri chiave',
       },
       report: {
          reports: 'Report',
@@ -1109,7 +1228,6 @@ export const TRANSLATED_VALUES: {
          news: 'Notizie',
          relatedNews: 'Notizie correlate',
       },
-      services: {},
       cart: {},
    },
    pl: {
@@ -1154,6 +1272,17 @@ export const TRANSLATED_VALUES: {
          'Energy and Power': 'Energetyka',
          'Mining & Machinery': 'Górnictwo i maszyny',
       },
+      services: {
+         'Market Research Reports': 'Raporty badań rynku',
+         'Market Intelligence and Advisory Services':
+            'Usługi doradcze i analizy rynku',
+         'Full Time Analyst Engagement Services':
+            'Usługi analityków na pełen etat',
+         'Procurement Research': 'Badania zakupowe',
+         'Data Analytics': 'Analityka danych',
+         'Primary Research': 'Badania podstawowe',
+         'Business Support Solutions': 'Rozwiązania wsparcia biznesowego',
+      },
       header: {
          home: 'Strona główna',
          about: 'O nas',
@@ -1185,6 +1314,7 @@ export const TRANSLATED_VALUES: {
          readWhatOurTrusted: 'Przeczytaj, co mówią nasi zaufani',
          customers: 'klienci',
          say: 'mówią',
+         keyFigures: 'Kluczowe liczby',
       },
       report: {
          reports: 'Raporty',
@@ -1210,7 +1340,6 @@ export const TRANSLATED_VALUES: {
          news: 'Wiadomości',
          relatedNews: 'Powiązane wiadomości',
       },
-      services: {},
       cart: {},
    },
    'zh-CN': {
@@ -1252,6 +1381,15 @@ export const TRANSLATED_VALUES: {
          'Energy and Power': '能源与电力',
          'Mining & Machinery': '矿业与机械',
       },
+      services: {
+         'Market Research Reports': '市场研究报告',
+         'Market Intelligence and Advisory Services': '市场情报与咨询服务',
+         'Full Time Analyst Engagement Services': '全职分析师服务',
+         'Procurement Research': '采购研究',
+         'Data Analytics': '数据分析',
+         'Primary Research': '初级研究',
+         'Business Support Solutions': '业务支持解决方案',
+      },
       header: {
          home: '首页',
          about: '关于我们',
@@ -1282,6 +1420,7 @@ export const TRANSLATED_VALUES: {
          readWhatOurTrusted: '阅读我们信任的',
          customers: '客户',
          say: '说',
+         keyFigures: '关键数据',
       },
       report: {
          reports: '报告',
@@ -1306,7 +1445,6 @@ export const TRANSLATED_VALUES: {
          news: '新闻',
          relatedNews: '相关新闻',
       },
-      services: {},
       cart: {},
    },
 };

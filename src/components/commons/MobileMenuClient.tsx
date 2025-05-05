@@ -8,6 +8,8 @@ import dynamic from 'next/dynamic';
 import { BiChevronDown, BiX } from 'react-icons/bi';
 import { Media } from '../StrapiImage/StrapiImage';
 import { useMenuStore } from '@/stores/menu.store';
+import { TRANSLATED_VALUES } from '@/utils/localeConstants';
+import { useLocale } from '@/utils/LocaleContext';
 
 // Create dynamic imports for industry icons
 const AerospaceAndDefense = dynamic(
@@ -95,6 +97,8 @@ const MobileMenuItem: React.FC<{
 }> = ({ item, depth, onClick }) => {
    const [isOpen, setIsOpen] = useState(false);
 
+   const { locale } = useLocale();
+
    return (
       <li className={`w-full ${depth > 0 ? 'pl-4' : ''}`}>
          {item.children && item.children.length > 0 ? (
@@ -106,7 +110,13 @@ const MobileMenuItem: React.FC<{
                      setIsOpen(!isOpen);
                   }}
                >
-                  <span className='break-words pr-2'>{item.title}</span>
+                  <span className='break-words pr-2'>
+                     {TRANSLATED_VALUES[locale].header?.[
+                        item.title.toLowerCase()
+                     ] ||
+                        TRANSLATED_VALUES[locale]?.services[item.title] ||
+                        item.title}
+                  </span>
                   <BiChevronDown
                      className={`ml-1 flex-shrink-0 text-xl ${isOpen ? 'rotate-180' : ''} transition-transform`}
                   />
@@ -142,7 +152,13 @@ const MobileMenuItem: React.FC<{
                      ] || <IconPlaceholder />}
                   </div>
                )}
-               <span className='break-words'>{item.title}</span>
+               <span className='break-words'>
+                  {TRANSLATED_VALUES[locale].header?.[
+                     item.title.toLowerCase()
+                  ] ||
+                     TRANSLATED_VALUES[locale]?.services[item.title] ||
+                     item.title}
+               </span>
             </LocalizedLink>
          )}
       </li>
@@ -157,7 +173,7 @@ const MobileMenuClient: React.FC<Props> = ({
    header,
 }) => {
    const { isMobileMenuOpen, setIsMobileMenuOpen } = useMenuStore();
-
+   const { locale } = useLocale();
    return (
       <div
          className={`fixed inset-0 z-50 bg-black bg-opacity-50 transition-opacity duration-300 ${isMobileMenuOpen ? 'visible' : 'invisible'}`}
@@ -186,7 +202,9 @@ const MobileMenuClient: React.FC<Props> = ({
                                     ),
                               )
                               .map(({ slug, name }) => ({
-                                 title: name,
+                                 title: TRANSLATED_VALUES[locale]?.industries?.[
+                                    name
+                                 ],
                                  url: `/reports?industries=${slug}&page=1`,
                               })),
                         }}

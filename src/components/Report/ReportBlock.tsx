@@ -220,7 +220,7 @@ const ReportBlock: React.FC<ReportBlockProps> = ({ data, locale = 'en' }) => {
             </div>
             <div className='flex-1'>
                {/* <ReportBlockData data={reportData} /> */}
-               <ReportBlockDataServer data={reportData} />
+               <ReportBlockDataServer data={reportData} locale={locale} />
                {data?.attributes?.faqList?.length > 0 && (
                   <ReportFAQs data={data} />
                )}

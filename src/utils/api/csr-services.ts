@@ -390,3 +390,55 @@ export const getNewsListingPageClient = async ({
       throw error;
    }
 };
+
+export const getAllReportsCSR = async ({
+   page = 1,
+   limit = 10,
+   filters = {},
+   sortBy = 'relevance',
+   locale = 'en',
+} = {}) => {
+   try {
+      let sort = '';
+      switch (sortBy) {
+         case 'oldPublishedAt:desc':
+            sort = 'oldPublishedAt:desc';
+            break;
+         case 'oldPublishedAt:asc':
+            sort = 'oldPublishedAt:asc';
+            break;
+         default:
+            sort = 'relevance';
+      }
+      const populateQuery = buildPopulateQuery([
+         'industry.name',
+         'geography.name',
+         'highlightImage.url',
+      ]);
+      const paginationQuery = getPaginationQuery(page, limit);
+      const filterQuery = getFilterQuery(filters);
+      const sortQuery = sort !== 'relevance' ? `sort[0]=${sort}` : '';
+      const localeQuery = locale ? `&locale=${locale}` : '';
+      const query = [
+         populateQuery,
+         paginationQuery,
+         filterQuery,
+         sortQuery,
+         localeQuery,
+      ]
+         .filter(Boolean)
+         .join('&');
+
+      const response = await fetchClientCSR('/reports?' + query, {
+         headers: getAuthHeaders(),
+         next: {
+            revalidate: 3600, // Revalidate cached data hourly
+            tags: ['reports'], // Tag for manual revalidation
+         },
+      });
+      return await response;
+   } catch (error) {
+      console.error('Error fetching all reports:', error);
+      throw error;
+   }
+};

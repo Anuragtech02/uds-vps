@@ -33,7 +33,7 @@ export async function generateMetadata({
       lang: string;
    };
 }): Promise<Metadata> {
-   const homePage = await getHomePage('en');
+   const homePage = await getHomePage(params.lang);
    const { attributes } = homePage.data;
    const seo = attributes?.seo;
 
@@ -163,7 +163,7 @@ async function Home({
          latestBlogs,
          latestNewsArticles,
       ] = await Promise.all([
-         getHomePage(),
+         getHomePage(params.lang),
          getAllReports({
             page: 1,
             limit: 10,

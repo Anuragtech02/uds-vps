@@ -6,6 +6,7 @@ import ClientSearchHero from '../Home/ClientSearchHero';
 import CartIcon from './CartIcon';
 import StrapiImage, { Media } from '../StrapiImage/StrapiImage';
 import { useLocale } from '@/utils/LocaleContext';
+import LocaleSelector from './LocaleSelector';
 
 interface ITopbarProps {
    header: {
@@ -40,6 +41,9 @@ const Topbar = ({ header }: ITopbarProps) => {
                   wrapperClassName='h-10 w-24 object-contain md:h-[80px] md:w-[200px] flex justify-start items-center'
                />
             </LocalizedLink>
+            <div className='slg:hidden block'>
+               <LocaleSelector theme='light' size='small' />
+            </div>
             <div className='hidden flex-1 lg:block'>
                <div className='mx-auto max-w-[95%] [&>div>span]:block [&>div>span]:bg-[#C1CFEA] [&>div>span]:p-2 [&>div]:mt-0 [&>div]:w-full [&>div]:overflow-hidden [&>div]:rounded-md [&>div]:border-blue-1 [&>div]:p-0'>
                   <ClientSearchHero variant='light' />

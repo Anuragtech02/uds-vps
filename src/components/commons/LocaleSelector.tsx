@@ -4,7 +4,10 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { LOCALE_NAMES, SUPPORTED_LOCALES } from '@/utils/constants';
 
-const LocaleSelector = () => {
+const LocaleSelector: React.FC<{
+   theme?: 'light' | 'dark';
+   size?: 'small' | 'large';
+}> = ({ theme = 'dark', size = 'large' }) => {
    const router = useRouter();
    const [currentLocale, setCurrentLocale] = useState('en');
 
@@ -72,14 +75,22 @@ const LocaleSelector = () => {
          name='locale'
          id='locale'
          aria-label='Select language'
-         className='cursor-pointer rounded-lg border border-white bg-transparent px-2 py-1 pr-8 text-white outline-none transition-colors hover:bg-white/20'
+         className={`cursor-pointer rounded-lg border ${
+            theme === 'light'
+               ? 'border-blue-1 text-blue-1 hover:bg-blue-1/10'
+               : 'border-white text-white hover:bg-white/20'
+         } bg-transparent ${
+            size === 'small' ? 'px-1.5 py-0.5 pr-2 text-xs' : 'px-2 py-1 pr-8'
+         } outline-none transition-colors`}
          onChange={handleLocaleChange}
          value={currentLocale}
       >
          {SUPPORTED_LOCALES.map((locale) => (
             <option key={locale} value={locale}>
-               {LOCALE_NAMES.find((loc) => loc.locale === locale)?.title ||
-                  locale}
+               {size === 'large'
+                  ? LOCALE_NAMES.find((loc) => loc.locale === locale)?.title ||
+                    locale
+                  : locale.toUpperCase()}
             </option>
          ))}
       </select>

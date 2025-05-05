@@ -1,8 +1,10 @@
 import dynamic from 'next/dynamic';
 import { JSDOM } from 'jsdom';
+import { TRANSLATED_VALUES } from '@/utils/localeConstants';
 
 interface ReportBlockDataProps {
    data: any;
+   locale: string;
 }
 
 // Server-side HTML processing function for research methodology
@@ -137,7 +139,10 @@ const addSrcSetToImages = (htmlContent: string): string => {
    }
 };
 
-export default function ReportBlockDataServer({ data }: ReportBlockDataProps) {
+export default function ReportBlockDataServer({
+   data,
+   locale = 'en',
+}: ReportBlockDataProps) {
    // Process both HTML sections
    const rmData = data.researchMethodology
       ? processRM(data.researchMethodology)
@@ -161,7 +166,7 @@ export default function ReportBlockDataServer({ data }: ReportBlockDataProps) {
 
          <div className='section-anchor'>
             <h2 className='text-2xl font-semibold text-blue-2'>
-               Table of Contents
+               {TRANSLATED_VALUES[locale]?.report?.tableOfContent}
             </h2>
             <InteractiveTOC tableOfContent={data.tableOfContent} />
          </div>

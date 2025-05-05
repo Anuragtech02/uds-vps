@@ -37,14 +37,6 @@ const Hero: React.FC<{ data: any; locale?: string }> = ({ data, locale }) => {
       icon: stat.icon.data.attributes,
    }));
 
-   function getHeadingTextSplit() {
-      const splitted = heroSection.heroMainHeading.split('<DYNAMIC>');
-      return {
-         first: splitted[0],
-         second: splitted[1],
-      };
-   }
-
    return (
       <section className='relative bg-white pt-16 md:pt-20'>
          <div className='container'>
