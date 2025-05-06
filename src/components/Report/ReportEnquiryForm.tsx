@@ -227,8 +227,10 @@ const ReportEnquiryForm: React.FC<ReportEnquiryFormProps> = ({
                            Success!
                         </h3>
                         <p className='text-gray-600'>
-                           Thank you for your enquiry. We&apos;ll get back to
-                           you soon!
+                           {
+                              TRANSLATED_VALUES[locale]?.contact
+                                 .thankYouForEnquiry
+                           }
                         </p>
                      </div>
                   </div>
@@ -365,7 +367,7 @@ const ReportEnquiryForm: React.FC<ReportEnquiryFormProps> = ({
                      disabled={isSubmitting}
                   >
                      {isSubmitting
-                        ? 'Submitting...'
+                        ? TRANSLATED_VALUES[locale]?.contact.submitting
                         : TRANSLATED_VALUES[locale]?.contact.getSampleOnEmail}
                   </Button>
                </div>

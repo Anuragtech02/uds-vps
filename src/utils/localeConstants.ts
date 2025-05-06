@@ -169,6 +169,9 @@ export const TRANSLATED_VALUES: {
          requestADemo: 'Request a Demo',
          thankYouMessage: 'Thank you! Your message has been sent successfully.',
          sending: 'Sending...',
+         thankYouForEnquiry:
+            "Thank you for your enquiry. We'll get back to you soon!",
+         submitting: 'Submitting...',
       },
       blog: {
          blogs: 'Blogs',
@@ -370,6 +373,9 @@ export const TRANSLATED_VALUES: {
          requestADemo: 'Solicitar una demostración',
          thankYouMessage: '¡Gracias! Tu mensaje ha sido enviado con éxito.',
          sending: 'Enviando...',
+         thankYouForEnquiry:
+            '¡Gracias por tu consulta! Nos pondremos en contacto contigo pronto.',
+         submitting: 'Enviando...',
       },
       blog: {
          blogs: 'Blogs',
@@ -573,6 +579,9 @@ export const TRANSLATED_VALUES: {
          requestADemo: 'Запросить демонстрацию',
          thankYouMessage: 'Спасибо! Ваше сообщение было успешно отправлено.',
          sending: 'Отправка...',
+         thankYouForEnquiry:
+            'Спасибо за ваш запрос! Мы свяжемся с вами в ближайшее время.',
+         submitting: 'Отправка...',
       },
       blog: {
          blogs: 'Блоги',
@@ -773,6 +782,8 @@ export const TRANSLATED_VALUES: {
          requestADemo: 'طلب عرض توضيحي',
          thankYouMessage: 'شكرًا لك! تم إرسال رسالتك بنجاح.',
          sending: 'جاري الإرسال...',
+         thankYouForEnquiry: 'شكرًا لاستفسارك! سنتواصل معك قريبًا.',
+         submitting: 'جاري الإرسال...',
       },
       blog: {
          blogs: 'المدونات',
@@ -973,6 +984,9 @@ export const TRANSLATED_VALUES: {
          requestADemo: 'Demo anfordern',
          thankYouMessage: 'Danke! Ihre Nachricht wurde erfolgreich gesendet.',
          sending: 'Senden...',
+         thankYouForEnquiry:
+            'Vielen Dank für Ihre Anfrage! Wir werden uns in Kürze bei Ihnen melden.',
+         submitting: 'Einreichen...',
       },
       blog: {
          blogs: 'Blogs',
@@ -1176,6 +1190,9 @@ export const TRANSLATED_VALUES: {
          requestADemo: 'Demander une démo',
          thankYouMessage: 'Merci ! Votre message a été envoyé avec succès.',
          sending: 'Envoi en cours...',
+         thankYouForEnquiry:
+            'Merci pour votre demande ! Nous vous contacterons bientôt.',
+         submitting: 'Soumission en cours...',
       },
       blog: {
          blogs: 'Blogs',
@@ -1371,6 +1388,8 @@ export const TRANSLATED_VALUES: {
          requestADemo: '請求演示',
          thankYouMessage: '謝謝！您的訊息已成功發送。',
          sending: '發送中...',
+         thankYouForEnquiry: '感謝您的查詢！我們將儘快與您聯繫。',
+         submitting: '提交中...',
       },
       blog: {
          blogs: '部落格',
@@ -1569,6 +1588,9 @@ export const TRANSLATED_VALUES: {
          thankYouMessage:
             'ありがとうございます！メッセージは正常に送信されました。',
          sending: '送信中...',
+         thankYouForEnquiry:
+            'お問い合わせいただきありがとうございます！すぐにご連絡いたします。',
+         submitting: '送信中...',
       },
       blog: {
          blogs: 'ブログ',
@@ -1767,6 +1789,8 @@ export const TRANSLATED_VALUES: {
          requestADemo: '데모 요청하기',
          thankYouMessage: '감사합니다! 메시지가 성공적으로 전송되었습니다.',
          sending: '전송 중...',
+         thankYouForEnquiry: '문의해 주셔서 감사합니다! 곧 연락드리겠습니다.',
+         submitting: '제출 중...',
       },
       blog: {
          blogs: '블로그',
@@ -1965,6 +1989,9 @@ export const TRANSLATED_VALUES: {
          thankYouMessage:
             'Cảm ơn bạn! Tin nhắn của bạn đã được gửi thành công.',
          sending: 'Đang gửi...',
+         thankYouForEnquiry:
+            'Cảm ơn bạn đã gửi yêu cầu! Chúng tôi sẽ liên hệ với bạn sớm.',
+         submitting: 'Đang gửi...',
       },
       blog: {
          blogs: 'Blog',
@@ -2167,6 +2194,9 @@ export const TRANSLATED_VALUES: {
          thankYouMessage:
             'Grazie! Il tuo messaggio è stato inviato con successo.',
          sending: 'Invio in corso...',
+         thankYouForEnquiry:
+            'Grazie per la tua richiesta! Ti contatteremo presto.',
+         submitting: 'Invio in corso...',
       },
       blog: {
          blogs: 'Blog',
@@ -2370,6 +2400,9 @@ export const TRANSLATED_VALUES: {
          thankYouMessage:
             'Dziękujemy! Twoja wiadomość została pomyślnie wysłana.',
          sending: 'Wysyłanie...',
+         thankYouForEnquiry:
+            'Dziękujemy za zapytanie! Skontaktujemy się z Tobą wkrótce.',
+         submitting: 'Przesyłanie...',
       },
       blog: {
          blogs: 'Blogi',
@@ -2565,6 +2598,8 @@ export const TRANSLATED_VALUES: {
          requestADemo: '请求演示',
          thankYouMessage: '谢谢！您的消息已成功发送。',
          sending: '发送中...',
+         thankYouForEnquiry: '感谢您的查询！我们会尽快与您联系。',
+         submitting: '提交中...',
       },
       blog: {
          blogs: '博客',
