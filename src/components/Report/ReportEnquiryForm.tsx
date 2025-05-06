@@ -6,6 +6,8 @@ import Script from 'next/script';
 import { submitForm } from '@/utils/api/csr-services';
 import countryList from '@/assets/utils/countries.json';
 import { sendGAEvent } from '@next/third-parties/google';
+import { TRANSLATED_VALUES } from '@/utils/localeConstants';
+import { useLocale } from '@/utils/LocaleContext';
 
 interface ReportEnquiryFormProps {
    reportId: number;
@@ -190,6 +192,8 @@ const ReportEnquiryForm: React.FC<ReportEnquiryFormProps> = ({
       }
    };
 
+   const { locale } = useLocale();
+
    return (
       <>
          <div className='relative max-h-[80vh] overflow-y-auto pt-6 font-medium'>
@@ -232,7 +236,8 @@ const ReportEnquiryForm: React.FC<ReportEnquiryFormProps> = ({
             )}
 
             <p>
-               Requesting For: <strong>{reportTitle}</strong>
+               {TRANSLATED_VALUES[locale]?.contact.requestingFor}:{' '}
+               <strong>{reportTitle}</strong>
             </p>
             <hr className='mb-4 mt-2' />
             <form
@@ -242,7 +247,9 @@ const ReportEnquiryForm: React.FC<ReportEnquiryFormProps> = ({
                {/* Form fields */}
                <div className='grid grid-cols-1 gap-4 lg:grid-cols-3'>
                   <div className='space-y-1'>
-                     <label htmlFor='name'>Full Name*</label>
+                     <label htmlFor='name'>
+                        {TRANSLATED_VALUES[locale]?.contact.fullName}*
+                     </label>
                      <input
                         type='text'
                         id='fullName'
@@ -250,7 +257,9 @@ const ReportEnquiryForm: React.FC<ReportEnquiryFormProps> = ({
                         required
                         value={formFields.fullName}
                         onChange={handleInputChange}
-                        placeholder='Enter your full name'
+                        placeholder={
+                           TRANSLATED_VALUES[locale]?.contact.enterYourFullName
+                        }
                         className='w-full rounded-md border border-s-300 p-3'
                      />
                   </div>
@@ -260,11 +269,14 @@ const ReportEnquiryForm: React.FC<ReportEnquiryFormProps> = ({
                         value={phone}
                         onChange={handlePhoneChange}
                         required
+                        locale={locale}
                      />
                   </div>
 
                   <div className='space-y-1'>
-                     <label htmlFor='email'>Business Email*</label>
+                     <label htmlFor='email'>
+                        {TRANSLATED_VALUES[locale]?.contact.businessEmail}*
+                     </label>
                      <input
                         type='email'
                         id='businessEmail'
@@ -272,13 +284,18 @@ const ReportEnquiryForm: React.FC<ReportEnquiryFormProps> = ({
                         required
                         value={formFields.businessEmail}
                         onChange={handleInputChange}
-                        placeholder='Enter your email'
+                        placeholder={
+                           TRANSLATED_VALUES[locale]?.contact
+                              .enterYourBusinessEmail
+                        }
                         className='w-full rounded-md border border-s-300 p-3'
                      />
                   </div>
 
                   <div className='space-y-1'>
-                     <label htmlFor='company'>Company*</label>
+                     <label htmlFor='company'>
+                        {TRANSLATED_VALUES[locale]?.contact.company}*
+                     </label>
                      <input
                         type='text'
                         id='company'
@@ -286,13 +303,17 @@ const ReportEnquiryForm: React.FC<ReportEnquiryFormProps> = ({
                         required
                         value={formFields.company}
                         onChange={handleInputChange}
-                        placeholder='Enter your company name'
+                        placeholder={
+                           TRANSLATED_VALUES[locale]?.contact.enterYourCompany
+                        }
                         className='w-full rounded-md border border-s-300 p-3'
                      />
                   </div>
 
                   <div className='space-y-1'>
-                     <label htmlFor='country'>Country</label>
+                     <label htmlFor='country'>
+                        {TRANSLATED_VALUES[locale]?.contact.country}
+                     </label>
                      <select
                         id='country'
                         name='country'
@@ -301,7 +322,10 @@ const ReportEnquiryForm: React.FC<ReportEnquiryFormProps> = ({
                         className='w-full rounded-md border border-s-300 p-3'
                      >
                         <option className='opacity-50' value=''>
-                           Select your country
+                           {
+                              TRANSLATED_VALUES[locale]?.contact
+                                 .selectYourCountry
+                           }
                         </option>
                         {countryList?.map((country) => (
                            <option key={country.code} value={country.name}>
@@ -313,13 +337,17 @@ const ReportEnquiryForm: React.FC<ReportEnquiryFormProps> = ({
                </div>
 
                <div className='space-y-1'>
-                  <label htmlFor='message'>Message</label>
+                  <label htmlFor='message'>
+                     {TRANSLATED_VALUES[locale]?.contact.message}
+                  </label>
                   <textarea
                      name='message'
                      id='message'
                      value={formFields.message}
                      onChange={handleInputChange}
-                     placeholder='Enter your message or any specific requirements'
+                     placeholder={
+                        TRANSLATED_VALUES[locale]?.contact.enterYourMessage
+                     }
                      className='min-h-20 w-full rounded-md border border-s-300 p-3'
                   ></textarea>
                </div>
@@ -336,7 +364,9 @@ const ReportEnquiryForm: React.FC<ReportEnquiryFormProps> = ({
                      type='submit'
                      disabled={isSubmitting}
                   >
-                     {isSubmitting ? 'Submitting...' : 'Get Sample on Email'}
+                     {isSubmitting
+                        ? 'Submitting...'
+                        : TRANSLATED_VALUES[locale]?.contact.getSampleOnEmail}
                   </Button>
                </div>
             </form>

@@ -232,7 +232,11 @@ const ReportBlock: React.FC<ReportBlockProps> = ({ data, locale = 'en' }) => {
             rightSectionHeading={reportData.rightSectionHeading}
          />
 
-         <Popup name='report-enquiry' title='Report Enquiry' size='lg'>
+         <Popup
+            name='report-enquiry'
+            title={TRANSLATED_VALUES[locale]?.contact.reportEnquiry}
+            size='lg'
+         >
             <ReportEnquiryForm
                reportTitle={reportData.title}
                reportId={reportData.id}
