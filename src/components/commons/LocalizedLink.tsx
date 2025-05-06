@@ -14,9 +14,17 @@ export function getLocalizedPath(
    path: string,
    locale: string | null | undefined,
 ) {
+   // If no locale or it's the default locale, return path as is
    if (!locale || locale === DEFAULT_LOCALE) {
       return path;
    }
+
+   // Check if path already starts with the locale
+   if (path.startsWith(`/${locale}/`) || path === `/${locale}`) {
+      return path;
+   }
+
+   // Add locale to the path
    return `/${locale}${path.startsWith('/') ? path : `/${path}`}`;
 }
 

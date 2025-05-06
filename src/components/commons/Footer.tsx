@@ -17,6 +17,7 @@ import { FaPinterest, FaYoutube } from 'react-icons/fa';
 import StrapiImage from '../StrapiImage/StrapiImage';
 import { TRANSLATED_VALUES } from '@/utils/localeConstants';
 import { useLocale } from '@/utils/LocaleContext';
+import GetACallbackButton from './GetACallbackButton';
 
 const LOGO_DIMENSIONS = { width: 150, height: 50 };
 const EARTH_DIMENSIONS = { width: 1920, height: 1080 };
@@ -227,19 +228,7 @@ const Footer = ({ footer, quickLinks }: any) => {
                      >
                         {footer?.email}
                      </a>
-                     <LocalizedLink href='?popup=demo-request' lang={locale}>
-                        <Button
-                           variant='light'
-                           className='border border-blue-9 !bg-blue-1 text-blue-9'
-                        >
-                           {
-                              TRANSLATED_VALUES[locale]?.footer?.[
-                                 'Send An Enquiry'
-                              ]
-                           }{' '}
-                           →
-                        </Button>
-                     </LocalizedLink>
+                     <GetACallbackButton />
                   </div>
                </div>
 

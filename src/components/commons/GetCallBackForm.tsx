@@ -211,6 +211,7 @@ const GetCallBackForm = () => {
                         value={phone}
                         onChange={handlePhoneChange}
                         required
+                        locale={locale}
                      />
                   </div>
                </div>
