@@ -256,7 +256,10 @@ const Footer = ({ footer, quickLinks }: any) => {
                </div>
             }
          >
-            <Popup name='demo-request' title='Request a Demo'>
+            <Popup
+               name='demo-request'
+               title={TRANSLATED_VALUES[locale]?.contact?.requestADemo}
+            >
                <DemoRequestForm />
             </Popup>
          </Suspense>

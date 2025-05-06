@@ -5,6 +5,8 @@ import { submitForm } from '@/utils/api/csr-services';
 import Button from '../commons/Button';
 import Script from 'next/script';
 import { sendGAEvent } from '@next/third-parties/google';
+import { useLocale } from '@/utils/LocaleContext';
+import { TRANSLATED_VALUES } from '@/utils/localeConstants';
 
 const DemoRequestForm = () => {
    const [formFields, setFormFields] = useState({
@@ -20,6 +22,8 @@ const DemoRequestForm = () => {
    const [turnstileToken, setTurnstileToken] = useState<string>('');
    const widgetIdRef = useRef<string>('');
    const turnstileContainerId = 'callback-turnstile-container';
+
+   const { locale } = useLocale();
 
    const cleanupTurnstile = () => {
       if (widgetIdRef.current && window.turnstile) {
@@ -182,7 +186,9 @@ const DemoRequestForm = () => {
             >
                <div className='flex flex-col items-center gap-4 md:flex-row [&>div]:w-full sm:[&>div]:w-auto'>
                   <div className='shrink grow basis-0 space-y-1'>
-                     <label htmlFor='name'>Full Name*</label>
+                     <label htmlFor='name'>
+                        {TRANSLATED_VALUES[locale]?.contact.fullName}*
+                     </label>
                      <input
                         type='text'
                         id='fullName'
@@ -190,7 +196,9 @@ const DemoRequestForm = () => {
                         required
                         value={formFields.fullName}
                         onChange={handleInputChange}
-                        placeholder='Enter your full name'
+                        placeholder={
+                           TRANSLATED_VALUES[locale]?.contact.enterYourFullName
+                        }
                         className='w-full rounded-md border border-s-300 p-3'
                      />
                   </div>
@@ -199,12 +207,15 @@ const DemoRequestForm = () => {
                         value={phone}
                         onChange={handlePhoneChange}
                         required
+                        locale={locale}
                      />
                   </div>
                </div>
                <div className='flex flex-col items-center gap-4 md:flex-row [&>div]:w-full sm:[&>div]:w-auto'>
                   <div className='shrink grow basis-0 space-y-1'>
-                     <label htmlFor='email'>Business Email*</label>
+                     <label htmlFor='email'>
+                        {TRANSLATED_VALUES[locale]?.contact.businessEmail}*
+                     </label>
                      <input
                         type='email'
                         id='businessEmail'
@@ -212,12 +223,17 @@ const DemoRequestForm = () => {
                         required
                         value={formFields.businessEmail}
                         onChange={handleInputChange}
-                        placeholder='Enter your email'
+                        placeholder={
+                           TRANSLATED_VALUES[locale]?.contact
+                              .enterYourBusinessEmail
+                        }
                         className='w-full rounded-md border border-s-300 p-3'
                      />
                   </div>
                   <div className='shrink grow basis-0 space-y-1'>
-                     <label htmlFor='company'>Company*</label>
+                     <label htmlFor='company'>
+                        {TRANSLATED_VALUES[locale]?.contact.company}*
+                     </label>
                      <input
                         type='text'
                         id='company'
@@ -225,19 +241,25 @@ const DemoRequestForm = () => {
                         required
                         value={formFields.company}
                         onChange={handleInputChange}
-                        placeholder='Enter your company name'
+                        placeholder={
+                           TRANSLATED_VALUES[locale]?.contact.enterYourCompany
+                        }
                         className='w-full rounded-md border border-s-300 p-3'
                      />
                   </div>
                </div>
                <div className='space-y-1'>
-                  <label htmlFor='message'>Message</label>
+                  <label htmlFor='message'>
+                     {TRANSLATED_VALUES[locale]?.contact.message}
+                  </label>
                   <textarea
                      name='message'
                      id='message'
                      value={formFields.message}
                      onChange={handleInputChange}
-                     placeholder='Enter your message or any specific requirements'
+                     placeholder={
+                        TRANSLATED_VALUES[locale]?.contact.enterYourMessage
+                     }
                      className='min-h-24 w-full rounded-md border border-s-300 p-3'
                   ></textarea>
                </div>
@@ -253,7 +275,7 @@ const DemoRequestForm = () => {
                   </div>
                ) : submitSuccess ? (
                   <div className='rounded-md bg-green-50 p-4 text-green-800'>
-                     Thank you! Your message has been sent successfully.
+                     {TRANSLATED_VALUES[locale]?.contact.thankYouMessage}
                   </div>
                ) : null}
                <div>
@@ -262,7 +284,9 @@ const DemoRequestForm = () => {
                      type='submit'
                      disabled={isSubmitting}
                   >
-                     {isSubmitting ? 'Submitting...' : 'Get Sample on Email'}
+                     {isSubmitting
+                        ? TRANSLATED_VALUES[locale]?.contact.submitting
+                        : TRANSLATED_VALUES[locale]?.contact.getSampleOnEmail}
                   </Button>
                </div>
             </form>
