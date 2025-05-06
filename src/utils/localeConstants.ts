@@ -147,6 +147,7 @@ export const TRANSLATED_VALUES: {
             'Customers who bought this item also bought',
          expandAll: 'Expand All',
          collapseAll: 'Collapse All',
+         upcoming: 'Upcoming',
       },
       about: {},
       contact: {
@@ -351,6 +352,7 @@ export const TRANSLATED_VALUES: {
             'Los clientes que compraron este artículo también compraron',
          expandAll: 'Expandir todo',
          collapseAll: 'Colapsar todo',
+         upcoming: 'Próximos',
       },
       about: {},
       contact: {
@@ -557,6 +559,7 @@ export const TRANSLATED_VALUES: {
             'Клиенты, купившие этот товар, также купили',
          expandAll: 'Развернуть все',
          collapseAll: 'Свернуть все',
+         upcoming: 'Предстоящие',
       },
       about: {},
       contact: {
@@ -760,6 +763,7 @@ export const TRANSLATED_VALUES: {
             'العملاء الذين اشتروا هذا المنتج اشتروا أيضًا',
          expandAll: 'توسيع الكل',
          collapseAll: 'طي الكل',
+         upcoming: 'القادم',
       },
       about: {},
       contact: {
@@ -962,6 +966,7 @@ export const TRANSLATED_VALUES: {
             'Kunden, die diesen Artikel gekauft haben, kauften auch',
          expandAll: 'Alles erweitern',
          collapseAll: 'Alles einklappen',
+         upcoming: 'Kommende',
       },
       about: {},
       contact: {
@@ -1168,6 +1173,7 @@ export const TRANSLATED_VALUES: {
             'Les clients qui ont acheté cet article ont également acheté',
          expandAll: 'Tout développer',
          collapseAll: 'Tout réduire',
+         upcoming: 'À venir',
       },
       about: {},
       contact: {
@@ -1366,6 +1372,7 @@ export const TRANSLATED_VALUES: {
          customersWhoBoughtThisAlsoBought: '購買此商品的客戶也購買了',
          expandAll: '展開全部',
          collapseAll: '收起全部',
+         upcoming: '即將到來',
       },
       about: {},
       contact: {
@@ -1565,6 +1572,7 @@ export const TRANSLATED_VALUES: {
             'この商品を購入したお客様はこれも購入しました',
          expandAll: 'すべて展開',
          collapseAll: 'すべて折りたたむ',
+         upcoming: '今後の',
       },
       about: {},
       contact: {
@@ -1767,6 +1775,7 @@ export const TRANSLATED_VALUES: {
             '이 상품을 구매한 고객님들도 함께 구매하신 상품',
          expandAll: '모두 확장',
          collapseAll: '모두 축소',
+         upcoming: '다가오는',
       },
       about: {},
       contact: {
@@ -1966,6 +1975,7 @@ export const TRANSLATED_VALUES: {
             'Khách hàng đã mua mặt hàng này cũng đã mua',
          expandAll: 'Mở rộng tất cả',
          collapseAll: 'Thu gọn tất cả',
+         upcoming: 'Sắp tới',
       },
       about: {},
       contact: {
@@ -2171,6 +2181,7 @@ export const TRANSLATED_VALUES: {
             'I clienti che hanno acquistato questo articolo hanno acquistato anche',
          expandAll: 'Espandi tutto',
          collapseAll: 'Riduci tutto',
+         upcoming: 'Prossimamente',
       },
       about: {},
       contact: {
@@ -2377,6 +2388,7 @@ export const TRANSLATED_VALUES: {
             'Klienci, którzy kupili ten przedmiot, kupili również',
          expandAll: 'Rozwiń wszystko',
          collapseAll: 'Zwiń wszystko',
+         upcoming: 'Nadchodzące',
       },
       about: {},
       contact: {
@@ -2576,6 +2588,7 @@ export const TRANSLATED_VALUES: {
          customersWhoBoughtThisAlsoBought: '购买此商品的客户也购买了',
          expandAll: '展开全部',
          collapseAll: '收起全部',
+         upcoming: '即将到来',
       },
       about: {},
       contact: {

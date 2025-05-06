@@ -8,6 +8,7 @@ import CustomResearchCTA from '../commons/CustomResearchCTA';
 import { SLICK_COMMON_SETTINGS } from '@/utils/constants';
 import { getFormattedDate } from '@/utils/generic-methods';
 import { useLocale } from '@/utils/LocaleContext';
+import { TRANSLATED_VALUES } from '@/utils/localeConstants';
 
 const UpcomingReports: React.FC<{ data: any }> = ({ data }) => {
    const settings = {
@@ -74,7 +75,8 @@ const UpcomingReports: React.FC<{ data: any }> = ({ data }) => {
          <section className='block min-h-max pb-12 md:pb-20'>
             <div className='container'>
                <h2>
-                  <span>Upcoming</span> reports
+                  <span>{TRANSLATED_VALUES[locale]?.report.upcoming}</span>{' '}
+                  {TRANSLATED_VALUES[locale]?.report.reports}
                </h2>
 
                <div className='my-8 md:my-16 md:mt-10'>

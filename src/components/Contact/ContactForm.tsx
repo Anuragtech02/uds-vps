@@ -197,6 +197,7 @@ const ContactForm = () => {
                      <CustomPhoneInput
                         value={phone}
                         onChange={handlePhoneChange}
+                        locale={locale}
                      />
                   </div>
                </div>
