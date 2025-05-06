@@ -27,6 +27,7 @@ const LocaleSelector: React.FC<{
    const handleLocaleChange = (e: any) => {
       const newLocale = e.target.value;
       const currentPath = window.location.pathname;
+      const queryParams = window.location.search;
       const segments = currentPath.split('/');
 
       // Remove existing language segment if present
@@ -44,12 +45,8 @@ const LocaleSelector: React.FC<{
       }
 
       // Update the URL without full page reload
-      const newPath = segments.join('/');
-      // router.push(newPath);
-
-      // window.location.href = newPath;
+      const newPath = segments.join('/') + queryParams;
       router.push(newPath);
-
       router.refresh();
 
       // Set or remove RTL class on body based on locale
