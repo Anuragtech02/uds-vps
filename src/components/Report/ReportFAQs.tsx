@@ -32,7 +32,7 @@ const ReportFAQs = ({
          <div className='w-full sm:px-8' id='faq-section'>
             {faqList.length > 0 && (
                <h2 className='pb-8 text-center text-blue-1'>
-                  Frequently Asked Questions{' '}
+                  {TRANSLATED_VALUES[locale]?.report.frequentlyAskedQuestions}{' '}
                   <span>{TRANSLATED_VALUES[locale]?.report.faqs}</span>
                </h2>
             )}
