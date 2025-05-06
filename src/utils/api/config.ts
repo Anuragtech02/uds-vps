@@ -42,6 +42,7 @@ const fetchClient = async (url: string, options: any = {}) => {
    try {
       return await Promise.race([fetchPromise, timeoutPromise]);
    } catch (error) {
+      console.log('URL:', fullUrl);
       console.error('Fetch error:', error);
       throw error;
    }

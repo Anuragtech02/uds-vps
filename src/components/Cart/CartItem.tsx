@@ -2,6 +2,7 @@ import { FC, useState, useEffect } from 'react';
 import { IoCloseCircle } from 'react-icons/io5';
 import { LocalizedLink } from '../commons/LocalizedLink';
 import StrapiImage from '../StrapiImage/StrapiImage';
+import { useLocale } from '@/utils/LocaleContext';
 
 interface CartItemProps {
    name: string;
@@ -31,6 +32,8 @@ const CartItem: FC<CartItemProps> = ({
 }) => {
    const [showTooltip, setShowTooltip] = useState(false);
    const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | null>(null);
+
+   const { locale } = useLocale();
 
    let name = report?.title,
       price = selectedLicense?.price?.amount,
@@ -77,6 +80,7 @@ const CartItem: FC<CartItemProps> = ({
                <LocalizedLink
                   href={`/reports/${report?.slug}`}
                   className='hover:underline'
+                  lang={locale}
                >
                   {name}
                </LocalizedLink>

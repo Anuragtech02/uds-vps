@@ -30,6 +30,8 @@ import {
    useCheckout,
 } from '@/utils/CheckoutContext';
 import { CURRENCIES } from '@/utils/constants';
+import { TRANSLATED_VALUES } from '@/utils/localeConstants';
+import { useLocale } from '@/utils/LocaleContext';
 import { useRouter } from 'next/navigation';
 import Script from 'next/script';
 import { useCallback, useEffect, useRef, useState } from 'react';
@@ -41,9 +43,12 @@ const CurrencySelector = ({
    selectedCurrency: string;
    onCurrencyChange: (currency: string) => void;
 }) => {
+   const { locale } = useLocale();
    return (
       <div className='flex items-center space-x-2'>
-         <span className='text-sm text-gray-600'>Currency:</span>
+         <span className='text-sm text-gray-600'>
+            {TRANSLATED_VALUES[locale]?.cart.currency}:
+         </span>
          <select
             aria-label='Currency Selector'
             value={selectedCurrency}
@@ -110,6 +115,8 @@ const CartPage = () => {
    const [turnstileError, setTurnstileError] = useState<string | null>(null);
    const widgetIdRef = useRef<string>('');
    const turnstileContainerId = 'callback-turnstile-container';
+
+   const { locale } = useLocale();
 
    const cleanupTurnstile = () => {
       if (widgetIdRef.current && window.turnstile) {
@@ -450,7 +457,7 @@ const CartPage = () => {
          <div className='mt-5 w-full space-y-6 rounded-xl bg-white p-6 lg:w-[60%]'>
             <div className='flex items-center justify-between'>
                <h1 className='text-2xl font-semibold text-gray-900 lg:text-3xl'>
-                  Cart
+                  {TRANSLATED_VALUES[locale]?.cart?.cart}
                </h1>
                <CurrencySelector
                   selectedCurrency={selectedCurrency}
@@ -463,13 +470,15 @@ const CartPage = () => {
                {/* Cart Headers */}
                <div className='flex items-center border-b border-gray-200 pb-2 font-medium text-gray-600'>
                   <div className='w-[40%]'>
-                     <span>Product</span>
+                     <span>{TRANSLATED_VALUES[locale]?.cart?.product}</span>
                   </div>
                   <div className='w-1/2 sm:w-2/5'>
-                     <span>Select License</span>
+                     <span>
+                        {TRANSLATED_VALUES[locale]?.cart?.selectLicense}
+                     </span>
                   </div>
                   <div className='ml-auto w-32 text-right'>
-                     <span>Price</span>
+                     <span>{TRANSLATED_VALUES[locale]?.cart?.price}</span>
                   </div>
                   {/* <div className="w-32 text-right ml-auto">
                            <span>Subtotal</span>
@@ -479,7 +488,7 @@ const CartPage = () => {
                {/* Cart Items */}
                {cartStore.reports.length === 0 ? (
                   <div className='py-8 text-center text-gray-500'>
-                     No items in cart yet. Checkout our reports!
+                     {TRANSLATED_VALUES[locale]?.cart?.noItemsInCart}
                   </div>
                ) : (
                   <div className='divide-y divide-gray-200'>
@@ -534,21 +543,23 @@ const CartPage = () => {
                   type='submit'
                   disabled={cartStore.reports.length === 0}
                >
-                  Proceed to Checkout
+                  {TRANSLATED_VALUES[locale]?.cart?.proceedToCheckout}
                </Button>
             </div>
          </div>
          {/* Assistance Section */}
          <div className='mt-6 block w-full rounded-xl bg-white p-6 sm:hidden'>
             <h2 className='mb-4 text-2xl font-semibold text-gray-800'>
-               Need assistance?
+               {TRANSLATED_VALUES[locale]?.cart?.needAssistance}
             </h2>
             <p className='mb-4 font-bold text-gray-600'>
-               Call us or write to us:
+               {TRANSLATED_VALUES[locale]?.cart?.callOrWrite}
             </p>
             <div className='space-y-2'>
                <p className='text-gray-700'>
-                  <span className='font-medium'>Phone:</span>{' '}
+                  <span className='font-medium'>
+                     {TRANSLATED_VALUES[locale]?.cart?.phone}:
+                  </span>{' '}
                   <a
                      href='tel:+1-888-689-0688'
                      className='font-bold text-blue-600 hover:text-blue-800'
@@ -557,7 +568,9 @@ const CartPage = () => {
                   </a>
                </p>
                <p className='text-gray-700'>
-                  <span className='font-medium'>Email:</span>{' '}
+                  <span className='font-medium'>
+                     {TRANSLATED_VALUES[locale]?.cart?.email}:
+                  </span>{' '}
                   <a
                      href='mailto:sales@univdatos.com'
                      className='font-bold text-blue-600 hover:text-blue-800'

@@ -4,6 +4,8 @@ import { useState, useEffect } from 'react';
 import Button from '../commons/Button';
 import CustomPhoneInput from '../CustomPhoneInput';
 import { useCheckout } from '@/utils/CheckoutContext';
+import { useLocale } from '@/utils/LocaleContext';
+import { TRANSLATED_VALUES } from '@/utils/localeConstants';
 
 interface State {
    name: string;
@@ -34,6 +36,8 @@ const BillingDetails = () => {
    const [loadingCountries, setLoadingCountries] = useState(false);
    const [loadingStates, setLoadingStates] = useState(false);
    const [hasStates, setHasStates] = useState(true);
+
+   const { locale } = useLocale();
 
    const {
       formData,
@@ -118,7 +122,7 @@ const BillingDetails = () => {
          case 'firstName':
          case 'lastName':
             if (!trimmedValue) {
-               error = 'This field is required';
+               error = TRANSLATED_VALUES[locale]?.cart.thisFieldIsRequired;
             } else if (trimmedValue.length < 2) {
                error = 'Must be at least 2 characters';
             } else if (!/^[a-zA-Z\s]*$/.test(value)) {
@@ -144,20 +148,20 @@ const BillingDetails = () => {
 
          case 'city':
             if (!trimmedValue) {
-               error = 'This field is required';
+               error = TRANSLATED_VALUES[locale]?.cart.thisFieldIsRequired;
             }
             break;
 
          case 'country':
             if (!trimmedValue) {
-               error = 'This field is required';
+               error = TRANSLATED_VALUES[locale]?.cart.thisFieldIsRequired;
             }
             break;
 
          case 'state':
             // Only validate state if the country has states
             if (hasStates && !trimmedValue) {
-               error = 'This field is required';
+               error = TRANSLATED_VALUES[locale]?.cart.thisFieldIsRequired;
             }
             break;
       }
@@ -212,18 +216,24 @@ const BillingDetails = () => {
    return (
       <div>
          <div className='space-y-6 text-sm md:space-y-8'>
-            <p className='text-2xl font-bold text-s-600'>Billing Details</p>
+            <p className='text-2xl font-bold text-s-600'>
+               {TRANSLATED_VALUES[locale]?.cart.billingDetails}
+            </p>
 
             <div className='flex flex-col gap-4 md:flex-row lg:items-start'>
                <div className='shrink grow basis-0 space-y-1'>
-                  <label htmlFor='first-name'>First Name*</label>
+                  <label htmlFor='first-name'>
+                     {TRANSLATED_VALUES[locale]?.cart.firstName}*
+                  </label>
                   <input
                      type='text'
                      id='first-name'
                      value={formData.firstName}
                      onChange={(e) => handleChange('firstName', e.target.value)}
                      onBlur={() => handleBlur('firstName')}
-                     placeholder='Enter your first name'
+                     placeholder={
+                        TRANSLATED_VALUES[locale]?.cart.enterYourFirstName
+                     }
                      className={inputClassName(
                         !!errors.firstName && !!touched.firstName,
                      )}
@@ -235,14 +245,18 @@ const BillingDetails = () => {
                   )}
                </div>
                <div className='shrink grow basis-0 space-y-1'>
-                  <label htmlFor='last-name'>Last Name*</label>
+                  <label htmlFor='last-name'>
+                     {TRANSLATED_VALUES[locale]?.cart.lastName}*
+                  </label>
                   <input
                      type='text'
                      id='last-name'
                      value={formData.lastName}
                      onChange={(e) => handleChange('lastName', e.target.value)}
                      onBlur={() => handleBlur('lastName')}
-                     placeholder='Enter your last name'
+                     placeholder={
+                        TRANSLATED_VALUES[locale]?.cart.enterYourLastName
+                     }
                      className={inputClassName(
                         !!errors.lastName && !!touched.lastName,
                      )}
@@ -261,17 +275,22 @@ const BillingDetails = () => {
                      value={formData.phone}
                      onChange={handlePhoneChange}
                      required
+                     locale={locale}
                   />
                </div>
                <div className='shrink grow basis-0 space-y-1'>
-                  <label htmlFor='email'>Email*</label>
+                  <label htmlFor='email'>
+                     {TRANSLATED_VALUES[locale]?.cart.email}*
+                  </label>
                   <input
                      type='email'
                      id='email'
                      value={formData.email}
                      onChange={(e) => handleChange('email', e.target.value)}
                      onBlur={() => handleBlur('email')}
-                     placeholder='Enter your email'
+                     placeholder={
+                        TRANSLATED_VALUES[locale]?.cart.enterYourEmail
+                     }
                      className={inputClassName(
                         !!errors.email && !!touched.email,
                      )}
@@ -284,7 +303,9 @@ const BillingDetails = () => {
 
             <div className='flex flex-col gap-4 md:flex-row lg:items-start'>
                <div className='shrink grow basis-0 space-y-1'>
-                  <label htmlFor='country'>Country/Region*</label>
+                  <label htmlFor='country'>
+                     {TRANSLATED_VALUES[locale]?.cart.countryRegion}*
+                  </label>
                   <select
                      id='country'
                      value={formData.country}
@@ -297,8 +318,8 @@ const BillingDetails = () => {
                   >
                      <option value=''>
                         {loadingCountries
-                           ? 'Loading countries...'
-                           : 'Select your country'}
+                           ? TRANSLATED_VALUES[locale]?.cart.loadingCountries
+                           : TRANSLATED_VALUES[locale]?.cart.selectYourCountry}
                      </option>
                      {countries.map((country) => (
                         <option key={country.code} value={country.code}>
@@ -313,7 +334,10 @@ const BillingDetails = () => {
                   )}
                </div>
                <div className='shrink grow basis-0 space-y-1'>
-                  <label htmlFor='state'>State{hasStates && '*'}</label>
+                  <label htmlFor='state'>
+                     {TRANSLATED_VALUES[locale]?.cart.state}
+                     {hasStates && '*'}
+                  </label>
                   {hasStates ? (
                      <select
                         id='state'
@@ -327,10 +351,12 @@ const BillingDetails = () => {
                      >
                         <option value=''>
                            {!formData.country
-                              ? 'Select a country first'
+                              ? TRANSLATED_VALUES[locale]?.cart
+                                   .selectACountryFirst
                               : loadingStates
-                                ? 'Loading states...'
-                                : 'Select your state'}
+                                ? TRANSLATED_VALUES[locale]?.cart.loadingStates
+                                : TRANSLATED_VALUES[locale]?.cart
+                                     .selectYourState}
                         </option>
                         {states.map((state) => (
                            <option key={state.code} value={state.code}>
@@ -345,7 +371,10 @@ const BillingDetails = () => {
                         value={formData.state}
                         onChange={(e) => handleChange('state', e.target.value)}
                         onBlur={() => handleBlur('state')}
-                        placeholder='Enter your state/province (optional)'
+                        placeholder={
+                           TRANSLATED_VALUES[locale]?.cart
+                              .enterYourStateProvince
+                        }
                         className={inputClassName(
                            !!errors.state && !!touched.state,
                         )}
@@ -359,14 +388,16 @@ const BillingDetails = () => {
 
             <div className='flex flex-col gap-4 md:flex-row lg:items-start'>
                <div className='shrink grow basis-0 space-y-1'>
-                  <label htmlFor='city'>Town/City*</label>
+                  <label htmlFor='city'>
+                     {TRANSLATED_VALUES[locale]?.cart.townCity}*
+                  </label>
                   <input
                      type='text'
                      id='city'
                      value={formData.city}
                      onChange={(e) => handleChange('city', e.target.value)}
                      onBlur={() => handleBlur('city')}
-                     placeholder='Enter your city'
+                     placeholder={TRANSLATED_VALUES[locale]?.cart.enterYourCity}
                      className={inputClassName(!!errors.city && !!touched.city)}
                   />
                   {errors.city && touched.city && (
@@ -374,14 +405,18 @@ const BillingDetails = () => {
                   )}
                </div>
                <div className='shrink grow basis-0 space-y-1'>
-                  <label htmlFor='address'>Street Address*</label>
+                  <label htmlFor='address'>
+                     {TRANSLATED_VALUES[locale]?.cart.streetAddress}*
+                  </label>
                   <input
                      type='text'
                      id='address'
                      value={formData.address}
                      onChange={(e) => handleChange('address', e.target.value)}
                      onBlur={() => handleBlur('address')}
-                     placeholder='Enter your street address'
+                     placeholder={
+                        TRANSLATED_VALUES[locale]?.cart.enterYourStreetAddress
+                     }
                      className={inputClassName(
                         !!errors.address && !!touched.address,
                      )}
@@ -395,12 +430,16 @@ const BillingDetails = () => {
             </div>
 
             <div className='space-y-1'>
-               <label htmlFor='orderNotes'>Order notes (optional)</label>
+               <label htmlFor='orderNotes'>
+                  {TRANSLATED_VALUES[locale]?.cart.orderNotes}
+               </label>
                <textarea
                   id='orderNotes'
                   value={formData.orderNotes}
                   onChange={(e) => handleChange('orderNotes', e.target.value)}
-                  placeholder='Notes about your order, e.g. special notes for delivery.'
+                  placeholder={
+                     TRANSLATED_VALUES[locale]?.cart.notesAboutYourOrder
+                  }
                   className='min-h-32 w-full rounded-md border border-s-300 p-3'
                />
             </div>
@@ -408,14 +447,16 @@ const BillingDetails = () => {
          {/* Assistance Section */}
          <div className='mt-6 hidden w-full rounded-xl bg-white p-6 sm:block'>
             <h2 className='mb-4 text-2xl font-semibold text-gray-800'>
-               Need assistance?
+               {TRANSLATED_VALUES[locale]?.cart.needAssistance}
             </h2>
             <p className='mb-4 font-bold text-gray-600'>
-               Call us or write to us:
+               {TRANSLATED_VALUES[locale]?.cart.callOrWrite}:
             </p>
             <div className='space-y-2'>
                <p className='text-gray-700'>
-                  <span className='font-medium'>Phone:</span>{' '}
+                  <span className='font-medium'>
+                     {TRANSLATED_VALUES[locale]?.cart.phone}:
+                  </span>{' '}
                   <a
                      href='tel:+1-888-689-0688'
                      className='font-bold text-blue-600 hover:text-blue-800'
@@ -424,7 +465,9 @@ const BillingDetails = () => {
                   </a>
                </p>
                <p className='text-gray-700'>
-                  <span className='font-medium'>Email:</span>{' '}
+                  <span className='font-medium'>
+                     {TRANSLATED_VALUES[locale]?.cart.email}:
+                  </span>{' '}
                   <a
                      href='mailto:sales@univdatos.com'
                      className='font-bold text-blue-600 hover:text-blue-800'

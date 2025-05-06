@@ -1,3 +1,4 @@
+import { TRANSLATED_VALUES } from '@/utils/localeConstants';
 import React, { useState, useEffect } from 'react';
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
@@ -8,6 +9,7 @@ interface PhoneInputProps {
    label?: string;
    required?: boolean;
    error?: string;
+   locale?: string;
 }
 
 const CustomPhoneInput: React.FC<PhoneInputProps> = ({
@@ -16,6 +18,7 @@ const CustomPhoneInput: React.FC<PhoneInputProps> = ({
    label = 'Mobile Number',
    required = false,
    error,
+   locale = 'en',
 }) => {
    const [countryCode, setCountryCode] = useState('us');
    const [isLoading, setIsLoading] = useState(true);
@@ -48,7 +51,7 @@ const CustomPhoneInput: React.FC<PhoneInputProps> = ({
                htmlFor='phone-input'
                className='block text-sm font-medium text-gray-700'
             >
-               {label}
+               {TRANSLATED_VALUES[locale]?.contact.mobileNumber}
                {required && '*'}
             </label>
             <div className='h-12 w-full animate-pulse rounded-md bg-gray-100' />
@@ -62,7 +65,7 @@ const CustomPhoneInput: React.FC<PhoneInputProps> = ({
             htmlFor='phone-input'
             className='block text-sm font-medium text-gray-700'
          >
-            {label}
+            {TRANSLATED_VALUES[locale]?.contact.mobileNumber}
             {required && '*'}
          </label>
          <PhoneInput
