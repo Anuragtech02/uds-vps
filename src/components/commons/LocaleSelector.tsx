@@ -84,9 +84,10 @@ const LocaleSelector: React.FC<{
          } outline-none transition-colors`}
          onChange={handleLocaleChange}
          value={currentLocale}
+         style={{ colorScheme: theme === 'light' ? 'light' : 'dark' }}
       >
          {SUPPORTED_LOCALES.map((locale) => (
-            <option key={locale} value={locale}>
+            <option key={locale} value={locale} className='text-black'>
                {size === 'large'
                   ? LOCALE_NAMES.find((loc) => loc.locale === locale)?.title ||
                     locale
