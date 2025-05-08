@@ -7,7 +7,7 @@ import {
    getMostViewedReports,
 } from '@/utils/api/services';
 import { SUPPORTED_LOCALES } from '@/utils/constants';
-import { absoluteUrl } from '@/utils/generic-methods';
+import { absoluteUrl, removeTrailingslash } from '@/utils/generic-methods';
 import { Metadata } from 'next';
 import dynamic from 'next/dynamic';
 import { notFound, redirect } from 'next/navigation';
@@ -63,6 +63,10 @@ export async function generateMetadata({
    SUPPORTED_LOCALES.filter((locale) => locale !== 'en').forEach((locale) => {
       languagesMap[locale] = absoluteUrl(`/${locale}/reports/${params.slug}`);
    });
+
+   const canonicalUrl = removeTrailingslash(
+      seo?.canonicalURL || absoluteUrl(`/reports/${params.slug}`),
+   );
 
    // Base metadata object
    const metadata: Metadata = {
@@ -126,7 +130,7 @@ export async function generateMetadata({
       keywords: seo?.keywords || '',
 
       alternates: {
-         canonical: seo?.canonicalURL || absoluteUrl(`/reports/${params.slug}`),
+         canonical: canonicalUrl,
          languages: languagesMap,
       },
 

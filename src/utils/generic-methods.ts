@@ -77,3 +77,7 @@ export function getFormattedDate(
 
    return formattedDate;
 }
+
+export function removeTrailingslash(str: string) {
+   return str.replace(/\/$/, '');
+}

@@ -132,7 +132,7 @@ export async function middleware(request: NextRequest) {
    Disallow: /static/
 
    User-agent: Googlebot-News
-
+   
    Allow: /news/
    
    # Sitemap

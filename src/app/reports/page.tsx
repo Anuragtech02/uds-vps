@@ -27,6 +27,7 @@ interface SearchParams {
 interface Report {
    attributes: {
       slug: string;
+      slugCopy: string;
       title: string;
       publishedAt: string;
       shortDescription: string;

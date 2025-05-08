@@ -48,6 +48,7 @@ export const getHomePage = async (locale = 'en') => {
          'upcomingReportsSectionCTABanner.ctaButton.link',
          'mediaSectionLogos.url',
          'seo.metaImage.url',
+         'seo.metaSocial.image.url',
       ]);
       const localeQuery = locale ? `&locale=${locale}` : '';
       const response = await fetchClient(
@@ -116,6 +117,8 @@ export const getAllReports = cache(
             'industry.name',
             'geography.name',
             'highlightImage.url',
+            'seo.metaImage.url',
+            'seo.metaSocial.image.url',
          ]);
          const paginationQuery = getPaginationQuery(page, limit);
          const filterQuery = getFilterQuery(filters);
@@ -178,6 +181,8 @@ export const getNewsListingPage = async ({
          'thumbnailImage.url',
          'author.name',
          'oldPublishedAt',
+         'seo.metaImage.url',
+         'seo.metaSocial.image.url',
       ]);
       const paginationQuery = getPaginationQuery(page, limit);
       const filterQuery = getFilterQuery(filters);
@@ -227,6 +232,8 @@ export const getBlogsListingPage = async ({
          'thumbnailImage.url',
          'author.name',
          'oldPublishedAt',
+         'seo.metaImage.url',
+         'seo.metaSocial.image.url',
       ]);
       const paginationQuery = getPaginationQuery(page, limit);
       const filterQuery = getFilterQuery(filters);
@@ -291,6 +298,7 @@ export const getAboutPage = async (locale = 'en') => {
          'ctaBanner.ctaButton',
          'mediaSecrtionLogos',
          'seo.metaImage.url',
+         'seo.metaSocial.image.url',
       ]);
       const localeQuery = locale ? `&locale=${locale}` : '';
       const response = await fetchClient(
@@ -392,6 +400,7 @@ export const getBlogBySlug = async (slug: string, locale: string = 'en') => {
          'author',
          'author.profilePicture',
          'seo.metaImage.url',
+         'seo.metaSocial.image.url',
       ]);
       const localeQuery = locale ? `&locale=${locale}` : '';
       const response = await fetchClient(
@@ -445,6 +454,8 @@ export const getServicesPage = async () => {
          'ctaBanner',
          'ctaBanner.ctaButton',
          'mediaSecrtionLogos',
+         'seo.metaImage.url',
+         'seo.metaSocial.image.url',
       ]);
       const response = await fetchClient('/services-page?' + populateQuery, {
          headers: getAuthHeaders(),
@@ -488,7 +499,10 @@ export const getServiceBySlug = async (slug: string) => {
 };
 
 export const getPrivacyPolicy = async (locale = 'en') => {
-   const populateQuery = buildPopulateQuery(['seo.metaImage.url']);
+   const populateQuery = buildPopulateQuery([
+      'seo.metaImage.url',
+      'seo.metaSocial.image.url',
+   ]);
    const localeQuery = locale ? `&locale=${locale}` : '';
    try {
       const response = await fetchClient(
@@ -505,7 +519,10 @@ export const getPrivacyPolicy = async (locale = 'en') => {
 };
 
 export const getTermsAndConditions = async (locale = 'en') => {
-   const populateQuery = buildPopulateQuery(['seo.metaImage.url']);
+   const populateQuery = buildPopulateQuery([
+      'seo.metaImage.url',
+      'seo.metaSocial.image.url',
+   ]);
    const localeQuery = `&locale=${encodeURIComponent(locale)}`;
    try {
       const response = await fetchClient(
@@ -522,7 +539,10 @@ export const getTermsAndConditions = async (locale = 'en') => {
 };
 
 export const getLegal = async (locale = 'en') => {
-   const populateQuery = buildPopulateQuery(['seo.metaImage.url']);
+   const populateQuery = buildPopulateQuery([
+      'seo.metaImage.url',
+      'seo.metaSocial.image.url',
+   ]);
    const localeQuery = locale ? `&locale=${locale}` : '';
    try {
       const response = await fetchClient(
@@ -539,7 +559,10 @@ export const getLegal = async (locale = 'en') => {
 };
 
 export const getDisclaimer = async (locale = 'en') => {
-   const populateQuery = buildPopulateQuery(['seo.metaImage.url']);
+   const populateQuery = buildPopulateQuery([
+      'seo.metaImage.url',
+      'seo.metaSocial.image.url',
+   ]);
    const localeQuery = locale ? `&locale=${locale}` : '';
    try {
       const response = await fetchClient(
@@ -556,7 +579,10 @@ export const getDisclaimer = async (locale = 'en') => {
 };
 
 export const getCancellationPolicy = async (locale = 'en') => {
-   const populateQuery = buildPopulateQuery(['seo.metaImage.url']);
+   const populateQuery = buildPopulateQuery([
+      'seo.metaImage.url',
+      'seo.metaSocial.image.url',
+   ]);
    const localeQuery = locale ? `&locale=${locale}` : '';
    try {
       const response = await fetchClient(
