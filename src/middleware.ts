@@ -115,12 +115,12 @@ export async function middleware(request: NextRequest) {
       );
    }
 
-   if (request.nextUrl.pathname === '/sitemap.xml') {
-      return NextResponse.redirect(
-         `${process.env.API_URL}/sitemap/index.xml`,
-         { status: 301 }, // Adding explicit 301 permanent redirect
-      );
-   }
+   // if (request.nextUrl.pathname === '/sitemap.xml') {
+   //    return NextResponse.redirect(
+   //       `${process.env.API_URL}/sitemap/index.xml`,
+   //       { status: 301 }, // Adding explicit 301 permanent redirect
+   //    );
+   // }
 
    if (request.nextUrl.pathname === '/robots.txt') {
       const robotsTxt = `User-agent: *
@@ -132,16 +132,15 @@ export async function middleware(request: NextRequest) {
    Disallow: /static/
 
    User-agent: Googlebot-News
-   
    Allow: /news/
    
    # Sitemap
-   Sitemap: https://univdatos.com/sitemap.xml`;
+   Sitemap: https://univdatos.com/sitemaps/sitemap.xml`; // Corrected path
 
       return new Response(robotsTxt, {
          headers: {
             'Content-Type': 'text/plain',
-            'Cache-Control': 'public, max-age=86400, s-maxage=86400', // Cache for 24 hours
+            'Cache-Control': 'public, max-age=86400, s-maxage=86400',
          },
       });
    }
