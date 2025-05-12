@@ -74,6 +74,11 @@ export async function middleware(request: NextRequest) {
 
    console.log(`Processing URL: ${pathname}`);
 
+   if (pathname.startsWith('/sitemaps/')) {
+      console.log(`Bypassing middleware for sitemap path: ${pathname}`);
+      return NextResponse.next();
+   }
+
    if (
       pathname.startsWith('/_next') ||
       pathname.startsWith('/api') ||
