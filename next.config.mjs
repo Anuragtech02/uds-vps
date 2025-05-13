@@ -128,6 +128,7 @@ const nextConfig = {
             ],
          },
          {
+            source: '/sitemaps/:path*',
             headers: [
                {
                   key: 'Content-Type',
