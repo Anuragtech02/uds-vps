@@ -127,6 +127,18 @@ const nextConfig = {
                },
             ],
          },
+         {
+            headers: [
+               {
+                  key: 'Content-Type',
+                  value: 'application/xml', // Set the correct XML MIME type
+               },
+               {
+                  key: 'Cache-Control',
+                  value: 'public, max-age=21600, s-maxage=21600', // 6 hours
+               },
+            ],
+         },
       ];
    },
 
