@@ -74,9 +74,11 @@ export async function middleware(request: NextRequest) {
 
    console.log(`Processing URL: ${pathname}`);
 
-   if (pathname.startsWith('/sitemaps/')) {
+   if (pathname.startsWith('/sitemaps/') || pathname.includes('sitemap.xsl')) {
       console.log(`Bypassing middleware for sitemap path: ${pathname}`);
-      return NextResponse.next();
+      const response = NextResponse.next();
+      // response.headers.set('Content-Type', 'application/xml');
+      return response;
    }
 
    if (
@@ -465,6 +467,6 @@ export async function middleware(request: NextRequest) {
 export const config = {
    matcher: [
       // Match all paths except static files
-      '/((?!api|_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp|woff2?|ttf|otf)$).*)',
+      '/((?!api/|_next/static/|_next/image/|sitemaps/|favicon\\.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp|woff2?|ttf|otf)$).*)',
    ],
 };
