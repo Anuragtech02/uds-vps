@@ -686,6 +686,8 @@ export const getReportsPageBySlug = cache(
             'leftSectionSecondaryCTAButton',
             'highlightImage.url',
             'variants.price.amount',
+            'seo.metaImage.url',
+            'seo.metaSocial.image.url',
          ]);
          const filterQuery = `?filters[slug][$eq]=${encodeURIComponent(slug)}&locale=${encodeURIComponent(locale)}`;
 
