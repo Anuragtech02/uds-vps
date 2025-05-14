@@ -77,7 +77,8 @@ export async function middleware(request: NextRequest) {
    if (pathname.startsWith('/sitemaps/') || pathname.includes('sitemap.xsl')) {
       console.log(`Bypassing middleware for sitemap path: ${pathname}`);
       const response = NextResponse.next();
-      // response.headers.set('Content-Type', 'application/xml');
+      response.headers.set('Content-Type', 'application/xml; charset=utf-8');
+      response.headers.set('X-Content-Type-Options', 'nosniff');
       return response;
    }
 

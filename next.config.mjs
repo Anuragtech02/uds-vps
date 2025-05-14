@@ -90,7 +90,7 @@ const nextConfig = {
             headers: [
                {
                   key: 'Content-Type',
-                  value: 'application/xml', // Set the correct XML MIME type
+                  value: 'application/xml; charset=utf-8', // Ensure charset is there too
                },
                {
                   key: 'Cache-Control',
