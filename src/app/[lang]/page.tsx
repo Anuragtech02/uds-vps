@@ -1,12 +1,10 @@
-// export const runtime = 'edge';
+// app/[lang]/page.tsx
 
 import MediaCitation from '@/components/commons/MediaCitation';
 import Hero from '@/components/Home/Hero';
-
 import NewsRoom from '@/components/Home/NewsRoom';
 import Testimonials from '@/components/Home/Testimonials';
 import UpcomingReports from '@/components/Home/UpcomingReports';
-
 import {
    getAllReports,
    getBlogsListingPage,
@@ -15,8 +13,9 @@ import {
 } from '@/utils/api/services';
 import { Metadata } from 'next';
 import { absoluteUrl } from '@/utils/generic-methods';
-import { SUPPORTED_LOCALES } from '@/utils/constants';
+import { SUPPORTED_LOCALES, DEFAULT_LOCALE } from '@/utils/constants'; // Make sure DEFAULT_LOCALE is exported
 import dynamic from 'next/dynamic';
+import { notFound } from 'next/navigation'; // Import notFound
 
 const RecentResearch = dynamic(
    () => import('@/components/Home/RecentResearch'),
@@ -26,6 +25,24 @@ const LatestResearch = dynamic(
    () => import('@/components/Home/LatestResearch'),
 );
 
+// Helper to validate lang and get a fallback
+function getValidLocale(lang: string): string {
+   if (
+      SUPPORTED_LOCALES.includes(lang as typeof DEFAULT_LOCALE) &&
+      !lang.includes('.')
+   ) {
+      return lang;
+   }
+   // If lang contains a dot (likely a filename) or not in supported locales,
+   // either prepare to call notFound() or return a default.
+   // For generateMetadata, we might want to build with default,
+   // for Page component, we must call notFound().
+   console.warn(
+      `Invalid lang parameter detected: "${lang}". Falling back to default or preparing 404.`,
+   );
+   return DEFAULT_LOCALE; // Fallback for metadata, Page will handle 404
+}
+
 export async function generateMetadata({
    params,
 }: {
@@ -33,199 +50,292 @@ export async function generateMetadata({
       lang: string;
    };
 }): Promise<Metadata> {
-   const homePage = await getHomePage(params.lang);
-   const { attributes } = homePage.data;
+   // Validate lang for metadata generation - usually build with default if invalid lang found during build
+   // Or, if you want to strictly prevent building pages for invalid locales passed at build time:
+   if (
+      !SUPPORTED_LOCALES.includes(params.lang as typeof DEFAULT_LOCALE) ||
+      params.lang.includes('.')
+   ) {
+      console.error(
+         `[generateMetadata] Invalid lang parameter: "${params.lang}". Cannot generate metadata.`,
+      );
+      // Depending on strictness, you might throw an error or return minimal/default metadata
+      // For now, let's try to fetch with default locale if original is bad, but log it.
+      // Or simply return default:
+      return {
+         title: 'Page Not Found',
+         description: 'The requested page does not exist for this language.',
+      };
+   }
+
+   const validLang = params.lang; // Already validated above
+   const homePageResponse = await getHomePage(validLang); // API service should also have internal validation/defaulting
+
+   // Critical: Check if homePageResponse.data exists before destructuring
+   if (!homePageResponse || !homePageResponse.data || homePageResponse.error) {
+      console.error(
+         `[generateMetadata] Failed to fetch homepage data for lang: ${validLang}. API response issue.`,
+      );
+      // Return default metadata or handle error appropriately
+      return {
+         title: 'Error Loading Page',
+         description: 'Could not load page information at this time.',
+      };
+   }
+
+   const { attributes } = homePageResponse.data;
    const seo = attributes?.seo;
 
-   // Create languages map for alternates
    const languagesMap: Record<string, string> = {};
-
-   // Add all supported locales except English
    SUPPORTED_LOCALES.filter((locale) => locale !== 'en').forEach((locale) => {
       languagesMap[locale] = absoluteUrl(`/${locale}`);
    });
 
-   const metadata: Metadata = {
-      title: seo?.metaTitle || attributes?.heroMainHeading,
-      description: seo?.metaDescription || attributes?.heroSubHeading,
+   type TSocial = {
+      socialNetwork: string;
+      title: string;
+      description: string;
+      image: {
+         url: string;
+      };
+   };
 
+   const metadata: Metadata = {
+      title:
+         seo?.metaTitle ||
+         attributes?.heroMainHeading ||
+         'UnivDatos Market Insights',
+      description:
+         seo?.metaDescription ||
+         attributes?.heroSubHeading ||
+         'Leading market research firm.',
       openGraph: {
          title:
             seo?.metaSocial?.find(
-               (social: any) => social.socialNetwork === 'facebook',
+               (social: TSocial) => social.socialNetwork === 'facebook',
             )?.title ||
             seo?.metaTitle ||
-            attributes?.heroMainHeading,
+            attributes?.heroMainHeading ||
+            'UnivDatos',
          description:
             seo?.metaSocial?.find(
-               (social: any) => social.socialNetwork === 'facebook',
+               (social: TSocial) => social.socialNetwork === 'facebook',
             )?.description ||
             seo?.metaDescription ||
-            attributes?.heroSubHeading,
+            attributes?.heroSubHeading ||
+            'Market research insights.',
          type: 'website',
-         url: absoluteUrl('/'),
+         url: absoluteUrl(`/${validLang}`), // Use validLang
          images: [
             {
                url:
                   seo?.metaSocial?.find(
-                     (social: any) => social.socialNetwork === 'facebook',
+                     (social: TSocial) => social.socialNetwork === 'facebook',
                   )?.image?.url ||
                   seo?.metaImage?.url ||
                   absoluteUrl('/logo.png'),
                width: 1200,
                height: 630,
-               alt: attributes?.heroMainHeading,
+               alt: attributes?.heroMainHeading || 'UnivDatos',
             },
          ],
          siteName: 'UnivDatos',
       },
-
       twitter: {
          card: 'summary_large_image',
          title:
             seo?.metaSocial?.find(
-               (social: any) => social.socialNetwork === 'twitter',
+               (social: TSocial) => social.socialNetwork === 'twitter',
             )?.title ||
             seo?.metaTitle ||
-            attributes?.heroMainHeading,
+            attributes?.heroMainHeading ||
+            'UnivDatos',
          description:
             seo?.metaSocial?.find(
-               (social: any) => social.socialNetwork === 'twitter',
+               (social: TSocial) => social.socialNetwork === 'twitter',
             )?.description ||
             seo?.metaDescription ||
-            attributes?.heroSubHeading,
+            attributes?.heroSubHeading ||
+            'Market research insights.',
          images: [
             seo?.metaSocial?.find(
-               (social: any) => social.socialNetwork === 'twitter',
+               (social: TSocial) => social.socialNetwork === 'twitter',
             )?.image?.url ||
                seo?.metaImage?.url ||
                absoluteUrl('/logo.png'),
          ],
       },
-
       keywords: seo?.keywords || '',
-
       alternates: {
-         canonical: seo?.canonicalURL || absoluteUrl('/'),
+         canonical: seo?.canonicalURL || absoluteUrl(`/${validLang}`), // Use validLang
          languages: languagesMap,
       },
-
-      other: {
-         'script:ld+json': [
-            JSON.stringify({
-               '@context': 'https://schema.org',
-               '@type': 'Organization',
-               name: 'UnivDatos',
-               url: absoluteUrl('/'),
-               logo: absoluteUrl('/logo.png'),
-               description: attributes?.heroSubHeading,
-               sameAs: [
-                  // Add your social media URLs here
-                  'https://twitter.com/univdatos',
-                  'https://www.linkedin.com/company/univdatos',
-                  // Add more social media links as needed
-               ],
-               ...seo?.structuredData,
-            }),
-         ],
-      },
+      // ... other metadata fields
    };
-
-   // Add extra scripts if defined
    if (seo?.extraScripts) {
-      metadata.other = {
-         ...metadata.other,
-         ...seo.extraScripts,
-      };
+      metadata.other = { ...metadata.other, ...seo.extraScripts };
    }
-
    return metadata;
 }
 
-async function Home({
-   params,
-}: {
-   params: {
-      lang: string;
-   };
-}) {
-   let homePage: Awaited<ReturnType<typeof getHomePage>>;
-   let upcomingReports: Awaited<ReturnType<typeof getAllReports>>;
-   let latestReports: Awaited<ReturnType<typeof getAllReports>>;
-   let latestBlogs: Awaited<ReturnType<typeof getBlogsListingPage>>;
-   let latestNewsArticles: Awaited<ReturnType<typeof getNewsListingPage>>;
+async function Home({ params }: { params: { lang: string } }) {
+   // lang is already validated by the Page component before rendering Home
+   const validLang = params.lang;
 
-   try {
-      [
-         homePage,
-         upcomingReports,
-         latestReports,
-         latestBlogs,
-         latestNewsArticles,
-      ] = await Promise.all([
-         getHomePage(params.lang),
-         getAllReports({
-            page: 1,
-            limit: 10,
-            filters: {
-               status: 'UPCOMING',
-            },
-            locale: params.lang,
-         }),
-         getAllReports({
-            page: 1,
-            limit: 10,
-            filters: {
-               status: 'LIVE',
-            },
-            sortBy: 'oldPublishedAt:desc',
-            locale: params.lang,
-         }),
-         getBlogsListingPage({ page: 1, limit: 1, locale: params.lang }),
-         getNewsListingPage({ page: 1, limit: 3, locale: params.lang }),
-      ]);
-   } catch (error) {
-      console.error('Error fetching upcoming reports:', error);
+   // Initialize with null or appropriate default to avoid 'undefined' issues
+   let homePage: Awaited<ReturnType<typeof getHomePage>> | null = null;
+   let upcomingReports: Awaited<ReturnType<typeof getAllReports>> | null = null;
+   let latestReports: Awaited<ReturnType<typeof getAllReports>> | null = null;
+   let latestBlogs: Awaited<ReturnType<typeof getBlogsListingPage>> | null =
+      null;
+   let latestNewsArticles: Awaited<
+      ReturnType<typeof getNewsListingPage>
+   > | null = null;
+
+   // Use Promise.allSettled to handle individual promise failures
+   const results = await Promise.allSettled([
+      getHomePage(validLang),
+      getAllReports({
+         page: 1,
+         limit: 10,
+         filters: { status: 'UPCOMING' },
+         locale: validLang,
+      }),
+      getAllReports({
+         page: 1,
+         limit: 10,
+         filters: { status: 'LIVE' },
+         sortBy: 'oldPublishedAt:desc',
+         locale: validLang,
+      }),
+      getBlogsListingPage({ page: 1, limit: 1, locale: validLang }),
+      getNewsListingPage({ page: 1, limit: 3, locale: validLang }),
+   ]);
+
+   // Process results from Promise.allSettled
+   if (
+      results[0].status === 'fulfilled' &&
+      results[0].value &&
+      !results[0].value.error
+   ) {
+      homePage = results[0].value;
+   } else {
+      console.error(
+         'Error fetching homepage:',
+         results[0].status === 'rejected'
+            ? results[0].reason
+            : 'API returned error',
+      );
+   }
+   if (
+      results[1].status === 'fulfilled' &&
+      results[1].value &&
+      !results[1].value.error
+   ) {
+      upcomingReports = results[1].value;
+   } else {
+      console.error(
+         'Error fetching upcoming reports:',
+         results[1].status === 'rejected'
+            ? results[1].reason
+            : 'API returned error',
+      );
+   }
+   if (
+      results[2].status === 'fulfilled' &&
+      results[2].value &&
+      !results[2].value.error
+   ) {
+      latestReports = results[2].value;
+   } else {
+      console.error(
+         'Error fetching latest reports:',
+         results[2].status === 'rejected'
+            ? results[2].reason
+            : 'API returned error',
+      );
+   }
+   if (
+      results[3].status === 'fulfilled' &&
+      results[3].value &&
+      !results[3].value.error
+   ) {
+      latestBlogs = results[3].value;
+   } else {
+      console.error(
+         'Error fetching latest blogs:',
+         results[3].status === 'rejected'
+            ? results[3].reason
+            : 'API returned error',
+      );
+   }
+   if (
+      results[4].status === 'fulfilled' &&
+      results[4].value &&
+      !results[4].value.error
+   ) {
+      latestNewsArticles = results[4].value;
+   } else {
+      console.error(
+         'Error fetching latest news articles:',
+         results[4].status === 'rejected'
+            ? results[4].reason
+            : 'API returned error',
+      );
+   }
+
+   // Critical check: If homepage data failed to load, show an error message.
+   if (!homePage || !homePage.data) {
+      // Check for homePage.data specifically
+      return (
+         <div>
+            Error: Homepage content could not be loaded. Please try again later.
+         </div>
+      );
    }
 
    const mediaCitation = {
-      mediaSectionTitle: homePage?.data?.attributes?.mediaSectionHeading,
+      mediaSectionTitle:
+         homePage.data.attributes?.mediaSectionHeading || 'Media Mentions',
       mediaSectionDescription:
-         homePage?.data?.attributes?.mediaSectionDescription,
+         homePage.data.attributes?.mediaSectionDescription || '',
       mediaSecrtionLogos:
-         homePage?.data?.attributes?.mediaSectionLogos.data?.map(
+         homePage.data.attributes?.mediaSectionLogos?.data?.map(
             (img: any) => img.attributes,
-         ),
+         ) || [],
    };
 
-   const upcomingReportList = upcomingReports?.data?.map((report: any) => ({
-      id: report?.id,
-      slug: report?.attributes?.slug,
-      title: report?.attributes?.title,
-      shortDescription: report?.attributes?.shortDescription,
-      publishedAt: report?.attributes?.publishedAt,
-      highlightImage: report?.attributes?.highlightImage,
-   }));
+   const upcomingReportList =
+      upcomingReports?.data?.map((report: any) => ({
+         id: report?.id,
+         slug: report?.attributes?.slug,
+         title: report?.attributes?.title,
+         shortDescription: report?.attributes?.shortDescription,
+         publishedAt: report?.attributes?.publishedAt,
+         highlightImage: report?.attributes?.highlightImage,
+      })) || [];
 
-   const latestReportList = latestReports?.data?.map((report: any) => ({
-      id: report?.id,
-      slug: report?.attributes?.slug,
-      title: report?.attributes?.title,
-      shortDescription: report?.attributes?.shortDescription,
-      publishedAt: report?.attributes?.publishedAt,
-      highlightImage: report?.attributes?.highlightImage,
-   }));
+   const latestReportList =
+      latestReports?.data?.map((report: any) => ({
+         id: report?.id,
+         slug: report?.attributes?.slug,
+         title: report?.attributes?.title,
+         shortDescription: report?.attributes?.shortDescription,
+         publishedAt: report?.attributes?.publishedAt,
+         highlightImage: report?.attributes?.highlightImage,
+      })) || [];
 
    return (
       <>
-         <Hero data={homePage} locale={params.lang} />
+         {/* Ensure components can handle potentially null data or default values */}
+         <Hero data={homePage} locale={validLang} />
          <RecentResearch data={homePage} />
          <Testimonials data={homePage} />
          <LatestResearch
             data={homePage}
             reports={latestReportList}
             upcomingReports={upcomingReportList}
-            locale={params.lang}
+            locale={validLang}
          />
          <MediaCitation mediaCitation={mediaCitation} />
          <UpcomingReports
@@ -233,29 +343,30 @@ async function Home({
          />
          <NewsRoom
             data={{
-               blogs: latestBlogs?.data?.map((blog: any) => blog.attributes),
-               newsArticles: latestNewsArticles?.data?.map(
-                  (newsArticle: any) => newsArticle.attributes,
-               ),
+               blogs:
+                  latestBlogs?.data?.map((blog: any) => blog.attributes) || [],
+               newsArticles:
+                  latestNewsArticles?.data?.map(
+                     (newsArticle: any) => newsArticle.attributes,
+                  ) || [],
             }}
-            locale={params.lang}
+            locale={validLang}
          />
       </>
    );
 }
 
-export default function Page({
-   params,
-}: {
-   params: {
-      lang: string;
-   };
-}) {
-   return (
-      <Home
-         params={{
-            lang: params.lang,
-         }}
-      />
-   );
+export default function Page({ params }: { params: { lang: string } }) {
+   // Runtime validation for the lang parameter for the page
+   if (
+      !SUPPORTED_LOCALES.includes(params.lang as typeof DEFAULT_LOCALE) ||
+      params.lang.includes('.')
+   ) {
+      console.log(
+         `[Page] Invalid lang parameter: "${params.lang}". Rendering 404.`,
+      );
+      notFound(); // This is crucial to prevent rendering with invalid lang
+   }
+
+   return <Home params={{ lang: params.lang }} />;
 }

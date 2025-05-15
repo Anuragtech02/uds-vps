@@ -5,6 +5,7 @@ const nextConfig = {
    compress: true,
    poweredByHeader: false,
    swcMinify: true,
+   trailingSlash: true,
 
    // Improved experimental features
    // experimental: {
@@ -146,6 +147,11 @@ const nextConfig = {
    // Keep existing redirects
    async redirects() {
       return [
+         {
+            source: '/zh-TW/:path*',
+            destination: '/zh-Hant-TW/:path*',
+            permanent: true,
+         },
          {
             source: '/reports/industry/:slug-market-research-reports',
             destination: '/reports?industries=:slug',

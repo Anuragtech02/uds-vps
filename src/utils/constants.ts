@@ -219,3 +219,23 @@ export const DEFAULT_VARIANTS: Variant[] = [
       },
    },
 ];
+
+export const INDUSTRY_MAP: {
+   [key: string]: string;
+} = {
+   'energy-power': 'energy-and-power',
+   'consumer-goods-news': 'consumer-goods',
+   'automotive-news': 'automotive',
+   'electronics-semiconductor-news': 'electronics-semiconductor',
+   'healthcare-news': 'healthcare',
+   'telecom-it-news': 'telecom-it',
+   'artificial-intelligence': 'artificial-intelligence-analytics',
+   'electronics-semiconductor': 'electronics-semiconductor',
+   'media-entertainment-blog': 'media-entertainment',
+   'agriculture-food-tech': 'agriculture',
+   'consumer-goods': 'consumer-goods',
+   'advance-materials-chemicals': 'chemical',
+   'telecom-it': 'telecom-it',
+   healthcare: 'healthcare',
+   automotive: 'automotive',
+};

@@ -3,74 +3,51 @@ import { NextResponse, NextRequest } from 'next/server';
 import {
    DEFAULT_LOCALE,
    SUPPORTED_LOCALES,
-   validRoutes, // Ensure this includes 'reports', 'blogs', 'news', 'about-us', 'contact-us', 'cart', etc.
-} from './utils/constants'; // Make sure these constants are correctly defined
+   validRoutes,
+   INDUSTRY_MAP,
+   // type SupportedLocale, // If you define this type in constants.ts
+} from './utils/constants';
 
-export const locales = SUPPORTED_LOCALES;
-export const defaultLocale = DEFAULT_LOCALE;
+type SupportedLocale = (typeof SUPPORTED_LOCALES)[number];
+const currentLocalesArray = SUPPORTED_LOCALES as readonly string[];
 
-// Helper function (keep as is or remove if not used for googtrans)
 function setLocaleCookies(
    request: NextRequest,
    response: NextResponse,
-   locale: string,
-   currentHost: string,
+   locale: SupportedLocale,
 ) {
-   response.headers.append('x-url', request.url); // Useful for debugging
-   response.headers.append('x-middleware-locale', locale); // For debugging which locale middleware decided on
+   response.headers.append('x-url', request.url);
+   response.headers.append('x-middleware-locale', locale);
    return response;
 }
 
-const INDUSTRY_MAP: {
-   [key: string]: string;
-} = {
-   'energy-power': 'energy-and-power',
-   'consumer-goods-news': 'consumer-goods',
-   'automotive-news': 'automotive',
-   'electronics-semiconductor-news': 'electronics-semiconductor',
-   'healthcare-news': 'healthcare',
-   'telecom-it-news': 'telecom-it',
-   'artificial-intelligence': 'artificial-intelligence-analytics',
-   'electronics-semiconductor': 'electronics-semiconductor',
-   'media-entertainment-blog': 'media-entertainment',
-   'agriculture-food-tech': 'agriculture',
-   'consumer-goods': 'consumer-goods',
-   'advance-materials-chemicals': 'chemical',
-   'telecom-it': 'telecom-it',
-   healthcare: 'healthcare',
-   automotive: 'automotive',
-};
-
 export async function middleware(request: NextRequest) {
    const { pathname, searchParams } = request.nextUrl;
-   const currentHost = request.headers.get('host') || '';
+   // const currentHost = request.headers.get('host') || ''; // Kept for potential future use
 
    console.log(
       `[MW_START] Path: ${pathname}${searchParams.toString() ? '?' + searchParams.toString() : ''}`,
    );
 
-   // 0. Immediately reject .php requests (common bot traffic)
+   // 0. Immediately reject .php requests
    if (pathname.endsWith('.php')) {
       console.log(`[MW_REJECT_PHP] Rejecting .php path: ${pathname}`);
-      return new NextResponse(null, { status: 404 }); // Or 403 Forbidden
+      return new NextResponse(null, { status: 404 });
    }
 
-   // 1. Early Exits for Assets & Internal Next.js paths (check your matcher in config too)
+   // 1. Early Exits for Assets & Internal Next.js paths
    if (
       pathname.startsWith('/_next/') ||
-      pathname.startsWith('/api/') || // Your own APIs
-      pathname.includes('/sitemap.xsl') || // Specific sitemap utility
-      pathname.startsWith('/sitemaps/') // If you serve sitemaps from /public/sitemaps or a route handler
-      // that doesn't need this full middleware logic
+      pathname.startsWith('/api/') ||
+      pathname.includes('/sitemap.xsl') ||
+      pathname.startsWith('/sitemaps/')
    ) {
       console.log(`[MW_BYPASS_INTERNAL_ASSET_API] Path: ${pathname}`);
-      // For these, we typically don't need to set locale cookies or do complex logic
       return NextResponse.next();
    }
 
    // 2. Specific file/utility handlers
-   if (pathname.includes('googlea315237f11c90f9d.html')) {
-      // Be specific
+   if (pathname.endsWith('googlea315237f11c90f9d.html')) {
       console.log(`[MW_HANDLER_GOOGLE_VERIF]`);
       return new Response(
          'google-site-verification: googlea315237f11c90f9d.html',
@@ -82,7 +59,6 @@ export async function middleware(request: NextRequest) {
          },
       );
    }
-
    if (pathname === '/robots.txt') {
       console.log(`[MW_HANDLER_ROBOTS_TXT]`);
       const robotsTxt = `User-agent: *\nAllow: /\n\nDisallow: /api/\nDisallow: /_next/\nDisallow: /static/\n\nUser-agent: Googlebot-News\nAllow: /news/\n\nSitemap: https://univdatos.com/sitemaps/sitemap.xml`;
@@ -93,72 +69,76 @@ export async function middleware(request: NextRequest) {
          },
       });
    }
-   // Example: Sitemap index redirect (if you serve it from Strapi)
-   // if (pathname === '/sitemap.xml' && process.env.API_URL) {
-   //    console.log(`[MW_HANDLER_SITEMAP_XML_REDIRECT]`);
-   //    return NextResponse.redirect(`${process.env.API_URL}/sitemap/index.xml`, { status: 301 });
-   // }
 
    // 3. Determine Locale and Base Path Information
-   const pathSegments = pathname.split('/').filter(Boolean);
-   let detectedLocale = defaultLocale;
-   let pathWithoutLocale = pathname;
+   const pathSegmentsFiltered = pathname.split('/').filter(Boolean); // Segments like ['ar'] or ['ar', 'reports']
+   let detectedLocale: SupportedLocale = DEFAULT_LOCALE;
+   let pathWithoutLocale = pathname; // Path after stripping locale prefix
    let hasLocalePrefix = false;
+   const potentialLocaleSegment = pathSegmentsFiltered[0];
 
    if (
-      pathSegments.length > 0 &&
-      locales.includes(pathSegments[0] as typeof DEFAULT_LOCALE)
+      potentialLocaleSegment &&
+      currentLocalesArray.includes(potentialLocaleSegment)
    ) {
-      detectedLocale = pathSegments[0] as typeof DEFAULT_LOCALE;
-      // Reconstruct pathWithoutLocale carefully
-      if (pathSegments.length === 1) {
-         // Path was just /en or /ja
+      detectedLocale = potentialLocaleSegment as SupportedLocale;
+      hasLocalePrefix = true;
+      if (pathSegmentsFiltered.length === 1) {
+         // Path was /<locale> or /<locale>/
          pathWithoutLocale = '/';
       } else {
-         pathWithoutLocale = '/' + pathSegments.slice(1).join('/');
+         pathWithoutLocale = '/' + pathSegmentsFiltered.slice(1).join('/');
       }
-      hasLocalePrefix = true;
       console.log(
          `[MW_LOCALE_INFO] Detected: ${detectedLocale}, Path w/o locale: ${pathWithoutLocale}, Original: ${pathname}`,
       );
    } else {
       console.log(
-         `[MW_LOCALE_INFO] No locale prefix for ${pathname}, using default: ${defaultLocale}, Path w/o locale: ${pathWithoutLocale}`,
+         `[MW_LOCALE_INFO] No locale prefix for ${pathname}, using default: ${DEFAULT_LOCALE}, Path w/o locale: ${pathWithoutLocale}`,
       );
    }
 
-   // 4. Handle direct locale URLs (e.g. /ja, /es).
-   // This should only match if the path is *exactly* /<locale>
-   if (
-      pathSegments.length === 1 &&
-      locales.includes(pathSegments[0] as typeof DEFAULT_LOCALE)
-   ) {
-      console.log(
-         `[MW_DIRECT_LOCALE_PATH] Path: ${pathname}. Redirecting to localized homepage /${detectedLocale}/`,
-      );
-      // Redirect to the localized homepage to ensure consistent URL structure
-      const redirectUrl = new URL(`/${detectedLocale}/`, request.url); // Ensure trailing slash for homepage
-      return NextResponse.redirect(redirectUrl);
+   // 4. Handle direct locale paths: /<locale> and /<locale>/
+   //    Goal: ensure /<locale> redirects to /<locale>/, and /<locale>/ passes through.
+   if (hasLocalePrefix && pathSegmentsFiltered.length === 1) {
+      // This means pathname is either /<locale> or /<locale>/
+      // And potentialLocaleSegment (which is detectedLocale here) is that <locale>
+      const canonicalLocalePath = `/${detectedLocale}/`; // e.g., /ar/
+
+      if (pathname === canonicalLocalePath) {
+         // Path is already canonical with a trailing slash, e.g., /ar/
+         console.log(
+            `[MW_RULE4_CANONICAL_OK] Path ${pathname} is already canonical. Passing to Rule 5.`,
+         );
+         // Let it fall through to Rule 5, where pathWithoutLocale='/' will be handled.
+      } else if (pathname === `/${detectedLocale}`) {
+         // Path is /<locale> without a trailing slash, e.g., /ar. Needs redirect.
+         console.log(
+            `[MW_RULE4_REDIRECT_TO_CANONICAL] Path ${pathname} redirecting to ${canonicalLocalePath}`,
+         );
+         return NextResponse.redirect(
+            new URL(canonicalLocalePath, request.url),
+            308,
+         ); // 308 Permanent Redirect
+      } else {
+         // This case implies an unexpected structure, e.g., /ar/foo was misidentified in Rule 3
+         // or path has unusual characters. Should be rare if Rule 3 is correct.
+         console.warn(
+            `[MW_RULE4_UNEXPECTED_PATH_FOR_DIRECT_LOCALE] Path: ${pathname}, Locale: ${detectedLocale}. Cautiously passing through.`,
+         );
+      }
    }
 
-   // 5. Handle known application routes (blogs, news, reports, about-us, etc.) AFTER locale stripping
-   // pathWithoutLocale will be like /reports/slug, /blogs, /news/slug, /about-us, /
+   // 5. Handle known application routes AFTER locale stripping
    const firstSegmentOfPathWithoutLocale =
-      pathWithoutLocale.split('/').filter(Boolean)[0] || ''; // handle '/' case
+      pathWithoutLocale.split('/').filter(Boolean)[0] || '';
 
-   // Special handling for root path AFTER locale stripping
    if (pathWithoutLocale === '/') {
       console.log(
-         `[MW_VALID_ROUTE_ROOT] Root path after locale strip: ${pathWithoutLocale} (orig: ${pathname}). Passing through.`,
+         `[MW_VALID_ROUTE_ROOT] Root path after locale strip: '${pathWithoutLocale}' (orig: ${pathname}, locale: ${detectedLocale}). Passing through.`,
       );
-      return setLocaleCookies(
-         request,
-         NextResponse.next(),
-         detectedLocale,
-         currentHost,
-      );
+      return setLocaleCookies(request, NextResponse.next(), detectedLocale);
    }
-
    if (
       firstSegmentOfPathWithoutLocale &&
       validRoutes.includes(firstSegmentOfPathWithoutLocale)
@@ -166,22 +146,16 @@ export async function middleware(request: NextRequest) {
       console.log(
          `[MW_VALID_ROUTE] Segment: '${firstSegmentOfPathWithoutLocale}' in validRoutes. Path: ${pathWithoutLocale} (orig: ${pathname}). Passing through.`,
       );
-      return setLocaleCookies(
-         request,
-         NextResponse.next(),
-         detectedLocale,
-         currentHost,
+      return setLocaleCookies(request, NextResponse.next(), detectedLocale);
+   }
+   if (firstSegmentOfPathWithoutLocale) {
+      console.log(
+         `[MW_VALID_ROUTE_CHECK_FAILED] Segment: '${firstSegmentOfPathWithoutLocale}' not in validRoutes. Path: ${pathWithoutLocale} (orig: ${pathname}). Continuing...`,
       );
    }
-   console.log(
-      `[MW_VALID_ROUTE_CHECK_FAILED] Segment: '${firstSegmentOfPathWithoutLocale}' not in validRoutes. Path: ${pathWithoutLocale} (orig: ${pathname}). Continuing...`,
-   );
 
    // 6. Handle specific redirects that require API calls (category, product-tag, legacy php form)
-   // These are expensive, so they come after faster checks.
-   // Use pathWithoutLocale for matching patterns and detectedLocale for constructing new URLs.
-
-   // Example: Category Blog Redirect
+   // ... (This part remains the same as the previous full version)
    if (pathWithoutLocale.startsWith('/category/blog/')) {
       const categorySlug = pathWithoutLocale.split('/category/blog/')[1];
       if (categorySlug) {
@@ -195,7 +169,6 @@ export async function middleware(request: NextRequest) {
          });
       }
    }
-   // Example: Category News Redirect (similar to blog)
    if (pathWithoutLocale.startsWith('/category/news/')) {
       const categorySlug = pathWithoutLocale.split('/category/news/')[1];
       if (categorySlug) {
@@ -210,18 +183,19 @@ export async function middleware(request: NextRequest) {
       }
    }
 
-   // Product Tag Redirect
    const productTagMatch = pathWithoutLocale.match(/^\/product-tag\/(.+)/);
    if (productTagMatch) {
       const tagSlug = productTagMatch[1];
       console.log(`[MW_REDIRECT_PRODUCT_TAG] Tag Slug: ${tagSlug}`);
       try {
          const strapiResponse = await fetch(
-            `${process.env.API_URL}/tag-mappings?filters[tagSlug][$eq]=${tagSlug}&locale=${detectedLocale}`, // Add locale
+            `${process.env.API_URL}/tag-mappings?filters[tagSlug][$eq]=${tagSlug}&locale=${detectedLocale}`,
             { headers: { Authorization: `Bearer ${process.env.API_TOKEN}` } },
          );
          if (!strapiResponse.ok)
-            throw new Error(`API error: ${strapiResponse.status}`);
+            throw new Error(
+               `API error for tag-mappings: ${strapiResponse.status}`,
+            );
          const data = await strapiResponse.json();
 
          if (data.data && data.data.length > 0) {
@@ -229,7 +203,10 @@ export async function middleware(request: NextRequest) {
             const redirectUrl = hasLocalePrefix
                ? `/${detectedLocale}/reports/${reportSlug}`
                : `/reports/${reportSlug}`;
-            return NextResponse.redirect(new URL(redirectUrl, request.url));
+            return NextResponse.redirect(
+               new URL(redirectUrl, request.url),
+               301,
+            ); // 301 for permanent
          }
          const notFoundUrl = hasLocalePrefix
             ? `/${detectedLocale}/not-found`
@@ -247,9 +224,7 @@ export async function middleware(request: NextRequest) {
       }
    }
 
-   // Legacy PHP Sample Form Redirect
    if (pathWithoutLocale.includes('/get-a-free-sample-form-php')) {
-      // Match on pathWithoutLocale
       const productId = searchParams.get('product_id')?.trim();
       console.log(`[MW_REDIRECT_LEGACY_PHP_FORM] Product ID: ${productId}`);
       if (productId) {
@@ -259,13 +234,15 @@ export async function middleware(request: NextRequest) {
                '',
             );
             const strapiResponse = await fetch(
-               `${process.env.API_URL}/reports?filters[productId][$eq]=${cleanProductId}&locale=${detectedLocale}`, // Add locale
+               `${process.env.API_URL}/reports?filters[productId][$eq]=${cleanProductId}&locale=${detectedLocale}`,
                {
                   headers: { Authorization: `Bearer ${process.env.API_TOKEN}` },
                },
             );
             if (!strapiResponse.ok)
-               throw new Error(`API error: ${strapiResponse.status}`);
+               throw new Error(
+                  `API error for reports by productId: ${strapiResponse.status}`,
+               );
             const data = await strapiResponse.json();
 
             if (data.data && data.data.length > 0) {
@@ -273,7 +250,10 @@ export async function middleware(request: NextRequest) {
                const redirectPath = hasLocalePrefix
                   ? `/${detectedLocale}/reports/${reportSlug}?popup=report-enquiry`
                   : `/reports/${reportSlug}?popup=report-enquiry`;
-               return NextResponse.redirect(new URL(redirectPath, request.url));
+               return NextResponse.redirect(
+                  new URL(redirectPath, request.url),
+                  301,
+               ); // 301 for permanent
             }
             const notFoundUrl = hasLocalePrefix
                ? `/${detectedLocale}/not-found`
@@ -292,17 +272,14 @@ export async function middleware(request: NextRequest) {
             );
          }
       } else {
-         // No product_id, maybe redirect to generic reports or not-found
          const fallbackRedirect = hasLocalePrefix
-            ? `/${detectedLocale}/reports`
-            : '/reports';
+            ? `/${detectedLocale}/not-found`
+            : '/not-found';
          return NextResponse.redirect(new URL(fallbackRedirect, request.url));
       }
    }
 
-   // 7. SLOW PART: Fallback Slug Lookup for potential "orphan" slugs (e.g. /my-old-post)
-   // This runs if NO other rule above matched the path structure.
-   // potentialOrphanSlug is the first segment of pathWithoutLocale if it's a simple path like /slug
+   // 7. SLOW PART: Fallback Slug Lookup for potential "orphan" slugs
    const segmentsOfPathWithoutLocale = pathWithoutLocale
       .split('/')
       .filter(Boolean);
@@ -317,7 +294,6 @@ export async function middleware(request: NextRequest) {
          `[MW_ORPHAN_SLUG_LOOKUP] Attempting lookup for slug: '${potentialOrphanSlug}' from path: ${pathWithoutLocale} (orig: ${pathname})`,
       );
       try {
-         // Check blogs
          const blogsApiUrl = `${process.env.API_URL}/blogs?filters[slug][$eq]=${potentialOrphanSlug}&publicationState=live&locale=${detectedLocale}`;
          console.log(`[MW_ORPHAN_SLUG_LOOKUP_FETCH_BLOGS] URL: ${blogsApiUrl}`);
          const blogsResponse = await fetch(blogsApiUrl, {
@@ -337,12 +313,7 @@ export async function middleware(request: NextRequest) {
                   new URL(redirectPath, request.url),
                   301,
                );
-               return setLocaleCookies(
-                  request,
-                  response,
-                  detectedLocale,
-                  currentHost,
-               );
+               return setLocaleCookies(request, response, detectedLocale);
             }
          } else {
             console.warn(
@@ -350,7 +321,6 @@ export async function middleware(request: NextRequest) {
             );
          }
 
-         // Check news
          const newsApiUrl = `${process.env.API_URL}/news-articles?filters[slug][$eq]=${potentialOrphanSlug}&publicationState=live&locale=${detectedLocale}`;
          console.log(`[MW_ORPHAN_SLUG_LOOKUP_FETCH_NEWS] URL: ${newsApiUrl}`);
          const newsResponse = await fetch(newsApiUrl, {
@@ -370,12 +340,7 @@ export async function middleware(request: NextRequest) {
                   new URL(redirectPath, request.url),
                   301,
                );
-               return setLocaleCookies(
-                  request,
-                  response,
-                  detectedLocale,
-                  currentHost,
-               );
+               return setLocaleCookies(request, response, detectedLocale);
             }
          } else {
             console.warn(
@@ -391,13 +356,8 @@ export async function middleware(request: NextRequest) {
             : '/not-found';
          const response = NextResponse.redirect(
             new URL(notFoundUrl, request.url),
-         );
-         return setLocaleCookies(
-            request,
-            response,
-            detectedLocale,
-            currentHost,
-         );
+         ); // Consider 302 if it might exist elsewhere or 404 via Next.js
+         return setLocaleCookies(request, response, detectedLocale);
       } catch (error) {
          console.error(
             `[MW_ORPHAN_SLUG_LOOKUP_UNEXPECTED_ERROR] Slug: ${potentialOrphanSlug}`,
@@ -411,26 +371,14 @@ export async function middleware(request: NextRequest) {
    }
 
    // 8. Default pass-through if no other rule matched
-   // This will catch paths like /unknown-path or /some/very/deep/path that isn't a valid route or orphan slug
    console.log(
       `[MW_PASS_THROUGH_DEFAULT] Path: ${pathname}. No specific rules matched or orphan slug logic not triggered. Letting Next.js handle.`,
    );
-   return setLocaleCookies(
-      request,
-      NextResponse.next(),
-      detectedLocale,
-      currentHost,
-   );
+   return setLocaleCookies(request, NextResponse.next(), detectedLocale);
 }
 
 export const config = {
    matcher: [
-      // Match all paths EXCEPT:
       '/((?!api/|_next/static/|_next/image/|sitemaps/|assets/|static/|favicon\\.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp|woff2?|ttf|otf|xml|xsl|txt|html|js|css)$).*)',
-      // - /api/ routes
-      // - Next.js internal static files, image optimization
-      // - /sitemaps/ directory (if you have custom sitemap handling not needing this middleware)
-      // - Common asset folders like /assets/ or /static/ (if served from /public)
-      // - Common file extensions for static assets
    ],
 };
