@@ -36,14 +36,12 @@ export async function middleware(request: NextRequest) {
    }
 
    // 1. Early Exits for Assets & Internal Next.js paths
-   if (
-      pathname.startsWith('/_next/') ||
-      pathname.startsWith('/api/') ||
-      pathname.includes('/sitemap.xsl') ||
-      pathname.startsWith('/sitemaps/')
-   ) {
+   if (pathname.startsWith('/_next/') || pathname.startsWith('/api/')) {
       console.log(`[MW_BYPASS_INTERNAL_ASSET_API] Path: ${pathname}`);
-      return NextResponse.next();
+      const res = NextResponse.next();
+      res.headers.append('x-url', request.url);
+      res.headers.append('x-middleware-locale', DEFAULT_LOCALE);
+      return res;
    }
 
    // 2. Specific file/utility handlers
@@ -379,6 +377,6 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
    matcher: [
-      '/((?!api/|_next/static/|_next/image/|sitemaps/|assets/|static/|favicon\\.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp|woff2?|ttf|otf|xml|xsl|txt|html|js|css)$).*)',
+      '/((?!api/|_next/static/|_next/image/|sitemaps/|assets/|static/|favicon\\.png|favicon\\.svg|favicon\\.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp|woff2?|ttf|otf|xml|xsl|txt|html|js|css)$).*)',
    ],
 };

@@ -24,10 +24,11 @@ const Header = ({
    mainMenu: any;
    pathname: string;
 }) => {
+   console.log('pathname is', pathname);
    return (
       <>
          <div
-            className={`${['/reports/'].some((url) => pathname.includes(url)) ? 'relative' : 'fixed'} left-0 top-0 z-50 w-full border-b border-s-300 bg-white py-4`}
+            className={`${['/reports'].some((url) => pathname.includes(url)) ? 'relative' : 'fixed'} left-0 top-0 z-50 w-full border-b border-s-300 bg-white py-4`}
             key='header'
             id='main-header'
          >

@@ -86,19 +86,6 @@ const nextConfig = {
                },
             ],
          },
-         {
-            source: '/sitemaps/:path*',
-            headers: [
-               {
-                  key: 'Content-Type',
-                  value: 'application/xml; charset=utf-8', // Ensure charset is there too
-               },
-               {
-                  key: 'Cache-Control',
-                  value: 'public, max-age=21600, s-maxage=21600', // 6 hours
-               },
-            ],
-         },
          // Add default security headers to all routes
          {
             source: '/:path*',
