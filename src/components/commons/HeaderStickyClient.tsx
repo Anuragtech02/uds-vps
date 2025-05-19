@@ -8,7 +8,7 @@ const HeaderStickyClient = () => {
       const header = document.getElementById('main-header');
       if (header) {
          const isReportsSlugPage =
-            pathname.startsWith('/reports/') && !pathname.endsWith('/reports/');
+            pathname.includes('/reports/') && !pathname.endsWith('/reports/');
          if (isReportsSlugPage) {
             header.style.position = 'relative';
          } else {

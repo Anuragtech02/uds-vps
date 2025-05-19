@@ -25,7 +25,7 @@ const Header = ({
    pathname: string;
 }) => {
    const isReportsSlugPage =
-      pathname.startsWith('/reports/') && !pathname.endsWith('/reports/');
+      pathname.includes('/reports/') && !pathname.endsWith('/reports/');
 
    return (
       <>
