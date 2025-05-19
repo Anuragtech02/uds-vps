@@ -71,8 +71,6 @@ const RecentResearch: React.FC<{ data: any }> = ({ data }) => {
                requestParams[`filters[slug][$in][${index}]`] = slug;
             });
 
-            console.log('Sending request with params:', requestParams);
-
             try {
                // Let's create a manual direct query URL to see exactly what parameters
                // are needed for Strapi
@@ -94,19 +92,8 @@ const RecentResearch: React.FC<{ data: any }> = ({ data }) => {
                manualQueryParams.push(`sort[0]=oldPublishedAt:desc`);
 
                const manualQueryString = manualQueryParams.join('&');
-               console.log(
-                  'Manual query string (for debugging):',
-                  manualQueryString,
-               );
-               console.log('With base URL: /reports?' + manualQueryString);
 
-               // Try both approaches:
-               // 1. Use the getAllReportsCSR utility with our formatted params
-               console.log(
-                  'Attempting to use getAllReportsCSR with formatted params',
-               );
                const response = await getAllReportsCSR(requestParams);
-               console.log('API response from getAllReportsCSR:', response);
 
                if (response?.data?.length) {
                   const localizedReports = response.data.map((report: any) => ({
@@ -115,9 +102,6 @@ const RecentResearch: React.FC<{ data: any }> = ({ data }) => {
                   }));
 
                   setReports(localizedReports);
-                  console.log(
-                     `Successfully fetched ${localizedReports.length} localized reports.`,
-                  );
                } else {
                   // Alternative approach:
                   // 2. Try a direct fetch to the endpoint with our manually constructed query
@@ -154,7 +138,6 @@ const RecentResearch: React.FC<{ data: any }> = ({ data }) => {
                      }
 
                      const directData = await directResponse.json();
-                     console.log('Direct fetch response:', directData);
 
                      if (directData?.data?.length) {
                         const directLocalizedReports = directData.data.map(
@@ -165,9 +148,6 @@ const RecentResearch: React.FC<{ data: any }> = ({ data }) => {
                         );
 
                         setReports(directLocalizedReports);
-                        console.log(
-                           `Successfully fetched ${directLocalizedReports.length} reports via direct fetch.`,
-                        );
                      } else {
                         console.warn(
                            'Both approaches returned empty data - using stored reports as fallback',
@@ -190,9 +170,6 @@ const RecentResearch: React.FC<{ data: any }> = ({ data }) => {
                   }));
 
                   setReports(localizedReports);
-                  console.log(
-                     `Successfully fetched ${localizedReports.length} localized reports.`,
-                  );
                } else {
                   console.warn(
                      'API returned empty data - using stored reports as fallback',

@@ -5,7 +5,6 @@ import {
    SUPPORTED_LOCALES,
    validRoutes,
    INDUSTRY_MAP,
-   // type SupportedLocale, // If you define this type in constants.ts
 } from './utils/constants';
 
 type SupportedLocale = (typeof SUPPORTED_LOCALES)[number];
@@ -17,13 +16,13 @@ function setLocaleCookies(
    locale: SupportedLocale,
 ) {
    response.headers.append('x-url', request.url);
+   response.headers.append('x-middleware-pathname', request.nextUrl.pathname);
    response.headers.append('x-middleware-locale', locale);
    return response;
 }
 
 export async function middleware(request: NextRequest) {
    const { pathname, searchParams } = request.nextUrl;
-   // const currentHost = request.headers.get('host') || ''; // Kept for potential future use
 
    console.log(
       `[MW_START] Path: ${pathname}${searchParams.toString() ? '?' + searchParams.toString() : ''}`,
@@ -36,12 +35,13 @@ export async function middleware(request: NextRequest) {
    }
 
    // 1. Early Exits for Assets & Internal Next.js paths
-   if (pathname.startsWith('/_next/') || pathname.startsWith('/api/')) {
+   if (
+      pathname.startsWith('/_next/') ||
+      pathname.startsWith('/api/') ||
+      pathname.startsWith('/favicon')
+   ) {
       console.log(`[MW_BYPASS_INTERNAL_ASSET_API] Path: ${pathname}`);
-      const res = NextResponse.next();
-      res.headers.append('x-url', request.url);
-      res.headers.append('x-middleware-locale', DEFAULT_LOCALE);
-      return res;
+      return setLocaleCookies(request, NextResponse.next(), DEFAULT_LOCALE);
    }
 
    // 2. Specific file/utility handlers
@@ -57,7 +57,7 @@ export async function middleware(request: NextRequest) {
          },
       );
    }
-   console.log('The pathname is', pathname);
+
    if (pathname === '/robots.txt') {
       console.log(`[MW_HANDLER_ROBOTS_TXT]`);
       const robotsTxt = `User-agent: *\nAllow: /\n\nDisallow: /api/\nDisallow: /_next/\nDisallow: /static/\n\nUser-agent: Googlebot-News\nAllow: /news/\n\nSitemap: https://univdatos.com/sitemaps/sitemap.xml`;
@@ -115,10 +115,11 @@ export async function middleware(request: NextRequest) {
          console.log(
             `[MW_RULE4_REDIRECT_TO_CANONICAL] Path ${pathname} redirecting to ${canonicalLocalePath}`,
          );
-         return NextResponse.redirect(
+         const response = NextResponse.redirect(
             new URL(canonicalLocalePath, request.url),
             308,
          ); // 308 Permanent Redirect
+         return setLocaleCookies(request, response, detectedLocale);
       } else {
          // This case implies an unexpected structure, e.g., /ar/foo was misidentified in Rule 3
          // or path has unusual characters. Should be rare if Rule 3 is correct.
@@ -154,7 +155,6 @@ export async function middleware(request: NextRequest) {
    }
 
    // 6. Handle specific redirects that require API calls (category, product-tag, legacy php form)
-   // ... (This part remains the same as the previous full version)
    if (pathWithoutLocale.startsWith('/category/blog/')) {
       const categorySlug = pathWithoutLocale.split('/category/blog/')[1];
       if (categorySlug) {
@@ -378,7 +378,7 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
    matcher: [
-      '/((?!api/|_next/static/|_next/image/|sitemaps/|assets/|static/|favicon\\.png|favicon\\.svg|favicon\\.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp|woff2?|ttf|otf|xml|xsl|html|js|css)$).*)',
+      '/((?!api/|_next/|sitemaps/|assets/|static/|favicon|.well-known/|.*\\.(?:svg|png|jpg|jpeg|gif|webp|woff2?|ttf|otf|xml|xsl|html|js|css|json)$).*)',
       '/robots.txt',
    ],
 };

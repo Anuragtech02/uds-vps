@@ -39,58 +39,19 @@ export default function RootLayout({
 }: Readonly<{
    children: React.ReactNode;
 }>) {
-   // --- Determine effective locale and pathname ---
+   // In layout.tsx
    const serverHeaders = headers();
-   const invokedPath = serverHeaders.get('x-invoke-path');
-   const customPathHeader = serverHeaders.get('x-url');
-   const pathSource = invokedPath || customPathHeader;
-   let actualPathname: string = '/';
-   let effectiveLocale: string = DEFAULT_LOCALE;
+   const middlewarePathname = serverHeaders.get('x-middleware-pathname');
+   const effectiveLocale =
+      serverHeaders.get('x-middleware-locale') || DEFAULT_LOCALE;
 
-   if (pathSource) {
-      try {
-         let tempPathname: string;
-         if (
-            pathSource.startsWith('http://') ||
-            pathSource.startsWith('https://')
-         ) {
-            tempPathname = new URL(pathSource).pathname;
-         } else if (pathSource.startsWith('/')) {
-            tempPathname = pathSource;
-         } else {
-            tempPathname = '/'; // Fallback for unexpected format
-         }
+   // Use the middleware-provided pathname directly if available
+   let actualPathname = middlewarePathname || '/';
 
-         actualPathname = tempPathname; // Store the determined pathname
-
-         // Parse locale from the determined pathname
-         const pathSegments = tempPathname.split('/').filter(Boolean);
-         if (
-            pathSegments.length > 0 &&
-            SUPPORTED_LOCALES.includes(pathSegments[0] as any)
-         ) {
-            effectiveLocale = pathSegments[0]; // Set locale if found
-         } else {
-            effectiveLocale = DEFAULT_LOCALE; // Otherwise, use default
-         }
-      } catch (e) {
-         console.error(
-            `RootLayout: Error parsing pathSource: ${pathSource}`,
-            e,
-         );
-         actualPathname = '/';
-         effectiveLocale = DEFAULT_LOCALE;
-      }
-   } else {
-      // No path header found (e.g., asset request), use defaults
-      actualPathname = '/';
-      effectiveLocale = DEFAULT_LOCALE;
-   }
-   // // --- End locale/pathname determination ---
-
-   // console.log(
-   //    `RootLayout determined: locale=${effectiveLocale}, pathname=${actualPathname}`,
-   // );
+   // Log for debugging
+   console.log(
+      `RootLayout received: pathname=${actualPathname}, locale=${effectiveLocale}`,
+   );
 
    return (
       <LocaleProvider locale={effectiveLocale}>
