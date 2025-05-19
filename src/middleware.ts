@@ -57,6 +57,7 @@ export async function middleware(request: NextRequest) {
          },
       );
    }
+   console.log('The pathname is', pathname);
    if (pathname === '/robots.txt') {
       console.log(`[MW_HANDLER_ROBOTS_TXT]`);
       const robotsTxt = `User-agent: *\nAllow: /\n\nDisallow: /api/\nDisallow: /_next/\nDisallow: /static/\n\nUser-agent: Googlebot-News\nAllow: /news/\n\nSitemap: https://univdatos.com/sitemaps/sitemap.xml`;
@@ -377,6 +378,7 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
    matcher: [
-      '/((?!api/|_next/static/|_next/image/|sitemaps/|assets/|static/|favicon\\.png|favicon\\.svg|favicon\\.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp|woff2?|ttf|otf|xml|xsl|txt|html|js|css)$).*)',
+      '/((?!api/|_next/static/|_next/image/|sitemaps/|assets/|static/|favicon\\.png|favicon\\.svg|favicon\\.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp|woff2?|ttf|otf|xml|xsl|html|js|css)$).*)',
+      '/robots.txt',
    ],
 };
