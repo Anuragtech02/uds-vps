@@ -29,7 +29,10 @@ export async function middleware(request: NextRequest) {
    );
 
    // 0. Immediately reject .php requests
-   if (pathname.endsWith('.php')) {
+   if (
+      pathname.endsWith('.php') &&
+      !pathname.includes('get-a-free-sample-form')
+   ) {
       console.log(`[MW_REJECT_PHP] Rejecting .php path: ${pathname}`);
       return new NextResponse(null, { status: 404 });
    }
@@ -141,7 +144,8 @@ export async function middleware(request: NextRequest) {
    }
    if (
       firstSegmentOfPathWithoutLocale &&
-      validRoutes.includes(firstSegmentOfPathWithoutLocale)
+      validRoutes.includes(firstSegmentOfPathWithoutLocale) &&
+      !pathWithoutLocale.includes('get-a-free-sample-form')
    ) {
       console.log(
          `[MW_VALID_ROUTE] Segment: '${firstSegmentOfPathWithoutLocale}' in validRoutes. Path: ${pathWithoutLocale} (orig: ${pathname}). Passing through.`,
@@ -223,7 +227,10 @@ export async function middleware(request: NextRequest) {
       }
    }
 
-   if (pathWithoutLocale.includes('/get-a-free-sample-form-php')) {
+   if (
+      pathWithoutLocale.includes('/get-a-free-sample-form-php') ||
+      pathWithoutLocale.includes('/get-a-free-sample-form')
+   ) {
       const productId = searchParams.get('product_id')?.trim();
       console.log(`[MW_REDIRECT_LEGACY_PHP_FORM] Product ID: ${productId}`);
       if (productId) {
