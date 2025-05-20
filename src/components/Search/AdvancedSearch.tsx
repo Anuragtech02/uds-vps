@@ -142,6 +142,7 @@ const AdvancedSearch: React.FC<AdvancedSearchProps> = ({ isOpen, onClose }) => {
                break;
             case 'news':
             case 'news-articles':
+            case 'news-article':
                targetUrl = `/news/${result.slug}`;
                break;
             case 'industry':
@@ -157,7 +158,7 @@ const AdvancedSearch: React.FC<AdvancedSearchProps> = ({ isOpen, onClose }) => {
                targetUrl = `/${result.type.toLowerCase().replace(/\s+/g, '-')}/${result.slug}`;
          }
 
-         await router.push(targetUrl);
+         router.push(targetUrl);
       } else {
          // Fallback to search if slug or type is not available
          await handleSearch(result.title || result.name || '');
