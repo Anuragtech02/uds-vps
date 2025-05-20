@@ -104,32 +104,11 @@ export async function middleware(request: NextRequest) {
    //    Goal: ensure /<locale> redirects to /<locale>/, and /<locale>/ passes through.
    if (hasLocalePrefix && pathSegmentsFiltered.length === 1) {
       // This means pathname is either /<locale> or /<locale>/
-      // And potentialLocaleSegment (which is detectedLocale here) is that <locale>
-      const canonicalLocalePath = `/${detectedLocale}/`; // e.g., /ar/
-
-      if (pathname === canonicalLocalePath) {
-         // Path is already canonical with a trailing slash, e.g., /ar/
-         console.log(
-            `[MW_RULE4_CANONICAL_OK] Path ${pathname} is already canonical. Passing to Rule 5.`,
-         );
-         // Let it fall through to Rule 5, where pathWithoutLocale='/' will be handled.
-      } else if (pathname === `/${detectedLocale}`) {
-         // Path is /<locale> without a trailing slash, e.g., /ar. Needs redirect.
-         console.log(
-            `[MW_RULE4_REDIRECT_TO_CANONICAL] Path ${pathname} redirecting to ${canonicalLocalePath}`,
-         );
-         const response = NextResponse.redirect(
-            new URL(canonicalLocalePath, request.url),
-            308,
-         ); // 308 Permanent Redirect
-         return setLocaleCookies(request, response, detectedLocale);
-      } else {
-         // This case implies an unexpected structure, e.g., /ar/foo was misidentified in Rule 3
-         // or path has unusual characters. Should be rare if Rule 3 is correct.
-         console.warn(
-            `[MW_RULE4_UNEXPECTED_PATH_FOR_DIRECT_LOCALE] Path: ${pathname}, Locale: ${detectedLocale}. Cautiously passing through.`,
-         );
-      }
+      console.log(
+         `[MW_RULE4_LOCALE_ROOT] Allowing path ${pathname} to pass through without enforcing trailing slash.`,
+      );
+      // Let all locale root paths fall through to Rule 5, whether they have trailing slashes or not
+      return setLocaleCookies(request, NextResponse.next(), detectedLocale);
    }
 
    // 5. Handle known application routes AFTER locale stripping

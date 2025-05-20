@@ -5,7 +5,7 @@ const nextConfig = {
    compress: true,
    poweredByHeader: false,
    swcMinify: true,
-   trailingSlash: true,
+   // trailingSlash: true,
 
    // Improved experimental features
    // experimental: {
