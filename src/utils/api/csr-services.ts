@@ -34,6 +34,7 @@ export const searchContent = async (
       industries?: string[];
       geographies?: string[];
       sortBy?: string;
+      locale?: string; // Added locale option
    },
 ) => {
    try {
@@ -48,11 +49,15 @@ export const searchContent = async (
             ? { geographies: options.geographies.join(',') }
             : {}),
          ...(options?.sortBy ? { sortBy: options.sortBy } : {}),
+         ...(options?.locale ? { locale: options.locale } : {}), // Pass locale to params
       });
 
-      const response = await fetchClientCSR(`/search?${params.toString()}`, {
-         headers: getAuthHeaders('search'),
-      });
+      const response = await fetchClientCSR(
+         `/api/strapi-search-multilingual/search?${params.toString()}`, // Changed API endpoint
+         {
+            headers: getAuthHeaders('search'),
+         },
+      );
       return await response;
    } catch (error) {
       console.error('Error fetching search results:', error);
