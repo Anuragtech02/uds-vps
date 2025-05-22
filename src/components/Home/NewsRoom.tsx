@@ -1,37 +1,9 @@
 import Image from 'next/image';
 import newsPlaceholder from '@/assets/img/thumbnail_news.jpg';
-import newPlaceHolder from '@/assets/img/newPlaceholder.jpg';
 import { CalendarSvg, UserSvg } from '../commons/Icons';
-import Link from 'next/link';
 import { LocalizedLink } from '../commons/LocalizedLink';
 import { TRANSLATED_VALUES } from '@/utils/localeConstants';
 import { getFormattedDate } from '@/utils/generic-methods';
-
-// const newsItems = [
-//    {
-//       title: 'Global Nitrogen Oxide Control System Market Top emerging startups in the energy sector',
-//       date: '12th July 2025',
-//    },
-//    {
-//       title: 'Global Nitrogen Oxide Control System Market Top emerging startups in the energy sector',
-//       date: '12th July 2025',
-//    },
-//    {
-//       title: 'Global Nitrogen Oxide Control System Market Top emerging startups in the energy sector',
-//       date: '12th July 2025',
-//    },
-// ];
-
-// const blogs = [
-//    {
-//       category: 'Energy and power',
-//       title: 'Top emerging startups in the energy sector',
-//       date: '12th July 2025',
-//       author: 'John Doe',
-//       descrption:
-//          'Norem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis.',
-//    },
-// ];
 
 const NewsRoom: React.FC<{
    data: {

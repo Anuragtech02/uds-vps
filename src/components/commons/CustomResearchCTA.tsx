@@ -24,7 +24,7 @@ const CustomResearchCTA = ({
       <div className='relative overflow-hidden rounded-xl border border-s-300 bg-gradient-to-r from-[rgba(128,189,255,0.3)] via-[rgba(94,197,230,0.3)] to-[rgba(60,204,204,0.3)] px-6 py-8 md:px-10'>
          <div className='text-center md:w-2/3 md:text-left'>
             <h2 dangerouslySetInnerHTML={{ __html: ctaBanner?.title }}></h2>
-            <LocalizedLink href={ctaBanner?.ctaButton?.link} lang={locale}>
+            <LocalizedLink href={'/contact-us'} lang={locale}>
                <Button
                   size='large'
                   variant='secondary'

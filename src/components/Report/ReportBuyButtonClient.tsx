@@ -1,18 +1,21 @@
 'use client';
 import Button from '../commons/Button';
 import { useSelectedLicenseStore } from '@/stores/selectedLicense.store';
-import { License } from '@/utils/cart-utils.util';
+import { addToCart, License } from '@/utils/cart-utils.util';
 import { useRouter } from 'next/navigation';
 import { TRANSLATED_VALUES } from '@/utils/localeConstants';
+import { ReportData } from './ReportBlock';
 
 interface Props {
    variants: License[];
    locale?: string;
+   reportData: ReportData;
 }
 
 const ReportBuyButtonClient: React.FC<Props> = ({
    variants,
    locale = 'en',
+   reportData,
 }) => {
    const selectedLicenses = useSelectedLicenseStore();
    const router = useRouter();
@@ -22,13 +25,14 @@ const ReportBuyButtonClient: React.FC<Props> = ({
       let selectedLicense = selectedLicenses.selectedLicenses[reportData.id];
       if (!selectedLicense) {
          // select single user by default
-         selectedLicense = variants.find((variant) =>
-            variant.title?.includes('Single User'),
-         );
+         selectedLicense = variants[0];
       }
 
-      // @ts-ignore
-      addToCart({ id: data.id, ...data.attributes }, selectedLicense);
+      addToCart(
+         // @ts-ignore
+         { ...reportData, id: reportData.id, variants },
+         selectedLicense,
+      );
       router.push(locale === 'en' ? '/cart' : `/${locale}/cart`);
    };
 

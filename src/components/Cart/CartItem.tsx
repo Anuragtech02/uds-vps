@@ -54,6 +54,8 @@ const CartItem: FC<CartItemProps> = ({
       }).format(converted);
    };
 
+   console.log({ report });
+
    return (
       <div className='mt-2 flex flex-col items-center gap-4 border-gray-200 py-4 first:pt-0 last:border-0 last:pb-0 sm:flex-row'>
          {/* Left section with delete, image, and title */}

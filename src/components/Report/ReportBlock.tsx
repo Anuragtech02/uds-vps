@@ -52,7 +52,7 @@ export interface Variant {
 }
 
 // Define type for report data
-interface ReportData {
+export interface ReportData {
    id: number;
    title: string;
    aboutReport: string;
@@ -204,7 +204,11 @@ const ReportBlock: React.FC<ReportBlockProps> = ({ data, locale = 'en' }) => {
                   />
                </div>
                <div className='relative mt-3'>
-                  <ReportBuyButtonClient variants={variants} locale={locale} />
+                  <ReportBuyButtonClient
+                     variants={variants}
+                     locale={locale}
+                     reportData={reportData}
+                  />
                </div>
                <LocalizedLink
                   // href={getCTALink(

@@ -24,11 +24,7 @@ import {
    removeItemFromCart,
    resetCart,
 } from '@/utils/cart-utils.util';
-import {
-   BillingFormData,
-   CheckoutProvider,
-   useCheckout,
-} from '@/utils/CheckoutContext';
+import { BillingFormData, useCheckout } from '@/utils/CheckoutContext';
 import { CURRENCIES } from '@/utils/constants';
 import { TRANSLATED_VALUES } from '@/utils/localeConstants';
 import { useLocale } from '@/utils/LocaleContext';
@@ -44,6 +40,37 @@ const CurrencySelector = ({
    onCurrencyChange: (currency: string) => void;
 }) => {
    const { locale } = useLocale();
+
+   useEffect(() => {
+      if (locale && locale !== 'en') {
+         switch (locale) {
+            case 'es':
+            case 'fr':
+            case 'de':
+            case 'it':
+               // Default to EUR for European languages
+               onCurrencyChange('EUR');
+               break;
+            case 'ja':
+               // Japanese -> JPY
+               onCurrencyChange('JPY');
+               break;
+            case 'zh-CN':
+            case 'zh-Hant-TW':
+               // Chinese -> USD (as default)
+               onCurrencyChange('USD');
+               break;
+            case 'ar':
+               // Arabic -> USD (as default)
+               onCurrencyChange('USD');
+               break;
+            default:
+               // Keep current currency or set to USD
+               break;
+         }
+      }
+   }, [locale, onCurrencyChange]);
+
    return (
       <div className='flex items-center space-x-2'>
          <span className='text-sm text-gray-600'>

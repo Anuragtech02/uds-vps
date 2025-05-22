@@ -16,6 +16,7 @@ interface Report {
    report: Report;
    selectedLicense: License;
    quantity: number;
+   variants: License[];
 }
 
 export interface ICartItem {
@@ -46,11 +47,13 @@ export const getCart = (): ICartItem[] => {
 export const changeLicenseOfReport = (reportId: number, newLicense: any) => {
    const cart = getCart();
    const updatedCart = cart.map((item: any) =>
-     item?.report?.id === reportId ? { ...item, selectedLicense: newLicense } : item
+      item?.report?.id === reportId
+         ? { ...item, selectedLicense: newLicense }
+         : item,
    );
    localStorage.setItem('cart', JSON.stringify(updatedCart));
    return updatedCart;
- };
+};
 
 export const removeItemFromCart = (reportId: number): void => {
    let cart: ICartItem[] = JSON.parse(localStorage.getItem('cart') || '[]');

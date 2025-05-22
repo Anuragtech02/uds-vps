@@ -161,7 +161,7 @@ export const getNewsListingPage = async ({
    page = 1,
    limit = 10,
    filters = {},
-   sortBy = 'relevance',
+   sortBy = 'oldPublishedAt:desc',
    locale = 'en',
 }: NewsListingConfig) => {
    try {
@@ -212,7 +212,7 @@ export const getBlogsListingPage = async ({
    page = 1,
    limit = 10,
    filters = {},
-   sortBy = 'relevance',
+   sortBy = 'oldPublishedAt:desc',
    locale = 'en',
 }: BlogListingConfig) => {
    try {

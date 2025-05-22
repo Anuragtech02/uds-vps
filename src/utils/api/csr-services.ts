@@ -34,13 +34,16 @@ export const searchContent = async (
       industries?: string[];
       geographies?: string[];
       sortBy?: string;
+      locale?: string;
    },
 ) => {
    try {
+      const newLocale = options?.locale || 'en';
       const params = new URLSearchParams({
          q: query,
          page: page.toString(),
          limit: limit.toString(),
+         locale: newLocale,
          ...(options?.industries?.length
             ? { industries: options.industries.join(',') }
             : {}),
