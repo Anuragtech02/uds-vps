@@ -35,6 +35,7 @@ export const searchContent = async (
       geographies?: string[];
       sortBy?: string;
       locale?: string;
+      tab?: 'reports' | 'news' | 'blogs'; // Add tab parameter
    },
 ) => {
    try {
@@ -42,21 +43,93 @@ export const searchContent = async (
       const params = new URLSearchParams({
          q: query,
          page: page.toString(),
-         limit: limit.toString(),
+         pageSize: limit.toString(),
          locale: newLocale,
+         ...(options?.tab ? { tab: options.tab } : {}), // Add tab to params
          ...(options?.industries?.length
             ? { industries: options.industries.join(',') }
             : {}),
          ...(options?.geographies?.length
             ? { geographies: options.geographies.join(',') }
             : {}),
-         ...(options?.sortBy ? { sortBy: options.sortBy } : {}),
+         ...(options?.sortBy ? { sort: options.sortBy } : {}),
       });
 
       const response = await fetchClientCSR(`/search?${params.toString()}`, {
          headers: getAuthHeaders('search'),
       });
-      return await response;
+
+      // The response now has the structure: { data: [...], meta: { pagination: { allCounts: {...} } } }
+      // Transform this to the expected format for the frontend
+      const transformedResponse = {
+         results: {
+            report: [],
+            'news-article': [],
+            blog: [],
+         },
+         totals: {
+            report: 0,
+            'news-article': 0,
+            blog: 0,
+         },
+      };
+
+      // Map entity types to our expected keys
+      const entityMapping = {
+         'api::report.report': 'report',
+         'api::news-article.news-article': 'news-article',
+         'api::blog.blog': 'blog',
+      };
+
+      // If we have results, categorize them by entity type
+      if (response.data && response.data.length > 0) {
+         response.data.forEach((item: any) => {
+            const entityKey =
+               entityMapping[item.entity as keyof typeof entityMapping];
+            if (
+               entityKey &&
+               transformedResponse.results[
+                  entityKey as keyof typeof transformedResponse.results
+               ]
+            ) {
+               (
+                  transformedResponse.results[
+                     entityKey as keyof typeof transformedResponse.results
+                  ] as any[]
+               ).push(item);
+            }
+         });
+      }
+
+      // Extract totals from meta.pagination.allCounts
+      if (response.meta?.pagination?.allCounts) {
+         const counts = response.meta.pagination.allCounts;
+         transformedResponse.totals = {
+            report: counts['api::report.report'] || 0,
+            'news-article': counts['api::news-article.news-article'] || 0,
+            blog: counts['api::blog.blog'] || 0,
+         };
+      }
+
+      // Debug logging to see what we're getting
+      console.log('Original response:', {
+         dataLength: response.data?.length || 0,
+         allCounts: response.meta?.pagination?.allCounts,
+         sampleItems: response.data
+            ?.slice(0, 3)
+            ?.map((item: any) => ({ entity: item.entity, title: item.title })),
+      });
+
+      console.log('Transformed response:', {
+         resultCounts: {
+            report: transformedResponse.results.report.length,
+            'news-article': transformedResponse.results['news-article'].length,
+            blog: transformedResponse.results.blog.length,
+         },
+         totals: transformedResponse.totals,
+      });
+
+      return transformedResponse;
    } catch (error) {
       console.error('Error fetching search results:', error);
       throw error;

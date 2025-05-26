@@ -10,6 +10,72 @@ import { TRANSLATED_VALUES } from '@/utils/localeConstants';
 
 const ITEMS_PER_PAGE = 10;
 
+// types/search.ts
+// Updated type definitions for search functionality
+
+// types/search.ts
+// Updated type definitions for search functionality
+
+export interface SearchResultItem {
+   id: string;
+   title: string;
+   shortDescription?: string;
+   slug: string;
+   entity: string;
+   locale: string;
+   highlightImage?: string;
+   oldPublishedAt?: string;
+   industries?: Array<{ name: string }>;
+   geographies?: Array<{ name: string }>; // Only available for reports
+}
+
+export interface SearchResponse {
+   data: SearchResultItem[];
+   meta: {
+      pagination: {
+         page: number;
+         pageSize: number;
+         pageCount: number;
+         total: number;
+         allCounts: {
+            all: number;
+            'api::report.report': number;
+            'api::blog.blog': number;
+            'api::news-article.news-article': number;
+         };
+      };
+   };
+}
+
+export interface TransformedSearchResponse {
+   results: {
+      report: SearchResultItem[];
+      'news-article': SearchResultItem[];
+      blog: SearchResultItem[];
+   };
+   totals: {
+      report: number;
+      'news-article': number;
+      blog: number;
+   };
+}
+
+export interface SearchOptions {
+   industries?: string[];
+   geographies?: string[];
+   sortBy?: string;
+   locale?: string;
+   tab?: 'reports' | 'news' | 'blogs';
+}
+
+export type ContentTab = 'reports' | 'news' | 'blogs';
+
+export interface SearchFilters {
+   industries: string[];
+   geographies: string[];
+   sortBy: string;
+}
+
 interface SearchResult {
    report: { data: any[]; total: number };
    'news-article': { data: any[]; total: number };
@@ -52,32 +118,36 @@ const SearchResults = () => {
       'news-article': { data: [], total: 0 },
       blog: { data: [], total: 0 },
    });
+   const [allTabsData, setAllTabsData] = useState<SearchResult>({
+      report: { data: [], total: 0 },
+      'news-article': { data: [], total: 0 },
+      blog: { data: [], total: 0 },
+   });
 
    const { locale } = useLocale();
 
-   const fetchResults = useCallback(async () => {
-      setIsLoading(true);
-      setHasSearched(true);
-
-      const currentPage = pages[activeTab];
+   // Fetch data for all tabs to get accurate counts
+   const fetchAllTabsData = useCallback(async () => {
       const searchQuery = searchParams.get('q') || '';
       const industries = searchParams.get('industries') || '';
       const geographies = searchParams.get('geographies') || '';
       const sortBy = searchParams.get('sortBy') || 'relevance';
 
       try {
+         // FIXED: Remove encodeURIComponent wrapper
          const response = await searchContent(
-            encodeURIComponent(searchQuery),
-            currentPage,
-            ITEMS_PER_PAGE,
+            searchQuery, // ✅ Changed from encodeURIComponent(searchQuery)
+            1,
+            1,
             {
                industries: industries.split(',').filter(Boolean),
                geographies: geographies.split(',').filter(Boolean),
                sortBy,
+               locale,
             },
          );
 
-         setData({
+         setAllTabsData({
             report: {
                data: response.results.report || [],
                total: response.totals.report || 0,
@@ -92,8 +162,69 @@ const SearchResults = () => {
             },
          });
       } catch (error) {
+         console.error('Error fetching all tabs data:', error);
+      }
+   }, [searchParams, locale]);
+
+   // 2. Fix fetchResults function (around line 135):
+   const fetchResults = useCallback(async () => {
+      setIsLoading(true);
+      setHasSearched(true);
+
+      const currentPage = pages[activeTab];
+      const searchQuery = searchParams.get('q') || '';
+      const industries = searchParams.get('industries') || '';
+      const geographies = searchParams.get('geographies') || '';
+      const sortBy = searchParams.get('sortBy') || 'relevance';
+
+      try {
+         // FIXED: Remove encodeURIComponent wrapper
+         const response = await searchContent(
+            searchQuery, // ✅ Changed from encodeURIComponent(searchQuery)
+            currentPage,
+            ITEMS_PER_PAGE,
+            {
+               industries: industries.split(',').filter(Boolean),
+               geographies:
+                  activeTab === 'reports' || !activeTab
+                     ? geographies.split(',').filter(Boolean)
+                     : [],
+               sortBy,
+               locale,
+               tab: activeTab,
+            },
+         );
+
+         // Update current tab data
+         setData({
+            report: {
+               data:
+                  activeTab === 'reports' ? response.results.report || [] : [],
+               total: response.totals.report || 0,
+            },
+            'news-article': {
+               data:
+                  activeTab === 'news'
+                     ? response.results['news-article'] || []
+                     : [],
+               total: response.totals['news-article'] || 0,
+            },
+            blog: {
+               data: activeTab === 'blogs' ? response.results.blog || [] : [],
+               total: response.totals.blog || 0,
+            },
+         });
+
+         // Also fetch all tabs data for accurate counts
+         await fetchAllTabsData();
+      } catch (error) {
          console.error('Error fetching results:', error);
          setData({
+            report: { data: [], total: 0 },
+            'news-article': { data: [], total: 0 },
+            blog: { data: [], total: 0 },
+         });
+         setAllTabsData({
             report: { data: [], total: 0 },
             'news-article': { data: [], total: 0 },
             blog: { data: [], total: 0 },
@@ -101,8 +232,7 @@ const SearchResults = () => {
       } finally {
          setIsLoading(false);
       }
-   }, [searchParams, pages, activeTab]);
-
+   }, [searchParams, pages, activeTab, locale, fetchAllTabsData]);
    // Update URL when tab or page changes
    const updateURL = useCallback(
       (newTab: string, newPage: number) => {
@@ -150,12 +280,12 @@ const SearchResults = () => {
    // Calculate total pages for current tab
    const getTotalPages = useCallback(() => {
       const totals = {
-         reports: data.report.total,
-         news: data['news-article'].total,
-         blogs: data.blog.total,
+         reports: allTabsData.report.total,
+         news: allTabsData['news-article'].total,
+         blogs: allTabsData.blog.total,
       };
       return Math.ceil(totals[activeTab] / ITEMS_PER_PAGE);
-   }, [data, activeTab]);
+   }, [allTabsData, activeTab]);
 
    const currentPage = pages[activeTab];
    const totalPages = getTotalPages();
@@ -169,37 +299,39 @@ const SearchResults = () => {
                   activeTab === 'reports'
                      ? 'bg-blue-50 text-blue-600'
                      : 'hover:bg-gray-50'
-               } ${data.report.total === 0 ? 'cursor-not-allowed opacity-50' : ''}`}
+               } ${allTabsData.report.total === 0 ? 'cursor-not-allowed opacity-50' : ''}`}
                onClick={() => handleTabChange('reports')}
-               disabled={data.report.total === 0}
+               disabled={allTabsData.report.total === 0}
                type='button'
             >
-               {TRANSLATED_VALUES[locale]?.header.reports} ({data.report.total})
+               {TRANSLATED_VALUES[locale]?.header.reports} (
+               {allTabsData.report.total})
             </button>
             <button
                className={`cursor-pointer rounded-md border border-s-300 px-4 py-2 text-sm ${
                   activeTab === 'news'
                      ? 'bg-blue-50 text-blue-600'
                      : 'hover:bg-gray-50'
-               } ${data['news-article'].total === 0 ? 'cursor-not-allowed opacity-50' : ''}`}
+               } ${allTabsData['news-article'].total === 0 ? 'cursor-not-allowed opacity-50' : ''}`}
                onClick={() => handleTabChange('news')}
-               disabled={data['news-article'].total === 0}
+               disabled={allTabsData['news-article'].total === 0}
                type='button'
             >
                {TRANSLATED_VALUES[locale]?.header.news} (
-               {data['news-article'].total})
+               {allTabsData['news-article'].total})
             </button>
             <button
                className={`cursor-pointer rounded-md border border-s-300 px-4 py-2 text-sm ${
                   activeTab === 'blogs'
                      ? 'bg-blue-50 text-blue-600'
                      : 'hover:bg-gray-50'
-               } ${data.blog.total === 0 ? 'cursor-not-allowed opacity-50' : ''}`}
+               } ${allTabsData.blog.total === 0 ? 'cursor-not-allowed opacity-50' : ''}`}
                onClick={() => handleTabChange('blogs')}
-               disabled={data.blog.total === 0}
+               disabled={allTabsData.blog.total === 0}
                type='button'
             >
-               {TRANSLATED_VALUES[locale]?.header.blogs} ({data.blog.total})
+               {TRANSLATED_VALUES[locale]?.header.blogs} (
+               {allTabsData.blog.total})
             </button>
          </div>
 
@@ -232,7 +364,9 @@ const SearchResults = () => {
                   )}
 
                   {hasSearched &&
-                     Object.values(data).every((item) => !item.data.length) && (
+                     Object.values(allTabsData).every(
+                        (item) => !item.total,
+                     ) && (
                         <div className='mt-8 text-center'>
                            <p className='text-lg text-gray-600'>
                               {

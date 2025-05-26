@@ -6,7 +6,7 @@ import { BiLoaderCircle } from 'react-icons/bi';
 import { FaTrash } from 'react-icons/fa';
 import { useSearchStore } from '@/stores/search.store';
 import {
-   searchContent, // Assuming searchContent is updated or handles the new API
+   searchContent, // Using the updated searchContent function
 } from '@/utils/api/csr-services';
 import { useLocale } from '@/utils/LocaleContext';
 import { TRANSLATED_VALUES } from '@/utils/localeConstants';
@@ -22,14 +22,16 @@ interface AdvancedSearchProps {
 // Updated to match Typesense response structure
 interface SearchResult {
    id: string;
-   title: string; // Typesense provides 'title'
+   title: string;
+   shortDescription?: string;
    slug?: string;
-   entity: string; // This is the primary type identifier from Typesense
-   // 'name' is removed as 'title' is the standard from your Typesense response
-   // 'type' is removed as 'entity' serves this purpose
+   entity: string; // Entity type from Typesense (e.g., "api::report.report")
+   locale: string;
+   oldPublishedAt?: string;
+   industries?: Array<{ name: string }>;
 }
 
-// Suggestions will be keyed by entity type (e.g., "api::report.report")
+// Suggestions will be grouped by entity type
 interface CategoryResults {
    [entityType: string]: SearchResult[];
 }
@@ -37,13 +39,37 @@ interface CategoryResults {
 // Helper to get a display-friendly name from entity type
 const getEntityTypeDisplayName = (entity: string): string => {
    if (!entity) return 'General';
-   // "api::report.report" -> "Report"
-   const parts = entity.split('::').pop()?.split('.');
-   if (parts && parts.length > 1) {
-      const name = parts[1].replace(/-/g, ' ');
-      return name.charAt(0).toUpperCase() + name.slice(1) + 's'; // Capitalize and pluralize
+
+   switch (entity) {
+      case 'api::report.report':
+         return 'Reports';
+      case 'api::blog.blog':
+         return 'Blogs';
+      case 'api::news-article.news-article':
+         return 'News';
+      default:
+         // Fallback parsing: "api::report.report" -> "Reports"
+         const parts = entity.split('::').pop()?.split('.');
+         if (parts && parts.length > 1) {
+            const name = parts[1].replace(/-/g, ' ');
+            return name.charAt(0).toUpperCase() + name.slice(1) + 's';
+         }
+         return entity;
    }
-   return entity; // Fallback
+};
+
+// Helper to get tab name from entity type
+const getTabFromEntity = (entity: string): string => {
+   switch (entity) {
+      case 'api::report.report':
+         return 'reports';
+      case 'api::blog.blog':
+         return 'blogs';
+      case 'api::news-article.news-article':
+         return 'news';
+      default:
+         return 'reports'; // Default fallback
+   }
 };
 
 const AdvancedSearch: React.FC<AdvancedSearchProps> = ({ isOpen, onClose }) => {
@@ -75,18 +101,27 @@ const AdvancedSearch: React.FC<AdvancedSearchProps> = ({ isOpen, onClose }) => {
          }
       }, 300);
       return () => clearTimeout(debounceTimer);
-   }, [query, locale]); // Added locale as a dependency if searchContent uses it
+   }, [query, locale]);
 
    const loadRecentSearches = () => {
-      const storedSearches = localStorage.getItem(RECENT_SEARCHES_KEY);
-      if (storedSearches) {
-         setRecentSearches(JSON.parse(storedSearches));
+      try {
+         const storedSearches = localStorage.getItem(RECENT_SEARCHES_KEY);
+         if (storedSearches) {
+            setRecentSearches(JSON.parse(storedSearches));
+         }
+      } catch (error) {
+         console.error('Error loading recent searches:', error);
+         setRecentSearches([]);
       }
    };
 
    const saveRecentSearches = (searches: string[]) => {
-      localStorage.setItem(RECENT_SEARCHES_KEY, JSON.stringify(searches));
-      setRecentSearches(searches);
+      try {
+         localStorage.setItem(RECENT_SEARCHES_KEY, JSON.stringify(searches));
+         setRecentSearches(searches);
+      } catch (error) {
+         console.error('Error saving recent searches:', error);
+      }
    };
 
    const fetchSuggestions = async (searchQuery: string) => {
@@ -95,34 +130,78 @@ const AdvancedSearch: React.FC<AdvancedSearchProps> = ({ isOpen, onClose }) => {
          setHasSearched(false);
          return;
       }
+
       setIsLoading(true);
       setHasSearched(true);
+
       try {
-         // Assuming searchContent now calls your Strapi endpoint which hits Typesense
-         // The response structure is { data: SearchResult[], meta: { pagination: ... } }
+         // Use the updated searchContent function that returns transformed data
          const apiResponse = await searchContent(
-            searchQuery, // No need to encodeURIComponent here if searchContent handles it
-            1,
-            10,
+            searchQuery,
+            1, // page
+            10, // limit - get more results for better suggestions
             {
                locale,
+               // Don't specify tab to get results from all entity types
             },
          );
 
-         if (apiResponse && apiResponse.data) {
+         // The response now has the structure: { results: { report: [], blog: [], 'news-article': [] }, totals: {} }
+         if (apiResponse && (apiResponse.results || apiResponse.data)) {
             const groupedResults: CategoryResults = {};
-            apiResponse.data.forEach((item: SearchResult) => {
-               if (!groupedResults[item.entity]) {
-                  groupedResults[item.entity] = [];
-               }
-               // Ensure all necessary fields are present, matching SearchResult interface
-               groupedResults[item.entity].push({
-                  id: item.id,
-                  title: item.title,
-                  slug: item.slug,
-                  entity: item.entity,
+
+            // Handle the transformed response format
+            if (apiResponse.results) {
+               // New format from updated searchContent
+               Object.entries(apiResponse.results).forEach(([key, items]) => {
+                  if (Array.isArray(items) && items.length > 0) {
+                     // Map the key back to entity type
+                     let entityType: string;
+                     switch (key) {
+                        case 'report':
+                           entityType = 'api::report.report';
+                           break;
+                        case 'news-article':
+                           entityType = 'api::news-article.news-article';
+                           break;
+                        case 'blog':
+                           entityType = 'api::blog.blog';
+                           break;
+                        default:
+                           entityType = key;
+                     }
+
+                     groupedResults[entityType] = items.map((item: any) => ({
+                        id: item.id,
+                        title: item.title,
+                        shortDescription: item.shortDescription,
+                        slug: item.slug,
+                        entity: item.entity,
+                        locale: item.locale,
+                        oldPublishedAt: item.oldPublishedAt,
+                        industries: item.industries,
+                     }));
+                  }
                });
-            });
+            } else if (apiResponse.data) {
+               // Fallback: Direct data array (in case transformation doesn't work)
+               apiResponse.data.forEach((item: SearchResult) => {
+                  if (!groupedResults[item.entity]) {
+                     groupedResults[item.entity] = [];
+                  }
+                  groupedResults[item.entity].push({
+                     id: item.id,
+                     title: item.title,
+                     shortDescription: item.shortDescription,
+                     slug: item.slug,
+                     entity: item.entity,
+                     locale: item.locale,
+                     oldPublishedAt: item.oldPublishedAt,
+                     industries: item.industries,
+                  });
+               });
+            }
+
             setSuggestions(groupedResults);
          } else {
             setSuggestions({});
@@ -139,8 +218,9 @@ const AdvancedSearch: React.FC<AdvancedSearchProps> = ({ isOpen, onClose }) => {
       if (!searchQuery) return;
 
       const trimmedQuery = searchQuery.trim();
-      if (trimmedQuery.length < 1) return; // Or < 3 if you want to enforce min length for full search too
+      if (trimmedQuery.length < 1) return;
 
+      // Save to recent searches
       const updatedSearches = [
          trimmedQuery,
          ...recentSearches.filter((s) => s !== trimmedQuery),
@@ -150,11 +230,13 @@ const AdvancedSearch: React.FC<AdvancedSearchProps> = ({ isOpen, onClose }) => {
       setQuery('');
       onClose();
 
-      let newUrl =
+      // Navigate to search page
+      const searchUrl =
          locale && locale !== 'en'
             ? `/${locale}/search?q=${encodeURIComponent(trimmedQuery)}`
-            : '/search?q=${encodeURIComponent(trimmedQuery)}';
-      router.push(newUrl);
+            : `/search?q=${encodeURIComponent(trimmedQuery)}`;
+
+      router.push(searchUrl);
    };
 
    const handleItemClick = (result: SearchResult) => {
@@ -162,35 +244,29 @@ const AdvancedSearch: React.FC<AdvancedSearchProps> = ({ isOpen, onClose }) => {
          setQuery('');
          onClose();
 
+         let baseUrl = locale && locale !== 'en' ? `/${locale}` : '';
          let targetUrl = '';
-         if (locale && locale !== 'en') {
-            targetUrl = `/${locale}`;
-         }
-         // Using entity directly from Typesense response
+
+         // Build URL based on entity type
          switch (result.entity) {
             case 'api::report.report':
-               targetUrl = `/reports/${result.slug}`;
+               targetUrl = `${baseUrl}/reports/${result.slug}`;
                break;
             case 'api::blog.blog':
-               targetUrl = `/blogs/${result.slug}`;
+               targetUrl = `${baseUrl}/blogs/${result.slug}`;
                break;
             case 'api::news-article.news-article':
-               targetUrl = `/news/${result.slug}`;
+               targetUrl = `${baseUrl}/news/${result.slug}`;
                break;
-            // Add cases for other entities like industries, geographies if they are separate types
-            // For example, if 'industries' were an entity type from Typesense:
-            // case 'api::industry.industry':
-            //   targetUrl = `/industries/${result.slug}`;
-            //   break;
             default:
-               // Fallback for unmapped entities, perhaps to a generic search or log an error
                console.warn(
                   `Unknown entity type for navigation: ${result.entity}`,
                );
-               // Fallback to general search page with the query of the item title
+               // Fallback to search with the item title
                handleSearch(result.title || '');
                return;
          }
+
          router.push(targetUrl);
       } else {
          // Fallback to search if slug or entity is not available
@@ -202,33 +278,20 @@ const AdvancedSearch: React.FC<AdvancedSearchProps> = ({ isOpen, onClose }) => {
       setQuery('');
       onClose();
 
-      let tab = '';
-      switch (entityType) {
-         case 'api::report.report':
-            tab = 'reports';
-            break;
-         case 'api::news-article.news-article':
-            tab = 'news';
-            break;
-         case 'api::blog.blog':
-            tab = 'blogs';
-            break;
-         default:
-            // Fallback or default tab if entityType doesn't match a specific tab
-            // For example, if 'reports' is your main/default tab
-            tab = 'reports';
-      }
-      // Ensure query is defined for the URL, even if it's empty for "view all" from suggestions
+      const tab = getTabFromEntity(entityType);
       const currentQueryForUrl = query || '';
-      // Using router.push for SPA navigation
-      router.push(
-         `/search?q=${encodeURIComponent(currentQueryForUrl)}&tab=${tab}&${tab}Page=1`,
-      );
+
+      const searchUrl =
+         locale && locale !== 'en'
+            ? `/${locale}/search?q=${encodeURIComponent(currentQueryForUrl)}&tab=${tab}`
+            : `/search?q=${encodeURIComponent(currentQueryForUrl)}&tab=${tab}`;
+
+      router.push(searchUrl);
    };
 
    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
       if (e.key === 'Enter') {
-         e.preventDefault(); // Prevent form submission if it's in a form
+         e.preventDefault();
          handleSearch(query);
       } else if (e.key === 'Escape') {
          setQuery('');
@@ -244,7 +307,6 @@ const AdvancedSearch: React.FC<AdvancedSearchProps> = ({ isOpen, onClose }) => {
    };
 
    const handleModalClose = () => {
-      // setQuery(''); // Optionally clear query on modal close via overlay click
       onClose();
    };
 
@@ -264,10 +326,7 @@ const AdvancedSearch: React.FC<AdvancedSearchProps> = ({ isOpen, onClose }) => {
                   >
                      <div
                         className='flex flex-1 cursor-pointer items-center truncate'
-                        onClick={() => {
-                           setQuery(search); // Set query and let useEffect trigger search
-                           // handleSearch(search); // Or directly search
-                        }}
+                        onClick={() => handleSearch(search)}
                      >
                         <IoIosClock className='mr-2 h-4 w-4 flex-shrink-0 text-gray-400' />
                         <span className='truncate'>{search}</span>
@@ -286,14 +345,14 @@ const AdvancedSearch: React.FC<AdvancedSearchProps> = ({ isOpen, onClose }) => {
       }
 
       if (isLoading && query.length >= 3) {
-         // Only show loader if actively searching
          return (
             <div className='flex h-32 items-center justify-center'>
                <BiLoaderCircle className='h-8 w-8 animate-spin text-gray-400' />
             </div>
          );
       }
-      // Only show "no results" if a search has been performed for a query >= 3 chars
+
+      // Show "no results" if a search has been performed for a query >= 3 chars
       if (
          hasSearched &&
          query.length >= 3 &&
@@ -301,7 +360,9 @@ const AdvancedSearch: React.FC<AdvancedSearchProps> = ({ isOpen, onClose }) => {
       ) {
          return (
             <div className='py-8 text-center text-gray-500'>
-               {TRANSLATED_VALUES[locale]?.commons?.noResultsFound} &quot;
+               {TRANSLATED_VALUES[locale]?.commons?.noResultsFound ||
+                  'No results found for'}{' '}
+               &quot;
                {query}&quot;.
             </div>
          );
@@ -315,35 +376,40 @@ const AdvancedSearch: React.FC<AdvancedSearchProps> = ({ isOpen, onClose }) => {
                   <div key={entityType} className='mb-4'>
                      <div className='mb-2 flex items-center justify-between'>
                         <h3 className='text-sm font-semibold capitalize text-gray-500'>
-                           {TRANSLATED_VALUES[locale]?.header?.[
-                              getEntityTypeDisplayName(entityType).toLowerCase()
-                           ] || getEntityTypeDisplayName(entityType)}
+                           {getEntityTypeDisplayName(entityType)}
                         </h3>
                         <button
                            onClick={() => handleViewAllCategory(entityType)}
                            className='text-xs text-blue-1 hover:underline'
                         >
-                           {TRANSLATED_VALUES[locale]?.commons?.viewAll}
+                           {TRANSLATED_VALUES[locale]?.commons?.viewAll ||
+                              'View All'}
                         </button>
                      </div>
-                     {results.map((result: SearchResult) => (
+                     {results.slice(0, 3).map((result: SearchResult) => (
                         <div
-                           key={result.id} // Use unique ID from Typesense
+                           key={result.id}
                            className='cursor-pointer rounded px-3 py-2 hover:bg-gray-100'
                            onClick={() => handleItemClick(result)}
                         >
-                           {result.title}
+                           <div className='font-medium'>{result.title}</div>
+                           {result.shortDescription && (
+                              <div className='mt-1 line-clamp-2 text-sm text-gray-600'>
+                                 {result.shortDescription}
+                              </div>
+                           )}
                         </div>
                      ))}
                   </div>
                ),
          );
       }
-      // If query is < 3 chars and no recent searches, show nothing or a prompt
+
+      // If query is < 3 chars and no recent searches, show prompt
       if (query.length > 0 && query.length < 3) {
          return (
             <div className='py-8 text-center text-sm text-gray-400'>
-               Please type at least 3 characters.
+               Please type at least 3 characters to search.
             </div>
          );
       }
@@ -356,11 +422,11 @@ const AdvancedSearch: React.FC<AdvancedSearchProps> = ({ isOpen, onClose }) => {
    return (
       <div
          className='fixed inset-0 z-50 flex items-start justify-center bg-black bg-opacity-50 p-4 pt-[10vh] md:pt-[15vh]'
-         onClick={handleModalClose} // Close when clicking overlay
+         onClick={handleModalClose}
       >
          <div
             className='flex w-full max-w-xl flex-col overflow-hidden rounded-lg bg-white shadow-xl'
-            onClick={(e) => e.stopPropagation()} // Prevent click inside from closing modal
+            onClick={(e) => e.stopPropagation()}
          >
             <div className={`flex items-center border-b p-4`}>
                <IoIosSearch className='mr-3 h-5 w-5 text-gray-400' />
@@ -391,9 +457,9 @@ const AdvancedSearch: React.FC<AdvancedSearchProps> = ({ isOpen, onClose }) => {
                <button
                   onClick={() => handleSearch(query)}
                   className='rounded bg-blue-1 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-2 disabled:opacity-50'
-                  disabled={query.length < 1} // Allow search for any length, suggestions trigger at 3
+                  disabled={query.length < 1}
                >
-                  {TRANSLATED_VALUES[locale]?.commons?.search}
+                  {TRANSLATED_VALUES[locale]?.commons?.search || 'Search'}
                </button>
             </div>
 

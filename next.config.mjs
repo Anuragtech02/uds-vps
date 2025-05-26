@@ -140,6 +140,11 @@ const nextConfig = {
             permanent: true,
          },
          {
+            source: '/zh-TW/report/:path*',
+            destination: '/zh-Hant-TW/reports/:path*',
+            permanent: true,
+         },
+         {
             source: '/reports/industry/:slug-market-research-reports',
             destination: '/reports?industries=:slug',
             permanent: true,

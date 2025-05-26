@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { FiSliders } from 'react-icons/fi';
 import { BiChevronDown } from 'react-icons/bi';
 import { IoCloseOutline } from 'react-icons/io5';
@@ -23,6 +23,12 @@ interface SearchFilterBarProps {
    locale?: string;
 }
 
+// Helper function to check if geography filter should be shown
+const shouldShowGeography = (activeTab: string | null): boolean => {
+   // Show geography filter only for reports tab or when no specific tab is selected
+   return !activeTab || activeTab === 'reports';
+};
+
 const SearchFilterBar: React.FC<SearchFilterBarProps> = ({
    industries,
    geographies,
@@ -32,6 +38,7 @@ const SearchFilterBar: React.FC<SearchFilterBarProps> = ({
    locale = 'en',
 }) => {
    const router = useRouter();
+   const searchParams = useSearchParams();
    const [industryDropdown, setIndustryDropdown] = useState(false);
    const [geographyDropdown, setGeographyDropdown] = useState(false);
    const [sortDropdown, setSortDropdown] = useState(false);
@@ -39,6 +46,9 @@ const SearchFilterBar: React.FC<SearchFilterBarProps> = ({
    const industryRef = useRef<HTMLDivElement>(null);
    const geographyRef = useRef<HTMLDivElement>(null);
    const sortRef = useRef<HTMLDivElement>(null);
+
+   // Get the current active tab from URL
+   const activeTab = searchParams.get('tab');
 
    useEffect(() => {
       const handleClickOutside = (event: MouseEvent) => {
@@ -67,19 +77,34 @@ const SearchFilterBar: React.FC<SearchFilterBarProps> = ({
          document.removeEventListener('mousedown', handleClickOutside);
    }, []);
 
-   const updateSearchParams = (updates: Record<string, string>) => {
-      const newParams: Record<string, string> = {
-         q: searchQuery || '',
-         page: '1',
-         ...updates,
-      };
+   // Close geography dropdown when switching away from reports tab
+   useEffect(() => {
+      if (!shouldShowGeography(activeTab)) {
+         setGeographyDropdown(false);
+      }
+   }, [activeTab]);
 
-      // Remove empty params
-      Object.entries(newParams).forEach(([key, value]) => {
-         if (!value) delete newParams[key];
+   const updateSearchParams = (updates: Record<string, string>) => {
+      const currentParams = new URLSearchParams(searchParams.toString());
+
+      // Apply updates
+      Object.entries(updates).forEach(([key, value]) => {
+         if (value) {
+            currentParams.set(key, value);
+         } else {
+            currentParams.delete(key);
+         }
       });
 
-      const queryString = new URLSearchParams(newParams).toString();
+      // Reset to page 1 when filters change
+      currentParams.set('page', '1');
+
+      // If switching away from reports tab, clear geography filters
+      if (updates.tab && updates.tab !== 'reports') {
+         currentParams.delete('geographies');
+      }
+
+      const queryString = currentParams.toString();
       const basePath = locale === 'en' ? '' : `/${locale}`;
       router.push(`${basePath}/search?${queryString}`);
    };
@@ -88,7 +113,7 @@ const SearchFilterBar: React.FC<SearchFilterBarProps> = ({
       slug: string,
       type: 'industry' | 'geography',
    ) => {
-      const currentParams = new URLSearchParams(window.location.search);
+      const currentParams = new URLSearchParams(searchParams.toString());
       const industryFilters =
          currentParams.get('industries')?.split(',').filter(Boolean) || [];
       const geographyFilters =
@@ -104,6 +129,15 @@ const SearchFilterBar: React.FC<SearchFilterBarProps> = ({
             geographies: geographyFilters.join(','),
          });
       } else {
+         // Only allow geography filtering if it's supported for current tab
+         if (!shouldShowGeography(activeTab)) {
+            console.warn(
+               'Geography filtering not supported for current tab:',
+               activeTab,
+            );
+            return;
+         }
+
          const updatedGeographies = geographyFilters.includes(slug)
             ? geographyFilters.filter((item) => item !== slug)
             : [...geographyFilters, slug];
@@ -121,7 +155,7 @@ const SearchFilterBar: React.FC<SearchFilterBarProps> = ({
    };
 
    const removeFilter = (slug: string) => {
-      const currentParams = new URLSearchParams(window.location.search);
+      const currentParams = new URLSearchParams(searchParams.toString());
       const industryFilters =
          currentParams.get('industries')?.split(',').filter(Boolean) || [];
       const geographyFilters =
@@ -156,12 +190,22 @@ const SearchFilterBar: React.FC<SearchFilterBarProps> = ({
       return slug;
    };
 
+   // Get current filter counts for display
+   const currentParams = new URLSearchParams(searchParams.toString());
+   const activeIndustryFilters =
+      currentParams.get('industries')?.split(',').filter(Boolean) || [];
+   const activeGeographyFilters =
+      currentParams.get('geographies')?.split(',').filter(Boolean) || [];
+
    return (
       <div className='sticky top-44 z-30 mb-6 rounded-lg bg-white py-4 shadow-sm'>
          <div className='container flex flex-col items-start gap-6 lg:flex-row lg:items-center'>
             <div className='flex items-center gap-2 text-gray-600'>
                <FiSliders className='h-5 w-5' />
-               <span className='font-medium'>Filter Results By:</span>
+               <span className='font-medium'>
+                  {TRANSLATED_VALUES[locale]?.commons?.filterResultsBy ||
+                     'Filter Results By:'}
+               </span>
             </div>
 
             <div className='flex flex-wrap items-center gap-4'>
@@ -173,37 +217,51 @@ const SearchFilterBar: React.FC<SearchFilterBarProps> = ({
                         setGeographyDropdown(false);
                         setSortDropdown(false);
                      }}
-                     className='flex items-center gap-2 rounded-lg border px-4 py-2 hover:bg-gray-50'
+                     className={`flex items-center gap-2 rounded-lg border px-4 py-2 hover:bg-gray-50 ${
+                        activeIndustryFilters.length > 0
+                           ? 'border-blue-300 bg-blue-50 text-blue-700'
+                           : ''
+                     }`}
                   >
-                     {TRANSLATED_VALUES[locale]?.commons?.industry}{' '}
+                     {TRANSLATED_VALUES[locale]?.commons?.industry ||
+                        'Industry'}
+                     {activeIndustryFilters.length > 0 && (
+                        <span className='ml-1 rounded-full bg-blue-200 px-2 py-0.5 text-xs'>
+                           {activeIndustryFilters.length}
+                        </span>
+                     )}
                      <BiChevronDown className='h-5 w-5' />
                   </button>
                   {industryDropdown && (
-                     <div className='absolute top-full mt-2 max-h-[60vh] w-64 overflow-y-auto rounded-lg bg-white p-4 shadow-lg'>
+                     <div className='absolute top-full mt-2 max-h-[60vh] w-64 overflow-y-auto rounded-lg border bg-white p-4 shadow-lg'>
+                        <div className='mb-2 text-sm font-medium text-gray-600'>
+                           {TRANSLATED_VALUES[locale]?.commons
+                              ?.selectIndustries || 'Select Industries'}
+                        </div>
                         {industries?.data.map(
                            ({ attributes: { slug, name } }) => (
                               <div
                                  key={slug}
-                                 className='flex items-center gap-3 py-2'
+                                 className='flex items-center gap-3 py-2 hover:bg-gray-50'
                               >
                                  <input
                                     type='checkbox'
                                     id={`industry-${slug}`}
-                                    checked={currentFilters.includes(slug)}
+                                    checked={activeIndustryFilters.includes(
+                                       slug,
+                                    )}
                                     onChange={() =>
                                        handleToggleFilter(slug, 'industry')
                                     }
-                                    className='rounded'
+                                    className='rounded border-gray-300 text-blue-600 focus:ring-blue-500'
                                  />
                                  <label
                                     htmlFor={`industry-${slug}`}
-                                    className='cursor-pointer'
+                                    className='flex-1 cursor-pointer text-sm'
                                  >
-                                    {
-                                       TRANSLATED_VALUES[locale]?.industries?.[
-                                          name
-                                       ]
-                                    }
+                                    {TRANSLATED_VALUES[locale]?.industries?.[
+                                       name
+                                    ] || name}
                                  </label>
                               </div>
                            ),
@@ -212,48 +270,68 @@ const SearchFilterBar: React.FC<SearchFilterBarProps> = ({
                   )}
                </div>
 
-               {/* Geography Filter */}
-               <div className='relative' ref={geographyRef}>
-                  <button
-                     onClick={() => {
-                        setGeographyDropdown(!geographyDropdown);
-                        setIndustryDropdown(false);
-                        setSortDropdown(false);
-                     }}
-                     className='flex items-center gap-2 rounded-lg border px-4 py-2 hover:bg-gray-50'
-                  >
-                     {TRANSLATED_VALUES[locale]?.commons?.geography}{' '}
-                     <BiChevronDown className='h-5 w-5' />
-                  </button>
-                  {geographyDropdown && (
-                     <div className='absolute top-full mt-2 max-h-[60vh] w-64 overflow-y-auto rounded-lg bg-white p-4 shadow-lg'>
-                        {geographies?.data
-                           .filter((item) => item.attributes.slug !== 'unknown')
-                           .map(({ attributes: { slug, name } }) => (
-                              <div
-                                 key={slug}
-                                 className='flex items-center gap-3 py-2'
-                              >
-                                 <input
-                                    type='checkbox'
-                                    id={`geography-${slug}`}
-                                    checked={currentFilters.includes(slug)}
-                                    onChange={() =>
-                                       handleToggleFilter(slug, 'geography')
-                                    }
-                                    className='rounded'
-                                 />
-                                 <label
-                                    htmlFor={`geography-${slug}`}
-                                    className='cursor-pointer'
+               {/* Geography Filter - Only show for reports */}
+               {shouldShowGeography(activeTab) && (
+                  <div className='relative' ref={geographyRef}>
+                     <button
+                        onClick={() => {
+                           setGeographyDropdown(!geographyDropdown);
+                           setIndustryDropdown(false);
+                           setSortDropdown(false);
+                        }}
+                        className={`flex items-center gap-2 rounded-lg border px-4 py-2 hover:bg-gray-50 ${
+                           activeGeographyFilters.length > 0
+                              ? 'border-blue-300 bg-blue-50 text-blue-700'
+                              : ''
+                        }`}
+                     >
+                        {TRANSLATED_VALUES[locale]?.commons?.geography ||
+                           'Geography'}
+                        {activeGeographyFilters.length > 0 && (
+                           <span className='ml-1 rounded-full bg-blue-200 px-2 py-0.5 text-xs'>
+                              {activeGeographyFilters.length}
+                           </span>
+                        )}
+                        <BiChevronDown className='h-5 w-5' />
+                     </button>
+                     {geographyDropdown && (
+                        <div className='absolute top-full mt-2 max-h-[60vh] w-64 overflow-y-auto rounded-lg border bg-white p-4 shadow-lg'>
+                           <div className='mb-2 text-sm font-medium text-gray-600'>
+                              {TRANSLATED_VALUES[locale]?.commons
+                                 ?.selectRegions || 'Select Regions'}
+                           </div>
+                           {geographies?.data
+                              .filter(
+                                 (item) => item.attributes.slug !== 'unknown',
+                              )
+                              .map(({ attributes: { slug, name } }) => (
+                                 <div
+                                    key={slug}
+                                    className='flex items-center gap-3 py-2 hover:bg-gray-50'
                                  >
-                                    {name}
-                                 </label>
-                              </div>
-                           ))}
-                     </div>
-                  )}
-               </div>
+                                    <input
+                                       type='checkbox'
+                                       id={`geography-${slug}`}
+                                       checked={activeGeographyFilters.includes(
+                                          slug,
+                                       )}
+                                       onChange={() =>
+                                          handleToggleFilter(slug, 'geography')
+                                       }
+                                       className='rounded border-gray-300 text-blue-600 focus:ring-blue-500'
+                                    />
+                                    <label
+                                       htmlFor={`geography-${slug}`}
+                                       className='flex-1 cursor-pointer text-sm'
+                                    >
+                                       {name}
+                                    </label>
+                                 </div>
+                              ))}
+                        </div>
+                     )}
+                  </div>
+               )}
 
                {/* Sort Dropdown */}
                <div className='relative' ref={sortRef}>
@@ -265,32 +343,35 @@ const SearchFilterBar: React.FC<SearchFilterBarProps> = ({
                      }}
                      className='flex items-center gap-2 rounded-lg border px-4 py-2 hover:bg-gray-50'
                   >
-                     {TRANSLATED_VALUES[locale]?.commons?.sortBy}{' '}
+                     {TRANSLATED_VALUES[locale]?.commons?.sortBy || 'Sort By'}
                      <BiChevronDown className='h-5 w-5' />
                   </button>
                   {sortDropdown && (
-                     <div className='absolute top-full mt-2 w-48 rounded-lg bg-white p-2 shadow-lg'>
+                     <div className='absolute top-full mt-2 w-48 rounded-lg border bg-white p-2 shadow-lg'>
                         {[
                            {
                               value: 'relevance',
-                              label: TRANSLATED_VALUES[locale]?.commons
-                                 ?.mostRelevant,
+                              label:
+                                 TRANSLATED_VALUES[locale]?.commons
+                                    ?.mostRelevant || 'Most Relevant',
                            },
                            {
                               value: 'oldPublishedAt:desc',
-                              label: TRANSLATED_VALUES[locale]?.commons
-                                 ?.newestFirst,
+                              label:
+                                 TRANSLATED_VALUES[locale]?.commons
+                                    ?.newestFirst || 'Newest First',
                            },
                            {
                               value: 'oldPublishedAt:asc',
-                              label: TRANSLATED_VALUES[locale]?.commons
-                                 ?.oldestFirst,
+                              label:
+                                 TRANSLATED_VALUES[locale]?.commons
+                                    ?.oldestFirst || 'Oldest First',
                            },
                         ].map((option) => (
                            <button
                               key={option.value}
                               onClick={() => handleSort(option.value)}
-                              className={`w-full px-4 py-2 text-left hover:bg-gray-50 ${
+                              className={`w-full rounded px-4 py-2 text-left text-sm hover:bg-gray-50 ${
                                  sortBy === option.value
                                     ? 'bg-blue-50 text-blue-600'
                                     : ''
@@ -309,7 +390,7 @@ const SearchFilterBar: React.FC<SearchFilterBarProps> = ({
                      {currentFilters.map((filter) => (
                         <span
                            key={filter}
-                           className='flex items-center gap-1 rounded-full bg-blue-50 px-3 py-1 text-sm text-blue-600'
+                           className='flex items-center gap-1 rounded-full border border-blue-200 bg-blue-50 px-3 py-1 text-sm text-blue-600'
                         >
                            {getFilterName(filter)}
                            <IoCloseOutline
@@ -322,6 +403,17 @@ const SearchFilterBar: React.FC<SearchFilterBarProps> = ({
                )}
             </div>
          </div>
+
+         {/* Info message when geography filter is hidden */}
+         {activeTab && activeTab !== 'reports' && (
+            <div className='container mt-2'>
+               <div className='rounded bg-gray-50 px-3 py-2 text-xs text-gray-500'>
+                  💡{' '}
+                  {TRANSLATED_VALUES[locale]?.commons?.geographyOnlyReports ||
+                     'Geography filters are only available for Reports. Switch to Reports tab to filter by region.'}
+               </div>
+            </div>
+         )}
       </div>
    );
 };

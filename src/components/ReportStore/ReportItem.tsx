@@ -31,13 +31,24 @@ const ReportStoreItem: FC<ReportStoreItemProps> = ({
    return (
       <div className='flex flex-col gap-4 rounded-xl bg-white p-6 md:flex-row'>
          <div className='relative aspect-square h-auto w-[180px] rounded-xl border border-s-300'>
-            <StrapiImage
-               media={highlightImageUrl}
-               alt='report-item'
-               size={size}
-               objectFit='fill'
-               className='rounded-xl object-contain'
-            />
+            {typeof highlightImageUrl === 'string' ? (
+               <Image
+                  src={highlightImageUrl || newPlaceHolder}
+                  alt='report-item'
+                  fill
+                  className='rounded-xl object-cover object-center'
+                  sizes='(max-width: 768px) 100vw, 180px'
+                  unoptimized
+               />
+            ) : (
+               <StrapiImage
+                  media={highlightImageUrl}
+                  alt='report-item'
+                  size={size}
+                  objectFit='fill'
+                  className='rounded-xl object-contain'
+               />
+            )}
          </div>
          <div className='grow space-y-3 md:w-2/3'>
             <h4 className='line-clamp-3 overflow-hidden text-lg font-semibold hover:underline'>
