@@ -112,22 +112,22 @@ export const searchContent = async (
       }
 
       // Debug logging to see what we're getting
-      console.log('Original response:', {
-         dataLength: response.data?.length || 0,
-         allCounts: response.meta?.pagination?.allCounts,
-         sampleItems: response.data
-            ?.slice(0, 3)
-            ?.map((item: any) => ({ entity: item.entity, title: item.title })),
-      });
+      // console.log('Original response:', {
+      //    dataLength: response.data?.length || 0,
+      //    allCounts: response.meta?.pagination?.allCounts,
+      //    sampleItems: response.data
+      //       ?.slice(0, 3)
+      //       ?.map((item: any) => ({ entity: item.entity, title: item.title })),
+      // });
 
-      console.log('Transformed response:', {
-         resultCounts: {
-            report: transformedResponse.results.report.length,
-            'news-article': transformedResponse.results['news-article'].length,
-            blog: transformedResponse.results.blog.length,
-         },
-         totals: transformedResponse.totals,
-      });
+      // console.log('Transformed response:', {
+      //    resultCounts: {
+      //       report: transformedResponse.results.report.length,
+      //       'news-article': transformedResponse.results['news-article'].length,
+      //       blog: transformedResponse.results.blog.length,
+      //    },
+      //    totals: transformedResponse.totals,
+      // });
 
       return transformedResponse;
    } catch (error) {
