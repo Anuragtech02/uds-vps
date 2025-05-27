@@ -20,7 +20,7 @@ export async function generateMetadata({
    params: any;
 }): Promise<Metadata> {
    const searchQuery = searchParams?.q || '';
-   const { locale } = params;
+   const { lang: locale } = params;
 
    const title = searchQuery
       ? `${TRANSLATED_VALUES[locale]?.commons.searchResultsFor + ' ' + searchQuery} - UnivDatos ${TRANSLATED_VALUES[locale]?.commons.marketResearch}`

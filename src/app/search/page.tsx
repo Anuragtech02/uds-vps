@@ -85,7 +85,9 @@ export async function generateMetadata({
                   '@type': 'SearchAction',
                   target: {
                      '@type': 'EntryPoint',
-                     urlTemplate: absoluteUrl('/search?q={search_term_string}'),
+                     urlTemplate: absoluteUrl(
+                        `/search?q=${searchParams.q || ''}`,
+                     ),
                   },
                   'query-input': 'required name=search_term_string',
                },

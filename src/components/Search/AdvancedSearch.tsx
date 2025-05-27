@@ -232,11 +232,18 @@ const AdvancedSearch: React.FC<AdvancedSearchProps> = ({ isOpen, onClose }) => {
       setQuery('');
       onClose();
 
+      // FIXED: Properly encode the search query for URL
+      const encodedQuery = encodeURIComponent(trimmedQuery);
+
       // Navigate to search page
       const searchUrl =
          locale && locale !== 'en'
-            ? `/${locale}/search?q=${encodeURIComponent(trimmedQuery)}`
-            : `/search?q=${encodeURIComponent(trimmedQuery)}`;
+            ? `/${locale}/search?q=${encodedQuery}`
+            : `/search?q=${encodedQuery}`;
+
+      console.log('🔍 Navigating to search URL:', searchUrl);
+      console.log('🔍 Original query:', trimmedQuery);
+      console.log('🔍 Encoded query:', encodedQuery);
 
       router.push(searchUrl);
    };
@@ -276,6 +283,7 @@ const AdvancedSearch: React.FC<AdvancedSearchProps> = ({ isOpen, onClose }) => {
       }
    };
 
+   // Also fix the handleViewAllCategory function
    const handleViewAllCategory = (entityType: string) => {
       setQuery('');
       onClose();
@@ -283,10 +291,13 @@ const AdvancedSearch: React.FC<AdvancedSearchProps> = ({ isOpen, onClose }) => {
       const tab = getTabFromEntity(entityType);
       const currentQueryForUrl = query || '';
 
+      // FIXED: Properly encode the search query
+      const encodedQuery = encodeURIComponent(currentQueryForUrl);
+
       const searchUrl =
          locale && locale !== 'en'
-            ? `/${locale}/search?q=${encodeURIComponent(currentQueryForUrl)}&tab=${tab}`
-            : `/search?q=${encodeURIComponent(currentQueryForUrl)}&tab=${tab}`;
+            ? `/${locale}/search?q=${encodedQuery}&tab=${tab}`
+            : `/search?q=${encodedQuery}&tab=${tab}`;
 
       router.push(searchUrl);
    };

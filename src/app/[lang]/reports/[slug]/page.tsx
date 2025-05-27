@@ -60,12 +60,25 @@ export async function generateMetadata({
    // Create languages map for alternates
    const languagesMap: Record<string, string> = {};
 
-   SUPPORTED_LOCALES.filter((locale) => locale !== 'en').forEach((locale) => {
+   // Add English version if current lang is not English
+   if (params.lang !== 'en') {
+      languagesMap['en'] = absoluteUrl(`/reports/${params.slug}`);
+   }
+
+   // Add other language versions, skipping the current language
+   SUPPORTED_LOCALES.filter(
+      (locale) => locale !== 'en' && locale !== params.lang,
+   ).forEach((locale) => {
       languagesMap[locale] = absoluteUrl(`/${locale}/reports/${params.slug}`);
    });
 
    const canonicalUrl = removeTrailingslash(
-      seo?.canonicalURL || absoluteUrl(`/reports/${params.slug}`),
+      seo?.canonicalURL ||
+         absoluteUrl(
+            params.lang && params.lang === 'en'
+               ? `/reports/${params.slug}`
+               : `/${params.lang}/reports/${params.slug}`,
+         ),
    );
 
    // Base metadata object
