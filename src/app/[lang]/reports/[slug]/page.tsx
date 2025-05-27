@@ -100,7 +100,7 @@ export async function generateMetadata({
             seo?.metaDescription ||
             attributes?.shortDescription,
          type: 'article',
-         url: absoluteUrl(`/reports/${params.slug}`),
+         url: removeTrailingslash(absoluteUrl(`/reports/${params.slug}`)),
          images: [
             {
                url:

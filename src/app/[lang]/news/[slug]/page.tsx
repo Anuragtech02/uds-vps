@@ -6,7 +6,7 @@ import RelatedNews from '@/components/News/RelatedNews';
 import { getNewsBySlug } from '@/utils/api/services';
 import ClientSearchHero from '@/components/Home/ClientSearchHero';
 import { redirect } from 'next/navigation';
-import { absoluteUrl } from '@/utils/generic-methods';
+import { absoluteUrl, removeTrailingslash } from '@/utils/generic-methods';
 import { Metadata } from 'next';
 import { SUPPORTED_LOCALES } from '@/utils/constants';
 
@@ -33,19 +33,28 @@ export async function generateMetadata({
    const { attributes } = newsPage;
    const seo = attributes?.seo;
 
-   // Create languages map for alternates
    const languagesMap: Record<string, string> = {};
 
-   // Add all language alternates if available
-   // if (seo?.alternateLanguages) {
-   //   Object.entries(seo.alternateLanguages).forEach(([locale, url]) => {
-   //     languagesMap[locale] = url as string;
-   //   });
-   // }
+   // Add English version if current lang is not English
+   if (params.lang !== 'en') {
+      languagesMap['en'] = absoluteUrl(`/news/${params.slug}`);
+   }
 
-   SUPPORTED_LOCALES.filter((locale) => locale !== 'en').forEach((locale) => {
+   // Add other language versions, skipping the current language
+   SUPPORTED_LOCALES.filter(
+      (locale) => locale !== 'en' && locale !== params.lang,
+   ).forEach((locale) => {
       languagesMap[locale] = absoluteUrl(`/${locale}/news/${params.slug}`);
    });
+
+   const canonicalUrl = removeTrailingslash(
+      seo?.canonicalURL ||
+         absoluteUrl(
+            params.lang && params.lang === 'en'
+               ? `/news/${params.slug}`
+               : `/${params.lang}/news/${params.slug}`,
+         ),
+   );
 
    // Base metadata object
    const metadata: Metadata = {
@@ -109,7 +118,7 @@ export async function generateMetadata({
       keywords: seo?.keywords || '',
 
       alternates: {
-         canonical: seo?.canonicalURL || absoluteUrl(`/news/${params.slug}`),
+         canonical: canonicalUrl,
          languages: languagesMap,
       },
 

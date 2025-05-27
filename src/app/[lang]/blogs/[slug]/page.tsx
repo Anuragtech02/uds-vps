@@ -7,7 +7,7 @@ import RelatedBlogs from '@/components/Blog/RelatedBlogs';
 import ClientSearchHero from '@/components/Home/ClientSearchHero';
 import { getBlogBySlug } from '@/utils/api/services';
 import { SUPPORTED_LOCALES } from '@/utils/constants';
-import { absoluteUrl } from '@/utils/generic-methods';
+import { absoluteUrl, removeTrailingslash } from '@/utils/generic-methods';
 import { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 
@@ -37,16 +37,26 @@ export async function generateMetadata({
    // Create languages map for alternates
    const languagesMap: Record<string, string> = {};
 
-   // Add all language alternates if available
-   // if (seo?.alternateLanguages) {
-   //   Object.entries(seo.alternateLanguages).forEach(([locale, url]) => {
-   //     languagesMap[locale] = url as string;
-   //   });
-   // }
+   // Add English version if current lang is not English
+   if (params.lang !== 'en') {
+      languagesMap['en'] = absoluteUrl(`/blogs/${params.slug}`);
+   }
 
-   SUPPORTED_LOCALES.filter((locale) => locale !== 'en').forEach((locale) => {
+   // Add other language versions, skipping the current language
+   SUPPORTED_LOCALES.filter(
+      (locale) => locale !== 'en' && locale !== params.lang,
+   ).forEach((locale) => {
       languagesMap[locale] = absoluteUrl(`/${locale}/blogs/${params.slug}`);
    });
+
+   const canonicalUrl = removeTrailingslash(
+      seo?.canonicalURL ||
+         absoluteUrl(
+            params.lang && params.lang === 'en'
+               ? `/blogs/${params.slug}`
+               : `/${params.lang}/blogs/${params.slug}`,
+         ),
+   );
 
    // Base metadata object
    const metadata: Metadata = {
@@ -110,7 +120,7 @@ export async function generateMetadata({
       keywords: seo?.keywords || '',
 
       alternates: {
-         canonical: seo?.canonicalURL || absoluteUrl(`/blogs/${params.slug}`),
+         canonical: canonicalUrl,
          languages: languagesMap,
       },
 
