@@ -109,11 +109,11 @@ const CollapsibleLicenseOptions: React.FC<CollapsibleLicenseOptionsProps> = ({
                   }`}
                >
                   <div
-                     className='cursor-pointer px-4 py-3'
+                     className='cursor-pointer p-2'
                      onClick={() => toggleLicense(index)}
                   >
                      <div className='flex flex-wrap items-start justify-between 2xl:flex-nowrap'>
-                        <div className='flex items-start gap-3'>
+                        <div className='flex items-start gap-2'>
                            <input
                               type='radio'
                               className='mt-1.5'
@@ -123,7 +123,7 @@ const CollapsibleLicenseOptions: React.FC<CollapsibleLicenseOptionsProps> = ({
                               aria-label={`Select ${license.title}`}
                            />
                            <label
-                              className='block cursor-pointer text-sm font-semibold'
+                              className='mt-0.5 block cursor-pointer text-sm font-semibold'
                               onClick={(e) => {
                                  e.preventDefault();
                                  toggleLicense(index);
